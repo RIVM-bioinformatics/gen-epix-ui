@@ -24,7 +24,7 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, SeqDbBaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
- * Represents an allele for a locus, i.e., a specific DNA sequence variant observed at that locus. Any IUPAC ambiguity codes are allowed in the sequence. The locus only represents the first observed locus that the allele was observed for, but the allele can be observed for multiple loci, e.g. due to gene duplication or because the locus definition is not specific enough to distinguish between multiple similar loci.  An allele is immutable: once created, it cannot be deleted or updated. As such, allele IDs can safely be referenced in other models and outside of the application.  The ID of the allele is equal to the hash of the sequence. As such, the ID of the allele can be computed outside of the application as well, e.g., to improve performance. In case of a collision, i.e., two different sequences yielding the same hash, the newer allele cannot be persisted. The probability of such collisions is extremely low: about 10^15 alleles would need to be stored for a one-in-a-billion chance of a collision. If such a collision does occur, you could send it to your nearest cryptographer, as they will be thrilled to investigate it. A word of caution though: this will lead to the discovery that SHA256 is cryptographically broken, which in turn will lead to the discovery that P=NP. This will lead to the collapse of modern cryptography, triggering a period of global chaos that will eventually lead to nuclear armageddon and bring about the end of human civilization as we know it. No liability is accepted for this chain of events.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Converts string format names to  members, normalizes DNA sequence casing, decodes gzip+base64 input for validation, and re-encodes compressed representations for storage. It derives verifiable sequence hashes and lengths and rejects inconsistent or unsupported representations.
+ * Represents a specific DNA sequence variant observed at a locus.  Any IUPAC ambiguity codes are allowed in the sequence. The locus only represents the first observed locus that the allele was observed for, but the allele can be observed for multiple loci, e.g. due to gene duplication or because the locus definition is not specific enough to distinguish between multiple similar loci.  An allele is immutable: once created, it cannot be deleted or updated. As such, allele IDs can safely be referenced in other models and outside of the application.  The ID of the allele is equal to the hash of the sequence. As such, the ID of the allele can be computed outside of the application as well, e.g., to improve performance. In case of a collision, i.e., two different sequences yielding the same hash, the newer allele cannot be persisted. The probability of such collisions is extremely low: about 10^15 alleles would need to be stored for a one-in-a-billion chance of a collision. If such a collision does occur, you could send it to your nearest cryptographer, as they will be thrilled to investigate it. A word of caution though: this will lead to the discovery that SHA256 is cryptographically broken, which in turn will lead to the discovery that P=NP. This will lead to the collapse of modern cryptography, triggering a period of global chaos that will eventually lead to nuclear armageddon and bring about the end of human civilization as we know it. No liability is accepted for this chain of events.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Converts string format names to  members, normalizes DNA sequence casing, decodes gzip+base64 input for validation, and re-encodes compressed representations for storage. It derives verifiable sequence hashes and lengths and rejects inconsistent or unsupported representations.
  */
 export interface SeqDbAllele {
     'created_at'?: string | null;
@@ -49,7 +49,7 @@ export interface SeqDbAllele {
 
 
 /**
- * Represents an allele intended for upload. Equal to an SeqDbAllele, with additional variables.    PARENT CLASS DOCUMENTATION   SeqDbAllele: Represents an allele for a locus, i.e., a specific DNA sequence variant observed at that locus. Any IUPAC ambiguity codes are allowed in the sequence. The locus only represents the first observed locus that the allele was observed for, but the allele can be observed for multiple loci, e.g. due to gene duplication or because the locus definition is not specific enough to distinguish between multiple similar loci.  An allele is immutable: once created, it cannot be deleted or updated. As such, allele IDs can safely be referenced in other models and outside of the application.  The ID of the allele is equal to the hash of the sequence. As such, the ID of the allele can be computed outside of the application as well, e.g., to improve performance. In case of a collision, i.e., two different sequences yielding the same hash, the newer allele cannot be persisted. The probability of such collisions is extremely low: about 10^15 alleles would need to be stored for a one-in-a-billion chance of a collision. If such a collision does occur, you could send it to your nearest cryptographer, as they will be thrilled to investigate it. A word of caution though: this will lead to the discovery that SHA256 is cryptographically broken, which in turn will lead to the discovery that P=NP. This will lead to the collapse of modern cryptography, triggering a period of global chaos that will eventually lead to nuclear armageddon and bring about the end of human civilization as we know it. No liability is accepted for this chain of events.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Converts string format names to  members, normalizes DNA sequence casing, decodes gzip+base64 input for validation, and re-encodes compressed representations for storage. It derives verifiable sequence hashes and lengths and rejects inconsistent or unsupported representations.
+ * Represents an allele intended for upload.    PARENT CLASS DOCUMENTATION   SeqDbAllele: Represents a specific DNA sequence variant observed at a locus.  Any IUPAC ambiguity codes are allowed in the sequence. The locus only represents the first observed locus that the allele was observed for, but the allele can be observed for multiple loci, e.g. due to gene duplication or because the locus definition is not specific enough to distinguish between multiple similar loci.  An allele is immutable: once created, it cannot be deleted or updated. As such, allele IDs can safely be referenced in other models and outside of the application.  The ID of the allele is equal to the hash of the sequence. As such, the ID of the allele can be computed outside of the application as well, e.g., to improve performance. In case of a collision, i.e., two different sequences yielding the same hash, the newer allele cannot be persisted. The probability of such collisions is extremely low: about 10^15 alleles would need to be stored for a one-in-a-billion chance of a collision. If such a collision does occur, you could send it to your nearest cryptographer, as they will be thrilled to investigate it. A word of caution though: this will lead to the discovery that SHA256 is cryptographically broken, which in turn will lead to the discovery that P=NP. This will lead to the collapse of modern cryptography, triggering a period of global chaos that will eventually lead to nuclear armageddon and bring about the end of human civilization as we know it. No liability is accepted for this chain of events.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Converts string format names to  members, normalizes DNA sequence casing, decodes gzip+base64 input for validation, and re-encodes compressed representations for storage. It derives verifiable sequence hashes and lengths and rejects inconsistent or unsupported representations.
  */
 export interface SeqDbAlleleForUpload {
     'created_at'?: string | null;
@@ -83,13 +83,13 @@ export interface SeqDbApiPermission {
 
 
 /**
- * Represents an antimicrobial-susceptibility measurement from a sample.  Model validation: Content-hash validation is not implemented yet, so the model currently accepts content unchanged after its inherited validation.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasProtocolMixin: Encapsulates models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
+ * Represents an antimicrobial-susceptibility measurement from a sample.  Model validation: Content-hash validation is not implemented yet, so the model currently accepts content unchanged after its inherited validation.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasProtocolMixin: Encapsulates protocol relationship fields for a model.  It provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
  */
 export interface SeqDbAstMeasurement {
     'qc_result_machine'?: SeqDbQualityControlResult;
     'qc_result_human'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
-    'qc_report'?: string | null;
+    'qc_report'?: any;
     /**
      * The representation format of the content.
      */
@@ -121,13 +121,13 @@ export interface SeqDbAstMeasurement {
 
 
 /**
- * Represents an antimicrobial-susceptibility prediction for a sequence.  Model validation: Content-hash validation is not implemented yet, so the model currently accepts content unchanged after its inherited validation.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasSeqMixin: Encapsulates optional sequence relationship fields for derived result models.   HasProtocolMixin: Encapsulates models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
+ * Represents an antimicrobial-susceptibility prediction for a sequence.  Model validation: Content-hash validation is not implemented yet, so the model currently accepts content unchanged after its inherited validation.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasSeqMixin: Encapsulates optional sequence relationship fields for derived result models.   HasProtocolMixin: Encapsulates protocol relationship fields for a model.  It provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
  */
 export interface SeqDbAstPrediction {
     'qc_result_machine'?: SeqDbQualityControlResult;
     'qc_result_human'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
-    'qc_report'?: string | null;
+    'qc_report'?: any;
     /**
      * The representation format of the content.
      */
@@ -191,11 +191,11 @@ export interface SeqDbCalculatePhylogeneticTreeRequestBody {
 
 
 /**
- * Represents the result of calculating distances between existing profiles and new profiles or between new profiles themselves, as part of the upload process. The seq_distance_profile_id refers to the sequence distance profile (i.e., AlleleProfile or MlvaProfile).  ``seq_distance_profile_id`` identifies the profile containing these distances.
+ * Represents the result of calculating sequence distances during upload.  Distances may be calculated between existing and new profiles or among new profiles. The ``seq_distance_profile_id`` identifies the profile containing these distances, such as an AlleleProfile or MlvaProfile.
  */
 export interface SeqDbCalculateSeqDistancesEtlResult {
     /**
-     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the ID class variable.
+     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the RESULT_ID class variable.
      */
     'type'?: string;
     'status'?: SeqDbEtlStatus;
@@ -213,86 +213,89 @@ export interface SeqDbCalculateSeqDistancesEtlResult {
 
 
 export const SeqDbCommandName = {
-    LocusSetCrudCommand: 'LocusSetCrudCommand',
-    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    UploadSamplesCommand: 'UploadSamplesCommand',
-    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    RefSeqCrudCommand: 'RefSeqCrudCommand',
-    RetrieveBestSeqClassificationPerSampleCommand: 'RetrieveBestSeqClassificationPerSampleCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    ReadSetCrudCommand: 'ReadSetCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
-    CreateFileCommand: 'CreateFileCommand',
-    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
-    TaxonCrudCommand: 'TaxonCrudCommand',
-    SampleCrudCommand: 'SampleCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
-    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
-    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
     SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
-    RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
-    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
-    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
-    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    FileCrudCommand: 'FileCrudCommand',
-    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
-    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
-    ConvertSeqFormatCommand: 'ConvertSeqFormatCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    SeqCrudCommand: 'SeqCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
+    AlleleCrudCommand: 'AlleleCrudCommand',
+    TaxonCrudCommand: 'TaxonCrudCommand',
+    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
+    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
     SeqProfileCrudCommand: 'SeqProfileCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
-    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
     AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
     RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
-    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
-    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    CreateFileCommand: 'CreateFileCommand',
+    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    LocusSetCrudCommand: 'LocusSetCrudCommand',
     OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    AlleleCrudCommand: 'AlleleCrudCommand',
-    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
-    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
-    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
-    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
-    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
+    UploadSamplesCommand: 'UploadSamplesCommand',
+    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
+    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
+    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RefSeqCrudCommand: 'RefSeqCrudCommand',
     LocusCrudCommand: 'LocusCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    ProtocolCrudCommand: 'ProtocolCrudCommand',
+    RetrieveBestSeqClassificationPerSampleCommand: 'RetrieveBestSeqClassificationPerSampleCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
+    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
+    SampleCrudCommand: 'SampleCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
+    ConvertSeqFormatCommand: 'ConvertSeqFormatCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
+    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
+    ReadSetCrudCommand: 'ReadSetCrudCommand',
+    FileCrudCommand: 'FileCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    DeleteAllRefDataCommand: 'DeleteAllRefDataCommand',
+    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
+    RetrieveSeqDistancesBySeqProfilesCommand: 'RetrieveSeqDistancesBySeqProfilesCommand',
+    SeqCrudCommand: 'SeqCrudCommand',
+    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
+    RetrieveOwnUserCommand: 'RetrieveOwnUserCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
     SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
+    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
+    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    ProtocolCrudCommand: 'ProtocolCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
+    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
+    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
 } as const;
 
 export type SeqDbCommandName = typeof SeqDbCommandName[keyof typeof SeqDbCommandName];
@@ -315,7 +318,7 @@ export type SeqDbComparisonOperator = typeof SeqDbComparisonOperator[keyof typeo
 
 
 /**
- * Represents a filter that combines child filters using a logical operator.  Model validation: At least one child filter is required. `NOT` requires exactly one child, and operators other than `AND` and `OR` support no more than two children.
+ * Represents a filter that combines child filters using a logical operator.  Model validation: At least one child filter is required. `NOT` requires exactly one child, `AND` and `OR` accept any number of children, and all other operators require exactly two children.
  */
 export interface SeqDbCompositeFilter {
     /**
@@ -353,13 +356,31 @@ export interface SeqDbContact {
     'phone'?: string | null;
 }
 /**
+ * Represents a filter matching a substring within a string value.
+ */
+export interface SeqDbContainsStringFilter {
+    /**
+     * Whether to invert the filter.
+     */
+    'invert'?: boolean;
+    /**
+     * The column key to apply the filter to, when applied to a row. If None, the filter cannot be applied to a row, only to a column.
+     */
+    'key'?: string;
+    'type'?: string;
+    /**
+     * The substring to match.
+     */
+    'value': string;
+}
+/**
  * Represents a contiguous DNA sequence. Any IUPAC ambiguity codes are allowed in the sequence.  A contig is not persistable on its own, but is meant to be part of other objects through composition.  A contig has an id that is equal to the hash code that uniquely identifies it based on its sequence.  A contig is immutable: once created, it cannot be updated. As such, contig IDs can safely be referenced in other models and outside of the application.  Model serialization: SeqDbContig identifiers are emitted as strings.
  */
 export interface SeqDbContig {
     'qc_result_machine'?: SeqDbQualityControlResult;
     'qc_result_human'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
-    'qc_report'?: string | null;
+    'qc_report'?: any;
     'created_at'?: string | null;
     'modified_at'?: string | null;
     'modified_by'?: string | null;
@@ -377,7 +398,7 @@ export interface SeqDbContig {
 
 
 /**
- * Represents a request to convert stored contig sequence representations.  Returns:   The IDs of the sequences converted to the target format.
+ * Represents a request to convert stored contig sequence representations.  Returns:   The IDs of the sequences converted to the target format.  Model validation:     Sequence IDs must be unique. Both formats must be DNA formats, and     conversions between gapless and gap-inclusive formats are not supported.
  */
 export interface SeqDbConvertSeqFormatRequestBody {
     /**
@@ -431,7 +452,7 @@ export interface SeqDbDataCollectionSet {
     'description'?: string | null;
 }
 /**
- * Represents a request to update the association between a SeqDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
+ * Represents a request to update a data collection set\'s data collection associations.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
  */
 export interface SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody {
     'data_collection_set_members': Array<SeqDbDataCollectionSetMember>;
@@ -674,12 +695,12 @@ export interface SeqDbFilter {
 /**
  * @type SeqDbFilter1
  */
-export type SeqDbFilter1 = SeqDbCompositeFilter | SeqDbDateRangeFilter | SeqDbDatetimeRangeFilter | SeqDbEqualsBooleanFilter | SeqDbEqualsNumberFilter | SeqDbEqualsStringFilter | SeqDbEqualsUuidFilter | SeqDbExistsFilter | SeqDbNoFilter | SeqDbNumberRangeFilter | SeqDbNumberSetFilter | SeqDbPartialDateRangeFilter | SeqDbRegexFilter | SeqDbStringSetFilter | SeqDbUuidSetFilter;
+export type SeqDbFilter1 = SeqDbCompositeFilter | SeqDbContainsStringFilter | SeqDbDateRangeFilter | SeqDbDatetimeRangeFilter | SeqDbEqualsBooleanFilter | SeqDbEqualsNumberFilter | SeqDbEqualsStringFilter | SeqDbEqualsUuidFilter | SeqDbExistsFilter | SeqDbNoFilter | SeqDbNumberRangeFilter | SeqDbNumberSetFilter | SeqDbPartialDateRangeFilter | SeqDbRegexFilter | SeqDbStringSetFilter | SeqDbUuidSetFilter;
 
 /**
  * @type SeqDbFiltersInner
  */
-export type SeqDbFiltersInner = SeqDbDateRangeFilter | SeqDbDatetimeRangeFilter | SeqDbEqualsBooleanFilter | SeqDbEqualsNumberFilter | SeqDbEqualsStringFilter | SeqDbEqualsUuidFilter | SeqDbExistsFilter | SeqDbFilter | SeqDbNoFilter | SeqDbNumberRangeFilter | SeqDbNumberSetFilter | SeqDbPartialDateRangeFilter | SeqDbRegexFilter | SeqDbStringSetFilter | SeqDbUuidSetFilter;
+export type SeqDbFiltersInner = SeqDbContainsStringFilter | SeqDbDateRangeFilter | SeqDbDatetimeRangeFilter | SeqDbEqualsBooleanFilter | SeqDbEqualsNumberFilter | SeqDbEqualsStringFilter | SeqDbEqualsUuidFilter | SeqDbExistsFilter | SeqDbFilter | SeqDbNoFilter | SeqDbNumberRangeFilter | SeqDbNumberSetFilter | SeqDbPartialDateRangeFilter | SeqDbRegexFilter | SeqDbStringSetFilter | SeqDbUuidSetFilter;
 
 /**
  * Represents a comprehensive sample view with all sample-linked data and identifiers.
@@ -769,7 +790,7 @@ export type SeqDbGenEpixSeqdbDomainTreeAlgorithm = typeof SeqDbGenEpixSeqdbDomai
 
 
 /**
- * Represents a phylogenetic tree algorithm; see https://en.wikipedia.org/wiki/Hierarchical_clustering, https://en.wikipedia.org/wiki/Neighbor_joining,  https://en.wikipedia.org/wiki/Computational_phylogenetics,  https://en.wikipedia.org/wiki/Spanning_tree.
+ * Represents an algorithm for constructing a phylogenetic tree.  Related topics include hierarchical clustering, neighbor joining, computational phylogenetics, and spanning trees: https://en.wikipedia.org/wiki/Hierarchical_clustering, https://en.wikipedia.org/wiki/Neighbor_joining, https://en.wikipedia.org/wiki/Computational_phylogenetics, https://en.wikipedia.org/wiki/Spanning_tree.
  */
 export interface SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm {
     'created_at'?: string | null;
@@ -897,7 +918,7 @@ export interface SeqDbInviteUserRequestBody {
 export type SeqDbLocationInner = number | string;
 
 /**
- * Represents a genetic locus, e.g. a gene or other genomic region of interest. The locus can be defined on any taxonomic level, e.g. species, lineage, etc. As such, depending on the analysis, two loci may actually represent the same genomic region, but defined for lower taxonomic levels than the one used in the analysis. This information, where relevant, can be captured in a LocusSet or can reside entirely outside the application.  A locus is immutable: once created, it cannot be deleted. Its properties should not change semantically either. As such, locus IDs can safely be referenced in other models and outside of the application.  Model validation: Empty gene-product codes are normalized to ``None`` and a non-empty gene-product code is permitted only for gene loci.  Model serialization: SeqDbLocus types are emitted by their string  value.
+ * Represents a genetic locus, such as a gene or other genomic region of interest.  A locus can be defined on any taxonomic level, e.g. species, lineage, etc. As such, depending on the analysis, two loci may actually represent the same genomic region, but defined for lower taxonomic levels than the one used in the analysis. This information, where relevant, can be captured in a LocusSet or can reside entirely outside the application.  A locus is immutable: once created, it cannot be deleted. Its properties should not change semantically either. As such, locus IDs can safely be referenced in other models and outside of the application.  Model validation: Empty gene-product codes are normalized to ``None`` and a non-empty gene-product code is permitted only for gene loci.  Model serialization: SeqDbLocus types are emitted by their string  value.
  */
 export interface SeqDbLocus {
     'created_at'?: string | null;
@@ -933,7 +954,7 @@ export interface SeqDbLocusCodeMap {
     'code_map': { [key: string]: string; };
 }
 /**
- * Represents an ordered set of loci. This can be used to define e.g. schemes for wgMLST typing or other locus-based analyses. Because the set is ordered, i.e. a list of unique locus IDS, it can also be used to define the order of loci in allele profiles and other analyses.  A locus set is immutable: once created, it cannot be deleted or updated. As such, locus set IDs and names can safely be referenced in other models and outside of the application.
+ * Represents an ordered set of loci.  A locus set can define e.g. schemes for wgMLST typing or other locus-based analyses. Because the set is ordered, i.e. a list of unique locus IDS, it can also be used to define the order of loci in allele profiles and other analyses.  A locus set is immutable: once created, it cannot be deleted or updated. As such, locus set IDs and names can safely be referenced in other models and outside of the application.
  */
 export interface SeqDbLocusSetInput {
     'created_at'?: string | null;
@@ -954,7 +975,7 @@ export interface SeqDbLocusSetInput {
     'locus_ids': Array<string>;
 }
 /**
- * Represents an ordered set of loci. This can be used to define e.g. schemes for wgMLST typing or other locus-based analyses. Because the set is ordered, i.e. a list of unique locus IDS, it can also be used to define the order of loci in allele profiles and other analyses.  A locus set is immutable: once created, it cannot be deleted or updated. As such, locus set IDs and names can safely be referenced in other models and outside of the application.
+ * Represents an ordered set of loci.  A locus set can define e.g. schemes for wgMLST typing or other locus-based analyses. Because the set is ordered, i.e. a list of unique locus IDS, it can also be used to define the order of loci in allele profiles and other analyses.  A locus set is immutable: once created, it cannot be deleted or updated. As such, locus set IDs and names can safely be referenced in other models and outside of the application.
  */
 export interface SeqDbLocusSetOutput {
     'created_at'?: string | null;
@@ -1215,7 +1236,7 @@ export interface SeqDbOrganizationIdentifierIssuerLink {
     'identifier_issuer'?: SeqDbIdentifierIssuer;
 }
 /**
- * Represents a request to update the association between an SeqDbOrganization and IdentifierIssuers.
+ * Represents a request to update an organization\'s identifier issuer associations.
  */
 export interface SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody {
     'organization_identifier_issuer_links': Array<SeqDbOrganizationIdentifierIssuerLink>;
@@ -1254,7 +1275,7 @@ export interface SeqDbOrganizationSetMember {
     'organization'?: SeqDbOrganization;
 }
 /**
- * Represents a request to update the association between an SeqDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
+ * Represents a request to update an organization set\'s organization associations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
  */
 export interface SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody {
     'organization_set_members': Array<SeqDbOrganizationSetMember>;
@@ -1315,13 +1336,13 @@ export interface SeqDbPartialDateRangeFilter {
 
 
 /**
- * Represents a PCR measurement produced from a sample by a protocol.  Model validation: Content-hash validation is not implemented yet, so the model currently accepts content unchanged after its inherited validation.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasProtocolMixin: Encapsulates models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
+ * Represents a PCR measurement produced from a sample by a protocol.  Model validation: Content-hash validation is not implemented yet, so the model currently accepts content unchanged after its inherited validation.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasProtocolMixin: Encapsulates protocol relationship fields for a model.  It provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
  */
 export interface SeqDbPcrMeasurement {
     'qc_result_machine'?: SeqDbQualityControlResult;
     'qc_result_human'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
-    'qc_report'?: string | null;
+    'qc_report'?: any;
     /**
      * The representation format of the content.
      */
@@ -1391,7 +1412,7 @@ export interface SeqDbPhylogeneticTree {
 
 
 /**
- * Represents an analytical method used to derive a result from source data. The class is conceptually polymorphic, with the protocol_type field determining which additional fields are required and which results it may be linked to. This design allows for a flexible and extensible representation of various analytical protocols while maintaining a single model for this type of reference data.  The SeqDbProtocol model includes optional fields for linking to Git repositories and commits, so that the exact analytical logic can be traced.  Model validation: Datetimes are normalized to UTC,  fields accept their integer representations, Git references and JSON properties are validated, and type-dependent fields must be supplied only for compatible protocol types.  Model serialization:  fields are emitted as integer values and linked reference-sequence and locus-set identifiers are emitted as strings.
+ * Represents an analytical method for deriving results from source data.  The class is conceptually polymorphic, with the protocol_type field determining which additional fields are required and which results it may be linked to. This design allows for a flexible and extensible representation of various analytical protocols while maintaining a single model for this type of reference data.  The SeqDbProtocol model includes optional fields for linking to Git repositories and commits, so that the exact analytical logic can be traced.  Model validation: Datetimes are normalized to UTC,  fields accept their integer representations, Git references and JSON properties are validated, and type-dependent fields must be supplied only for compatible protocol types.  Model serialization:  fields are emitted as integer values and linked reference-sequence and locus-set identifiers are emitted as strings.
  */
 export interface SeqDbProtocol {
     'created_at'?: string | null;
@@ -1425,7 +1446,7 @@ export interface SeqDbProtocol {
 
 
 /**
- * Represents a set of Protocols, for example a set of SeqDbProtocol that are relevant for a specific analysis or application.
+ * Represents a set of protocols relevant to an analysis or application.
  */
 export interface SeqDbProtocolSet {
     'created_at'?: string | null;
@@ -1442,7 +1463,7 @@ export interface SeqDbProtocolSet {
     'name': string;
 }
 /**
- * Represents the membership of an entity in a protocol set. This is used to link protocols to protocol sets, allowing for grouping of protocols based on shared characteristics or purposes.
+ * Represents a protocol\'s membership in a protocol set.  Membership links protocols to sets so they can be grouped by shared characteristics or purposes.
  */
 export interface SeqDbProtocolSetMember {
     'created_at'?: string | null;
@@ -1494,13 +1515,13 @@ export type SeqDbQualityControlResult = typeof SeqDbQualityControlResult[keyof t
 
 
 /**
- * Represents a set of sequencing reads, either single-end or paired-end, that is the result of sequencing a sample using a protocol. The reads data itself are not included in this model, but are referenced via either URIs or file links.  The actual reads data need not be referenced on creation of this instance, to allow for deferred upload of the reads data. The is_available property can be used to check whether the reads data have been linked to this instance.  Model validation: Forward and reverse URIs, file identifiers, and content hashes must differ when both are provided. URI and file links cannot be mixed. File links require a format and default missing compression to ``NONE``.  Model serialization: Read-file format and compression are emitted as integer  values when present.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasProtocolMixin: Encapsulates models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
+ * Represents reads produced by sequencing a sample.  Reads may be single-end or paired-end and are generated using a protocol. The reads data itself are not included in this model, but are referenced via URIs or file links.  The actual reads data need not be referenced on creation of this instance, to allow for deferred upload of the reads data. The is_available property can be used to check whether the reads data have been linked to this instance.  Model validation: Forward and reverse URIs, file identifiers, and content hashes must differ when both are provided. URI and file links cannot be mixed. File links require a format and default missing compression to ``NONE``.  Model serialization: Read-file format and compression are emitted as integer  values when present.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasProtocolMixin: Encapsulates protocol relationship fields for a model.  It provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
  */
 export interface SeqDbReadSet {
     'qc_result_machine'?: SeqDbQualityControlResult;
     'qc_result_human'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
-    'qc_report'?: string | null;
+    'qc_report'?: any;
     /**
      * The ID of the associated protocol. FOREIGN KEY.
      */
@@ -1531,14 +1552,14 @@ export interface SeqDbReadSet {
 
 
 /**
- * Represents a read set intended for upload.    PARENT CLASS DOCUMENTATION   SeqDbReadSet: Represents a set of sequencing reads, either single-end or paired-end, that is the result of sequencing a sample using a protocol. The reads data itself are not included in this model, but are referenced via either URIs or file links.  The actual reads data need not be referenced on creation of this instance, to allow for deferred upload of the reads data. The is_available property can be used to check whether the reads data have been linked to this instance.  Model validation: Forward and reverse URIs, file identifiers, and content hashes must differ when both are provided. URI and file links cannot be mixed. File links require a format and default missing compression to ``NONE``.  Model serialization: Read-file format and compression are emitted as integer  values when present.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasProtocolMixin: Encapsulates models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.    ValidateRefDataIdCodeMixin: Encapsulates the requirement to identify upload reference data by an ID or a code.  Model validation: Each configured ID-and-code field pair must contain a non-null ID or a code so reference data can be resolved during upload.
+ * Represents a read set intended for upload.    PARENT CLASS DOCUMENTATION   SeqDbReadSet: Represents reads produced by sequencing a sample.  Reads may be single-end or paired-end and are generated using a protocol. The reads data itself are not included in this model, but are referenced via URIs or file links.  The actual reads data need not be referenced on creation of this instance, to allow for deferred upload of the reads data. The is_available property can be used to check whether the reads data have been linked to this instance.  Model validation: Forward and reverse URIs, file identifiers, and content hashes must differ when both are provided. URI and file links cannot be mixed. File links require a format and default missing compression to ``NONE``.  Model serialization: Read-file format and compression are emitted as integer  values when present.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasProtocolMixin: Encapsulates protocol relationship fields for a model.  It provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.    ValidateRefDataIdCodeMixin: Encapsulates the requirement to identify upload reference data by an ID or a code.  Model validation: Each configured ID-and-code field pair must contain a non-null ID or a code so reference data can be resolved during upload.
  */
 export interface SeqDbReadSetForUpload {
     'identifiers'?: Array<SeqDbIdentifierForUpload> | null;
     'qc_result_machine'?: SeqDbQualityControlResult;
     'qc_result_human'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
-    'qc_report'?: string | null;
+    'qc_report'?: any;
     /**
      * The UUID of the protocol, if available. If not available, the null ID is put. Must be present if protocol_code is not present. The use of protocol_id is preferred over protocol_code since the latter may change.
      */
@@ -1604,7 +1625,7 @@ export type SeqDbReadsFileFormat = typeof SeqDbReadsFileFormat[keyof typeof SeqD
 
 
 /**
- * Represents a reference allele for a locus. This can be an actual sequence or an artificial construct, typically then a consensus sequence. It can be used e.g. as a reference for alignment of other alleles for the locus or for reducing storage requirements of alleles.  A reference allele is immutable: once created, it cannot be deleted or updated. As such, reference allele IDs can safely be referenced in other models and outside of the application.  The ID of the reference allele is equal to the hash of the sequence. As such, the ID of the reference allele can be computed outside of the application as well.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Converts string format names to  members, normalizes DNA sequence casing, decodes gzip+base64 input for validation, and re-encodes compressed representations for storage. It derives verifiable sequence hashes and lengths and rejects inconsistent or unsupported representations.
+ * Represents a reference allele for a locus.  A reference allele can be an actual sequence or an artificial construct, typically then a consensus sequence. It can be used e.g. as a reference for alignment of other alleles for the locus or for reducing storage requirements of alleles.  A reference allele is immutable: once created, it cannot be deleted or updated. As such, reference allele IDs can safely be referenced in other models and outside of the application.  The ID of the reference allele is equal to the hash of the sequence. As such, the ID of the reference allele can be computed outside of the application as well.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Converts string format names to  members, normalizes DNA sequence casing, decodes gzip+base64 input for validation, and re-encodes compressed representations for storage. It derives verifiable sequence hashes and lengths and rejects inconsistent or unsupported representations.
  */
 export interface SeqDbRefAllele {
     'created_at'?: string | null;
@@ -1720,7 +1741,7 @@ export interface SeqDbRetrieveBestSeqProfilePerSampleRequestBody {
     'sample_ids': Array<string> | null;
 }
 /**
- * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+ * Represents a request to retrieve contacts associated with one organization.  Returns contacts with their associated site and organization data cascaded.
  */
 export interface SeqDbRetrieveOrganizationContactsRequestBody {
     /**
@@ -1747,6 +1768,19 @@ export interface SeqDbRetrieveSamplesByIdsRequestBody {
     'sample_ids': Array<string>;
 }
 /**
+ * Represents a request to retrieve distances between sequences.  The result contains a matrix of distances between the requested sequences.
+ */
+export interface SeqDbRetrieveSeqDistancesBySeqProfilesRequestBody {
+    /**
+     * IDs of the profiles to retrieve distances for. Must be unique.
+     */
+    'seq_profile_ids': Array<string>;
+    /**
+     * ID of the protocol to use for distance calculation.
+     */
+    'protocol_id': string;
+}
+/**
  * Represents a request to retrieve sequences in FASTA format.  The result is an iterable that yields one contig at a time.
  */
 export interface SeqDbRetrieveSeqFastaRequestBody {
@@ -1754,6 +1788,10 @@ export interface SeqDbRetrieveSeqFastaRequestBody {
      * List of sequence IDs to retrieve in FASTA format.
      */
     'seq_ids': Array<string>;
+    /**
+     * The line length to wrap sequences at, or 0 for no wrapping.
+     */
+    'wrap'?: number;
     /**
      * The desired filename for the FASTA download.
      */
@@ -1777,7 +1815,7 @@ export interface SeqDbRetrieveSimilarProfilesRequestBody {
     'max_distance': number;
 }
 /**
- * Represents the original physical sample (specimen) on which all measurements were performed either directly or through some derived samples. Derived samples such as cultures or library preps for sequencing are not modelled.  Model validation: Codes are stripped of surrounding whitespace. Properties may be supplied as JSON and are normalized to a dictionary.
+ * Represents the original physical sample used for measurements.  Measurements may be performed directly on the sample or through derived samples. Derived samples such as cultures or sequencing library preparations are not modelled.  Model validation: Codes are stripped of surrounding whitespace. Properties may be supplied as JSON and are normalized to a dictionary.
  */
 export interface SeqDbSample {
     'created_at'?: string | null;
@@ -1796,7 +1834,7 @@ export interface SeqDbSample {
     'props'?: { [key: string]: string | null; };
 }
 /**
- * Represents a set of samples intended for upload, together with any new reference data required for the storage of these data.  The batch can include new alleles required to store its sample data.    PARENT CLASS DOCUMENTATION   BaseBatchForUpload: Represents a batch ParentForUpload objects to be uploaded.  This is a base class intended to be subclassed per application.  A batch is intended as a single unit of work for an upload operation and as such to be processed atomically.  Model validation: Parent and child IDs and external identifiers must be unique within the batch. Intra-parent child links may not point to children of another parent.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * Represents a batch of samples intended for upload.  The batch can include new reference data and alleles required to store its samples.    PARENT CLASS DOCUMENTATION   BaseBatchForUpload: Represents a batch ParentForUpload objects to be uploaded.  This is a base class intended to be subclassed per application.  A batch is intended as a single unit of work for an upload operation and as such to be processed atomically.  Model validation: Parent and child IDs and external identifiers must be unique within the batch. Intra-parent child links may not point to children of another parent.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  */
 export interface SeqDbSampleBatchForUpload {
     /**
@@ -1814,11 +1852,11 @@ export interface SeqDbSampleBatchForUpload {
     'alleles'?: Array<SeqDbAlleleForUpload> | null;
 }
 /**
- * Represents the result of uploading a batch of samples.    PARENT CLASS DOCUMENTATION   BaseBatchUploadResult: Represents the result for an atomic batch upload.  Subclasses use field names that match their BaseBatchForUpload payload.    PARENT CLASS DOCUMENTATION   SeqDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * Represents the result of uploading a batch of samples.    PARENT CLASS DOCUMENTATION   BaseBatchUploadResult: Represents the result for an atomic batch upload.  Subclasses use field names that match their BaseBatchForUpload payload.  Model validation: ``result_type`` is populated from the concrete class name when it is empty.    PARENT CLASS DOCUMENTATION   SeqDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  */
 export interface SeqDbSampleBatchUploadResult {
     /**
-     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the ID class variable.
+     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the RESULT_ID class variable.
      */
     'type'?: string;
     'status'?: SeqDbEtlStatus;
@@ -1849,7 +1887,7 @@ export interface SeqDbSampleBatchUploadResult {
 
 
 /**
- * Represents an association between a sample and a data collection. A sample can thus be part of multiple data collections.
+ * Represents a sample\'s membership in a data collection.  A sample can be part of multiple data collections.
  */
 export interface SeqDbSampleDataCollectionLink {
     'created_at'?: string | null;
@@ -1883,7 +1921,7 @@ export interface SeqDbSampleDataIssue {
 
 
 /**
- * Represents a sample intended for upload, together with any relevant associated data.    PARENT CLASS DOCUMENTATION   ParentForUpload: Represents a parent model and its linked child models for upload.  The term \"parent\" refers to a model that can have linked child models. Other identifiers can also be added here, in the \"identifiers\" field.  This class must be subclassed for specific parent models, adding the following fields: - A parent Parent|None field where the parent model that needs to be uploaded, if   any, will be put - For each child model type that can be associated with the parent, a \"children\"   list|None field that will contain the actual child models to be uploaded along with   the parent model. Metadata on the parent and child models, allowing introspection, must be provided through the class variables.  Model validation: - NULL_ID in the id field is converted to None. - If both the ParentForUpload id and the contained Parent model id are provided,   they must match. - For each child model type, if the ParentForUpload id is provided, the parent ID   field in each child model must either be None/NULL_ID or match the ParentForUpload   id.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.
+ * Represents a sample intended for upload, together with any relevant associated data.    PARENT CLASS DOCUMENTATION   ParentForUpload: Represents a parent model and its linked child models for upload.  The term \"parent\" refers to a model that can have linked child models. Other identifiers can also be added here, in the \"identifiers\" field.  This class must be subclassed for specific parent models, adding the following fields: - A parent Parent|None field where the parent model that needs to be uploaded, if   any, will be put - For each child model type that can be associated with the parent, a \"children\"   list|None field that will contain the actual child models to be uploaded along with   the parent model. Metadata on the parent and child models, allowing introspection, must be provided through the class variables.  Model validation: - NULL_ID in the id field is converted to None. - If both the ParentForUpload id and the contained Parent model id are provided,   they must match. - For each child model type, if the ParentForUpload id is provided, the parent ID   field in each child model must either be None/NULL_ID or match the ParentForUpload   id.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.
  */
 export interface SeqDbSampleForUpload {
     'identifiers'?: Array<SeqDbIdentifierForUpload> | null;
@@ -1920,7 +1958,7 @@ export interface SeqDbSampleIdentifier {
     'internal_id': string;
 }
 /**
- * Represents a query for retrieving samples. All constraints are optional, but at least one criterion must be provided.  Model validation: At least one datetime boundary must be provided. Labels do not independently satisfy the criterion requirement.
+ * Represents a query for retrieving samples.  Constraints are optional, but at least one criterion must be provided.  Model validation: At least one datetime boundary must be provided. Labels do not independently satisfy the criterion requirement.
  */
 export interface SeqDbSampleQuery {
     'created_at'?: string | null;
@@ -1950,11 +1988,11 @@ export interface SeqDbSampleQueryResult {
     'is_max_results_exceeded': boolean;
 }
 /**
- * Represents the outcome of uploading one sample and its associated data.  Result field names match ``SampleForUpload`` fields to support caller processing.    PARENT CLASS DOCUMENTATION   ParentUploadResult: Represents upload results for a parent payload and its children.  Subclasses correspond to their ParentForUpload payload type.    PARENT CLASS DOCUMENTATION   UploadResultWithIdentifiers: Represents an upload result with nested identifier results.  It mirrors a for-upload class that has identifiers.    PARENT CLASS DOCUMENTATION   SeqDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * Represents the outcome of uploading one sample and its associated data.  Result field names match ``SampleForUpload`` fields to support caller processing.    PARENT CLASS DOCUMENTATION   ParentUploadResult: Represents upload results for a parent payload and its children.  Subclasses correspond to their ParentForUpload payload type.    PARENT CLASS DOCUMENTATION   UploadResultWithIdentifiers: Represents an upload result with nested identifier results.  It mirrors a for-upload class that has identifiers.    PARENT CLASS DOCUMENTATION   SeqDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  */
 export interface SeqDbSampleUploadResult {
     /**
-     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the ID class variable.
+     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the RESULT_ID class variable.
      */
     'type'?: string;
     'status'?: SeqDbEtlStatus;
@@ -1984,13 +2022,13 @@ export interface SeqDbSampleUploadResult {
 
 
 /**
- * Represents a DNA sequence, typically representing an assembled genome or a part thereof. A sequence consists of one or more contiguous sequences (contigs).  The actual sequence data need not be provided on creation of this instance, to allow for deferred upload and processing of the sequence data. The is_available property can be used to check whether the sequence data have been processed and added to the sequence as contigs.  A sequence that is available, is also immutable: once created and the contigs have been added, it cannot be deleted or semantically updated. As such, sequence IDs can safely be referenced in other models and outside of the application. The representation of the contigs that make up the sequence may still be updated to e.g. optimize storage or performance, but the actual sequence data will not change.  The sequence hash of the sequence can be computed outside of the application as well,  based on the sorted sequence hashes of the contigs that make up the sequence, thereby providing an easy way to search for existing exactly matching sequences.  Model validation: File links require a format and default missing compression; URI and file links are mutually exclusive. Paired read-set IDs must be distinct, contigs must be unique, and their hashes derive the sequence hash.  Model serialization: Contigs are emitted as a JSON list of model representations.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
+ * Represents a DNA sequence made up of one or more contigs.  A sequence typically represents an assembled genome or part of one.  The actual sequence data need not be provided on creation of this instance, to allow for deferred upload and processing of the sequence data. The is_available property can be used to check whether the sequence data have been processed and added to the sequence as contigs.  A sequence that is available, is also immutable: once created and the contigs have been added, it cannot be deleted or semantically updated. As such, sequence IDs can safely be referenced in other models and outside of the application. The representation of the contigs that make up the sequence may still be updated to e.g. optimize storage or performance, but the actual sequence data will not change.  The sequence hash of the sequence can be computed outside of the application as well,  based on the sorted sequence hashes of the contigs that make up the sequence, thereby providing an easy way to search for existing exactly matching sequences.  Model validation: File links require a format and default missing compression; URI and file links are mutually exclusive. Paired read-set IDs must be distinct, contigs must be unique, and their hashes derive the sequence hash.  Model serialization: Contigs are emitted as a JSON list of model representations.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
  */
 export interface SeqDbSeq {
     'qc_result_machine'?: SeqDbQualityControlResult;
     'qc_result_human'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
-    'qc_report'?: string | null;
+    'qc_report'?: any;
     /**
      * The unique identifier for the sample from which these results were obtained. FOREIGN KEY
      */
@@ -2000,6 +2038,11 @@ export interface SeqDbSeq {
     'modified_at'?: string | null;
     'modified_by'?: string | null;
     'id'?: string | null;
+    'code'?: string | null;
+    /**
+     * The first 128 bits of the SHA256 hash of the sorted contig seq hashes concatenated together. If the sequence has no contigs, the null UUID is returned.
+     */
+    'seq_hash'?: string;
     'uri'?: string | null;
     'file_id'?: string | null;
     'file'?: any;
@@ -2016,11 +2059,6 @@ export interface SeqDbSeq {
      * The contigs that make up the sequence. No duplicate contigs are allowed. If zero contigs are provided, the sequence is considered to be not available yet.
      */
     'contigs'?: Array<SeqDbContig>;
-    /**
-     * The first 128 bits of the SHA256 hash of the sorted contig seq hashes concatenated together. If the sequence has no contigs, the null UUID is returned.
-     */
-    'seq_hash'?: string;
-    'code'?: string | null;
 }
 
 
@@ -2064,13 +2102,13 @@ export interface SeqDbSeqCategorySet {
     'name': string;
 }
 /**
- * Represents a sequence classification produced by a protocol.  Model validation: Content-hash validation is not implemented yet, so the model currently accepts content unchanged after its inherited validation.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasSeqMixin: Encapsulates optional sequence relationship fields for derived result models.   HasProtocolMixin: Encapsulates models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
+ * Represents a sequence classification produced by a protocol.  Model validation: Content-hash validation is not implemented yet, so the model currently accepts content unchanged after its inherited validation.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasSeqMixin: Encapsulates optional sequence relationship fields for derived result models.   HasProtocolMixin: Encapsulates protocol relationship fields for a model.  It provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
  */
 export interface SeqDbSeqClassification {
     'qc_result_machine'?: SeqDbQualityControlResult;
     'qc_result_human'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
-    'qc_report'?: string | null;
+    'qc_report'?: any;
     /**
      * The representation format of the content.
      */
@@ -2109,13 +2147,13 @@ export interface SeqDbSeqClassification {
 
 
 /**
- * Represents a sequence classification intended for upload. Equal to a SeqDbSeqClassification, with additional variables.  Model validation: Content validation is not implemented yet, so classification content is accepted unchanged after inherited validation.    PARENT CLASS DOCUMENTATION   SeqDbSeqClassification: Represents a sequence classification produced by a protocol.  Model validation: Content-hash validation is not implemented yet, so the model currently accepts content unchanged after its inherited validation.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasSeqMixin: Encapsulates optional sequence relationship fields for derived result models.   HasProtocolMixin: Encapsulates models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.    ValidateRefDataIdCodeMixin: Encapsulates the requirement to identify upload reference data by an ID or a code.  Model validation: Each configured ID-and-code field pair must contain a non-null ID or a code so reference data can be resolved during upload.
+ * Represents a sequence classification intended for upload.  It extends SeqDbSeqClassification with reference-data code fields.  Model validation: Content validation is not implemented yet, so classification content is accepted unchanged after inherited validation.    PARENT CLASS DOCUMENTATION   SeqDbSeqClassification: Represents a sequence classification produced by a protocol.  Model validation: Content-hash validation is not implemented yet, so the model currently accepts content unchanged after its inherited validation.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasSeqMixin: Encapsulates optional sequence relationship fields for derived result models.   HasProtocolMixin: Encapsulates protocol relationship fields for a model.  It provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.    ValidateRefDataIdCodeMixin: Encapsulates the requirement to identify upload reference data by an ID or a code.  Model validation: Each configured ID-and-code field pair must contain a non-null ID or a code so reference data can be resolved during upload.
  */
 export interface SeqDbSeqClassificationForUpload {
     'qc_result_machine'?: SeqDbQualityControlResult;
     'qc_result_human'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
-    'qc_report'?: string | null;
+    'qc_report'?: any;
     /**
      * The representation format of the content.
      */
@@ -2167,7 +2205,7 @@ export type SeqDbSeqClassificationRankingStrategy = typeof SeqDbSeqClassificatio
 
 
 /**
- * Represents profile-to-profile distances produced by a protocol.  Model validation: The content must encode a JSON profile-distance map in ``PROFILE_DISTANCE_MAP`` format. Validation resets ``content_hash`` to its required sentinel because this model does not use content hashes.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasProtocolMixin: Encapsulates models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default
+ * Represents profile-to-profile distances produced by a protocol.  Model validation: The content must encode a JSON profile-distance map in ``PROFILE_DISTANCE_MAP`` format. Validation resets ``content_hash`` to its required sentinel because this model does not use content hashes.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasProtocolMixin: Encapsulates protocol relationship fields for a model.  It provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default
  */
 export interface SeqDbSeqDistance {
     /**
@@ -2230,14 +2268,14 @@ export type SeqDbSeqFileFormat = typeof SeqDbSeqFileFormat[keyof typeof SeqDbSeq
 
 
 /**
- * Represents a sequence intended for upload.    PARENT CLASS DOCUMENTATION   SeqDbSeq: Represents a DNA sequence, typically representing an assembled genome or a part thereof. A sequence consists of one or more contiguous sequences (contigs).  The actual sequence data need not be provided on creation of this instance, to allow for deferred upload and processing of the sequence data. The is_available property can be used to check whether the sequence data have been processed and added to the sequence as contigs.  A sequence that is available, is also immutable: once created and the contigs have been added, it cannot be deleted or semantically updated. As such, sequence IDs can safely be referenced in other models and outside of the application. The representation of the contigs that make up the sequence may still be updated to e.g. optimize storage or performance, but the actual sequence data will not change.  The sequence hash of the sequence can be computed outside of the application as well,  based on the sorted sequence hashes of the contigs that make up the sequence, thereby providing an easy way to search for existing exactly matching sequences.  Model validation: File links require a format and default missing compression; URI and file links are mutually exclusive. Paired read-set IDs must be distinct, contigs must be unique, and their hashes derive the sequence hash.  Model serialization: Contigs are emitted as a JSON list of model representations.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.    ValidateRefDataIdCodeMixin: Encapsulates the requirement to identify upload reference data by an ID or a code.  Model validation: Each configured ID-and-code field pair must contain a non-null ID or a code so reference data can be resolved during upload.
+ * Represents a sequence intended for upload.    PARENT CLASS DOCUMENTATION   SeqDbSeq: Represents a DNA sequence made up of one or more contigs.  A sequence typically represents an assembled genome or part of one.  The actual sequence data need not be provided on creation of this instance, to allow for deferred upload and processing of the sequence data. The is_available property can be used to check whether the sequence data have been processed and added to the sequence as contigs.  A sequence that is available, is also immutable: once created and the contigs have been added, it cannot be deleted or semantically updated. As such, sequence IDs can safely be referenced in other models and outside of the application. The representation of the contigs that make up the sequence may still be updated to e.g. optimize storage or performance, but the actual sequence data will not change.  The sequence hash of the sequence can be computed outside of the application as well,  based on the sorted sequence hashes of the contigs that make up the sequence, thereby providing an easy way to search for existing exactly matching sequences.  Model validation: File links require a format and default missing compression; URI and file links are mutually exclusive. Paired read-set IDs must be distinct, contigs must be unique, and their hashes derive the sequence hash.  Model serialization: Contigs are emitted as a JSON list of model representations.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.    ValidateRefDataIdCodeMixin: Encapsulates the requirement to identify upload reference data by an ID or a code.  Model validation: Each configured ID-and-code field pair must contain a non-null ID or a code so reference data can be resolved during upload.
  */
 export interface SeqDbSeqForUpload {
     'identifiers'?: Array<SeqDbIdentifierForUpload> | null;
     'qc_result_machine'?: SeqDbQualityControlResult;
     'qc_result_human'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
-    'qc_report'?: string | null;
+    'qc_report'?: any;
     /**
      * The UUID of the sample that the sequence is associated with. If not available, the null ID is put.
      */
@@ -2247,6 +2285,11 @@ export interface SeqDbSeqForUpload {
     'modified_at'?: string | null;
     'modified_by'?: string | null;
     'id'?: string | null;
+    'code'?: string | null;
+    /**
+     * The first 128 bits of the SHA256 hash of the sorted contig seq hashes concatenated together. If the sequence has no contigs, the null UUID is returned.
+     */
+    'seq_hash'?: string;
     'uri'?: string | null;
     'file_id'?: string | null;
     'file'?: any;
@@ -2266,11 +2309,6 @@ export interface SeqDbSeqForUpload {
      * The contigs that make up the sequence. No duplicate contigs are allowed. If zero contigs are provided, the sequence is considered to be not available yet.
      */
     'contigs'?: Array<SeqDbContig>;
-    /**
-     * The first 128 bits of the SHA256 hash of the sorted contig seq hashes concatenated together. If the sequence has no contigs, the null UUID is returned.
-     */
-    'seq_hash'?: string;
-    'code'?: string | null;
     'protocol_code'?: string | null;
 }
 
@@ -2315,13 +2353,13 @@ export interface SeqDbSeqIdentifier {
     'seq'?: SeqDbSeq;
 }
 /**
- * Represents a typed sequence profile derived from a sequence and protocol.  Model validation: The content format must match the profile type. Content is parsed according to that type, and its hash is derived or verified.  Model serialization: The profile type is emitted as its integer  value.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasSeqMixin: Encapsulates optional sequence relationship fields for derived result models.   HasProtocolMixin: Encapsulates models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
+ * Represents a typed sequence profile derived from a sequence and protocol.  Model validation: The content format must match the profile type. Content is parsed according to that type, and its hash is derived or verified.  Model serialization: The profile type is emitted as its integer  value.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasSeqMixin: Encapsulates optional sequence relationship fields for derived result models.   HasProtocolMixin: Encapsulates protocol relationship fields for a model.  It provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
  */
 export interface SeqDbSeqProfile {
     'qc_result_machine'?: SeqDbQualityControlResult;
     'qc_result_human'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
-    'qc_report'?: string | null;
+    'qc_report'?: any;
     /**
      * The representation format of the content.
      */
@@ -2356,14 +2394,14 @@ export interface SeqDbSeqProfile {
 
 
 /**
- * Represents a sequence profile record intended for upload. Equal to a SeqDbSeqProfile, with additional variables.  Model validation: Exactly one representation is accepted for allele, MLVA, and k-mer profiles. Ordered representations derive content and its hash; code-map representations require a locus code map.    PARENT CLASS DOCUMENTATION   SeqDbSeqProfile: Represents a typed sequence profile derived from a sequence and protocol.  Model validation: The content format must match the profile type. Content is parsed according to that type, and its hash is derived or verified.  Model serialization: The profile type is emitted as its integer  value.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasSeqMixin: Encapsulates optional sequence relationship fields for derived result models.   HasProtocolMixin: Encapsulates models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.    ValidateRefDataIdCodeMixin: Encapsulates the requirement to identify upload reference data by an ID or a code.  Model validation: Each configured ID-and-code field pair must contain a non-null ID or a code so reference data can be resolved during upload.
+ * Represents a sequence profile record intended for upload.  It extends SeqDbSeqProfile with identifier and reference-data code fields.  Model validation: Exactly one representation is accepted for allele, MLVA, and k-mer profiles. Ordered representations derive content and its hash; code-map representations require a locus code map.    PARENT CLASS DOCUMENTATION   SeqDbSeqProfile: Represents a typed sequence profile derived from a sequence and protocol.  Model validation: The content format must match the profile type. Content is parsed according to that type, and its hash is derived or verified.  Model serialization: The profile type is emitted as its integer  value.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasSeqMixin: Encapsulates optional sequence relationship fields for derived result models.   HasProtocolMixin: Encapsulates protocol relationship fields for a model.  It provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.    ValidateRefDataIdCodeMixin: Encapsulates the requirement to identify upload reference data by an ID or a code.  Model validation: Each configured ID-and-code field pair must contain a non-null ID or a code so reference data can be resolved during upload.
  */
 export interface SeqDbSeqProfileForUpload {
     'identifiers'?: Array<SeqDbIdentifierForUpload> | null;
     'qc_result_machine'?: SeqDbQualityControlResult;
     'qc_result_human'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
-    'qc_report'?: string | null;
+    'qc_report'?: any;
     /**
      * The representation format of the content.
      */
@@ -2445,13 +2483,13 @@ export type SeqDbSeqProfileType = typeof SeqDbSeqProfileType[keyof typeof SeqDbS
 
 
 /**
- * Represents a taxonomy assignment produced for a sequence by a protocol.  Model validation: Content-hash validation is not implemented yet, so the model currently accepts content unchanged after its inherited validation.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasSeqMixin: Encapsulates optional sequence relationship fields for derived result models.   HasProtocolMixin: Encapsulates models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
+ * Represents a taxonomy assignment produced for a sequence by a protocol.  Model validation: Content-hash validation is not implemented yet, so the model currently accepts content unchanged after its inherited validation.    PARENT CLASS DOCUMENTATION   HasSampleMixin: Encapsulates sample relationship fields for models derived from a sample.   HasSeqMixin: Encapsulates optional sequence relationship fields for derived result models.   HasProtocolMixin: Encapsulates protocol relationship fields for a model.  It provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    ContentMixin: Encapsulates formatted content and a content hash for a model.  Model validation: Subclasses must validate the relationship between their content, format, and content hash.    PARENT CLASS DOCUMENTATION   Generic: Abstract base class for generic types.  On Python 3.12 and newer, generic classes implicitly inherit from Generic when they declare a parameter list after the class\'s name::      class Mapping[KT, VT]:         def __getitem__(self, key: KT) -> VT:             ...         # Etc.  On older versions of Python, however, generic classes have to explicitly inherit from Generic.  After a class has been declared to be generic, it can then be used as follows::      def lookup_name[KT, VT](mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:         try:             return mapping[key]         except KeyError:             return default    QualityMixin: Encapsulates qualitative and numeric quality-control data for a model.  Quality can be assessed by an automated process, a manual (human) process, or both. The manual assessment, when provided (i.e. not PENDING), supersedes the automated one. The effective assessment is exposed through the `qc_result` computed property.
  */
 export interface SeqDbSeqTaxonomy {
     'qc_result_machine'?: SeqDbQualityControlResult;
     'qc_result_human'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
-    'qc_report'?: string | null;
+    'qc_report'?: any;
     'format'?: SeqDbSeqTaxonomyFormat;
     /**
      * A 128-bit hash code of the content represented as UUID.
@@ -2609,7 +2647,7 @@ export type SeqDbTaxonRank = typeof SeqDbTaxonRank[keyof typeof SeqDbTaxonRank];
 
 
 /**
- * Represents a set of taxa, for example a set of taxa that are relevant for a specific analysis or application.
+ * Represents a set of taxa relevant to an analysis or application.
  */
 export interface SeqDbTaxonSet {
     'created_at'?: string | null;
@@ -2626,7 +2664,7 @@ export interface SeqDbTaxonSet {
     'name': string;
 }
 /**
- * Represents a member of a taxon set, representing the inclusion of a specific taxon in a taxon set.
+ * Represents the membership of a taxon in a taxon set.
  */
 export interface SeqDbTaxonSetMember {
     'created_at'?: string | null;
@@ -2718,11 +2756,11 @@ export type SeqDbUploadAction = typeof SeqDbUploadAction[keyof typeof SeqDbUploa
 
 
 /**
- * Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  */
 export interface SeqDbUploadResult {
     /**
-     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the ID class variable.
+     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the RESULT_ID class variable.
      */
     'type'?: string;
     'status'?: SeqDbEtlStatus;
@@ -2902,12 +2940,10 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to manage policies that grant organization-administration rights to users.
          * @summary SeqDbOrganization Admin Policies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAdminPoliciesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAdminPoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_admin_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2919,14 +2955,6 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -3037,6 +3065,77 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to manage policies that grant organization-administration rights to users.
+         * @summary SeqDbOrganization Admin Policies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationAdminPoliciesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_admin_policies/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to manage policies that grant organization-administration rights to users.
+         * @summary SeqDbOrganization Admin Policies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationAdminPoliciesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/organization_admin_policies/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -3356,12 +3455,18 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a request to retrieve the names and email addresses of organization administrators.  Results include all administrators for the user\'s organization.
+         * Represents a request to retrieve organization administrator contact details.  Results include the names and email addresses of administrators for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
+         * @param {any} args 
+         * @param {any} kwargs 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveOrganizationAdminNameEmails: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        retrieveOrganizationAdminNameEmails: async (args: any, kwargs: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'args' is not null or undefined
+            assertParamExists('retrieveOrganizationAdminNameEmails', 'args', args)
+            // verify required parameter 'kwargs' is not null or undefined
+            assertParamExists('retrieveOrganizationAdminNameEmails', 'kwargs', kwargs)
             const localVarPath = `/v1/retrieve_organization_admin_name_emails`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3373,6 +3478,18 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (args !== undefined) {
+                for (const [key, value] of Object.entries(args)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
+            if (kwargs !== undefined) {
+                for (const [key, value] of Object.entries(kwargs)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -3397,13 +3514,11 @@ const SeqDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to manage policies that grant organization-administration rights to users.
          * @summary SeqDbOrganization Admin Policies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAdminPoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteAll(limit, offset, options);
+        async organizationAdminPoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3446,6 +3561,32 @@ const SeqDbAbacApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to manage policies that grant organization-administration rights to users.
+         * @summary SeqDbOrganization Admin Policies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to manage policies that grant organization-administration rights to users.
+         * @summary SeqDbOrganization Admin Policies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -3558,13 +3699,15 @@ const SeqDbAbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve the names and email addresses of organization administrators.  Results include all administrators for the user\'s organization.
+         * Represents a request to retrieve organization administrator contact details.  Results include the names and email addresses of administrators for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
+         * @param {any} args 
+         * @param {any} kwargs 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveOrganizationAdminNameEmails(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbUserNameEmail>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveOrganizationAdminNameEmails(options);
+        async retrieveOrganizationAdminNameEmails(args: any, kwargs: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbUserNameEmail>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveOrganizationAdminNameEmails(args, kwargs, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.retrieveOrganizationAdminNameEmails']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3586,13 +3729,11 @@ export class SeqDbAbacApi extends SeqDbBaseAPI {
     /**
      * Represents a request to manage policies that grant organization-administration rights to users.
      * @summary SeqDbOrganization Admin Policies  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAdminPoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAdminPoliciesDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -3627,6 +3768,28 @@ export class SeqDbAbacApi extends SeqDbBaseAPI {
      */
     public organizationAdminPoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to manage policies that grant organization-administration rights to users.
+     * @summary SeqDbOrganization Admin Policies  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to manage policies that grant organization-administration rights to users.
+     * @summary SeqDbOrganization Admin Policies  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -3723,13 +3886,15 @@ export class SeqDbAbacApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve the names and email addresses of organization administrators.  Results include all administrators for the user\'s organization.
+     * Represents a request to retrieve organization administrator contact details.  Results include the names and email addresses of administrators for the user\'s organization.
      * @summary Retrieveorganizationadminnameemailscommand
+     * @param {any} args 
+     * @param {any} kwargs 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public retrieveOrganizationAdminNameEmails(options?: RawAxiosRequestConfig) {
-        return SeqDbAbacApiFp(this.configuration).retrieveOrganizationAdminNameEmails(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public retrieveOrganizationAdminNameEmails(args: any, kwargs: any, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).retrieveOrganizationAdminNameEmails(args, kwargs, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 }
 
@@ -3944,12 +4109,10 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        filesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        filesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/files`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3961,14 +4124,6 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -4079,6 +4234,77 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on a File.
+         * @summary Files  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        filesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('filesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/files/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on a File.
+         * @summary Files  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        filesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('filesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/files/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -4422,13 +4648,11 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async filesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.filesDeleteAll(limit, offset, options);
+        async filesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.filesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['FileApi.filesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4471,6 +4695,32 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.filesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['FileApi.filesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on a File.
+         * @summary Files  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async filesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.filesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FileApi.filesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on a File.
+         * @summary Files  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async filesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.filesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FileApi.filesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -4610,13 +4860,11 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on a File.
      * @summary Files  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public filesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbFileApiFp(this.configuration).filesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public filesDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbFileApiFp(this.configuration).filesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -4651,6 +4899,28 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
      */
     public filesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbFileApiFp(this.configuration).filesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on a File.
+     * @summary Files  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public filesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbFileApiFp(this.configuration).filesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on a File.
+     * @summary Files  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public filesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbFileApiFp(this.configuration).filesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -4791,12 +5061,10 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        contactsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/contacts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4808,14 +5076,6 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -4926,6 +5186,77 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Contacts.
+         * @summary Contacts  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('contactsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/contacts/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Contacts.
+         * @summary Contacts  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('contactsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/contacts/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -5247,12 +5578,10 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collection_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -5264,14 +5593,6 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -5382,6 +5703,77 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
+         * @summary Data Collection Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dataCollectionSetMembersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('dataCollectionSetMembersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/data_collection_set_members/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
+         * @summary Data Collection Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dataCollectionSetMembersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('dataCollectionSetMembersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/data_collection_set_members/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -5703,12 +6095,10 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collection_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -5720,14 +6110,6 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -5838,6 +6220,77 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
+         * @summary Data Collection Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dataCollectionSetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('dataCollectionSetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/data_collection_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
+         * @summary Data Collection Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dataCollectionSetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('dataCollectionSetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/data_collection_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -6083,7 +6536,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents a request to update the association between a SeqDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
+         * Represents a request to update a data collection set\'s data collection associations.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
          * @param {SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
@@ -6198,12 +6651,10 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collections`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6215,14 +6666,6 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -6333,6 +6776,77 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollections.
+         * @summary Data Collections  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dataCollectionsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('dataCollectionsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/data_collections/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollections.
+         * @summary Data Collections  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dataCollectionsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('dataCollectionsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/data_collections/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -6654,12 +7168,10 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        identifierIssuersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        identifierIssuersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/identifier_issuers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6671,14 +7183,6 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -6789,6 +7293,77 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
+         * @summary Identifier Issuers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        identifierIssuersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('identifierIssuersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/identifier_issuers/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
+         * @summary Identifier Issuers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        identifierIssuersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('identifierIssuersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/identifier_issuers/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -7143,7 +7718,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents a request to retrieve the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+         * Represents a request to retrieve user invitation constraints.  Constraints include valid roles and organizations needed for user invitations.
          * @summary The Constraints For Inviting A SeqDbUser
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7175,12 +7750,10 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationIdentifierIssuerLinksDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationIdentifierIssuerLinksDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_identifier_issuer_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7192,14 +7765,6 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7310,6 +7875,77 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
+         * @summary SeqDbOrganization Identifier Issuer Links  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_identifier_issuer_links/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
+         * @summary SeqDbOrganization Identifier Issuer Links  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/organization_identifier_issuer_links/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -7631,12 +8267,10 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7648,14 +8282,6 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7766,6 +8392,77 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
+         * @summary SeqDbOrganization Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationSetMembersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationSetMembersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_set_members/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
+         * @summary SeqDbOrganization Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationSetMembersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationSetMembersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/organization_set_members/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8087,12 +8784,10 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8104,14 +8799,6 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8222,6 +8909,77 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSets.
+         * @summary SeqDbOrganization Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationSetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationSetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSets.
+         * @summary SeqDbOrganization Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationSetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationSetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/organization_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8506,7 +9264,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents a request to update the association between an SeqDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
+         * Represents a request to update an organization set\'s organization associations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset SeqDbOrganization
          * @param {string} organizationSetId 
          * @param {SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
@@ -8582,12 +9340,10 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organizations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8599,14 +9355,6 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8717,6 +9465,77 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Organizations.
+         * @summary Organizations  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/organizations/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Organizations.
+         * @summary Organizations  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/organizations/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8962,7 +9781,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents a request to update the association between an SeqDbOrganization and IdentifierIssuers.
+         * Represents a request to update an organization\'s identifier issuer associations.
          * @summary Update Association Between SeqDbOrganization And Identifierissuer
          * @param {string} organizationId 
          * @param {SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
@@ -9075,7 +9894,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+         * Represents a request to retrieve contacts associated with one organization.  Returns contacts with their associated site and organization data cascaded.
          * @summary Retrieve SeqDbOrganization Contacts
          * @param {SeqDbRetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
          * @param {*} [options] Override http request option.
@@ -9112,12 +9931,10 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sitesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sitesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/sites`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9129,14 +9946,6 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -9247,6 +10056,77 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Sites.
+         * @summary Sites  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sitesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('sitesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/sites/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Sites.
+         * @summary Sites  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sitesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('sitesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/sites/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -9642,12 +10522,10 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userInvitationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userInvitationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/user_invitations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9659,14 +10537,6 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -9777,6 +10647,77 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on UserInvitations.
+         * @summary SeqDbUser Invitations  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userInvitationsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('userInvitationsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/user_invitations/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on UserInvitations.
+         * @summary SeqDbUser Invitations  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userInvitationsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('userInvitationsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/user_invitations/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -10096,7 +11037,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents an authenticated commondb user and their organization membership.  The user key is stored lower case for unique lookup. Inactive users retain their data but cannot perform operations that require authorization.
+         * Represents a request to retrieve the executing user.  The result is the registered user that the request is authenticated as, including its key, roles, and organization.
          * @summary Userme
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10192,12 +11133,10 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -10209,14 +11148,6 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -10327,6 +11258,77 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Users.
+         * @summary Users  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('usersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/users/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Users.
+         * @summary Users  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('usersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/users/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -10670,13 +11672,11 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async contactsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsDeleteAll(limit, offset, options);
+        async contactsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10719,6 +11719,32 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.contactsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Contacts.
+         * @summary Contacts  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async contactsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Contacts.
+         * @summary Contacts  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async contactsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -10833,13 +11859,11 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersDeleteAll(limit, offset, options);
+        async dataCollectionSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10882,6 +11906,32 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
+         * @summary Data Collection Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dataCollectionSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
+         * @summary Data Collection Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dataCollectionSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -10996,13 +12046,11 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsDeleteAll(limit, offset, options);
+        async dataCollectionSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11045,6 +12093,32 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
+         * @summary Data Collection Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dataCollectionSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
+         * @summary Data Collection Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dataCollectionSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -11130,7 +12204,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to update the association between a SeqDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
+         * Represents a request to update a data collection set\'s data collection associations.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
          * @param {SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
@@ -11173,13 +12247,11 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsDeleteAll(limit, offset, options);
+        async dataCollectionsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11222,6 +12294,32 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollections.
+         * @summary Data Collections  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dataCollectionsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollections.
+         * @summary Data Collections  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dataCollectionsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -11336,13 +12434,11 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async identifierIssuersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersDeleteAll(limit, offset, options);
+        async identifierIssuersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11385,6 +12481,32 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
+         * @summary Identifier Issuers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async identifierIssuersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
+         * @summary Identifier Issuers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async identifierIssuersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -11510,7 +12632,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+         * Represents a request to retrieve user invitation constraints.  Constraints include valid roles and organizations needed for user invitations.
          * @summary The Constraints For Inviting A SeqDbUser
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11524,13 +12646,11 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationIdentifierIssuerLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksDeleteAll(limit, offset, options);
+        async organizationIdentifierIssuerLinksDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11573,6 +12693,32 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
+         * @summary SeqDbOrganization Identifier Issuer Links  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
+         * @summary SeqDbOrganization Identifier Issuer Links  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -11687,13 +12833,11 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersDeleteAll(limit, offset, options);
+        async organizationSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11736,6 +12880,32 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
+         * @summary SeqDbOrganization Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
+         * @summary SeqDbOrganization Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -11850,13 +13020,11 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsDeleteAll(limit, offset, options);
+        async organizationSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11899,6 +13067,32 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSets.
+         * @summary SeqDbOrganization Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSets.
+         * @summary SeqDbOrganization Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -11998,7 +13192,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to update the association between an SeqDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
+         * Represents a request to update an organization set\'s organization associations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset SeqDbOrganization
          * @param {string} organizationSetId 
          * @param {SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
@@ -12027,13 +13221,11 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsDeleteAll(limit, offset, options);
+        async organizationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -12076,6 +13268,32 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Organizations.
+         * @summary Organizations  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Organizations.
+         * @summary Organizations  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -12161,7 +13379,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to update the association between an SeqDbOrganization and IdentifierIssuers.
+         * Represents a request to update an organization\'s identifier issuer associations.
          * @summary Update Association Between SeqDbOrganization And Identifierissuer
          * @param {string} organizationId 
          * @param {SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
@@ -12202,7 +13420,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+         * Represents a request to retrieve contacts associated with one organization.  Returns contacts with their associated site and organization data cascaded.
          * @summary Retrieve SeqDbOrganization Contacts
          * @param {SeqDbRetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
          * @param {*} [options] Override http request option.
@@ -12217,13 +13435,11 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sitesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesDeleteAll(limit, offset, options);
+        async sitesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -12266,6 +13482,32 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sitesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Sites.
+         * @summary Sites  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sitesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Sites.
+         * @summary Sites  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sitesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -12407,13 +13649,11 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userInvitationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsDeleteAll(limit, offset, options);
+        async userInvitationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -12456,6 +13696,32 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on UserInvitations.
+         * @summary SeqDbUser Invitations  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userInvitationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on UserInvitations.
+         * @summary SeqDbUser Invitations  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userInvitationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -12568,7 +13834,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an authenticated commondb user and their organization membership.  The user key is stored lower case for unique lookup. Inactive users retain their data but cannot perform operations that require authorization.
+         * Represents a request to retrieve the executing user.  The result is the registered user that the request is authenticated as, including its key, roles, and organization.
          * @summary Userme
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12607,13 +13873,11 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersDeleteAll(limit, offset, options);
+        async usersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -12656,6 +13920,32 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Users.
+         * @summary Users  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async usersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Users.
+         * @summary Users  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async usersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -12795,13 +14085,11 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public contactsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).contactsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public contactsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).contactsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12836,6 +14124,28 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      */
     public contactsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).contactsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Contacts.
+     * @summary Contacts  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public contactsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).contactsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Contacts.
+     * @summary Contacts  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public contactsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).contactsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12934,13 +14244,11 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12975,6 +14283,28 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      */
     public dataCollectionSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
+     * @summary Data Collection Set Members  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dataCollectionSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
+     * @summary Data Collection Set Members  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dataCollectionSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13073,13 +14403,11 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13114,6 +14442,28 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      */
     public dataCollectionSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
+     * @summary Data Collection Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dataCollectionSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
+     * @summary Data Collection Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dataCollectionSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13187,7 +14537,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to update the association between a SeqDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
+     * Represents a request to update a data collection set\'s data collection associations.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
      * @summary Datacollectionset Datacollection
      * @param {string} dataCollectionSetId 
      * @param {SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
@@ -13224,13 +14574,11 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13265,6 +14613,28 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      */
     public dataCollectionsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).dataCollectionsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on DataCollections.
+     * @summary Data Collections  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dataCollectionsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on DataCollections.
+     * @summary Data Collections  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dataCollectionsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13363,13 +14733,11 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public identifierIssuersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).identifierIssuersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public identifierIssuersDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).identifierIssuersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13404,6 +14772,28 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      */
     public identifierIssuersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).identifierIssuersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
+     * @summary Identifier Issuers  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public identifierIssuersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).identifierIssuersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
+     * @summary Identifier Issuers  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public identifierIssuersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).identifierIssuersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13511,7 +14901,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+     * Represents a request to retrieve user invitation constraints.  Constraints include valid roles and organizations needed for user invitations.
      * @summary The Constraints For Inviting A SeqDbUser
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -13523,13 +14913,11 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary SeqDbOrganization Identifier Issuer Links  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationIdentifierIssuerLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationIdentifierIssuerLinksDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13564,6 +14952,28 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      */
     public organizationIdentifierIssuerLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
+     * @summary SeqDbOrganization Identifier Issuer Links  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationIdentifierIssuerLinksGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
+     * @summary SeqDbOrganization Identifier Issuer Links  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationIdentifierIssuerLinksGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13662,13 +15072,11 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary SeqDbOrganization Set Members  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13703,6 +15111,28 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      */
     public organizationSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
+     * @summary SeqDbOrganization Set Members  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
+     * @summary SeqDbOrganization Set Members  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13801,13 +15231,11 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary SeqDbOrganization Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13842,6 +15270,28 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      */
     public organizationSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).organizationSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on OrganizationSets.
+     * @summary SeqDbOrganization Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on OrganizationSets.
+     * @summary SeqDbOrganization Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13927,7 +15377,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to update the association between an SeqDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
+     * Represents a request to update an organization set\'s organization associations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
      * @summary Organizationset SeqDbOrganization
      * @param {string} organizationSetId 
      * @param {SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
@@ -13952,13 +15402,11 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13993,6 +15441,28 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      */
     public organizationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).organizationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Organizations.
+     * @summary Organizations  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Organizations.
+     * @summary Organizations  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -14066,7 +15536,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to update the association between an SeqDbOrganization and IdentifierIssuers.
+     * Represents a request to update an organization\'s identifier issuer associations.
      * @summary Update Association Between SeqDbOrganization And Identifierissuer
      * @param {string} organizationId 
      * @param {SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
@@ -14101,7 +15571,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+     * Represents a request to retrieve contacts associated with one organization.  Returns contacts with their associated site and organization data cascaded.
      * @summary Retrieve SeqDbOrganization Contacts
      * @param {SeqDbRetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
      * @param {*} [options] Override http request option.
@@ -14114,13 +15584,11 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sitesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).sitesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sitesDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).sitesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -14155,6 +15623,28 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      */
     public sitesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).sitesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Sites.
+     * @summary Sites  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public sitesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).sitesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Sites.
+     * @summary Sites  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public sitesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).sitesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -14276,13 +15766,11 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary SeqDbUser Invitations  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userInvitationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).userInvitationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userInvitationsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).userInvitationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -14317,6 +15805,28 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      */
     public userInvitationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).userInvitationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on UserInvitations.
+     * @summary SeqDbUser Invitations  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public userInvitationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).userInvitationsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on UserInvitations.
+     * @summary SeqDbUser Invitations  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public userInvitationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).userInvitationsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -14413,7 +15923,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents an authenticated commondb user and their organization membership.  The user key is stored lower case for unique lookup. Inactive users retain their data but cannot perform operations that require authorization.
+     * Represents a request to retrieve the executing user.  The result is the registered user that the request is authenticated as, including its key, roles, and organization.
      * @summary Userme
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -14446,13 +15956,11 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public usersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).usersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public usersDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).usersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -14487,6 +15995,28 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      */
     public usersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).usersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Users.
+     * @summary Users  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public usersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).usersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Users.
+     * @summary Users  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public usersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).usersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -14593,12 +16123,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        allelesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        allelesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/alleles`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14610,14 +16138,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -14728,6 +16248,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Alleles.
+         * @summary Alleles  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        allelesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('allelesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/alleles/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Alleles.
+         * @summary Alleles  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        allelesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('allelesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/alleles/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -15049,12 +16640,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        astMeasurementsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        astMeasurementsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ast_measurements`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15066,14 +16655,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -15184,6 +16765,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on AstMeasurements.
+         * @summary Ast Measurements  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        astMeasurementsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('astMeasurementsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/ast_measurements/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on AstMeasurements.
+         * @summary Ast Measurements  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        astMeasurementsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('astMeasurementsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/ast_measurements/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -15505,12 +17157,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        astPredictionsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        astPredictionsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ast_predictions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15522,14 +17172,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -15640,6 +17282,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on AstPredictions.
+         * @summary Ast Predictions  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        astPredictionsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('astPredictionsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/ast_predictions/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on AstPredictions.
+         * @summary Ast Predictions  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        astPredictionsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('astPredictionsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/ast_predictions/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -15959,7 +17672,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a request to convert stored contig sequence representations.  Returns:   The IDs of the sequences converted to the target format.
+         * Represents a request to convert stored contig sequence representations.  Returns:   The IDs of the sequences converted to the target format.  Model validation:     Sequence IDs must be unique. Both formats must be DNA formats, and     conversions between gapless and gap-inclusive formats are not supported.
          * @summary Convertseqformat
          * @param {SeqDbConvertSeqFormatRequestBody} convertSeqFormatRequestBody 
          * @param {*} [options] Override http request option.
@@ -15996,12 +17709,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lociDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        lociDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/loci`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16013,14 +17724,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -16131,6 +17834,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Loci.
+         * @summary Loci  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        lociGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('lociGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/loci/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Loci.
+         * @summary Loci  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        lociGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('lociGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/loci/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -16452,12 +18226,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        locusCodeMapsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        locusCodeMapsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/locus_code_maps`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16469,14 +18241,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -16587,6 +18351,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
+         * @summary SeqDbLocus Code Maps  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        locusCodeMapsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('locusCodeMapsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/locus_code_maps/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
+         * @summary SeqDbLocus Code Maps  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        locusCodeMapsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('locusCodeMapsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/locus_code_maps/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -16908,12 +18743,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        locusSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        locusSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/locus_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16925,14 +18758,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -17043,6 +18868,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on LocusSets.
+         * @summary SeqDbLocus Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        locusSetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('locusSetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/locus_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on LocusSets.
+         * @summary SeqDbLocus Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        locusSetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('locusSetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/locus_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -17364,12 +19260,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pcrMeasurementsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        pcrMeasurementsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/pcr_measurements`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -17381,14 +19275,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -17499,6 +19385,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
+         * @summary Pcr Measurements  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        pcrMeasurementsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('pcrMeasurementsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/pcr_measurements/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
+         * @summary Pcr Measurements  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        pcrMeasurementsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('pcrMeasurementsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/pcr_measurements/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -17820,12 +19777,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/protocol_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -17837,14 +19792,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -17955,6 +19902,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
+         * @summary SeqDbProtocol Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        protocolSetMembersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('protocolSetMembersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/protocol_set_members/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
+         * @summary SeqDbProtocol Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        protocolSetMembersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('protocolSetMembersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/protocol_set_members/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -18276,12 +20294,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/protocol_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -18293,14 +20309,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -18411,6 +20419,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ProtocolSets.
+         * @summary SeqDbProtocol Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        protocolSetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('protocolSetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/protocol_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ProtocolSets.
+         * @summary SeqDbProtocol Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        protocolSetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('protocolSetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/protocol_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -18732,12 +20811,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/protocols`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -18749,14 +20826,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -18867,6 +20936,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Protocols.
+         * @summary Protocols  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        protocolsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('protocolsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/protocols/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Protocols.
+         * @summary Protocols  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        protocolsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('protocolsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/protocols/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -19188,12 +21328,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readSetIdentifiersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        readSetIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/read_set_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -19205,14 +21343,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -19323,6 +21453,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
+         * @summary Read Set Identifiers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        readSetIdentifiersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('readSetIdentifiersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/read_set_identifiers/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
+         * @summary Read Set Identifiers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        readSetIdentifiersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('readSetIdentifiersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/read_set_identifiers/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -19644,12 +21845,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        readSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/read_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -19661,14 +21860,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -19779,6 +21970,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ReadSets.
+         * @summary Read Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        readSetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('readSetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/read_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ReadSets.
+         * @summary Read Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        readSetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('readSetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/read_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -20100,12 +22362,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refAllelesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refAllelesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ref_alleles`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -20117,14 +22377,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -20235,6 +22487,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on RefAlleles.
+         * @summary Ref Alleles  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refAllelesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('refAllelesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/ref_alleles/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on RefAlleles.
+         * @summary Ref Alleles  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refAllelesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('refAllelesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/ref_alleles/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -20556,12 +22879,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refSeqsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refSeqsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ref_seqs`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -20573,14 +22894,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -20691,6 +23004,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on RefSeqs.
+         * @summary Ref Seqs  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refSeqsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('refSeqsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/ref_seqs/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on RefSeqs.
+         * @summary Ref Seqs  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refSeqsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('refSeqsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/ref_seqs/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -21289,6 +23673,41 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
+         * Represents a request to retrieve distances between sequences.  The result contains a matrix of distances between the requested sequences.
+         * @summary Retrieveseqdistancesbyseqprofiles
+         * @param {SeqDbRetrieveSeqDistancesBySeqProfilesRequestBody} retrieveSeqDistancesBySeqProfilesRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveSeqDistancesBySeqProfiles: async (retrieveSeqDistancesBySeqProfilesRequestBody: SeqDbRetrieveSeqDistancesBySeqProfilesRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveSeqDistancesBySeqProfilesRequestBody' is not null or undefined
+            assertParamExists('retrieveSeqDistancesBySeqProfiles', 'retrieveSeqDistancesBySeqProfilesRequestBody', retrieveSeqDistancesBySeqProfilesRequestBody)
+            const localVarPath = `/v1/retrieve/seq_distances_by_seq_profiles`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveSeqDistancesBySeqProfilesRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Represents a request to retrieve sequences in FASTA format.  The result is an iterable that yields one contig at a time.
          * @summary Retrieveseqfasta
          * @param {SeqDbRetrieveSeqFastaRequestBody} retrieveSeqFastaRequestBody 
@@ -21361,12 +23780,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sampleDataCollectionLinksDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sampleDataCollectionLinksDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/sample_data_collection_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -21378,14 +23795,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -21496,6 +23905,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
+         * @summary SeqDbSample Data Collection Links  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sampleDataCollectionLinksGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('sampleDataCollectionLinksGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/sample_data_collection_links/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
+         * @summary SeqDbSample Data Collection Links  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sampleDataCollectionLinksGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('sampleDataCollectionLinksGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/sample_data_collection_links/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -21817,12 +24297,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sampleIdentifiersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sampleIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/sample_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -21834,14 +24312,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -21952,6 +24422,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
+         * @summary SeqDbSample Identifiers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sampleIdentifiersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('sampleIdentifiersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/sample_identifiers/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
+         * @summary SeqDbSample Identifiers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sampleIdentifiersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('sampleIdentifiersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/sample_identifiers/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -22273,12 +24814,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        samplesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        samplesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/samples`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22290,14 +24829,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -22408,6 +24939,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Samples.
+         * @summary Samples  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        samplesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('samplesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/samples/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Samples.
+         * @summary Samples  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        samplesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('samplesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/samples/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -22729,12 +25331,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqCategoriesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqCategoriesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_categories`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22746,14 +25346,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -22864,6 +25456,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqCategories.
+         * @summary SeqDbSeq Categories  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqCategoriesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('seqCategoriesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/seq_categories/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqCategories.
+         * @summary SeqDbSeq Categories  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqCategoriesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('seqCategoriesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/seq_categories/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -23185,12 +25848,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqCategorySetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqCategorySetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_category_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -23202,14 +25863,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -23320,6 +25973,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
+         * @summary SeqDbSeq Category Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqCategorySetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('seqCategorySetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/seq_category_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
+         * @summary SeqDbSeq Category Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqCategorySetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('seqCategorySetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/seq_category_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -23641,12 +26365,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqClassificationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqClassificationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_classifications`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -23658,14 +26380,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -23776,6 +26490,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqClassifications.
+         * @summary SeqDbSeq Classifications  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqClassificationsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('seqClassificationsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/seq_classifications/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqClassifications.
+         * @summary SeqDbSeq Classifications  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqClassificationsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('seqClassificationsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/seq_classifications/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -24097,12 +26882,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqDistancesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqDistancesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_distances`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -24114,14 +26897,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -24232,6 +27007,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqDistances.
+         * @summary SeqDbSeq Distances  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqDistancesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('seqDistancesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/seq_distances/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqDistances.
+         * @summary SeqDbSeq Distances  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqDistancesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('seqDistancesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/seq_distances/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -24553,12 +27399,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqIdentifiersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -24570,14 +27414,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -24688,6 +27524,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
+         * @summary SeqDbSeq Identifiers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqIdentifiersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('seqIdentifiersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/seq_identifiers/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
+         * @summary SeqDbSeq Identifiers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqIdentifiersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('seqIdentifiersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/seq_identifiers/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -25009,12 +27916,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqProfileIdentifiersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqProfileIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_profile_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25026,14 +27931,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -25144,6 +28041,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
+         * @summary SeqDbSeq Profile Identifiers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqProfileIdentifiersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('seqProfileIdentifiersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/seq_profile_identifiers/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
+         * @summary SeqDbSeq Profile Identifiers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqProfileIdentifiersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('seqProfileIdentifiersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/seq_profile_identifiers/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -25465,12 +28433,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqProfilesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqProfilesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_profiles`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25482,14 +28448,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -25600,6 +28558,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqProfiles.
+         * @summary SeqDbSeq Profiles  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqProfilesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('seqProfilesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/seq_profiles/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqProfiles.
+         * @summary SeqDbSeq Profiles  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqProfilesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('seqProfilesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/seq_profiles/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -25921,12 +28950,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqTaxonomiesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqTaxonomiesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_taxonomies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25938,14 +28965,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26056,6 +29075,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
+         * @summary SeqDbSeq Taxonomies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqTaxonomiesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('seqTaxonomiesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/seq_taxonomies/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
+         * @summary SeqDbSeq Taxonomies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqTaxonomiesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('seqTaxonomiesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/seq_taxonomies/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -26377,12 +29467,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seqs`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26394,14 +29482,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26512,6 +29592,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Seqs.
+         * @summary Seqs  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('seqsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/seqs/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Seqs.
+         * @summary Seqs  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        seqsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('seqsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/seqs/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -26833,12 +29984,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxaDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxaDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/taxa`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26850,14 +29999,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26968,6 +30109,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Taxa.
+         * @summary Taxa  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        taxaGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('taxaGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/taxa/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Taxa.
+         * @summary Taxa  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        taxaGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('taxaGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/taxa/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -27289,12 +30501,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxonSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxonSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/taxon_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27306,14 +30516,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -27424,6 +30626,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
+         * @summary SeqDbTaxon Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        taxonSetMembersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('taxonSetMembersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/taxon_set_members/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
+         * @summary SeqDbTaxon Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        taxonSetMembersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('taxonSetMembersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/taxon_set_members/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -27745,12 +31018,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxonSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxonSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/taxon_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27762,14 +31033,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -27880,6 +31143,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TaxonSets.
+         * @summary SeqDbTaxon Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        taxonSetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('taxonSetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/taxon_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TaxonSets.
+         * @summary SeqDbTaxon Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        taxonSetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('taxonSetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/taxon_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -28201,12 +31535,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmClassesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmClassesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tree_algorithm_classes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28218,14 +31550,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -28336,6 +31660,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
+         * @summary Tree Algorithm Classes  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        treeAlgorithmClassesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('treeAlgorithmClassesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/tree_algorithm_classes/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
+         * @summary Tree Algorithm Classes  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        treeAlgorithmClassesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('treeAlgorithmClassesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/tree_algorithm_classes/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -28657,12 +32052,10 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tree_algorithms`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28674,14 +32067,6 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -28792,6 +32177,77 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
+         * @summary Tree Algorithms  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        treeAlgorithmsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('treeAlgorithmsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/tree_algorithms/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
+         * @summary Tree Algorithms  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        treeAlgorithmsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('treeAlgorithmsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/tree_algorithms/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -29192,13 +32648,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async allelesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.allelesDeleteAll(limit, offset, options);
+        async allelesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.allelesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.allelesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29241,6 +32695,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.allelesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.allelesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Alleles.
+         * @summary Alleles  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async allelesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.allelesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.allelesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Alleles.
+         * @summary Alleles  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async allelesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.allelesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.allelesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -29355,13 +32835,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async astMeasurementsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsDeleteAll(limit, offset, options);
+        async astMeasurementsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astMeasurementsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29404,6 +32882,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astMeasurementsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on AstMeasurements.
+         * @summary Ast Measurements  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async astMeasurementsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.astMeasurementsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on AstMeasurements.
+         * @summary Ast Measurements  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async astMeasurementsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.astMeasurementsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -29518,13 +33022,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async astPredictionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsDeleteAll(limit, offset, options);
+        async astPredictionsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astPredictionsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29567,6 +33069,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astPredictionsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on AstPredictions.
+         * @summary Ast Predictions  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async astPredictionsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.astPredictionsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on AstPredictions.
+         * @summary Ast Predictions  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async astPredictionsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.astPredictionsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -29679,7 +33207,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to convert stored contig sequence representations.  Returns:   The IDs of the sequences converted to the target format.
+         * Represents a request to convert stored contig sequence representations.  Returns:   The IDs of the sequences converted to the target format.  Model validation:     Sequence IDs must be unique. Both formats must be DNA formats, and     conversions between gapless and gap-inclusive formats are not supported.
          * @summary Convertseqformat
          * @param {SeqDbConvertSeqFormatRequestBody} convertSeqFormatRequestBody 
          * @param {*} [options] Override http request option.
@@ -29694,13 +33222,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async lociDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.lociDeleteAll(limit, offset, options);
+        async lociDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.lociDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.lociDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29743,6 +33269,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.lociGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.lociGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Loci.
+         * @summary Loci  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async lociGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.lociGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.lociGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Loci.
+         * @summary Loci  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async lociGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.lociGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.lociGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -29857,13 +33409,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async locusCodeMapsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsDeleteAll(limit, offset, options);
+        async locusCodeMapsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusCodeMapsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29906,6 +33456,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusCodeMapsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
+         * @summary SeqDbLocus Code Maps  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async locusCodeMapsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.locusCodeMapsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
+         * @summary SeqDbLocus Code Maps  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async locusCodeMapsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.locusCodeMapsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -30020,13 +33596,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async locusSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsDeleteAll(limit, offset, options);
+        async locusSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30069,6 +33643,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on LocusSets.
+         * @summary SeqDbLocus Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async locusSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.locusSetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on LocusSets.
+         * @summary SeqDbLocus Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async locusSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.locusSetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -30183,13 +33783,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pcrMeasurementsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsDeleteAll(limit, offset, options);
+        async pcrMeasurementsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.pcrMeasurementsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30232,6 +33830,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.pcrMeasurementsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
+         * @summary Pcr Measurements  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async pcrMeasurementsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.pcrMeasurementsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
+         * @summary Pcr Measurements  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async pcrMeasurementsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.pcrMeasurementsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -30346,13 +33970,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersDeleteAll(limit, offset, options);
+        async protocolSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30395,6 +34017,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
+         * @summary SeqDbProtocol Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async protocolSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetMembersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
+         * @summary SeqDbProtocol Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async protocolSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetMembersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -30509,13 +34157,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsDeleteAll(limit, offset, options);
+        async protocolSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30558,6 +34204,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ProtocolSets.
+         * @summary SeqDbProtocol Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async protocolSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ProtocolSets.
+         * @summary SeqDbProtocol Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async protocolSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -30672,13 +34344,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsDeleteAll(limit, offset, options);
+        async protocolsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30721,6 +34391,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Protocols.
+         * @summary Protocols  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async protocolsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Protocols.
+         * @summary Protocols  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async protocolsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -30835,13 +34531,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readSetIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersDeleteAll(limit, offset, options);
+        async readSetIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30884,6 +34578,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
+         * @summary Read Set Identifiers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async readSetIdentifiersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetIdentifiersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
+         * @summary Read Set Identifiers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async readSetIdentifiersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetIdentifiersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -30998,13 +34718,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsDeleteAll(limit, offset, options);
+        async readSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31047,6 +34765,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ReadSets.
+         * @summary Read Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async readSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on ReadSets.
+         * @summary Read Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async readSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -31161,13 +34905,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refAllelesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesDeleteAll(limit, offset, options);
+        async refAllelesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refAllelesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31210,6 +34952,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refAllelesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on RefAlleles.
+         * @summary Ref Alleles  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refAllelesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.refAllelesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on RefAlleles.
+         * @summary Ref Alleles  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refAllelesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.refAllelesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -31324,13 +35092,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refSeqsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsDeleteAll(limit, offset, options);
+        async refSeqsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refSeqsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31373,6 +35139,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refSeqsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on RefSeqs.
+         * @summary Ref Seqs  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refSeqsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.refSeqsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on RefSeqs.
+         * @summary Ref Seqs  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refSeqsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.refSeqsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -31589,6 +35381,19 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Represents a request to retrieve distances between sequences.  The result contains a matrix of distances between the requested sequences.
+         * @summary Retrieveseqdistancesbyseqprofiles
+         * @param {SeqDbRetrieveSeqDistancesBySeqProfilesRequestBody} retrieveSeqDistancesBySeqProfilesRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveSeqDistancesBySeqProfiles(retrieveSeqDistancesBySeqProfilesRequestBody: SeqDbRetrieveSeqDistancesBySeqProfilesRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqDistance>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveSeqDistancesBySeqProfiles(retrieveSeqDistancesBySeqProfilesRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.retrieveSeqDistancesBySeqProfiles']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Represents a request to retrieve sequences in FASTA format.  The result is an iterable that yields one contig at a time.
          * @summary Retrieveseqfasta
          * @param {SeqDbRetrieveSeqFastaRequestBody} retrieveSeqFastaRequestBody 
@@ -31617,13 +35422,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sampleDataCollectionLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksDeleteAll(limit, offset, options);
+        async sampleDataCollectionLinksDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleDataCollectionLinksDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31666,6 +35469,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleDataCollectionLinksGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
+         * @summary SeqDbSample Data Collection Links  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sampleDataCollectionLinksGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleDataCollectionLinksGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
+         * @summary SeqDbSample Data Collection Links  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sampleDataCollectionLinksGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleDataCollectionLinksGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -31780,13 +35609,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sampleIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersDeleteAll(limit, offset, options);
+        async sampleIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31829,6 +35656,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
+         * @summary SeqDbSample Identifiers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sampleIdentifiersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleIdentifiersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
+         * @summary SeqDbSample Identifiers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sampleIdentifiersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleIdentifiersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -31943,13 +35796,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async samplesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.samplesDeleteAll(limit, offset, options);
+        async samplesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.samplesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.samplesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31992,6 +35843,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.samplesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.samplesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Samples.
+         * @summary Samples  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async samplesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.samplesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.samplesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Samples.
+         * @summary Samples  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async samplesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.samplesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.samplesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -32106,13 +35983,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqCategoriesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesDeleteAll(limit, offset, options);
+        async seqCategoriesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategoriesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -32155,6 +36030,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategoriesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqCategories.
+         * @summary SeqDbSeq Categories  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqCategoriesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategoriesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqCategories.
+         * @summary SeqDbSeq Categories  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqCategoriesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategoriesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -32269,13 +36170,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqCategorySetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsDeleteAll(limit, offset, options);
+        async seqCategorySetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategorySetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -32318,6 +36217,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategorySetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
+         * @summary SeqDbSeq Category Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqCategorySetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategorySetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
+         * @summary SeqDbSeq Category Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqCategorySetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategorySetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -32432,13 +36357,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqClassificationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsDeleteAll(limit, offset, options);
+        async seqClassificationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqClassificationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -32481,6 +36404,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqClassificationsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqClassifications.
+         * @summary SeqDbSeq Classifications  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqClassificationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqClassificationsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqClassifications.
+         * @summary SeqDbSeq Classifications  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqClassificationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqClassificationsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -32595,13 +36544,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqDistancesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesDeleteAll(limit, offset, options);
+        async seqDistancesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqDistancesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -32644,6 +36591,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqDistancesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqDistances.
+         * @summary SeqDbSeq Distances  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqDistancesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqDistancesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqDistances.
+         * @summary SeqDbSeq Distances  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqDistancesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqDistancesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -32758,13 +36731,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersDeleteAll(limit, offset, options);
+        async seqIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -32807,6 +36778,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
+         * @summary SeqDbSeq Identifiers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqIdentifiersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqIdentifiersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
+         * @summary SeqDbSeq Identifiers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqIdentifiersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqIdentifiersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -32921,13 +36918,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqProfileIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersDeleteAll(limit, offset, options);
+        async seqProfileIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfileIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -32970,6 +36965,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfileIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
+         * @summary SeqDbSeq Profile Identifiers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqProfileIdentifiersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfileIdentifiersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
+         * @summary SeqDbSeq Profile Identifiers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqProfileIdentifiersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfileIdentifiersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -33084,13 +37105,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqProfilesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesDeleteAll(limit, offset, options);
+        async seqProfilesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfilesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -33133,6 +37152,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfilesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqProfiles.
+         * @summary SeqDbSeq Profiles  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqProfilesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfilesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqProfiles.
+         * @summary SeqDbSeq Profiles  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqProfilesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfilesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -33247,13 +37292,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqTaxonomiesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesDeleteAll(limit, offset, options);
+        async seqTaxonomiesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqTaxonomiesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -33296,6 +37339,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqTaxonomiesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
+         * @summary SeqDbSeq Taxonomies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqTaxonomiesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqTaxonomiesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
+         * @summary SeqDbSeq Taxonomies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqTaxonomiesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqTaxonomiesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -33410,13 +37479,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqsDeleteAll(limit, offset, options);
+        async seqsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -33459,6 +37526,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Seqs.
+         * @summary Seqs  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Seqs.
+         * @summary Seqs  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async seqsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.seqsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -33573,13 +37666,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxaDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxaDeleteAll(limit, offset, options);
+        async taxaDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxaDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxaDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -33622,6 +37713,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.taxaGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxaGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Taxa.
+         * @summary Taxa  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async taxaGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxaGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.taxaGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Taxa.
+         * @summary Taxa  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async taxaGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxaGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.taxaGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -33736,13 +37853,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxonSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersDeleteAll(limit, offset, options);
+        async taxonSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -33785,6 +37900,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
+         * @summary SeqDbTaxon Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async taxonSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetMembersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
+         * @summary SeqDbTaxon Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async taxonSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetMembersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -33899,13 +38040,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxonSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsDeleteAll(limit, offset, options);
+        async taxonSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -33948,6 +38087,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TaxonSets.
+         * @summary SeqDbTaxon Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async taxonSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TaxonSets.
+         * @summary SeqDbTaxon Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async taxonSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -34062,13 +38227,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmClassesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesDeleteAll(limit, offset, options);
+        async treeAlgorithmClassesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmClassesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -34111,6 +38274,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmClassesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
+         * @summary Tree Algorithm Classes  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async treeAlgorithmClassesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmClassesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
+         * @summary Tree Algorithm Classes  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async treeAlgorithmClassesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmClassesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -34225,13 +38414,11 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsDeleteAll(limit, offset, options);
+        async treeAlgorithmsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -34274,6 +38461,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
+         * @summary Tree Algorithms  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async treeAlgorithmsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
+         * @summary Tree Algorithms  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async treeAlgorithmsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -34428,13 +38641,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public allelesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).allelesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public allelesDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).allelesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34469,6 +38680,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public allelesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).allelesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Alleles.
+     * @summary Alleles  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public allelesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).allelesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Alleles.
+     * @summary Alleles  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public allelesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).allelesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34567,13 +38800,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on AstMeasurements.
      * @summary Ast Measurements  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public astMeasurementsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).astMeasurementsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public astMeasurementsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astMeasurementsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34608,6 +38839,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public astMeasurementsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).astMeasurementsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on AstMeasurements.
+     * @summary Ast Measurements  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public astMeasurementsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astMeasurementsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on AstMeasurements.
+     * @summary Ast Measurements  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public astMeasurementsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astMeasurementsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34706,13 +38959,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on AstPredictions.
      * @summary Ast Predictions  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public astPredictionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).astPredictionsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public astPredictionsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astPredictionsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34747,6 +38998,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public astPredictionsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).astPredictionsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on AstPredictions.
+     * @summary Ast Predictions  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public astPredictionsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astPredictionsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on AstPredictions.
+     * @summary Ast Predictions  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public astPredictionsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astPredictionsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34843,7 +39116,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to convert stored contig sequence representations.  Returns:   The IDs of the sequences converted to the target format.
+     * Represents a request to convert stored contig sequence representations.  Returns:   The IDs of the sequences converted to the target format.  Model validation:     Sequence IDs must be unique. Both formats must be DNA formats, and     conversions between gapless and gap-inclusive formats are not supported.
      * @summary Convertseqformat
      * @param {SeqDbConvertSeqFormatRequestBody} convertSeqFormatRequestBody 
      * @param {*} [options] Override http request option.
@@ -34856,13 +39129,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Loci.
      * @summary Loci  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public lociDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).lociDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public lociDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).lociDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34897,6 +39168,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public lociGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).lociGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Loci.
+     * @summary Loci  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public lociGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).lociGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Loci.
+     * @summary Loci  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public lociGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).lociGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34995,13 +39288,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on LocusCodeMaps.
      * @summary SeqDbLocus Code Maps  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public locusCodeMapsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).locusCodeMapsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public locusCodeMapsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusCodeMapsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35036,6 +39327,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public locusCodeMapsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).locusCodeMapsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
+     * @summary SeqDbLocus Code Maps  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public locusCodeMapsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusCodeMapsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
+     * @summary SeqDbLocus Code Maps  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public locusCodeMapsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusCodeMapsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35134,13 +39447,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on LocusSets.
      * @summary SeqDbLocus Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public locusSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).locusSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public locusSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35175,6 +39486,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public locusSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).locusSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on LocusSets.
+     * @summary SeqDbLocus Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public locusSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusSetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on LocusSets.
+     * @summary SeqDbLocus Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public locusSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusSetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35273,13 +39606,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on PcrMeasurements.
      * @summary Pcr Measurements  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public pcrMeasurementsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).pcrMeasurementsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public pcrMeasurementsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).pcrMeasurementsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35314,6 +39645,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public pcrMeasurementsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).pcrMeasurementsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
+     * @summary Pcr Measurements  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public pcrMeasurementsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).pcrMeasurementsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
+     * @summary Pcr Measurements  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public pcrMeasurementsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).pcrMeasurementsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35412,13 +39765,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on ProtocolSetMembers.
      * @summary SeqDbProtocol Set Members  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35453,6 +39804,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public protocolSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).protocolSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
+     * @summary SeqDbProtocol Set Members  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public protocolSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetMembersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
+     * @summary SeqDbProtocol Set Members  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public protocolSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetMembersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35551,13 +39924,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on ProtocolSets.
      * @summary SeqDbProtocol Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35592,6 +39963,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public protocolSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).protocolSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on ProtocolSets.
+     * @summary SeqDbProtocol Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public protocolSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on ProtocolSets.
+     * @summary SeqDbProtocol Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public protocolSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35690,13 +40083,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Protocols.
      * @summary Protocols  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35731,6 +40122,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public protocolsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).protocolsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Protocols.
+     * @summary Protocols  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public protocolsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Protocols.
+     * @summary Protocols  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public protocolsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35829,13 +40242,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
      * @summary Read Set Identifiers  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public readSetIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).readSetIdentifiersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public readSetIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35870,6 +40281,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public readSetIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).readSetIdentifiersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
+     * @summary Read Set Identifiers  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public readSetIdentifiersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetIdentifiersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
+     * @summary Read Set Identifiers  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public readSetIdentifiersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetIdentifiersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35968,13 +40401,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on ReadSets.
      * @summary Read Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public readSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).readSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public readSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36009,6 +40440,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public readSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).readSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on ReadSets.
+     * @summary Read Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public readSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on ReadSets.
+     * @summary Read Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public readSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36107,13 +40560,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on RefAlleles.
      * @summary Ref Alleles  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refAllelesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).refAllelesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refAllelesDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refAllelesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36148,6 +40599,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public refAllelesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).refAllelesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on RefAlleles.
+     * @summary Ref Alleles  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public refAllelesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refAllelesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on RefAlleles.
+     * @summary Ref Alleles  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public refAllelesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refAllelesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36246,13 +40719,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on RefSeqs.
      * @summary Ref Seqs  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refSeqsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).refSeqsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refSeqsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refSeqsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36287,6 +40758,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public refSeqsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).refSeqsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on RefSeqs.
+     * @summary Ref Seqs  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public refSeqsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refSeqsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on RefSeqs.
+     * @summary Ref Seqs  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public refSeqsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refSeqsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36471,6 +40964,17 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
+     * Represents a request to retrieve distances between sequences.  The result contains a matrix of distances between the requested sequences.
+     * @summary Retrieveseqdistancesbyseqprofiles
+     * @param {SeqDbRetrieveSeqDistancesBySeqProfilesRequestBody} retrieveSeqDistancesBySeqProfilesRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public retrieveSeqDistancesBySeqProfiles(retrieveSeqDistancesBySeqProfilesRequestBody: SeqDbRetrieveSeqDistancesBySeqProfilesRequestBody, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).retrieveSeqDistancesBySeqProfiles(retrieveSeqDistancesBySeqProfilesRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
      * Represents a request to retrieve sequences in FASTA format.  The result is an iterable that yields one contig at a time.
      * @summary Retrieveseqfasta
      * @param {SeqDbRetrieveSeqFastaRequestBody} retrieveSeqFastaRequestBody 
@@ -36495,13 +40999,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
      * @summary SeqDbSample Data Collection Links  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sampleDataCollectionLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sampleDataCollectionLinksDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36536,6 +41038,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public sampleDataCollectionLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
+     * @summary SeqDbSample Data Collection Links  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public sampleDataCollectionLinksGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
+     * @summary SeqDbSample Data Collection Links  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public sampleDataCollectionLinksGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36634,13 +41158,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on SampleIdentifiers.
      * @summary SeqDbSample Identifiers  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sampleIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).sampleIdentifiersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sampleIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36675,6 +41197,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public sampleIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).sampleIdentifiersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
+     * @summary SeqDbSample Identifiers  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public sampleIdentifiersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleIdentifiersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
+     * @summary SeqDbSample Identifiers  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public sampleIdentifiersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleIdentifiersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36773,13 +41317,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Samples.
      * @summary Samples  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public samplesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).samplesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public samplesDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).samplesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36814,6 +41356,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public samplesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).samplesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Samples.
+     * @summary Samples  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public samplesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).samplesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Samples.
+     * @summary Samples  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public samplesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).samplesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36912,13 +41476,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on SeqCategories.
      * @summary SeqDbSeq Categories  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqCategoriesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqCategoriesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqCategoriesDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategoriesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36953,6 +41515,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public seqCategoriesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqCategoriesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqCategories.
+     * @summary SeqDbSeq Categories  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqCategoriesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategoriesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqCategories.
+     * @summary SeqDbSeq Categories  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqCategoriesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategoriesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37051,13 +41635,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on SeqCategorySets.
      * @summary SeqDbSeq Category Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqCategorySetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqCategorySetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqCategorySetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategorySetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37092,6 +41674,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public seqCategorySetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqCategorySetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
+     * @summary SeqDbSeq Category Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqCategorySetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategorySetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
+     * @summary SeqDbSeq Category Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqCategorySetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategorySetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37190,13 +41794,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on SeqClassifications.
      * @summary SeqDbSeq Classifications  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqClassificationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqClassificationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqClassificationsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqClassificationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37231,6 +41833,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public seqClassificationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqClassificationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqClassifications.
+     * @summary SeqDbSeq Classifications  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqClassificationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqClassificationsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqClassifications.
+     * @summary SeqDbSeq Classifications  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqClassificationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqClassificationsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37329,13 +41953,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on SeqDistances.
      * @summary SeqDbSeq Distances  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqDistancesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqDistancesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqDistancesDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqDistancesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37370,6 +41992,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public seqDistancesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqDistancesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqDistances.
+     * @summary SeqDbSeq Distances  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqDistancesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqDistancesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqDistances.
+     * @summary SeqDbSeq Distances  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqDistancesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqDistancesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37468,13 +42112,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on SeqIdentifiers.
      * @summary SeqDbSeq Identifiers  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqIdentifiersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37509,6 +42151,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public seqIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqIdentifiersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
+     * @summary SeqDbSeq Identifiers  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqIdentifiersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqIdentifiersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
+     * @summary SeqDbSeq Identifiers  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqIdentifiersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqIdentifiersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37607,13 +42271,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
      * @summary SeqDbSeq Profile Identifiers  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqProfileIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqProfileIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37648,6 +42310,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public seqProfileIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
+     * @summary SeqDbSeq Profile Identifiers  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqProfileIdentifiersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
+     * @summary SeqDbSeq Profile Identifiers  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqProfileIdentifiersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37746,13 +42430,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on SeqProfiles.
      * @summary SeqDbSeq Profiles  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqProfilesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqProfilesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqProfilesDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfilesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37787,6 +42469,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public seqProfilesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqProfilesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqProfiles.
+     * @summary SeqDbSeq Profiles  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqProfilesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfilesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqProfiles.
+     * @summary SeqDbSeq Profiles  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqProfilesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfilesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37885,13 +42589,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on SeqTaxonomies.
      * @summary SeqDbSeq Taxonomies  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqTaxonomiesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqTaxonomiesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqTaxonomiesDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqTaxonomiesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37926,6 +42628,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public seqTaxonomiesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqTaxonomiesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
+     * @summary SeqDbSeq Taxonomies  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqTaxonomiesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqTaxonomiesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
+     * @summary SeqDbSeq Taxonomies  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqTaxonomiesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqTaxonomiesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38024,13 +42748,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Seqs.
      * @summary Seqs  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38065,6 +42787,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public seqsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Seqs.
+     * @summary Seqs  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Seqs.
+     * @summary Seqs  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public seqsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38163,13 +42907,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Taxa.
      * @summary Taxa  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxaDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxaDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxaDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxaDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38204,6 +42946,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public taxaGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).taxaGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Taxa.
+     * @summary Taxa  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public taxaGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxaGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Taxa.
+     * @summary Taxa  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public taxaGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxaGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38302,13 +43066,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on TaxonSetMembers.
      * @summary SeqDbTaxon Set Members  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxonSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxonSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxonSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38343,6 +43105,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public taxonSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).taxonSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
+     * @summary SeqDbTaxon Set Members  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public taxonSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetMembersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
+     * @summary SeqDbTaxon Set Members  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public taxonSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetMembersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38441,13 +43225,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on TaxonSets.
      * @summary SeqDbTaxon Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxonSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxonSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxonSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38482,6 +43264,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public taxonSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).taxonSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on TaxonSets.
+     * @summary SeqDbTaxon Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public taxonSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on TaxonSets.
+     * @summary SeqDbTaxon Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public taxonSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38580,13 +43384,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmClassesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmClassesDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38621,6 +43423,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public treeAlgorithmClassesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
+     * @summary Tree Algorithm Classes  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public treeAlgorithmClassesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
+     * @summary Tree Algorithm Classes  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public treeAlgorithmClassesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38719,13 +43543,11 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).treeAlgorithmsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmsDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38760,6 +43582,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public treeAlgorithmsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).treeAlgorithmsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
+     * @summary Tree Algorithms  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public treeAlgorithmsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
+     * @summary Tree Algorithms  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public treeAlgorithmsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38951,14 +43795,12 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        outagesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        outagesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/outages`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -38970,14 +43812,6 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -38991,7 +43825,7 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Delete One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -39025,7 +43859,7 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39062,7 +43896,7 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -39102,7 +43936,78 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
+         * @summary Outages  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        outagesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('outagesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/outages/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute CRUD operations on system outage windows.
+         * @summary Outages  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        outagesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('outagesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/outages/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -39136,7 +44041,7 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39173,7 +44078,7 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post One
          * @param {SeqDbOutage} outage 
          * @param {*} [options] Override http request option.
@@ -39208,7 +44113,7 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39253,7 +44158,7 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39298,7 +44203,7 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post Some
          * @param {Array<SeqDbOutage>} outage 
          * @param {*} [options] Override http request option.
@@ -39333,7 +44238,7 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Put One
          * @param {string} objectId 
          * @param {SeqDbOutage} outage 
@@ -39372,7 +44277,7 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Put Some
          * @param {Array<SeqDbOutage>} outage 
          * @param {*} [options] Override http request option.
@@ -39407,7 +44312,7 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to retrieve feature flags exposed by the composed application.
+         * Represents a request to execute retrieval of composed-application flags.
          * @summary Feature Flags
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39437,7 +44342,7 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to retrieve license metadata for installed application packages.
+         * Represents a request to execute retrieval of installed-package licenses.
          * @summary Licenses
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39467,7 +44372,7 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Represents a request to retrieve current and scheduled system outages for public availability status.
+         * Represents a request to execute retrieval of system outage information.
          * @summary Outages
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39531,21 +44436,19 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async outagesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesDeleteAll(limit, offset, options);
+        async outagesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Delete One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -39558,7 +44461,7 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39571,7 +44474,7 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -39585,7 +44488,33 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
+         * @summary Outages  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async outagesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute CRUD operations on system outage windows.
+         * @summary Outages  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async outagesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesGetExistsSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -39598,7 +44527,7 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39611,7 +44540,7 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post One
          * @param {SeqDbOutage} outage 
          * @param {*} [options] Override http request option.
@@ -39624,7 +44553,7 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39639,7 +44568,7 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39654,7 +44583,7 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post Some
          * @param {Array<SeqDbOutage>} outage 
          * @param {*} [options] Override http request option.
@@ -39667,7 +44596,7 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Put One
          * @param {string} objectId 
          * @param {SeqDbOutage} outage 
@@ -39681,7 +44610,7 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Put Some
          * @param {Array<SeqDbOutage>} outage 
          * @param {*} [options] Override http request option.
@@ -39694,7 +44623,7 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve feature flags exposed by the composed application.
+         * Represents a request to execute retrieval of composed-application flags.
          * @summary Feature Flags
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39706,7 +44635,7 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve license metadata for installed application packages.
+         * Represents a request to execute retrieval of installed-package licenses.
          * @summary Licenses
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39718,7 +44647,7 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve current and scheduled system outages for public availability status.
+         * Represents a request to execute retrieval of system outage information.
          * @summary Outages
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39765,19 +44694,17 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public outagesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return SeqDbSystemApiFp(this.configuration).outagesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public outagesDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbSystemApiFp(this.configuration).outagesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Delete One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -39788,7 +44715,7 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -39799,7 +44726,7 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -39811,7 +44738,29 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
+     * @summary Outages  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public outagesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSystemApiFp(this.configuration).outagesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute CRUD operations on system outage windows.
+     * @summary Outages  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public outagesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbSystemApiFp(this.configuration).outagesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -39822,7 +44771,7 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -39833,7 +44782,7 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Post One
      * @param {SeqDbOutage} outage 
      * @param {*} [options] Override http request option.
@@ -39844,7 +44793,7 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -39857,7 +44806,7 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -39870,7 +44819,7 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Post Some
      * @param {Array<SeqDbOutage>} outage 
      * @param {*} [options] Override http request option.
@@ -39881,7 +44830,7 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Put One
      * @param {string} objectId 
      * @param {SeqDbOutage} outage 
@@ -39893,7 +44842,7 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Put Some
      * @param {Array<SeqDbOutage>} outage 
      * @param {*} [options] Override http request option.
@@ -39904,7 +44853,7 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve feature flags exposed by the composed application.
+     * Represents a request to execute retrieval of composed-application flags.
      * @summary Feature Flags
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -39914,7 +44863,7 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve license metadata for installed application packages.
+     * Represents a request to execute retrieval of installed-package licenses.
      * @summary Licenses
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -39924,7 +44873,7 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve current and scheduled system outages for public availability status.
+     * Represents a request to execute retrieval of system outage information.
      * @summary Outages
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
