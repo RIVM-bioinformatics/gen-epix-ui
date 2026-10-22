@@ -276,6 +276,11 @@ public units need the same folder+barrel shape to be consumable.
 - Some browser-oriented tests require Playwright/browser dependencies.
 - Prefer the package script over invoking raw `vitest` unless there is a specific
  reason.
+- Tests rendering React hooks or components that use `react-i18next` must provide
+ an initialized i18n instance through `I18nextProvider` or configure the
+ instance with `initReactI18next`. Calling `i18next.init()` alone does not
+ connect it to React; avoid `NO_I18NEXT_INSTANCE` warnings, and prefer an
+ isolated instance to prevent shared test state.
 - Keep tests focused on observable behavior and existing public APIs.
 - Do not broaden snapshots or coverage churn while fixing a narrow bug.
 

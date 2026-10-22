@@ -14,6 +14,7 @@ import {
 import { createElement } from 'react';
 import type { PropsWithChildren } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { I18nextProvider } from 'react-i18next';
 import {
   CaseDbCaseApi,
   CaseDbOrganizationApi,
@@ -35,6 +36,8 @@ import { API_ORGANIZATION_TOKEN } from '@gen-epix/ui-client-common/constants/api
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 
 import { useUserCasePolicyNameFactory } from './useUserCasePolicyNameFactory';
+
+const i18n = i18next.createInstance();
 
 type HookContextOptions = {
   caseTypeSetCategories?: CaseDbCaseTypeSetCategory[];
@@ -99,9 +102,13 @@ const createHookContext = ({
   container.registerInstance(CaseDbCaseApi, { caseTypeSetCategoriesGetAll, caseTypeSetsGetAll } as unknown as CaseDbCaseApi);
 
   const wrapper = ({ children }: PropsWithChildren) => createElement(
-    QueryClientProvider,
-    { client: queryClientService.queryClient },
-    children,
+    I18nextProvider,
+    { i18n },
+    createElement(
+      QueryClientProvider,
+      { client: queryClientService.queryClient },
+      children,
+    ),
   );
 
   return {
@@ -111,7 +118,7 @@ const createHookContext = ({
 };
 
 beforeAll(async () => {
-  await i18next.init({
+  await i18n.init({
     lng: 'en',
     resources: {
       en: {
