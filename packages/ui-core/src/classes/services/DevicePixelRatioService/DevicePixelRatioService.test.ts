@@ -50,4 +50,16 @@ describe('DevicePixelRatioService', () => {
     expect(callback).toHaveBeenLastCalledWith(3, 2);
     expect(removeEventListener).toHaveBeenCalledWith('change', listenerCallbacks[1]);
   });
+
+  it('exposes the initial pixel ratio when matchMedia is unavailable', async () => {
+    vi.resetModules();
+    vi.stubGlobal('matchMedia', undefined);
+
+    const { DevicePixelRatioService: ServiceWithoutMatchMedia } = await import(
+      /* webpackChunkName: "device-pixel-ratio-service-without-match-media" */
+      './DevicePixelRatioService'
+    );
+
+    expect(ServiceWithoutMatchMedia.getInstance().data).toBe(window.devicePixelRatio);
+  });
 });

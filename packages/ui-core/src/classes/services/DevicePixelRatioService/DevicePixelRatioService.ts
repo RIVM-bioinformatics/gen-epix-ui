@@ -10,6 +10,9 @@ export class DevicePixelRatioService extends SubscribableAbstract<number> {
     super(new Subject(WindowService.getInstance().window.devicePixelRatio));
     const attachEventListener = () => {
       const window = WindowService.getInstance().window;
+      if (typeof window.matchMedia !== 'function') {
+        return;
+      }
       const media = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
       const onDevicePixelRatioChange = () => {
         this.subject.next(window.devicePixelRatio);
