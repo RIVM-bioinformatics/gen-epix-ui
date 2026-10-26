@@ -13,7 +13,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import { visuallyHidden } from '@mui/utils';
 
-
 const DEFAULT_TAKING_LONGER_TIMEOUT_MS = 5000;
 const DEFAULT_CIRCULAR_PROGRESS_SIZE = 40;
 
@@ -36,8 +35,7 @@ export const Spinner = (inProps: SpinnerProps): ReactElement => {
     takingLongerLabel,
     takingLongerTimeoutMs = DEFAULT_TAKING_LONGER_TIMEOUT_MS,
     textColor,
-  } = useThemeProps({ name: 'spinner', props: inProps });
-  console.log({ takingLongerLabel });
+  } = useThemeProps({ name: 'GenEpixUiCoreComponentsSpinner', props: inProps });
 
   const [isTakingLonger, setIsTakingLonger] = useState(false);
   const { t } = useTranslation();

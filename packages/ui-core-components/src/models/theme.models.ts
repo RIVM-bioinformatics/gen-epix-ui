@@ -1,15 +1,21 @@
-import type { CircularProgressProps } from '@mui/material';
+import type {
+  CircularProgressProps,
+  Theme,
+} from '@mui/material';
 
 export interface GenEpixCoreComponentsTheme {
-  'gen-epix-ui-core-components': {
-    spinner: {
-      color?: 'inherit' | 'primary' | 'secondary';
-      inline?: boolean;
-      label?: string;
-      size?: number;
-      takingLongerLabel?: CircularProgressProps['size'];
-      takingLongerTimeoutMs?: number;
-      textColor?: string;
+  components: {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    GenEpixUiCoreComponentsSpinner: {
+      defaultProps: {
+        color?: 'inherit' | 'primary' | 'secondary';
+        inline?: boolean;
+        label?: string;
+        size?: CircularProgressProps['size'];
+        takingLongerLabel?: string;
+        takingLongerTimeoutMs?: number;
+        textColor?: string;
+      };
     };
-  };
+  } & Theme['components'];
 }

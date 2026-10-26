@@ -210,7 +210,7 @@ export class TreeUtil {
    * the leftmost label shows the largest genetic distance.
    *
    * @param params.canvas - The canvas element to draw onto.
-   * @param params.fontFamily - Font family for the scale labels.
+   * @param params.scaleFont - CSS font string for the scale labels.
    * @param params.scaleColor - Fill colour for the label text.
    * @param params.headerHeight - Height of the header area in logical pixels.
    * @param params.tickerMarkScale - Scale tuple from {@link getTickerMarkScale}.
@@ -220,8 +220,8 @@ export class TreeUtil {
    * @param params.devicePixelRatio - Screen DPR.
    * @param params.horizontalScrollPosition - Current horizontal scroll offset in pixels.
    */
-  public static drawScale(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; fontFamily: string; geneticTreeWidth: Decimal; headerHeight: number; horizontalScrollPosition: number; pixelToGeneticDistanceRatio: number; scaleColor: string; tickerMarkScale: TickerMarkScale; treePadding: number; zoomLevel: number }): void {
-    const { canvas, devicePixelRatio, fontFamily, geneticTreeWidth, headerHeight, horizontalScrollPosition = 0, pixelToGeneticDistanceRatio, scaleColor, tickerMarkScale, treePadding, zoomLevel } = params;
+  public static drawScale(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; geneticTreeWidth: Decimal; headerHeight: number; horizontalScrollPosition: number; pixelToGeneticDistanceRatio: number; scaleColor: string; scaleFont: string; tickerMarkScale: TickerMarkScale; treePadding: number; zoomLevel: number }): void {
+    const { canvas, devicePixelRatio, geneticTreeWidth, headerHeight, horizontalScrollPosition = 0, pixelToGeneticDistanceRatio, scaleColor, scaleFont, tickerMarkScale, treePadding, zoomLevel } = params;
 
     TreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
       ctx.fillStyle = scaleColor;
@@ -229,7 +229,7 @@ export class TreeUtil {
         callback: (x, i, numberOfLines) => {
           ctx.beginPath();
           ctx.textAlign = 'center';
-          ctx.font = `bold 11px ${fontFamily}`;
+          ctx.font = scaleFont;
           const label = new Decimal(tickerMarkScale.geneticDistanceOfSingleLine).times((numberOfLines - 1) - i).toNumber();
           ctx.fillText(NumberUtil.toStringWithPrecision(label, tickerMarkScale.geneticDistanceOfSingleLine), x, headerHeight * 0.61);
           ctx.closePath();
@@ -259,7 +259,7 @@ export class TreeUtil {
    * @param params.treeAssembly - Pre-computed tree shapes from {@link assembleTree}.
    * @param params.nodeNameColors - Colour mapping per node name for leaf dots.
    * @param params.treeColor - Base colour for tree lines and dots.
-   * @param params.treeFont - CSS font string for distance labels.
+   * @param params.labelFont - CSS font string for tree labels.
    * @param params.dimFn - Returns a dimmed version of a colour for non-highlighted shapes.
    * @param params.supportLineColorLinked - Colour for support lines when linked.
    * @param params.supportLineColorUnlinked - Colour for support lines when unlinked.
@@ -284,6 +284,7 @@ export class TreeUtil {
     horizontalScrollPosition: number;
     isLinked: boolean;
     itemHeight: number;
+    labelFont: string;
     nodeNameColors: { [key: string]: string } | null;
     range: { endIndex: number; startIndex: number };
     scrollPosition?: number;
@@ -294,11 +295,10 @@ export class TreeUtil {
     supportLineColorUnlinked: string;
     treeAssembly: TreeAssembly;
     treeColor: string;
-    treeFont: string;
     verticalScrollPosition: number;
     zoomLevel: number;
   }): void {
-    const { canvas, devicePixelRatio, dimFn, getLeafLabel: getNodeLabel, headerHeight = 0, highlightedNodeNames = [], horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, range, scrollPosition = 0, shouldShowDistances, shouldShowLeafLabels: shouldShowLabels, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, treeFont, verticalScrollPosition, zoomLevel } = params;
+    const { canvas, devicePixelRatio, dimFn, getLeafLabel: getNodeLabel, headerHeight = 0, highlightedNodeNames = [], horizontalScrollPosition, isLinked, itemHeight, labelFont, nodeNameColors, range, scrollPosition = 0, shouldShowDistances, shouldShowLeafLabels: shouldShowLabels, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, verticalScrollPosition, zoomLevel } = params;
     const ctx = TreeUtil.getCanvasContext(canvas);
     const bodyStartY = headerHeight * devicePixelRatio;
     const setRegularTransform = () => {
@@ -327,7 +327,7 @@ export class TreeUtil {
       ctx.fillStyle = 'black';
       ctx.strokeStyle = 'black';
       ctx.textAlign = 'center';
-      ctx.font = treeFont;
+      ctx.font = labelFont;
       ctx.lineWidth = 1;
 
       treeAssembly.verticalAncestorTreeLines.forEach(({ nodeNames, shape }) => {
@@ -442,9 +442,9 @@ export class TreeUtil {
    * @param params.treeAssembly - Pre-computed tree shapes from {@link assembleTree}.
    * @param params.nodeNameColors - Colour mapping per node name for leaf dots.
    * @param params.treeColor - Base colour for tree lines and dots.
-   * @param params.treeFont - CSS font string for distance labels.
+   * @param params.labelFont - CSS font string for tree labels.
    * @param params.dimFn - Returns a dimmed version of a colour for non-highlighted shapes.
-   * @param params.fontFamily - Font family for scale labels.
+   * @param params.scaleFont - CSS font string for scale labels.
    * @param params.scaleColor - Fill colour for scale label text.
    * @param params.supportLineColorLinked - Colour for support lines when linked.
    * @param params.supportLineColorUnlinked - Colour for support lines when unlinked.
@@ -471,7 +471,6 @@ export class TreeUtil {
     canvas: HTMLCanvasElement;
     devicePixelRatio: number;
     dimFn: (color: string) => string;
-    fontFamily: string;
     geneticTreeWidth: Decimal;
     getLeafLabel?: (nodeName: string) => string;
     headerHeight?: number;
@@ -479,11 +478,13 @@ export class TreeUtil {
     horizontalScrollPosition: number;
     isLinked: boolean;
     itemHeight: number;
+    labelFont: string;
     nodeNameColors: { [key: string]: string } | null;
     pixelToGeneticDistanceRatio: number;
     range: { endIndex: number; startIndex: number };
     regularFillColorSupportLine: string;
     scaleColor: string;
+    scaleFont: string;
     scrollPosition?: number;
     shouldShowDistances?: boolean;
     shouldShowLeafLabels?: boolean;
@@ -495,12 +496,11 @@ export class TreeUtil {
     treeCanvasHeight: number;
     treeCanvasWidth: number;
     treeColor: string;
-    treeFont: string;
     treePadding: number;
     verticalScrollPosition: number;
     zoomLevel: number;
   }): void {
-    const { backgroundColor, canvas, devicePixelRatio, dimFn, fontFamily, geneticTreeWidth, getLeafLabel, headerHeight = 0, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, pixelToGeneticDistanceRatio, range, regularFillColorSupportLine, scaleColor, scrollPosition = 0, shouldShowDistances, shouldShowLeafLabels, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, tickerMarkScale, treeAssembly, treeCanvasHeight, treeCanvasWidth, treeColor, treeFont, treePadding, verticalScrollPosition, zoomLevel } = params;
+    const { backgroundColor, canvas, devicePixelRatio, dimFn, geneticTreeWidth, getLeafLabel, headerHeight = 0, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, labelFont, nodeNameColors, pixelToGeneticDistanceRatio, range, regularFillColorSupportLine, scaleColor, scaleFont, scrollPosition = 0, shouldShowDistances, shouldShowLeafLabels, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, tickerMarkScale, treeAssembly, treeCanvasHeight, treeCanvasWidth, treeColor, treePadding, verticalScrollPosition, zoomLevel } = params;
     const ctx = TreeUtil.getCanvasContext(canvas);
     ctx.reset();
     canvas.width = canvas.clientWidth * devicePixelRatio;
@@ -514,12 +514,12 @@ export class TreeUtil {
     if (headerHeight > 0) {
       TreeUtil.drawGuides({ canvas, devicePixelRatio, endY: headerHeight, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, regularFillColorSupportLine, startY: headerHeight * 0.7, tickerMarkScale, treePadding, zoomLevel });
       TreeUtil.drawGuides({ canvas, devicePixelRatio, endY: headerHeight * 0.3, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, regularFillColorSupportLine, startY: 0, tickerMarkScale, treePadding, zoomLevel });
-      TreeUtil.drawScale({ canvas, devicePixelRatio, fontFamily, geneticTreeWidth, headerHeight, horizontalScrollPosition, pixelToGeneticDistanceRatio, scaleColor, tickerMarkScale, treePadding, zoomLevel });
+      TreeUtil.drawScale({ canvas, devicePixelRatio, geneticTreeWidth, headerHeight, horizontalScrollPosition, pixelToGeneticDistanceRatio, scaleColor, scaleFont, tickerMarkScale, treePadding, zoomLevel });
       TreeUtil.drawDivider({ canvas, devicePixelRatio, y: 0 });
       TreeUtil.drawDivider({ canvas, devicePixelRatio, y: headerHeight - 1 });
     }
 
-    TreeUtil.drawTree({ canvas, devicePixelRatio, dimFn, getLeafLabel, headerHeight, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, range, scrollPosition, shouldShowDistances, shouldShowLeafLabels, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, treeFont, verticalScrollPosition, zoomLevel });
+    TreeUtil.drawTree({ canvas, devicePixelRatio, dimFn, getLeafLabel, headerHeight, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, labelFont, nodeNameColors, range, scrollPosition, shouldShowDistances, shouldShowLeafLabels, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, verticalScrollPosition, zoomLevel });
   }
 
   /**

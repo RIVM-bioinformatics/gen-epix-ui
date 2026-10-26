@@ -310,10 +310,10 @@ const createTreeElement = (options: ResolvedRenderTreeOptions) => {
         ariaLabel={options.ariaLabel}
         backgroundColor={BACKGROUND_COLOR}
         dimFn={DIM_FN}
-        fontFamily={FONT_FAMILY}
         headerHeight={HEADER_HEIGHT}
         highlightedNodeNamesSubject={options.highlightedNodeNamesSubject}
         itemHeight={options.itemHeight}
+        labelFont={TREE_FONT}
         leafDotRadius={LEAF_DOT_RADIUS}
         linkedScrollDebounceDelayMs={LINKED_SCROLL_DEBOUNCE_DELAY_MS}
         maxScaleWidthPx={MAX_SCALE_WIDTH_PX}
@@ -332,6 +332,7 @@ const createTreeElement = (options: ResolvedRenderTreeOptions) => {
         ref={options.ref}
         regularFillColorSupportLine={REGULAR_FILL_COLOR_SUPPORT_LINE}
         scaleColor={SCALE_COLOR}
+        scaleFont={`bold 11px ${FONT_FAMILY}`}
         scaleIncrements={SCALE_INCREMENTS}
         scrollSubject={options.externalScrollSubject}
         shouldShowDistances={options.shouldShowDistances ?? false}
@@ -341,7 +342,6 @@ const createTreeElement = (options: ResolvedRenderTreeOptions) => {
         supportLineColorUnlinked={SUPPORT_LINE_COLOR_UNLINKED}
         tree={options.tree}
         treeColor={TREE_COLOR}
-        treeFont={TREE_FONT}
         treePadding={TREE_PADDING}
         visibleRangeSubject={options.externalVisibleRangeSubject}
       />

@@ -1,9 +1,23 @@
+import type { ComponentsProps } from '@mui/material/styles';
+
+import type { SpinnerProps } from '../components/Spinner';
 import type { GenEpixCoreComponentsTheme } from '../models/theme.models';
 
 declare module '@mui/material/styles' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Required to augment MUI's generic interface.
+  interface Components<TTheme = unknown> {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    GenEpixUiCoreComponentsSpinner?: {
+      defaultProps?: ComponentsProps['GenEpixUiCoreComponentsSpinner'];
+    };
+  }
+
+  interface ComponentsPropsList {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    GenEpixUiCoreComponentsSpinner: SpinnerProps;
+  }
+
   interface Theme extends GenEpixCoreComponentsTheme { }
   // allow configuration using `createTheme()`
-  interface ThemeOptions {
-    'gen-epix-ui-core-components'?: GenEpixCoreComponentsTheme['gen-epix-ui-core-components'];
-  }
+  interface ThemeOptions extends GenEpixCoreComponentsTheme { }
 }

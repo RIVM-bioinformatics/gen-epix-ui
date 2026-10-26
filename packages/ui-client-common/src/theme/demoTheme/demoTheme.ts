@@ -171,6 +171,25 @@ export const createDemoThemeOptions = (paletteMode: PaletteMode): ThemeOptions =
       },
     },
     components: {
+      GenEpixUiClientCommonFooter: {
+        background: '#154273',
+        color: '#fff',
+        sectionBorderColor: '#fff',
+      },
+      GenEpixUiClientCommonNavbar: {
+        activeBackground: '#fff',
+        activeColor: '#154273',
+        background: '#154273',
+        environmentMessageColor: '#ffea00',
+        primaryColor: '#fff',
+        secondaryColor: '#ddeff8',
+      },
+      GenEpixUiCoreComponentsSpinner: {
+        defaultProps: {
+          size: 40,
+          takingLongerTimeoutMs: 5000,
+        },
+      },
       MuiAlertTitle: {
         styleOverrides: {
           root: {
@@ -404,27 +423,6 @@ export const createDemoThemeOptions = (paletteMode: PaletteMode): ThemeOptions =
             fontWeight: 700,
           },
         },
-      },
-    },
-    'gen-epix-ui-client-common': {
-      footer: {
-        background: '#154273',
-        color: '#fff',
-        sectionBorderColor: '#fff',
-      },
-      navbar: {
-        activeBackground: '#fff',
-        activeColor: '#154273',
-        background: '#154273',
-        environmentMessageColor: '#ffea00',
-        primaryColor: '#fff',
-        secondaryColor: '#ddeff8',
-      },
-    },
-    'gen-epix-ui-core-components': {
-      spinner: {
-        label: 'XXXXXX',
-        takingLongerTimeoutMs: 10,
       },
     },
     palette: {

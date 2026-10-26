@@ -448,7 +448,7 @@ export const UploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, com
         />
       </Box>
       <Table
-        font={theme['gen-epix-ui-client-casedb'].lineList.font}
+        font={theme.components.GenEpixUiClientCasedbLineList.font}
       />
       <CaseContentFormDialog
         onSubmit={onCaseContentFormDialogSubmit}

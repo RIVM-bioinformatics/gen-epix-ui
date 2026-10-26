@@ -1,10 +1,19 @@
-import type { GenEpixUiClientCommonTheme } from '../models/theme.models';
+import type {
+  GenEpixUiClientCommonFooterTheme,
+  GenEpixUiClientCommonNavbarTheme,
+  GenEpixUiClientCommonTheme,
+} from '../models/theme.models';
 
 declare module '@mui/material/styles' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Required to augment MUI's generic interface.
+  interface Components<TTheme = unknown> {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    GenEpixUiClientCommonFooter?: GenEpixUiClientCommonFooterTheme;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    GenEpixUiClientCommonNavbar?: GenEpixUiClientCommonNavbarTheme;
+  }
+
   interface Theme extends GenEpixUiClientCommonTheme { }
   // allow configuration using `createTheme()`
-  interface ThemeOptions {
-    'gen-epix-ui-client-common'?: GenEpixUiClientCommonTheme['gen-epix-ui-client-common'];
-    'gen-epix-ui-core-components'?: GenEpixUiClientCommonTheme['gen-epix-ui-core-components'];
-  }
+  interface ThemeOptions extends GenEpixUiClientCommonTheme { }
 }

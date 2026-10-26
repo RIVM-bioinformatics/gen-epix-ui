@@ -1,19 +1,25 @@
 import type { GenEpixCoreComponentsTheme } from '@gen-epix/ui-core-components/models/theme.models';
 
+export interface GenEpixUiClientCommonFooterTheme {
+  background: string;
+  color: string;
+  sectionBorderColor: string;
+}
+
+export interface GenEpixUiClientCommonNavbarTheme {
+  activeBackground: string;
+  activeColor: string;
+  background: string;
+  environmentMessageColor: string;
+  primaryColor: string;
+  secondaryColor: string;
+}
+
 export interface GenEpixUiClientCommonTheme extends GenEpixCoreComponentsTheme {
-  'gen-epix-ui-client-common': {
-    footer: {
-      background: string;
-      color: string;
-      sectionBorderColor: string;
-    };
-    navbar: {
-      activeBackground: string;
-      activeColor: string;
-      background: string;
-      environmentMessageColor: string;
-      primaryColor: string;
-      secondaryColor: string;
-    };
-  };
+  components: {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    GenEpixUiClientCommonFooter: GenEpixUiClientCommonFooterTheme;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    GenEpixUiClientCommonNavbar: GenEpixUiClientCommonNavbarTheme;
+  } & GenEpixCoreComponentsTheme['components'];
 }

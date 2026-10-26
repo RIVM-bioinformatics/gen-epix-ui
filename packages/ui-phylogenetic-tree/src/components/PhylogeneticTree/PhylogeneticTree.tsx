@@ -37,12 +37,12 @@ export type PhylogeneticTreeProps = {
   readonly ariaLabel: string;
   readonly backgroundColor: string;
   readonly dimFn: (color: string) => string;
-  readonly fontFamily: string;
   readonly getLeafLabel?: (nodeName: string) => string;
   readonly headerHeight: number;
   readonly highlightedNodeNamesSubject?: Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>;
   readonly initialViewState?: Partial<PhylogeneticTreeViewState>;
   readonly itemHeight: number;
+  readonly labelFont: string;
   readonly leafDotRadius: number;
   readonly linkedScrollDebounceDelayMs: number;
   readonly maxScaleWidthPx: number;
@@ -61,6 +61,7 @@ export type PhylogeneticTreeProps = {
   readonly ref?: Ref<PhylogeneticTreeRef>;
   readonly regularFillColorSupportLine: string;
   readonly scaleColor: string;
+  readonly scaleFont: string;
   readonly scaleIncrements: number[];
   readonly scrollSubject?: Subject<PhylogeneticTreeScrollSubjectValue>;
   readonly shouldShowDistances?: boolean;
@@ -71,7 +72,6 @@ export type PhylogeneticTreeProps = {
   readonly supportLineColorUnlinked: string;
   readonly tree?: TreeNode;
   readonly treeColor: string;
-  readonly treeFont: string;
   readonly treePadding: number;
   readonly visibleRangeSubject?: Subject<PhylogeneticTreeVisibleRangeSubjectValue>;
 };
@@ -103,12 +103,12 @@ export const PhylogeneticTree = ({
   ariaLabel,
   backgroundColor,
   dimFn,
-  fontFamily,
   getLeafLabel,
   headerHeight,
   highlightedNodeNamesSubject,
   initialViewState,
   itemHeight,
+  labelFont,
   leafDotRadius,
   linkedScrollDebounceDelayMs,
   maxScaleWidthPx,
@@ -127,6 +127,7 @@ export const PhylogeneticTree = ({
   ref,
   regularFillColorSupportLine,
   scaleColor,
+  scaleFont,
   scaleIncrements,
   scrollSubject,
   shouldShowDistances,
@@ -137,7 +138,6 @@ export const PhylogeneticTree = ({
   supportLineColorUnlinked,
   tree,
   treeColor,
-  treeFont,
   treePadding,
   visibleRangeSubject,
 }: PhylogeneticTreeProps) => {
@@ -466,7 +466,6 @@ export const PhylogeneticTree = ({
           canvas: treeCanvas,
           devicePixelRatio,
           dimFn,
-          fontFamily,
           geneticTreeWidth: tree.maxBranchLength,
           getLeafLabel,
           headerHeight,
@@ -474,11 +473,13 @@ export const PhylogeneticTree = ({
           horizontalScrollPosition,
           isLinked,
           itemHeight,
+          labelFont,
           nodeNameColors,
           pixelToGeneticDistanceRatio,
           range,
           regularFillColorSupportLine,
           scaleColor,
+          scaleFont,
           scrollPosition,
           shouldShowDistances,
           shouldShowLeafLabels,
@@ -490,7 +491,6 @@ export const PhylogeneticTree = ({
           treeCanvasHeight,
           treeCanvasWidth,
           treeColor,
-          treeFont,
           treePadding,
           verticalScrollPosition,
           zoomLevel,
@@ -542,7 +542,6 @@ export const PhylogeneticTree = ({
     backgroundColor,
     devicePixelRatio,
     dimFn,
-    fontFamily,
     getTickerMarkScale,
     headerHeight,
     highlightedNodeNamesSubject,
@@ -566,7 +565,8 @@ export const PhylogeneticTree = ({
     treeCanvasHeight,
     treeCanvasWidth,
     treeColor,
-    treeFont,
+    labelFont,
+    scaleFont,
     treePadding,
     visibleRangeSubject,
     zoomLevelSubject,

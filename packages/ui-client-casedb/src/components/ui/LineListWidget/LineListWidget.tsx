@@ -649,7 +649,7 @@ export const LineListWidget = () => {
         }}
       >
         <Table
-          font={theme['gen-epix-ui-client-casedb'].lineList.font}
+          font={theme.components.GenEpixUiClientCasedbLineList.font}
           forceHorizontalOverflow
           getRowName={getRowName}
           initialVisibleItemIndex={dashboardStore.getState().getWidgetData<LineListWidgetData>(DASHBOARD_COMPONENT_NAME.LINE_LIST)?.visibleItemItemIndex}
