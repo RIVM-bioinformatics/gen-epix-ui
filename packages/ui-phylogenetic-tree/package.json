@@ -10,9 +10,17 @@
   "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
   "type": "module",
   "exports": {
+    "./types": {
+      "types": "./src/@types/ui-phylogenetic-tree.d.ts",
+      "import": "./src/@types/ui-phylogenetic-tree.d.ts"
+    },
     "./components/PhylogeneticTree": {
       "types": "./src/components/PhylogeneticTree/index.ts",
       "import": "./src/components/PhylogeneticTree/index.ts"
+    },
+    "./models/theme.models": {
+      "types": "./src/models/theme.models.ts",
+      "import": "./src/models/theme.models.ts"
     },
     "./models/tree.models": {
       "types": "./src/models/tree.models.ts",
@@ -78,9 +86,17 @@
   "publishConfig": {
     "access": "public",
     "exports": {
+      "./types": {
+        "types": "./dist/@types/ui-phylogenetic-tree.d.ts",
+        "import": "./dist/@types/ui-phylogenetic-tree.d.ts"
+      },
       "./components/PhylogeneticTree": {
         "types": "./dist/components/PhylogeneticTree/index.d.ts",
         "import": "./dist/components/PhylogeneticTree/index.js"
+      },
+      "./models/theme.models": {
+        "types": "./dist/models/theme.models.d.ts",
+        "import": "./dist/models/theme.models.js"
       },
       "./models/tree.models": {
         "types": "./dist/models/tree.models.d.ts",

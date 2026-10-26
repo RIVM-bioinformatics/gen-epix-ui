@@ -14,6 +14,4 @@ declare module '@mui/material/styles' {
   }
 
   interface Theme extends GenEpixUiClientCommonTheme { }
-  // allow configuration using `createTheme()`
-  interface ThemeOptions extends GenEpixUiClientCommonTheme { }
 }

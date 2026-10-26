@@ -9,8 +9,6 @@ import { createTheme as muiCreateTheme } from '@mui/material';
 export const createOmopDbDemoThemeOptions = (paletteMode: PaletteMode): ThemeOptions => {
   const themeOptions: ThemeOptions = {
     ...createDemoThemeOptions(paletteMode),
-    'gen-epix-ui-client-omopdb': {
-    },
   };
 
   return muiCreateTheme(themeOptions);

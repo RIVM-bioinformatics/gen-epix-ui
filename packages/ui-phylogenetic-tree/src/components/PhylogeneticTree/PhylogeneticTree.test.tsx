@@ -5,6 +5,10 @@ import {
   vi,
 } from 'vitest';
 import { lighten } from '@mui/material';
+import {
+  createTheme,
+  ThemeProvider,
+} from '@mui/material/styles';
 import { render } from 'vitest-browser-react';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { DevicePixelRatioService } from '@gen-epix/ui-core/classes/services/DevicePixelRatioService';
@@ -50,6 +54,19 @@ const SUPPORT_LINE_COLOR_UNLINKED = lighten('#000', 0.75);
 const TREE_COLOR = '#000';
 const TREE_FONT = 'bold 0.7rem "Noto Sans Mono"';
 const TREE_PADDING = 20;
+
+const TREE_THEME = createTheme({
+  components: {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    GenEpixUiPhylogeneticTree: {
+      labelFont: TREE_FONT,
+      scaleFont: `bold 11px ${FONT_FAMILY}`,
+      supportLineColorLinked: SUPPORT_LINE_COLOR_LINKED,
+      supportLineColorUnlinked: SUPPORT_LINE_COLOR_UNLINKED,
+      treeColor: TREE_COLOR,
+    },
+  },
+});
 
 let ariaLabelCounter = 0;
 
@@ -299,53 +316,50 @@ const createTreeLayout = (params: { itemHeight: number; sortedLeafNames: string[
 
 const createTreeElement = (options: ResolvedRenderTreeOptions) => {
   return (
-    <div
-      style={{
-        height: `${options.height}px`,
-        width: `${options.width}px`,
-      }}
-    >
-      <PhylogeneticTree
-        ancestorDotRadius={ANCESTOR_DOT_RADIUS}
-        ariaLabel={options.ariaLabel}
-        backgroundColor={BACKGROUND_COLOR}
-        dimFn={DIM_FN}
-        headerHeight={HEADER_HEIGHT}
-        highlightedNodeNamesSubject={options.highlightedNodeNamesSubject}
-        itemHeight={options.itemHeight}
-        labelFont={TREE_FONT}
-        leafDotRadius={LEAF_DOT_RADIUS}
-        linkedScrollDebounceDelayMs={LINKED_SCROLL_DEBOUNCE_DELAY_MS}
-        maxScaleWidthPx={MAX_SCALE_WIDTH_PX}
-        maxZoomLevel={MAX_ZOOM_LEVEL}
-        maxZoomSpeed={MAX_ZOOM_SPEED}
-        minimumDistancePercentageToShowLabel={MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL}
-        minScaleWidthPx={MIN_SCALE_WIDTH_PX}
-        minZoomLevel={MIN_ZOOM_LEVEL}
-        minZoomSpeed={MIN_ZOOM_SPEED}
-        nodeNameColors={options.nodeNameColors}
-        onCanvasChange={options.onCanvasChange}
-        onLinkStateChange={options.onLinkStateChange}
-        onPathClick={options.onPathClick}
-        onViewStateChange={options.onViewStateChange}
-        panningThreshold={PANNING_THRESHOLD}
-        ref={options.ref}
-        regularFillColorSupportLine={REGULAR_FILL_COLOR_SUPPORT_LINE}
-        scaleColor={SCALE_COLOR}
-        scaleFont={`bold 11px ${FONT_FAMILY}`}
-        scaleIncrements={SCALE_INCREMENTS}
-        scrollSubject={options.externalScrollSubject}
-        shouldShowDistances={options.shouldShowDistances ?? false}
-        shouldShowSupportLinesWhenUnlinked={options.shouldShowSupportLinesWhenUnlinked ?? false}
-        sortedLeafNames={options.sortedLeafNames}
-        supportLineColorLinked={SUPPORT_LINE_COLOR_LINKED}
-        supportLineColorUnlinked={SUPPORT_LINE_COLOR_UNLINKED}
-        tree={options.tree}
-        treeColor={TREE_COLOR}
-        treePadding={TREE_PADDING}
-        visibleRangeSubject={options.externalVisibleRangeSubject}
-      />
-    </div>
+    <ThemeProvider theme={TREE_THEME}>
+      <div
+        style={{
+          height: `${options.height}px`,
+          width: `${options.width}px`,
+        }}
+      >
+        <PhylogeneticTree
+          ancestorDotRadius={ANCESTOR_DOT_RADIUS}
+          ariaLabel={options.ariaLabel}
+          backgroundColor={BACKGROUND_COLOR}
+          dimFn={DIM_FN}
+          headerHeight={HEADER_HEIGHT}
+          highlightedNodeNamesSubject={options.highlightedNodeNamesSubject}
+          itemHeight={options.itemHeight}
+          leafDotRadius={LEAF_DOT_RADIUS}
+          linkedScrollDebounceDelayMs={LINKED_SCROLL_DEBOUNCE_DELAY_MS}
+          maxScaleWidthPx={MAX_SCALE_WIDTH_PX}
+          maxZoomLevel={MAX_ZOOM_LEVEL}
+          maxZoomSpeed={MAX_ZOOM_SPEED}
+          minimumDistancePercentageToShowLabel={MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL}
+          minScaleWidthPx={MIN_SCALE_WIDTH_PX}
+          minZoomLevel={MIN_ZOOM_LEVEL}
+          minZoomSpeed={MIN_ZOOM_SPEED}
+          nodeNameColors={options.nodeNameColors}
+          onCanvasChange={options.onCanvasChange}
+          onLinkStateChange={options.onLinkStateChange}
+          onPathClick={options.onPathClick}
+          onViewStateChange={options.onViewStateChange}
+          panningThreshold={PANNING_THRESHOLD}
+          ref={options.ref}
+          regularFillColorSupportLine={REGULAR_FILL_COLOR_SUPPORT_LINE}
+          scaleColor={SCALE_COLOR}
+          scaleIncrements={SCALE_INCREMENTS}
+          scrollSubject={options.externalScrollSubject}
+          shouldShowDistances={options.shouldShowDistances ?? false}
+          shouldShowSupportLinesWhenUnlinked={options.shouldShowSupportLinesWhenUnlinked ?? false}
+          sortedLeafNames={options.sortedLeafNames}
+          tree={options.tree}
+          treePadding={TREE_PADDING}
+          visibleRangeSubject={options.externalVisibleRangeSubject}
+        />
+      </div>
+    </ThemeProvider>
   );
 };
 
