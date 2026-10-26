@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.5.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-components-v4.5.0...ui-core-components-v4.5.1) (2026-10-26)
+
+
+### Bug Fixes
+
+* add unit tests and optimize implementation ([4f96ee8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4f96ee8e79dd83f706086ebaaf59e293b818f510))
+* **di:** use the shared TSyringe container for application setup ([44a8ba5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/44a8ba5b8ed37c31016d429ffd1abfebb4fb7c90))
+* fix expose stepper models ([e6205b7](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e6205b7a9186d2ea2e05b2d1406de686bd118012))
+
 ## [4.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-components-v4.4.1...ui-core-components-v4.5.0) (2026-10-16)
 
 
