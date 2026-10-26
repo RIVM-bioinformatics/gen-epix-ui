@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.9.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.9.1...ui-core-v3.9.2) (2026-10-26)
+
+
+### Bug Fixes
+
+* add unit tests and optimize implementation ([4f96ee8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4f96ee8e79dd83f706086ebaaf59e293b818f510))
+* **di:** use the shared TSyringe container for application setup ([44a8ba5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/44a8ba5b8ed37c31016d429ffd1abfebb4fb7c90))
+
 ## [3.9.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.9.0...ui-core-v3.9.1) (2026-10-15)
 
 
