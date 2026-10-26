@@ -1,4 +1,7 @@
-import { HmrUtil } from '../../../utils/HmrUtil';
+import {
+  container,
+  singleton,
+} from 'tsyringe';
 
 export const FORM_ELEMENT_TAG_NAMES = [
   'form',
@@ -34,18 +37,19 @@ export type KeyboardShortcutConfig = {
   modifiers?: KeyboardModifier[][];
 };
 
+@singleton()
 export class KeyboardShortcutService {
-  private static __instance: KeyboardShortcutService;
-
   private readonly configs: KeyboardShortcutConfig[] = [];
 
-  private constructor() {
+  public constructor() {
     window.addEventListener('keydown', this.handleWindowKeyDown);
   }
 
   public static getInstance(): KeyboardShortcutService {
-    KeyboardShortcutService.__instance = HmrUtil.getHmrSingleton('keyboardShortcutService', KeyboardShortcutService.__instance, () => new KeyboardShortcutService());
-    return KeyboardShortcutService.__instance;
+    if (!container.isRegistered(KeyboardShortcutService)) {
+      container.registerSingleton(KeyboardShortcutService);
+    }
+    return container.resolve(KeyboardShortcutService);
   }
 
   private static shouldIgnoreShortcut(element?: HTMLElement): boolean {

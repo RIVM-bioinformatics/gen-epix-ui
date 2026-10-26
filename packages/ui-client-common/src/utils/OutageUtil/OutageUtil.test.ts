@@ -30,7 +30,6 @@ describe('OutageUtil', () => {
         },
       } as ConfigBase);
     });
-    DependencyContainerUtil.initializeContainer();
     beforeEach(() => {
       vi.useFakeTimers();
       vi.setSystemTime(NOW);

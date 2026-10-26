@@ -4,13 +4,11 @@ import i18next, {
 } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
-import type { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import {
   inject,
   singleton,
 } from 'tsyringe';
-
-import { WINDOW_SERVICE_TOKEN } from '../../../constants/api.constants';
 
 export type LanguageConfig = {
   bundles: string[];
@@ -35,7 +33,7 @@ export class I18nService extends EventBusAbstract<I18nEvent> {
   private setNewLanguageCode: (code: string) => Promise<void> | void;
   private readonly windowService: WindowService;
 
-  public constructor(@inject(WINDOW_SERVICE_TOKEN) windowService: WindowService) {
+  public constructor(@inject(WindowService) windowService: WindowService) {
     super();
     this.windowService = windowService;
   }

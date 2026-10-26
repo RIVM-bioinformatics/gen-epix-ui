@@ -5,12 +5,12 @@ import {
   it,
 } from 'vitest';
 
-import { setupYup } from '../../setup/setup';
+import { setupUiCoreForm } from '../../setup/setup';
 
 import { SchemaUtil } from './SchemaUtil';
 
 beforeAll(() => {
-  setupYup();
+  setupUiCoreForm();
 });
 
 describe('SchemaUtil', () => {

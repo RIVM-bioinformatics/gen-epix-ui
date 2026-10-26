@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import type { InternalAxiosRequestConfig } from 'axios';
 import type { AuthContextProps } from 'react-oidc-context';
 import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
-import type { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
 import {
@@ -14,7 +14,6 @@ import { AuthorizationService } from '../AuthorizationService';
 import type { AuthState } from '../../../models/auth.models';
 import { oidcStore } from '../../../stores/oidcStore';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
-import { WINDOW_SERVICE_TOKEN } from '../../../constants/api.constants';
 
 export const createdAtMetaDataKey = Symbol('createdAt');
 
@@ -30,7 +29,7 @@ export class AuthenticationService extends SubscribableAbstract<CommonDbIdentity
 
   public constructor(
     @inject(AuthorizationService) authorizationService: AuthorizationService,
-    @inject(WINDOW_SERVICE_TOKEN) windowService: WindowService,
+    @inject(WindowService) windowService: WindowService,
   ) {
     super(new Subject(oidcStore.getState().configuration));
     this.authorizationService = authorizationService;

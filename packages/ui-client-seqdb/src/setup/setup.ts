@@ -32,6 +32,8 @@ import { SEQDB_QUERY_DEPENDENCIES } from '../constants/query.constants';
 import type { SeqDbConfig } from '../models/config.models';
 
 export const setupSeqDb = () => {
+  setupClientCommon();
+
   const config = DependencyContainerUtil.resolveConfig<SeqDbConfig>();
   const adminRoutes = createAdminRoutes();
   const routes = createRoutes(adminRoutes);
@@ -54,5 +56,5 @@ export const setupSeqDb = () => {
   container.register(API_AUTH_TOKEN, { useValue: container.resolve(SeqDbAuthApi) });
   container.register(API_ORGANIZATION_TOKEN, { useValue: container.resolve(SeqDbOrganizationApi) as CommonDbOrganizationApi });
   container.register(API_SYSTEM_TOKEN, { useValue: container.resolve(SeqDbSystemApi) });
-  setupClientCommon();
+
 };

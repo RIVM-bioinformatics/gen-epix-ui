@@ -1,4 +1,5 @@
 import { container } from 'tsyringe';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useTranslation } from 'react-i18next';
 import type {
   ReactElement,
@@ -34,10 +35,7 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
-import {
-  API_SYSTEM_TOKEN,
-  WINDOW_SERVICE_TOKEN,
-} from '../../../constants/api.constants';
+import { API_SYSTEM_TOKEN } from '../../../constants/api.constants';
 import { ResponseHandler } from '../ResponseHandler';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { useConfig } from '../../../hooks/useConfig';
@@ -126,7 +124,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
   }, [item, onActionsChange, onClose, t]);
 
   const onItemURLClick = useCallback((url: string) => {
-    container.resolve(WINDOW_SERVICE_TOKEN).window.open(url, '_blank');
+    container.resolve(WindowService).window.open(url, '_blank');
   }, []);
 
   const onItemLicenseClick = useCallback((entry: CommonDbPackageMetadata) => {

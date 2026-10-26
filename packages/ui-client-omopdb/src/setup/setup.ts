@@ -32,6 +32,8 @@ import { OMOPDB_QUERY_DEPENDENCIES } from '../constants/query.constants';
 import type { OmopDbConfig } from '../models/config.models';
 
 export const setupOmopDb = () => {
+  setupClientCommon();
+
   const config = DependencyContainerUtil.resolveConfig<OmopDbConfig>();
   const adminRoutes = createAdminRoutes();
   const routes = createRoutes(adminRoutes);
@@ -54,5 +56,5 @@ export const setupOmopDb = () => {
   container.register(API_AUTH_TOKEN, { useValue: container.resolve(OmopDbAuthApi) });
   container.register(API_ORGANIZATION_TOKEN, { useValue: container.resolve(OmopDbOrganizationApi) as CommonDbOrganizationApi });
   container.register(API_SYSTEM_TOKEN, { useValue: container.resolve(OmopDbSystemApi) });
-  setupClientCommon();
+
 };

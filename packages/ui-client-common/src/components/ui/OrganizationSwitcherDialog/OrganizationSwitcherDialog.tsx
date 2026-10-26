@@ -30,11 +30,9 @@ import type {
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import {
-  API_ORGANIZATION_TOKEN,
-  WINDOW_SERVICE_TOKEN,
-} from '../../../constants/api.constants';
+import { API_ORGANIZATION_TOKEN } from '../../../constants/api.constants';
 import { ResponseHandler } from '../ResponseHandler';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import { NotificationService } from '../../../classes/services/NotificationService';
@@ -84,7 +82,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
   const { handleSubmit } = formMethods;
 
   const onRefreshPageClick = useCallback(() => {
-    container.resolve(WINDOW_SERVICE_TOKEN).window.location.reload();
+    container.resolve(WindowService).window.location.reload();
   }, []);
 
   const onFormSubmit = useCallback((formValues: FormFields): void => {

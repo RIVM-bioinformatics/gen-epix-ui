@@ -15,11 +15,9 @@ import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
 import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import {
-  API_SYSTEM_TOKEN,
-  WINDOW_SERVICE_TOKEN,
-} from '../../../constants/api.constants';
+import { API_SYSTEM_TOKEN } from '../../../constants/api.constants';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { FeatureFlagsService } from '../../../classes/services/FeatureFlagsService';
 import { I18nService } from '../../../classes/services/I18nService';
@@ -54,7 +52,7 @@ export const ApplicationBootstrapWithoutAuthorization = ({ children }: PropsWith
     if (newLanguageCodeRef.current) {
       setIsLanguageChanging(true);
       await container.resolve(I18nService).switchLanguageConfig(newLanguageCodeRef.current);
-      container.resolve(WINDOW_SERVICE_TOKEN).window.location.reload();
+      container.resolve(WindowService).window.location.reload();
     }
   }, []);
 

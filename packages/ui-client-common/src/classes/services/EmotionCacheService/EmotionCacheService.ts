@@ -4,10 +4,9 @@ import {
   inject,
   singleton,
 } from 'tsyringe';
-import type { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { CONFIG_TOKEN } from '../../../constants/config.constants';
-import { WINDOW_SERVICE_TOKEN } from '../../../constants/api.constants';
 import type { ConfigBase } from '../../../models/config.models';
 
 
@@ -17,7 +16,7 @@ export class EmotionCacheService {
 
   public constructor(
     @inject(CONFIG_TOKEN) config: ConfigBase,
-    @inject(WINDOW_SERVICE_TOKEN) windowService: WindowService,
+    @inject(WindowService) windowService: WindowService,
   ) {
     this.emotionCache = createCache({
       container: windowService.document.head,

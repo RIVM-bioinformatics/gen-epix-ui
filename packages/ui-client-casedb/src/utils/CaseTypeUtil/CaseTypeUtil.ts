@@ -13,7 +13,7 @@ import {
 } from '@gen-epix/api-casedb';
 import { container } from 'tsyringe';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
-import { WINDOW_SERVICE_TOKEN } from '@gen-epix/ui-client-common/constants/api.constants';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 
 export const SELECTION_FILTER_GROUP = 'selection';
@@ -23,7 +23,7 @@ export class CaseTypeUtil {
   public static createCaseTypeLink(caseType: CaseDbCaseType | CaseDbCompleteCaseType, full?: boolean): string {
     const path = `/cases/${StringUtil.createSlug(caseType.name)}/${caseType.id}`;
     if (full) {
-      return `${container.resolve(WINDOW_SERVICE_TOKEN).window.location.origin}${path}`;
+      return `${container.resolve(WindowService).window.location.origin}${path}`;
     }
     return path;
   }

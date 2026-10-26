@@ -32,7 +32,10 @@ import {
 } from '../routes';
 
 export const setupCaseDb = () => {
+  setupClientCommon();
+
   const config = DependencyContainerUtil.resolveConfig<CaseDbConfig>();
+
   container.register(RouterService, {
     useValue: new RouterService({
       adminRoutes: () => createAdminRoutes() as MyNonIndexRouteObject[],
@@ -51,5 +54,5 @@ export const setupCaseDb = () => {
   container.register(API_AUTH_TOKEN, { useValue: container.resolve(CaseDbAuthApi) });
   container.register(API_ORGANIZATION_TOKEN, { useValue: container.resolve(CaseDbOrganizationApi) as CommonDbOrganizationApi });
   container.register(API_SYSTEM_TOKEN, { useValue: container.resolve(CaseDbSystemApi) });
-  setupClientCommon();
+
 };

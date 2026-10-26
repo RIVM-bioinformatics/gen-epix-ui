@@ -17,11 +17,9 @@ import {
 } from '@mui/material';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import {
-  API_SYSTEM_TOKEN,
-  WINDOW_SERVICE_TOKEN,
-} from '../../../constants/api.constants';
+import { API_SYSTEM_TOKEN } from '../../../constants/api.constants';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { outagesStore } from '../../../stores/outagesStore';
 import { OutageUtil } from '../../../utils/OutageUtil';
@@ -54,7 +52,7 @@ export const ApplicationBootstrapWithAuthentication = ({ children }: PropsWithCh
   }, [outagesQuery.data]);
 
   const onRetryButtonClick = useCallback(() => {
-    container.resolve(WINDOW_SERVICE_TOKEN).window.location.reload();
+    container.resolve(WindowService).window.location.reload();
   }, []);
 
   const onContinuButtonClick = useCallback(() => {
@@ -66,7 +64,7 @@ export const ApplicationBootstrapWithAuthentication = ({ children }: PropsWithCh
       setCategorizedOutages(categorizedOutages);
     }
 
-    const windowService = container.resolve(WINDOW_SERVICE_TOKEN);
+    const windowService = container.resolve(WindowService);
     const timeout = windowService.window.setTimeout(() => {
       setButtonsEnabled(true);
     }, 5000);

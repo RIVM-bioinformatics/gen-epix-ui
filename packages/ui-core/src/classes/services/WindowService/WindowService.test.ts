@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 
 import { vi } from 'vitest';
+import { container } from 'tsyringe';
 
 import { WindowService } from './WindowService';
 
@@ -8,7 +9,7 @@ describe('WindowService', () => {
   let windowService: WindowService;
 
   beforeEach(() => {
-    WindowService['__instance'] = undefined;
+    container.reset();
     windowService = WindowService.getInstance();
   });
   afterEach(() => {

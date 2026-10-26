@@ -8,8 +8,6 @@ import { container } from 'tsyringe';
 import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import { WINDOW_SERVICE_TOKEN } from '../../constants/api.constants';
-
 import { UserManagerUtil } from './UserManagerUtil';
 
 describe('UserManagerUtil', () => {
@@ -19,7 +17,7 @@ describe('UserManagerUtil', () => {
         location: { href: 'https://example.com/somepath?someQuery=123' },
       } as unknown as Window;
       const windowService = WindowService.getInstance();
-      container.registerInstance(WINDOW_SERVICE_TOKEN, windowService);
+      container.registerInstance(WindowService, windowService);
       vi.spyOn(windowService, 'window', 'get').mockReturnValue(mockWindow as unknown as typeof globalThis & Window);
 
       const oidcConfiguration: Partial<CommonDbIdentityProvider> = {

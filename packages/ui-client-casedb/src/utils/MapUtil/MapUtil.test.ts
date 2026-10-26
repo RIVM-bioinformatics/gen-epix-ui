@@ -341,7 +341,6 @@ describe('MapUtil', () => {
         },
       } as CaseDbConfig;
       DependencyContainerUtil.registerConfig(config);
-      DependencyContainerUtil.initializeContainer();
     });
 
     afterAll(() => {

@@ -105,7 +105,6 @@ beforeAll(() => {
       CONDENSED_WIDTH_PX: 140,
     },
   } as ConfigBase);
-  DependencyContainerUtil.initializeContainer();
 });
 
 afterEach(() => {

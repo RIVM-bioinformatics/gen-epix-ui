@@ -49,8 +49,8 @@ import { useShallow } from 'zustand/shallow';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import type { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { useScrollbarSize } from '@gen-epix/ui-core/hooks/useScrollbarSize';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import { WINDOW_SERVICE_TOKEN } from '../../../constants/api.constants';
 import { PageEventBusService } from '../../../classes/services/PageEventBusService';
 import { useConfig } from '../../../hooks/useConfig';
 import type {
@@ -128,7 +128,7 @@ export const Table = <TRowData, TDataContext = null>({
   const theme = useTheme();
   const { t } = useTranslation();
   const config = useConfig();
-  const windowService = container.resolve(WINDOW_SERVICE_TOKEN);
+  const windowService = container.resolve(WindowService);
   const tableStore = useTableStoreContext<TRowData, TDataContext>();
 
   const { DEFAULT_OVERSCAN_MAIN, DEFAULT_OVERSCAN_REVERSE } = config.table;

@@ -10,7 +10,6 @@ export const setupTestEnvironment = () => {
     theme: createOmopDbDemoTheme('light'),
   };
   DependencyContainerUtil.registerConfig(config);
-  DependencyContainerUtil.initializeContainer();
   setupOmopDb();
 };
 

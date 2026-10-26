@@ -1,12 +1,15 @@
+import {
+  container,
+  singleton,
+} from 'tsyringe';
+
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import { Subject } from '../../Subject';
-import { HmrUtil } from '../../../utils/HmrUtil';
 import { WindowService } from '../WindowService';
 
+@singleton()
 export class DevicePixelRatioService extends SubscribableAbstract<number> {
-  private static __instance: DevicePixelRatioService;
-
-  private constructor() {
+  public constructor() {
     super(new Subject(WindowService.getInstance().window.devicePixelRatio));
     const attachEventListener = () => {
       const window = WindowService.getInstance().window;
@@ -25,7 +28,9 @@ export class DevicePixelRatioService extends SubscribableAbstract<number> {
   }
 
   public static getInstance(): DevicePixelRatioService {
-    DevicePixelRatioService.__instance = HmrUtil.getHmrSingleton('devicePixelRatioService', DevicePixelRatioService.__instance, () => new DevicePixelRatioService());
-    return DevicePixelRatioService.__instance;
+    if (!container.isRegistered(DevicePixelRatioService)) {
+      container.registerSingleton(DevicePixelRatioService);
+    }
+    return container.resolve(DevicePixelRatioService);
   }
 }

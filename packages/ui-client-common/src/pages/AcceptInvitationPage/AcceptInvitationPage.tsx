@@ -11,11 +11,9 @@ import {
   useState,
 } from 'react';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import {
-  API_ORGANIZATION_TOKEN,
-  WINDOW_SERVICE_TOKEN,
-} from '../../constants/api.constants';
+import { API_ORGANIZATION_TOKEN } from '../../constants/api.constants';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
@@ -42,7 +40,7 @@ export const AcceptInvitationPage = () => {
   const { t } = useTranslation();
 
   const onGoToHomePageButtonClick = useCallback(() => {
-    container.resolve(WINDOW_SERVICE_TOKEN).window.location.href = '/';
+    container.resolve(WindowService).window.location.href = '/';
   }, []);
 
   const onCompleteRegistrationButtonClick = useCallback(() => {

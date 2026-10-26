@@ -22,11 +22,9 @@ import { useTranslation } from 'react-i18next';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import {
-  API_AUTH_TOKEN,
-  WINDOW_SERVICE_TOKEN,
-} from '../../../constants/api.constants';
+import { API_AUTH_TOKEN } from '../../../constants/api.constants';
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { LogService } from '../../../classes/services/LogService';
 import { NavigationHistoryService } from '../../../classes/services/NavigationHistoryService';
@@ -121,7 +119,7 @@ export const RouterRoot = () => {
       container.resolve(AuthenticationService).next(undefined);
       return null;
     }
-    const windowService = container.resolve(WINDOW_SERVICE_TOKEN);
+    const windowService = container.resolve(WindowService);
     windowService.window.userManager = new UserManager(UserManagerUtil.getSettings(oidcConfiguration));
     return windowService.window.userManager;
   }, [availableIdentityProviders, identityProvidersWithAvailability, oidcConfiguration]);

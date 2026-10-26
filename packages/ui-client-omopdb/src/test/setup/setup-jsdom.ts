@@ -14,7 +14,6 @@ export const setupTestEnvironment = () => {
     theme: createOmopDbDemoTheme('light'),
   };
   DependencyContainerUtil.registerConfig(config);
-  DependencyContainerUtil.initializeContainer();
   setupOmopDb();
   vi.setConfig({
     testTimeout: 10000,

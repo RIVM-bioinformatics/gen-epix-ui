@@ -8,7 +8,6 @@ export const setupTestEnvironment = () => {
     ...StandardConfigUtil.createConfig(),
     theme: createDemoTheme('light'),
   });
-  DependencyContainerUtil.initializeContainer();
   setupClientCommon();
 };
 

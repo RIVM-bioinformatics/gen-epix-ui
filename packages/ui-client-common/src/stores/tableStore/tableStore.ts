@@ -13,8 +13,8 @@ import {
 import { container } from 'tsyringe';
 import type { UnwrapArray } from '@gen-epix/ui-core/models/generic.models';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import { WINDOW_SERVICE_TOKEN } from '../../constants/api.constants';
 import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
@@ -401,7 +401,7 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
         frontendFilters: Object.fromEntries(frontendFilterPriorities.map(filterPriority => [filterPriority, filters.filter(filter => filter.filterPriority === filterPriority)])),
       });
       if (navigateFunction) {
-        const searchParams = new URLSearchParams(container.resolve(WINDOW_SERVICE_TOKEN).window.document.location.search);
+        const searchParams = new URLSearchParams(container.resolve(WindowService).window.document.location.search);
         filters.forEach(filter => {
           const searchParamStringValue = searchParams.get(filter.id);
           if (!searchParamStringValue) {

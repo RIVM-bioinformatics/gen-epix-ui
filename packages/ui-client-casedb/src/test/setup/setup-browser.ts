@@ -10,7 +10,6 @@ export const setupTestEnvironment = () => {
     theme: createCaseDbDemoTheme('light'),
   };
   DependencyContainerUtil.registerConfig(config);
-  DependencyContainerUtil.initializeContainer();
   setupCaseDb();
 };
 

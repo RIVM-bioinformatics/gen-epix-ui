@@ -1,19 +1,20 @@
-import { setupYup } from '@gen-epix/ui-core-form/setup/setup';
+import { setupUiCoreForm } from '@gen-epix/ui-core-form/setup/setup';
+import { setupUiCore } from '@gen-epix/ui-core/setup/setup';
 import { container } from 'tsyringe';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
-import { DevicePixelRatioService } from '@gen-epix/ui-core/classes/services/DevicePixelRatioService';
-import { KeyboardShortcutService } from '@gen-epix/ui-core/classes/services/KeyboardShortcutService';
 
-import {
-  DEVICE_PIXEL_RATIO_SERVICE_TOKEN,
-  KEYBOARD_SHORTCUT_SERVICE_TOKEN,
-  WINDOW_SERVICE_TOKEN,
-} from '../constants/api.constants';
+import { QueryClientService } from '../classes/services/QueryClientService';
+import { CONFIG_TOKEN } from '../constants/config.constants';
+
 
 export const setupClientCommon = () => {
-  container.registerInstance(WINDOW_SERVICE_TOKEN, WindowService.getInstance());
-  container.registerInstance(DEVICE_PIXEL_RATIO_SERVICE_TOKEN, DevicePixelRatioService.getInstance());
-  container.registerInstance(KEYBOARD_SHORTCUT_SERVICE_TOKEN, KeyboardShortcutService.getInstance());
+  setupUiCore();
+  setupUiCoreForm();
 
-  setupYup();
+  container.register(QueryClientService, {
+    // eslint-disable-next-line @eslint-react/no-unnecessary-use-prefix
+    useFactory: () => new QueryClientService({
+      config: container.resolve(CONFIG_TOKEN),
+      queryKeyDependencies: [],
+    }),
+  });
 };

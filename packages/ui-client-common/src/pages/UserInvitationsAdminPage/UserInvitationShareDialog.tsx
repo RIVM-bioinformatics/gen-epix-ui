@@ -20,8 +20,8 @@ import type {
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import { WINDOW_SERVICE_TOKEN } from '../../constants/api.constants';
 import { useConfig } from '../../hooks/useConfig';
 
 export interface UserInvitationShareDialogOpenProps {
@@ -52,7 +52,7 @@ export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogPro
   }, [openProps.item.expires_at]);
 
   const invitationLink = useMemo(() => {
-    const url = new URL(container.resolve(WINDOW_SERVICE_TOKEN).window.location.href);
+    const url = new URL(container.resolve(WindowService).window.location.href);
     url.search = '';
     url.hash = '';
     url.pathname = `/accept-invitation/${openProps.item.token}`;
