@@ -100,11 +100,12 @@ const getFilter = (filters: Filters, id: string) => {
 };
 
 beforeAll(() => {
-  DependencyContainerUtil.createContainer({
+  DependencyContainerUtil.registerConfig({
     table: {
       CONDENSED_WIDTH_PX: 140,
     },
   } as ConfigBase);
+  DependencyContainerUtil.initializeContainer();
 });
 
 afterEach(() => {

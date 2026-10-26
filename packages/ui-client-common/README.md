@@ -52,7 +52,8 @@ const init = async () => {
   const config = {
     // provide a ConfigBase implementation here
   };
-  const container = DependencyContainerUtil.createContainer(config);
+  DependencyContainerUtil.registerConfig(config);
+  const container = DependencyContainerUtil.initializeContainer();
 
   await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {
@@ -75,7 +76,7 @@ const init = async () => {
 
   setupClientCommon();
 
-  createRoot(document.getElementById('root')!).render(<App container={container} />);
+  createRoot(document.getElementById('root')!).render(<App />);
 };
 
 init().catch((error) => {

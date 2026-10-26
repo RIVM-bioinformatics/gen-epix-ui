@@ -34,6 +34,10 @@ import { container } from 'tsyringe';
 import i18next from 'i18next';
 import { API_ORGANIZATION_TOKEN } from '@gen-epix/ui-client-common/constants/api.constants';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
+
+import { createCaseDbDemoTheme } from '../../theme/demoTheme';
+import { CaseDbStandardConfigUtil } from '../../utils/CaseDbStandardConfigUtil';
 
 import { useUserCasePolicyNameFactory } from './useUserCasePolicyNameFactory';
 
@@ -79,6 +83,10 @@ const createHookContext = ({
   userError,
   users = [{ id: 'user-1', key: 'key-1', name: 'User one', organization_id: 'organization-1', roles: [] }],
 }: HookContextOptions = {}) => {
+  DependencyContainerUtil.registerConfig({
+    ...CaseDbStandardConfigUtil.createConfig(),
+    theme: createCaseDbDemoTheme('light'),
+  });
   const usersGetAll = vi.fn(async (_limit: null | number, _offset: null | number, { signal }: { signal: AbortSignal }) => {
     if (userError) {
       return Promise.reject(userError);

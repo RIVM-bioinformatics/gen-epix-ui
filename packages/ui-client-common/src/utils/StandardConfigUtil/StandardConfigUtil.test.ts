@@ -49,10 +49,6 @@ describe('StandardConfigUtil.createConfig', () => {
     expect(config.queryClient.retryDelay(1)).toBe(3000);
     expect(config.queryClient.retryDelay(2)).toBe(12000);
     expect(config.queryClient.retryDelay(4)).toBe(30000);
-    expect(config.spinner).toEqual({
-      DEFAULT_CIRCULAR_PROGRESS_SIZE: 40,
-      DEFAULT_TAKING_LONGER_TIMEOUT_MS: 8000,
-    });
     expect(config.log.LOG_INTERVAL_MS).toBe(30000);
     expect(config.notifications.autoHideAfterMs).toBe(5000);
     expect(config.outages.NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES).toBe(8);

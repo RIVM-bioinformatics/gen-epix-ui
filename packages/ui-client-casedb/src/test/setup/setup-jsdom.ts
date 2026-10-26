@@ -13,7 +13,9 @@ export const setupTestEnvironment = () => {
     ...CaseDbStandardConfigUtil.createConfig(),
     theme: createCaseDbDemoTheme('light'),
   };
-  setupCaseDb(DependencyContainerUtil.createContainer(config));
+  DependencyContainerUtil.registerConfig(config);
+  DependencyContainerUtil.initializeContainer();
+  setupCaseDb();
   vi.setConfig({
     testTimeout: 10000,
   });

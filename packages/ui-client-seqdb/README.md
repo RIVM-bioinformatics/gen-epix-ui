@@ -48,7 +48,8 @@ const init = async () => {
   const config = {
     // provide a SeqDbConfig implementation here
   };
-  const container = DependencyContainerUtil.createContainer(config);
+  DependencyContainerUtil.registerConfig(config);
+  const container = DependencyContainerUtil.initializeContainer();
 
   await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {
@@ -79,9 +80,9 @@ const init = async () => {
     },
   });
 
-  setupSeqDb(container);
+  setupSeqDb();
 
-  createRoot(document.getElementById('root')!).render(<SeqDbApp container={container} />);
+  createRoot(document.getElementById('root')!).render(<SeqDbApp />);
 };
 
 init().catch((error) => {

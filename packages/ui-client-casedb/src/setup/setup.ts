@@ -20,7 +20,7 @@ import {
   API_ORGANIZATION_TOKEN,
   API_SYSTEM_TOKEN,
 } from '@gen-epix/ui-client-common/constants/api.constants';
-import type { DependencyContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 
 import type { CaseDbConfig } from '../models/config.models';
 import type { CASEDB_QUERY_KEY } from '../constants/query.constants';
@@ -31,8 +31,8 @@ import {
   createRoutes,
 } from '../routes';
 
-export const setupCaseDb = (container: DependencyContainer) => {
-  const config = DependencyContainerUtil.resolveConfig<CaseDbConfig>(container);
+export const setupCaseDb = () => {
+  const config = DependencyContainerUtil.resolveConfig<CaseDbConfig>();
   container.register(RouterService, {
     useValue: new RouterService({
       adminRoutes: () => createAdminRoutes() as MyNonIndexRouteObject[],

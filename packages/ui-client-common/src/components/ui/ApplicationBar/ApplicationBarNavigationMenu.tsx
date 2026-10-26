@@ -83,7 +83,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
         aria-label={t`Toggle navigation menu`}
         onClick={onMenuButtonClick}
         sx={{
-          color: theme['gen-epix-ui'].navbar.primaryColor,
+          color: theme['gen-epix-ui-client-common'].navbar.primaryColor,
           [theme.breakpoints.up('md')]: {
             display: 'none',
           },
@@ -97,7 +97,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
         sx={{
           flexGrow: 1,
           [theme.breakpoints.down('md')]: {
-            background: theme['gen-epix-ui'].navbar.background,
+            background: theme['gen-epix-ui-client-common'].navbar.background,
             display: isMenuOpen ? 'block' : 'none',
             left: 0,
             paddingBottom: 4,
@@ -129,19 +129,19 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
                 sx={{
                   '&:has(.active:not([aria-disabled="true"]))': {
                     '& svg': {
-                      color: theme['gen-epix-ui'].navbar.activeColor,
+                      color: theme['gen-epix-ui-client-common'].navbar.activeColor,
                     },
                     a: {
-                      color: theme['gen-epix-ui'].navbar.activeColor,
+                      color: theme['gen-epix-ui-client-common'].navbar.activeColor,
                     },
-                    background: theme['gen-epix-ui'].navbar.activeBackground,
+                    background: theme['gen-epix-ui-client-common'].navbar.activeBackground,
                   },
                   '& svg': {
                     color: isDisabled ? theme.palette.grey[400] : undefined,
                     marginTop: '6px',
                   },
                   alignItems: 'center',
-                  color: isDisabled ? theme.palette.grey[400] : theme['gen-epix-ui'].navbar.primaryColor,
+                  color: isDisabled ? theme.palette.grey[400] : theme['gen-epix-ui-client-common'].navbar.primaryColor,
                   display: 'flex',
                   fontWeight: 800,
                   height: 48,

@@ -32,7 +32,7 @@ export const ApplicationBar = ({
       position={'static'}
       square
       sx={{
-        background: theme['gen-epix-ui'].navbar.background,
+        background: theme['gen-epix-ui-client-common'].navbar.background,
         boxShadow: 'none',
       }}
     >
@@ -57,7 +57,7 @@ export const ApplicationBar = ({
               <Typography
                 component={'h1'}
                 sx={{
-                  color: theme['gen-epix-ui'].navbar.primaryColor,
+                  color: theme['gen-epix-ui-client-common'].navbar.primaryColor,
                   fontSize: '1.3rem',
                 }}
                 variant={'body2'}

@@ -7,11 +7,11 @@ global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 export const setupTestEnvironment = () => {
-  const config = {
+  DependencyContainerUtil.registerConfig({
     ...StandardConfigUtil.createConfig(),
     theme: createDemoTheme('light'),
-  };
-  DependencyContainerUtil.createContainer(config);
+  });
+  DependencyContainerUtil.initializeContainer();
   setupClientCommon();
 
   vi.setConfig({

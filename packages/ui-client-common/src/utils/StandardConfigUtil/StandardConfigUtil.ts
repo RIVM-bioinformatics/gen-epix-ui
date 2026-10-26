@@ -93,10 +93,6 @@ export class StandardConfigUtil {
           },
         retryDelay: attempt => Math.min(attempt > 1 ? 2 ** attempt * 3000 : 3000, 30 * 1000),
       },
-      spinner: {
-        DEFAULT_CIRCULAR_PROGRESS_SIZE: 40,
-        DEFAULT_TAKING_LONGER_TIMEOUT_MS: 8000,
-      },
       table: {
         CONDENSED_WIDTH_PX: 150,
         DEFAULT_OVERSCAN_MAIN: 10,

@@ -1,6 +1,6 @@
-import type { GenEpixUiTheme } from '@gen-epix/ui-client-common/models/theme.models';
+import type { GenEpixUiClientCommonTheme } from '@gen-epix/ui-client-common/models/theme.models';
 
-export interface GenEpixCaseDbUiTheme extends GenEpixUiTheme {
+export interface GenEpixCaseDbUiTheme extends GenEpixUiClientCommonTheme {
   'gen-epix-ui-client-casedb': {
     lineList: {
       font: string;

@@ -11,7 +11,8 @@ const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
 const init = async () => {
   const config = ConfigUtil.createConfig();
-  const container = DependencyContainerUtil.createContainer(config);
+  DependencyContainerUtil.registerConfig(config);
+  const container = DependencyContainerUtil.initializeContainer();
 
   await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {
@@ -36,10 +37,10 @@ const init = async () => {
     },
   });
 
-  setupOmopDb(container);
+  setupOmopDb();
 
   createRoot(document.getElementById('root')).render(
-    <OmopDbApp container={container} />,
+    <OmopDbApp />,
   );
 };
 

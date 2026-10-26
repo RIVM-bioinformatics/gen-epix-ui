@@ -22,10 +22,11 @@ const INITIAL_CONFIG: ConfigBase = {
   ...StandardConfigUtil.createConfig(),
   theme: createDemoTheme('light'),
 };
-DependencyContainerUtil.createContainer(INITIAL_CONFIG);
 
+DependencyContainerUtil.initializeContainer();
+DependencyContainerUtil.registerConfig(INITIAL_CONFIG);
 afterEach(() => {
-  DependencyContainerUtil.createContainer(INITIAL_CONFIG);
+  DependencyContainerUtil.registerConfig(INITIAL_CONFIG);
 });
 
 describe('DependencyContainerUtil', () => {
@@ -35,23 +36,13 @@ describe('DependencyContainerUtil', () => {
       applicationName: 'test application',
     };
 
-    const dependencyContainer = DependencyContainerUtil.createContainer(config);
+    DependencyContainerUtil.registerConfig(config);
+    const dependencyContainer = DependencyContainerUtil.initializeContainer();
 
     expect(dependencyContainer).toBe(container);
     expect(dependencyContainer.resolve(CONFIG_TOKEN)).toBe(config);
     expect(dependencyContainer.resolve(WINDOW_SERVICE_TOKEN)).toBe(WindowService.getInstance());
     expect(dependencyContainer.resolve(QueryClientService)).toBeInstanceOf(QueryClientService);
     expect(DependencyContainerUtil.resolveConfig()).toBe(config);
-  });
-
-  it('resolves configuration from an explicitly supplied child container', () => {
-    const config: ConfigBase = {
-      ...INITIAL_CONFIG,
-      applicationName: 'child application',
-    };
-    const childContainer = container.createChildContainer();
-    childContainer.register(CONFIG_TOKEN, { useValue: config });
-
-    expect(DependencyContainerUtil.resolveConfig(childContainer)).toBe(config);
   });
 });

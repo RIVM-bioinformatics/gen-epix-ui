@@ -11,20 +11,23 @@ import {
 import type { ConfigBase } from '../../models/config.models';
 
 export class DependencyContainerUtil {
-  public static createContainer<TConfig extends ConfigBase>(config: TConfig): DependencyContainer {
-    container.register(CONFIG_TOKEN, { useValue: config });
+  public static initializeContainer(): DependencyContainer {
     container.registerInstance(WINDOW_SERVICE_TOKEN, WindowService.getInstance());
     container.register(QueryClientService, {
       // eslint-disable-next-line @eslint-react/no-unnecessary-use-prefix
       useFactory: () => new QueryClientService({
-        config,
+        config: container.resolve(CONFIG_TOKEN),
         queryKeyDependencies: [],
       }),
     });
     return container;
   }
 
-  public static resolveConfig<TConfig extends ConfigBase = ConfigBase>(dependencyContainer: DependencyContainer = container): TConfig {
-    return dependencyContainer.resolve(CONFIG_TOKEN) as TConfig;
+  public static registerConfig<TConfig extends ConfigBase>(config: TConfig): void {
+    container.register(CONFIG_TOKEN, { useValue: config });
+  }
+
+  public static resolveConfig<TConfig extends ConfigBase = ConfigBase>(): TConfig {
+    return container.resolve(CONFIG_TOKEN) as TConfig;
   }
 }

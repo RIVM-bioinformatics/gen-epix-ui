@@ -1,8 +1,5 @@
 import type { ReactElement } from 'react';
-import type {
-  CircularProgressProps,
-  Theme,
-} from '@mui/material';
+import type { Theme } from '@mui/material';
 
 export type ApplicationHeaderProps = {
   readonly fullHeight?: boolean;
@@ -57,10 +54,6 @@ export interface ConfigBase {
   queryClient: {
     retry: (failureCount: number, error: unknown) => boolean;
     retryDelay: (attempt: number) => number;
-  };
-  spinner: {
-    DEFAULT_CIRCULAR_PROGRESS_SIZE: CircularProgressProps['size'];
-    DEFAULT_TAKING_LONGER_TIMEOUT_MS: number;
   };
   table: {
     CONDENSED_WIDTH_PX: number;

@@ -10,26 +10,24 @@ import {
 import { EmotionCacheService } from '../../classes/services/EmotionCacheService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 import { DependencyContainerUtil } from '../../utils/DependencyContainerUtil';
-import { ClientCommonConfigContextProvider } from '../../context/ClientCommonConfigContext';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AllTheProviders = ({ children }: PropsWithChildren<unknown>) => {
   const config = DependencyContainerUtil.resolveConfig();
-  const container = DependencyContainerUtil.createContainer(config);
+  DependencyContainerUtil.registerConfig(config);
+  const container = DependencyContainerUtil.initializeContainer();
   const queryQueryManager = container.resolve(QueryClientService);
   const emotionCache = container.resolve(EmotionCacheService).emotionCache;
 
   return (
-    <ClientCommonConfigContextProvider container={container}>
-      <QueryClientProvider client={queryQueryManager.queryClient}>
-        <CacheProvider value={emotionCache}>
-          <ThemeProvider theme={config.theme}>
-            <CssBaseline />
-            { children }
-          </ThemeProvider>
-        </CacheProvider>
-      </QueryClientProvider>
-    </ClientCommonConfigContextProvider>
+    <QueryClientProvider client={queryQueryManager.queryClient}>
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider theme={config.theme}>
+          <CssBaseline />
+          { children }
+        </ThemeProvider>
+      </CacheProvider>
+    </QueryClientProvider>
   );
 };
 

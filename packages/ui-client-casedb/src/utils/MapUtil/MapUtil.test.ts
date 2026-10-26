@@ -335,11 +335,13 @@ describe('MapUtil', () => {
 
   describe('getPieChartRadius', () => {
     beforeAll(() => {
-      DependencyContainerUtil.createContainer({
+      const config = {
         map: {
           MIN_PIE_CHART_RADIUS: 4,
         },
-      } as CaseDbConfig);
+      } as CaseDbConfig;
+      DependencyContainerUtil.registerConfig(config);
+      DependencyContainerUtil.initializeContainer();
     });
 
     afterAll(() => {

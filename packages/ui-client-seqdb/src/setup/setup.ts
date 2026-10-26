@@ -20,7 +20,7 @@ import {
   API_ORGANIZATION_TOKEN,
   API_SYSTEM_TOKEN,
 } from '@gen-epix/ui-client-common/constants/api.constants';
-import type { DependencyContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 
 import { HomePage } from '../pages/HomePage';
 import {
@@ -31,8 +31,8 @@ import type { SEQDB_QUERY_KEY } from '../constants/query.constants';
 import { SEQDB_QUERY_DEPENDENCIES } from '../constants/query.constants';
 import type { SeqDbConfig } from '../models/config.models';
 
-export const setupSeqDb = (container: DependencyContainer) => {
-  const config = DependencyContainerUtil.resolveConfig<SeqDbConfig>(container);
+export const setupSeqDb = () => {
+  const config = DependencyContainerUtil.resolveConfig<SeqDbConfig>();
   const adminRoutes = createAdminRoutes();
   const routes = createRoutes(adminRoutes);
 

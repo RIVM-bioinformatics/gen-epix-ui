@@ -3,6 +3,7 @@ import {
   Box,
   CircularProgress,
   Typography,
+  useThemeProps,
 } from '@mui/material';
 import type { ReactElement } from 'react';
 import {
@@ -11,8 +12,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { visuallyHidden } from '@mui/utils';
-
-import { useCoreComponentsConfigContext } from '../../context/CoreComponentsConfigContext';
 
 
 const DEFAULT_TAKING_LONGER_TIMEOUT_MS = 5000;
@@ -28,20 +27,29 @@ export type SpinnerProps = {
   readonly textColor?: string;
 };
 
-export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLabel, takingLongerTimeoutMs, textColor }: SpinnerProps): ReactElement => {
+export const Spinner = (inProps: SpinnerProps): ReactElement => {
+  const {
+    color = 'primary',
+    inline,
+    label,
+    size = DEFAULT_CIRCULAR_PROGRESS_SIZE,
+    takingLongerLabel,
+    takingLongerTimeoutMs = DEFAULT_TAKING_LONGER_TIMEOUT_MS,
+    textColor,
+  } = useThemeProps({ name: 'spinner', props: inProps });
+  console.log({ takingLongerLabel });
+
   const [isTakingLonger, setIsTakingLonger] = useState(false);
   const { t } = useTranslation();
-
-  const coreComponentsConfig = useCoreComponentsConfigContext();
 
   useEffect(() => {
     const handle = setTimeout(() => {
       setIsTakingLonger(true);
-    }, takingLongerTimeoutMs ?? coreComponentsConfig?.spinner?.defaultTakingLongerTimeoutMs ?? DEFAULT_TAKING_LONGER_TIMEOUT_MS);
+    }, takingLongerTimeoutMs);
     return () => {
       clearTimeout(handle);
     };
-  }, [takingLongerTimeoutMs, coreComponentsConfig?.spinner?.defaultTakingLongerTimeoutMs]);
+  }, [takingLongerTimeoutMs]);
 
   return (
     <Box
@@ -67,7 +75,7 @@ export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLa
       >
         <CircularProgress
           color={color}
-          size={size ?? coreComponentsConfig?.spinner?.defaultCircularProgressSize ?? DEFAULT_CIRCULAR_PROGRESS_SIZE}
+          size={size}
         />
       </Box>
       <Box

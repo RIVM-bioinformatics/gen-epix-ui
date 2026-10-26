@@ -222,10 +222,6 @@
       "types": "./src/constants/query.constants.ts",
       "import": "./src/constants/query.constants.ts"
     },
-    "./context/ClientCommonConfigContext": {
-      "types": "./src/context/ClientCommonConfigContext/index.ts",
-      "import": "./src/context/ClientCommonConfigContext/index.ts"
-    },
     "./dataHooks/useIdentifierIssuerOwnOrganizationQuery": {
       "types": "./src/dataHooks/useIdentifierIssuerOwnOrganizationQuery/index.ts",
       "import": "./src/dataHooks/useIdentifierIssuerOwnOrganizationQuery/index.ts"
@@ -811,10 +807,6 @@
       "./constants/query.constants": {
         "types": "./dist/constants/query.constants.d.ts",
         "import": "./dist/constants/query.constants.js"
-      },
-      "./context/ClientCommonConfigContext": {
-        "types": "./dist/context/ClientCommonConfigContext/index.d.ts",
-        "import": "./dist/context/ClientCommonConfigContext/index.js"
       },
       "./dataHooks/useIdentifierIssuerOwnOrganizationQuery": {
         "types": "./dist/dataHooks/useIdentifierIssuerOwnOrganizationQuery/index.d.ts",

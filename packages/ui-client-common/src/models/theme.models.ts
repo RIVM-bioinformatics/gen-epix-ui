@@ -1,5 +1,7 @@
-export interface GenEpixUiTheme {
-  'gen-epix-ui': {
+import type { GenEpixCoreComponentsTheme } from '@gen-epix/ui-core-components/models/theme.models';
+
+export interface GenEpixUiClientCommonTheme extends GenEpixCoreComponentsTheme {
+  'gen-epix-ui-client-common': {
     footer: {
       background: string;
       color: string;

@@ -406,7 +406,7 @@ export const createDemoThemeOptions = (paletteMode: PaletteMode): ThemeOptions =
         },
       },
     },
-    'gen-epix-ui': {
+    'gen-epix-ui-client-common': {
       footer: {
         background: '#154273',
         color: '#fff',
@@ -419,6 +419,12 @@ export const createDemoThemeOptions = (paletteMode: PaletteMode): ThemeOptions =
         environmentMessageColor: '#ffea00',
         primaryColor: '#fff',
         secondaryColor: '#ddeff8',
+      },
+    },
+    'gen-epix-ui-core-components': {
+      spinner: {
+        label: 'XXXXXX',
+        takingLongerTimeoutMs: 10,
       },
     },
     palette: {

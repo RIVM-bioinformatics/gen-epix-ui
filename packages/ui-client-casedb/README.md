@@ -47,7 +47,8 @@ const init = async () => {
   const config = {
     // provide a CaseDbConfig implementation here
   };
-  const container = DependencyContainerUtil.createContainer(config);
+  DependencyContainerUtil.registerConfig(config);
+  const container = DependencyContainerUtil.initializeContainer();
 
   await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {
@@ -78,9 +79,9 @@ const init = async () => {
     },
   });
 
-  setupCaseDb(container);
+  setupCaseDb();
 
-  createRoot(document.getElementById('root')!).render(<CaseDbApp container={container} />);
+  createRoot(document.getElementById('root')!).render(<CaseDbApp />);
 };
 
 init().catch((error) => {
