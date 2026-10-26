@@ -1,3 +1,4 @@
+import { container } from 'tsyringe';
 import type { DependencyContainer } from 'tsyringe';
 import { CacheProvider } from '@emotion/react';
 import {
@@ -16,16 +17,14 @@ import { AuthenticationService } from '../../../classes/services/AuthenticationS
 import { LogService } from '../../../classes/services/LogService';
 import { ApplicationBootstrapWithoutAuthorization } from '../ApplicationBootstrapWithoutAuthorization';
 import { AppRouterProvider } from '../AppRouterProvider/AppRouterProvider';
-import { ClientCommonConfigContextProvider } from '../../../context/ClientCommonConfigContext';
-import type { ConfigBase } from '../../../models/config.models';
-import { DependencyContainerUtil } from '../../../utils/DependencyContainerUtil';
+import { useConfig } from '../../../hooks/useConfig';
 
 export type AppProps = {
   readonly container: DependencyContainer;
 };
 
-export const App = ({ container }: AppProps) => {
-  const config = DependencyContainerUtil.resolveConfig<ConfigBase>(container);
+export const App = () => {
+  const config = useConfig();
 
   const authenticationService = container.resolve(AuthenticationService);
   const logService = container.resolve(LogService);
@@ -53,19 +52,17 @@ export const App = ({ container }: AppProps) => {
   const emotionCache = container.resolve(EmotionCacheService).emotionCache;
 
   return (
-    <ClientCommonConfigContextProvider container={container}>
-      <QueryClientProvider client={queryClientService.queryClient}>
-        <CacheProvider value={emotionCache}>
-          <ThemeProvider theme={config.theme}>
-            <CssBaseline />
-            <ErrorBoundary FallbackComponent={ErrorPage}>
-              <ApplicationBootstrapWithoutAuthorization>
-                <AppRouterProvider />
-              </ApplicationBootstrapWithoutAuthorization>
-            </ErrorBoundary>
-          </ThemeProvider>
-        </CacheProvider>
-      </QueryClientProvider>
-    </ClientCommonConfigContextProvider>
+    <QueryClientProvider client={queryClientService.queryClient}>
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider theme={config.theme}>
+          <CssBaseline />
+          <ErrorBoundary FallbackComponent={ErrorPage}>
+            <ApplicationBootstrapWithoutAuthorization>
+              <AppRouterProvider />
+            </ApplicationBootstrapWithoutAuthorization>
+          </ErrorBoundary>
+        </ThemeProvider>
+      </CacheProvider>
+    </QueryClientProvider>
   );
 };

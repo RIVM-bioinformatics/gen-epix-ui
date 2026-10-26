@@ -1,4 +1,9 @@
-import { Box } from '@mui/material';
+import {
+  Box,
+  lighten,
+  useTheme,
+  useThemeProps,
+} from '@mui/material';
 import type { Ref } from 'react';
 import {
   useCallback,
@@ -32,12 +37,13 @@ export type PhylogeneticTreePathClickEvent = {
   pathProperties: TreePathProperties;
 };
 
+const DEFAULT_DIM_FN = (color: string) => lighten(color, 0.8);
+
 export type PhylogeneticTreeProps = {
   readonly ancestorDotRadius: number;
   readonly ariaLabel: string;
   readonly backgroundColor: string;
-  readonly dimFn: (color: string) => string;
-  readonly fontFamily: string;
+  readonly dimFn?: (color: string) => string;
   readonly getLeafLabel?: (nodeName: string) => string;
   readonly headerHeight: number;
   readonly highlightedNodeNamesSubject?: Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>;
@@ -67,11 +73,7 @@ export type PhylogeneticTreeProps = {
   readonly shouldShowLeafLabels?: boolean;
   readonly shouldShowSupportLinesWhenUnlinked: boolean;
   readonly sortedLeafNames: string[];
-  readonly supportLineColorLinked: string;
-  readonly supportLineColorUnlinked: string;
   readonly tree?: TreeNode;
-  readonly treeColor: string;
-  readonly treeFont: string;
   readonly treePadding: number;
   readonly visibleRangeSubject?: Subject<PhylogeneticTreeVisibleRangeSubjectValue>;
 };
@@ -98,49 +100,47 @@ export type PhylogeneticTreeVisibleRangeSubjectValue = {
   startIndex: number;
 };
 
-export const PhylogeneticTree = ({
-  ancestorDotRadius,
-  ariaLabel,
-  backgroundColor,
-  dimFn,
-  fontFamily,
-  getLeafLabel,
-  headerHeight,
-  highlightedNodeNamesSubject,
-  initialViewState,
-  itemHeight,
-  leafDotRadius,
-  linkedScrollDebounceDelayMs,
-  maxScaleWidthPx,
-  maxZoomLevel,
-  maxZoomSpeed,
-  minimumDistancePercentageToShowLabel,
-  minScaleWidthPx,
-  minZoomLevel,
-  minZoomSpeed,
-  nodeNameColors,
-  onCanvasChange,
-  onLinkStateChange,
-  onPathClick,
-  onViewStateChange,
-  panningThreshold,
-  ref,
-  regularFillColorSupportLine,
-  scaleColor,
-  scaleIncrements,
-  scrollSubject,
-  shouldShowDistances,
-  shouldShowLeafLabels,
-  shouldShowSupportLinesWhenUnlinked,
-  sortedLeafNames,
-  supportLineColorLinked,
-  supportLineColorUnlinked,
-  tree,
-  treeColor,
-  treeFont,
-  treePadding,
-  visibleRangeSubject,
-}: PhylogeneticTreeProps) => {
+export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
+  const {
+    ancestorDotRadius,
+    ariaLabel,
+    backgroundColor,
+    dimFn = DEFAULT_DIM_FN,
+    getLeafLabel,
+    headerHeight,
+    highlightedNodeNamesSubject,
+    initialViewState,
+    itemHeight,
+    leafDotRadius,
+    linkedScrollDebounceDelayMs,
+    maxScaleWidthPx,
+    maxZoomLevel,
+    maxZoomSpeed,
+    minimumDistancePercentageToShowLabel,
+    minScaleWidthPx,
+    minZoomLevel,
+    minZoomSpeed,
+    nodeNameColors,
+    onCanvasChange,
+    onLinkStateChange,
+    onPathClick,
+    onViewStateChange,
+    panningThreshold,
+    ref,
+    regularFillColorSupportLine,
+    scaleColor,
+    scaleIncrements,
+    scrollSubject,
+    shouldShowDistances,
+    shouldShowLeafLabels,
+    shouldShowSupportLinesWhenUnlinked,
+    sortedLeafNames,
+    tree,
+    treePadding,
+    visibleRangeSubject,
+  } = useThemeProps({ name: 'GenEpixUiPhylogeneticTree', props: inProps });
+  const theme = useTheme();
+
   const scrollbarSize = useScrollbarSize();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -466,7 +466,6 @@ export const PhylogeneticTree = ({
           canvas: treeCanvas,
           devicePixelRatio,
           dimFn,
-          fontFamily,
           geneticTreeWidth: tree.maxBranchLength,
           getLeafLabel,
           headerHeight,
@@ -474,23 +473,24 @@ export const PhylogeneticTree = ({
           horizontalScrollPosition,
           isLinked,
           itemHeight,
+          labelFont: theme.components.GenEpixUiPhylogeneticTree.labelFont,
           nodeNameColors,
           pixelToGeneticDistanceRatio,
           range,
           regularFillColorSupportLine,
           scaleColor,
+          scaleFont: theme.components.GenEpixUiPhylogeneticTree.scaleFont,
           scrollPosition,
           shouldShowDistances,
           shouldShowLeafLabels,
           shouldShowSupportLinesWhenUnlinked,
-          supportLineColorLinked,
-          supportLineColorUnlinked,
+          supportLineColorLinked: theme.components.GenEpixUiPhylogeneticTree.supportLineColorLinked,
+          supportLineColorUnlinked: theme.components.GenEpixUiPhylogeneticTree.supportLineColorUnlinked,
           tickerMarkScale,
           treeAssembly,
           treeCanvasHeight,
           treeCanvasWidth,
-          treeColor,
-          treeFont,
+          treeColor: theme.components.GenEpixUiPhylogeneticTree.treeColor,
           treePadding,
           verticalScrollPosition,
           zoomLevel,
@@ -542,7 +542,6 @@ export const PhylogeneticTree = ({
     backgroundColor,
     devicePixelRatio,
     dimFn,
-    fontFamily,
     getTickerMarkScale,
     headerHeight,
     highlightedNodeNamesSubject,
@@ -557,19 +556,16 @@ export const PhylogeneticTree = ({
     shouldShowDistances,
     shouldShowLeafLabels,
     shouldShowSupportLinesWhenUnlinked,
-    supportLineColorLinked,
-    supportLineColorUnlinked,
     getLeafLabel,
     tree,
     treeAssembly,
     treeCanvas,
     treeCanvasHeight,
     treeCanvasWidth,
-    treeColor,
-    treeFont,
     treePadding,
     visibleRangeSubject,
     zoomLevelSubject,
+    theme,
   ]);
 
   useEffect(() => {

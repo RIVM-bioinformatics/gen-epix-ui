@@ -134,13 +134,13 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
 
   useEffect(() => {
     const removers = [
-      KeyboardShortcutService.getInstance().registerShortcut({ callback: () => {
+      container.resolve(KeyboardShortcutService).registerShortcut({ callback: () => {
         setIsFilterSidebarOpen(x => !x);
       }, key: 'f' }),
-      KeyboardShortcutService.getInstance().registerShortcut({ callback: () => {
+      container.resolve(KeyboardShortcutService).registerShortcut({ callback: () => {
         setIsSettingsSidebarOpen(x => !x);
       }, key: 's' }),
-      KeyboardShortcutService.getInstance().registerShortcut({ callback: () => {
+      container.resolve(KeyboardShortcutService).registerShortcut({ callback: () => {
         caseTypeInfoDialogRef.current.open();
       }, key: 'i' }),
     ];

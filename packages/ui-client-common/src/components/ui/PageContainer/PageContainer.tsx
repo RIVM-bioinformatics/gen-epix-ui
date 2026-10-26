@@ -12,8 +12,8 @@ import type {
   ReactNode,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/test-id.models';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { Breadcrumbs } from '../Breadcrumbs';
 import { PageEventBusService } from '../../../classes/services/PageEventBusService';
@@ -62,7 +62,7 @@ export const PageContainer = ({
 
     if (config.enablePageEvents) {
       container.resolve(PageEventBusService).emit('changePage', {
-        location: WindowService.getInstance().window.location,
+        location: container.resolve(WindowService).window.location,
         pageName: testIdAttributes['data-testid'],
       });
     }

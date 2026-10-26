@@ -1,4 +1,5 @@
 import { container } from 'tsyringe';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useTranslation } from 'react-i18next';
 import type {
   ReactElement,
@@ -28,7 +29,6 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import axios from 'axios';
 import type { CommonDbPackageMetadata } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
@@ -124,7 +124,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
   }, [item, onActionsChange, onClose, t]);
 
   const onItemURLClick = useCallback((url: string) => {
-    WindowService.getInstance().window.open(url, '_blank');
+    container.resolve(WindowService).window.open(url, '_blank');
   }, []);
 
   const onItemLicenseClick = useCallback((entry: CommonDbPackageMetadata) => {

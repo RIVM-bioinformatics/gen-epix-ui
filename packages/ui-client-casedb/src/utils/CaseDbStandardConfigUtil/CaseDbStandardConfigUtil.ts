@@ -9,9 +9,9 @@ import { StandardConfigUtil } from '@gen-epix/ui-client-common/utils/StandardCon
 import Color from 'colorjs.io';
 import type { Range } from 'colorjs.io';
 import { t } from 'i18next';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import type { CaseDbConfig } from '../../models/config.models';
 import { DASHBOARD_COMPONENT_NAME } from '../../constants/dashboard.constants';
@@ -347,7 +347,7 @@ export class CaseDbStandardConfigUtil {
         },
       },
       getAPIBaseUrl: () => {
-        const { location: { href } } = WindowService.getInstance().window.document;
+        const { location: { href } } = container.resolve(WindowService).window.document;
         const { hostname } = new URL(href);
         switch (hostname) {
           case '127.0.0.1':
@@ -359,7 +359,7 @@ export class CaseDbStandardConfigUtil {
         }
       },
       getEnvironmentMessage: () => {
-        const { location: { href } } = WindowService.getInstance().window.document;
+        const { location: { href } } = container.resolve(WindowService).window.document;
         const { hostname } = new URL(href);
         let environment: string;
         switch (hostname) {

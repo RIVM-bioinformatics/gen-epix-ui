@@ -3,6 +3,7 @@ import {
   expect,
   it,
 } from 'vitest';
+import { container } from 'tsyringe';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
@@ -27,7 +28,7 @@ describe('CaseSetUtil.createCaseSetLink', () => {
   });
 
   it('prefixes the current origin when a full link is requested', () => {
-    const origin = WindowService.getInstance().window.location.origin;
+    const origin = container.resolve(WindowService).window.location.origin;
 
     expect(CaseSetUtil.createCaseSetLink(createCaseSet(), true)).toBe(`${origin}/events/my-case-set/case-set-1`);
   });

@@ -1,15 +1,12 @@
 import type { CommonDbUser } from '@gen-epix/api-commondb';
 import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
-import type { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import {
   inject,
   singleton,
 } from 'tsyringe';
 
-import {
-  CONFIG_TOKEN,
-  WINDOW_SERVICE_TOKEN,
-} from '../../../constants/config.constants';
+import { CONFIG_TOKEN } from '../../../constants/config.constants';
 import type { ConfigBase } from '../../../models/config.models';
 
 type EpiEvent = {
@@ -36,7 +33,7 @@ export class PageEventBusService extends EventBusAbstract<EpiEvent> {
 
   public constructor(
     @inject(CONFIG_TOKEN) config: ConfigBase,
-    @inject(WINDOW_SERVICE_TOKEN) windowService: WindowService,
+    @inject(WindowService) windowService: WindowService,
   ) {
     super();
     this.windowService = windowService;

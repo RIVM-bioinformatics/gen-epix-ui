@@ -10,6 +10,10 @@
   "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
   "type": "module",
   "exports": {
+    "./types": {
+      "types": "./src/@types/ui-core-components.d.ts",
+      "import": "./src/@types/ui-core-components.d.ts"
+    },
     "./components/BackdropSpinner": {
       "types": "./src/components/BackdropSpinner/index.ts",
       "import": "./src/components/BackdropSpinner/index.ts"
@@ -54,17 +58,9 @@
       "types": "./src/components/Stepper/index.ts",
       "import": "./src/components/Stepper/index.ts"
     },
-    "./context/CoreComponentsConfigContext": {
-      "types": "./src/context/CoreComponentsConfigContext/index.ts",
-      "import": "./src/context/CoreComponentsConfigContext/index.ts"
-    },
     "./hoc/withDialog": {
       "types": "./src/hoc/withDialog/index.ts",
       "import": "./src/hoc/withDialog/index.ts"
-    },
-    "./models/config.models": {
-      "types": "./src/models/config.models.ts",
-      "import": "./src/models/config.models.ts"
     },
     "./models/nested-menu.models": {
       "types": "./src/models/nested-menu.models.ts",
@@ -73,6 +69,10 @@
     "./models/stepper.model": {
       "types": "./src/models/stepper.model.ts",
       "import": "./src/models/stepper.model.ts"
+    },
+    "./models/theme.models": {
+      "types": "./src/models/theme.models.ts",
+      "import": "./src/models/theme.models.ts"
     }
   },
   "files": [
@@ -134,6 +134,10 @@
   "publishConfig": {
     "access": "public",
     "exports": {
+      "./types": {
+        "types": "./dist/@types/ui-core-components.d.ts",
+        "import": "./dist/@types/ui-core-components.d.ts"
+      },
       "./components/BackdropSpinner": {
         "types": "./dist/components/BackdropSpinner/index.d.ts",
         "import": "./dist/components/BackdropSpinner/index.js"
@@ -178,17 +182,9 @@
         "types": "./dist/components/Stepper/index.d.ts",
         "import": "./dist/components/Stepper/index.js"
       },
-      "./context/CoreComponentsConfigContext": {
-        "types": "./dist/context/CoreComponentsConfigContext/index.d.ts",
-        "import": "./dist/context/CoreComponentsConfigContext/index.js"
-      },
       "./hoc/withDialog": {
         "types": "./dist/hoc/withDialog/index.d.ts",
         "import": "./dist/hoc/withDialog/index.js"
-      },
-      "./models/config.models": {
-        "types": "./dist/models/config.models.d.ts",
-        "import": "./dist/models/config.models.js"
       },
       "./models/nested-menu.models": {
         "types": "./dist/models/nested-menu.models.d.ts",
@@ -197,6 +193,10 @@
       "./models/stepper.model": {
         "types": "./dist/models/stepper.model.d.ts",
         "import": "./dist/models/stepper.model.js"
+      },
+      "./models/theme.models": {
+        "types": "./dist/models/theme.models.d.ts",
+        "import": "./dist/models/theme.models.js"
       }
     },
     "files": [

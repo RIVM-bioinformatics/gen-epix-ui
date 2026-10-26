@@ -64,7 +64,7 @@ export class OmopDbStandardConfigUtil {
       enablePageEvents: false,
 
       getAPIBaseUrl: () => {
-        const { location: { href } } = WindowService.getInstance().window.document;
+        const { location: { href } } = container.resolve(WindowService).window.document;
         const { hostname } = new URL(href);
         switch (hostname) {
           case '127.0.0.1':
@@ -76,7 +76,7 @@ export class OmopDbStandardConfigUtil {
         }
       },
       getEnvironmentMessage: () => {
-        const { location: { href } } = WindowService.getInstance().window.document;
+        const { location: { href } } = container.resolve(WindowService).window.document;
         const { hostname } = new URL(href);
         let environment: string;
         switch (hostname) {

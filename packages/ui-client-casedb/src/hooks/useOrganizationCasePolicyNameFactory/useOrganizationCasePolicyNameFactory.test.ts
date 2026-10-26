@@ -31,6 +31,10 @@ import type {
 import { container } from 'tsyringe';
 import { API_ORGANIZATION_TOKEN } from '@gen-epix/ui-client-common/constants/api.constants';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
+
+import { createCaseDbDemoTheme } from '../../theme/demoTheme';
+import { CaseDbStandardConfigUtil } from '../../utils/CaseDbStandardConfigUtil';
 
 import { useOrganizationCasePolicyNameFactory } from './useOrganizationCasePolicyNameFactory';
 
@@ -75,6 +79,10 @@ const createHookContext = ({
   organizationError,
   organizations = [{ code: 'organization-1', id: 'organization-1', name: 'Organization one' }],
 }: HookContextOptions = {}) => {
+  DependencyContainerUtil.registerConfig({
+    ...CaseDbStandardConfigUtil.createConfig(),
+    theme: createCaseDbDemoTheme('light'),
+  });
   const organizationsGetAll = vi.fn(async (_limit: null | number, _offset: null | number, { signal }: { signal: AbortSignal }) => {
     if (organizationError) {
       return Promise.reject(organizationError);

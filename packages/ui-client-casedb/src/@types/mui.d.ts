@@ -1,12 +1,17 @@
 import '@mui/material';
 
-import type { GenEpixCaseDbUiTheme } from '../models/theme.models';
+import type {
+  GenEpixCaseDbUiTheme,
+  GenEpixUiClientCasedbLineListTheme,
+} from '../models/theme.models';
 
 
 declare module '@mui/material/styles' {
-  interface Theme extends GenEpixCaseDbUiTheme { }
-  // allow configuration using `createTheme()`
-  interface ThemeOptions {
-    'gen-epix-ui-client-casedb'?: GenEpixCaseDbUiTheme['gen-epix-ui-client-casedb'];
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Required to augment MUI's generic interface.
+  interface Components<TTheme = unknown> {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    GenEpixUiClientCasedbLineList?: GenEpixUiClientCasedbLineListTheme;
   }
+
+  interface Theme extends GenEpixCaseDbUiTheme { }
 }

@@ -9,8 +9,6 @@ import { createTheme as muiCreateTheme } from '@mui/material';
 export const createSeqDbDemoThemeOptions = (paletteMode: PaletteMode): ThemeOptions => {
   const themeOptions: ThemeOptions = {
     ...createDemoThemeOptions(paletteMode),
-    'gen-epix-ui-client-seqdb': {
-    },
   };
 
   return themeOptions;

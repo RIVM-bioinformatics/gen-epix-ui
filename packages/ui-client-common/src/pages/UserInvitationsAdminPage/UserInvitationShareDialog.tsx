@@ -10,9 +10,9 @@ import {
   useMemo,
 } from 'react';
 import { format } from 'date-fns';
+import { container } from 'tsyringe';
 import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 import { CopyToClipboardButton } from '@gen-epix/ui-core-components/components/CopyToClipboardButton';
 import type {
@@ -20,6 +20,7 @@ import type {
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { useConfig } from '../../hooks/useConfig';
 
@@ -51,7 +52,7 @@ export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogPro
   }, [openProps.item.expires_at]);
 
   const invitationLink = useMemo(() => {
-    const url = new URL(WindowService.getInstance().window.location.href);
+    const url = new URL(container.resolve(WindowService).window.location.href);
     url.search = '';
     url.hash = '';
     url.pathname = `/accept-invitation/${openProps.item.token}`;

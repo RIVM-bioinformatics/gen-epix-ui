@@ -40,7 +40,7 @@ export const AcceptInvitationPage = () => {
   const { t } = useTranslation();
 
   const onGoToHomePageButtonClick = useCallback(() => {
-    WindowService.getInstance().window.location.href = '/';
+    container.resolve(WindowService).window.location.href = '/';
   }, []);
 
   const onCompleteRegistrationButtonClick = useCallback(() => {

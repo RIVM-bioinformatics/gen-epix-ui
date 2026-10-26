@@ -98,7 +98,7 @@ export const MapWidget = () => {
   const [contextMenuConfig, setContextMenuConfig] = useState<ContextMenuConfigWithPosition | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<EChartsReact>(null);
-  const { dimensions: { height, width } } = useDimensions(containerRef);
+  const { dimensions: { height, width } } = useDimensions(containerRef, undefined);
 
   const dashboardContext = use(DashboardContext);
   const dashboardStore = use(DashboardStoreContext);

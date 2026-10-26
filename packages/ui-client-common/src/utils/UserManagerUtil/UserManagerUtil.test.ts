@@ -4,6 +4,7 @@ import {
   it,
   vi,
 } from 'vitest';
+import { container } from 'tsyringe';
 import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
@@ -15,7 +16,9 @@ describe('UserManagerUtil', () => {
       const mockWindow = {
         location: { href: 'https://example.com/somepath?someQuery=123' },
       } as unknown as Window;
-      vi.spyOn(WindowService.getInstance(), 'window', 'get').mockReturnValue(mockWindow as unknown as typeof globalThis & Window);
+      const windowService = WindowService.getInstance();
+      container.registerInstance(WindowService, windowService);
+      vi.spyOn(windowService, 'window', 'get').mockReturnValue(mockWindow as unknown as typeof globalThis & Window);
 
       const oidcConfiguration: Partial<CommonDbIdentityProvider> = {
         client_id: 'client-id-123',

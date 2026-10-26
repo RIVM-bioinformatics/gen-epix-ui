@@ -16,9 +16,9 @@ import { OmopDbStandardConfigUtil } from './OmopDbStandardConfigUtil';
 const createConfig = () => OmopDbStandardConfigUtil.createConfig();
 
 const mockLocation = (href: string): void => {
-  vi.spyOn(WindowService, 'getInstance').mockReturnValue({
-    window: { document: { location: { href } } },
-  } as unknown as WindowService);
+  vi.spyOn(container.resolve(WindowService), 'window', 'get').mockReturnValue({
+    document: { location: { href } },
+  } as unknown as typeof globalThis & Window);
 };
 
 beforeAll(async () => {

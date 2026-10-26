@@ -332,7 +332,7 @@ export const UploadMapSequences = () => {
       </Box>
       <TableStoreContextProvider store={tableStore}>
         <Table
-          font={theme['gen-epix-ui-client-casedb'].lineList.font}
+          font={theme.components.GenEpixUiClientCasedbLineList.font}
           rowHeight={7}
         />
         <UploadNavigation

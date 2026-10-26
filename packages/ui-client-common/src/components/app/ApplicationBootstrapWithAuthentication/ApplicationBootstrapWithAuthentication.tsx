@@ -16,8 +16,8 @@ import {
   Button,
 } from '@mui/material';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { API_SYSTEM_TOKEN } from '../../../constants/api.constants';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
@@ -52,7 +52,7 @@ export const ApplicationBootstrapWithAuthentication = ({ children }: PropsWithCh
   }, [outagesQuery.data]);
 
   const onRetryButtonClick = useCallback(() => {
-    WindowService.getInstance().window.location.reload();
+    container.resolve(WindowService).window.location.reload();
   }, []);
 
   const onContinuButtonClick = useCallback(() => {
@@ -64,12 +64,13 @@ export const ApplicationBootstrapWithAuthentication = ({ children }: PropsWithCh
       setCategorizedOutages(categorizedOutages);
     }
 
-    const timeout = WindowService.getInstance().window.setTimeout(() => {
+    const windowService = container.resolve(WindowService);
+    const timeout = windowService.window.setTimeout(() => {
       setButtonsEnabled(true);
     }, 5000);
 
     return () => {
-      WindowService.getInstance().window.clearTimeout(timeout);
+      windowService.window.clearTimeout(timeout);
     };
   }, [categorizedOutages, setCategorizedOutages]);
 

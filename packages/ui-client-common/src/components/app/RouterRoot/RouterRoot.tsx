@@ -20,9 +20,9 @@ import {
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 import { useTranslation } from 'react-i18next';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { API_AUTH_TOKEN } from '../../../constants/api.constants';
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
@@ -119,8 +119,9 @@ export const RouterRoot = () => {
       container.resolve(AuthenticationService).next(undefined);
       return null;
     }
-    WindowService.getInstance().window.userManager = new UserManager(UserManagerUtil.getSettings(oidcConfiguration));
-    return WindowService.getInstance().window.userManager;
+    const windowService = container.resolve(WindowService);
+    windowService.window.userManager = new UserManager(UserManagerUtil.getSettings(oidcConfiguration));
+    return windowService.window.userManager;
   }, [availableIdentityProviders, identityProvidersWithAvailability, oidcConfiguration]);
 
   const onSignin = useCallback(() => {

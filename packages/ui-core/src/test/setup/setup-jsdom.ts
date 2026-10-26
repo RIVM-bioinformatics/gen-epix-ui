@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 

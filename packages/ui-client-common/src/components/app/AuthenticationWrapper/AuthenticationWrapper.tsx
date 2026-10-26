@@ -4,6 +4,7 @@ import {
   Button,
   Typography,
 } from '@mui/material';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import {
   useCallback,
   useEffect,
@@ -16,7 +17,6 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
@@ -63,7 +63,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   const login = useCallback(() => {
     const perform = async () => {
-      const { hash, pathname, search } = WindowService.getInstance().window.location;
+      const { hash, pathname, search } = container.resolve(WindowService).window.location;
 
       const state: AuthState = {
         preLoginLocation: {

@@ -9,7 +9,8 @@ export const setupTestEnvironment = () => {
     ...SeqDbStandardConfigUtil.createConfig(),
     theme: createSeqDbDemoTheme('light'),
   };
-  setupSeqDb(DependencyContainerUtil.createContainer(config));
+  DependencyContainerUtil.registerConfig(config);
+  setupSeqDb();
 };
 
 setupTestEnvironment();

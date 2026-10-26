@@ -1,8 +1,10 @@
-import { HmrUtil } from '../../../utils/HmrUtil';
+import {
+  container,
+  singleton,
+} from 'tsyringe';
 
+@singleton()
 export class WindowService {
-  private static __instance: WindowService;
-
   public get body(): HTMLBodyElement {
     return this.document ? this.document.body as HTMLBodyElement : null;
   }
@@ -15,12 +17,10 @@ export class WindowService {
     return globalThis as typeof globalThis & Window;
   }
 
-  private constructor() {
-    //
-  }
-
   public static getInstance(): WindowService {
-    WindowService.__instance = HmrUtil.getHmrSingleton('windowService', WindowService.__instance, () => new WindowService());
-    return WindowService.__instance;
+    if (!container.isRegistered(WindowService)) {
+      container.registerSingleton(WindowService);
+    }
+    return container.resolve(WindowService);
   }
 }

@@ -1,5 +1,7 @@
 // @vitest-environment jsdom
 
+import { container } from 'tsyringe';
+
 import { KeyboardShortcutService } from './KeyboardShortcutService';
 
 const MODIFIER_KEYS = [
@@ -28,8 +30,12 @@ describe('KeyboardShortcutService', () => {
   let keyboardShortcutService: KeyboardShortcutService;
 
   beforeEach(() => {
-    KeyboardShortcutService['__instance'] = undefined;
+    container.reset();
     keyboardShortcutService = KeyboardShortcutService.getInstance();
+  });
+
+  it('resolves the registered service instance', () => {
+    expect(KeyboardShortcutService.getInstance()).toBe(keyboardShortcutService);
   });
 
   it.each(MODIFIER_KEYS)('recognizes %s as a modifier', (modifier) => {

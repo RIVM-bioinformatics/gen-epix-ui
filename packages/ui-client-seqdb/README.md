@@ -41,6 +41,7 @@ import {
   SeqDbApp,
 } from '@gen-epix/ui-client-seqdb/components/app/SeqDbApp';
 import { setupSeqDb } from '@gen-epix/ui-client-seqdb/setup/setup';
+import { container } from 'tsyringe';
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
@@ -48,12 +49,12 @@ const init = async () => {
   const config = {
     // provide a SeqDbConfig implementation here
   };
-  const container = DependencyContainerUtil.createContainer(config);
+  DependencyContainerUtil.registerConfig(config);
 
   await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {
       return Promise.resolve(
-        WindowService.getInstance().window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE)
+        container.resolve(WindowService).window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE)
           ?? window.navigator.language.split('-')[0]
           ?? 'en',
       );
@@ -74,14 +75,14 @@ const init = async () => {
     ],
     setNewLanguageCode: async (code: string) => {
       return Promise.resolve(
-        WindowService.getInstance().window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code),
+        container.resolve(WindowService).window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code),
       );
     },
   });
 
-  setupSeqDb(container);
+  setupSeqDb();
 
-  createRoot(document.getElementById('root')!).render(<SeqDbApp container={container} />);
+  createRoot(document.getElementById('root')!).render(<SeqDbApp />);
 };
 
 init().catch((error) => {

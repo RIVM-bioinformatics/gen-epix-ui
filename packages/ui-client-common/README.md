@@ -45,6 +45,7 @@ import { App } from '@gen-epix/ui-client-common/components/app/App';
 import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 import { setupClientCommon } from '@gen-epix/ui-client-common/setup/setup';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { container } from 'tsyringe';
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
@@ -52,12 +53,12 @@ const init = async () => {
   const config = {
     // provide a ConfigBase implementation here
   };
-  const container = DependencyContainerUtil.createContainer(config);
+  DependencyContainerUtil.registerConfig(config);
 
   await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {
       return Promise.resolve(
-        WindowService.getInstance().window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE)
+        container.resolve(WindowService).window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE)
           ?? window.navigator.language.split('-')[0]
           ?? 'en',
       );
@@ -68,14 +69,14 @@ const init = async () => {
     ],
     setNewLanguageCode: async (code: string) => {
       return Promise.resolve(
-        WindowService.getInstance().window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code),
+        container.resolve(WindowService).window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code),
       );
     },
   });
 
   setupClientCommon();
 
-  createRoot(document.getElementById('root')!).render(<App container={container} />);
+  createRoot(document.getElementById('root')!).render(<App />);
 };
 
 init().catch((error) => {

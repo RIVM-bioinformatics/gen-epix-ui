@@ -8,15 +8,15 @@ import {
 } from 'vitest';
 import { container } from 'tsyringe';
 import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import i18next from 'i18next';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { SeqDbStandardConfigUtil } from './SeqDbStandardConfigUtil';
 
 const mockLocation = (href: string): void => {
-  vi.spyOn(WindowService, 'getInstance').mockReturnValue({
-    window: { document: { location: { href } } },
-  } as unknown as WindowService);
+  vi.spyOn(container.resolve(WindowService), 'window', 'get').mockReturnValue({
+    document: { location: { href } },
+  } as unknown as typeof globalThis & Window);
 };
 
 beforeAll(async () => {

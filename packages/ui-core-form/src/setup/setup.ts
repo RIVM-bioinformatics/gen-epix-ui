@@ -16,7 +16,7 @@ type CustomValidation = {
   name: string;
 };
 
-export const setupYup = () => {
+export const setupUiCoreForm = () => {
   setLocale({
     array: {
       max: t('Should contain at most ${max} option(s)'),

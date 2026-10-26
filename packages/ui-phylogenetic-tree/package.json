@@ -10,9 +10,17 @@
   "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
   "type": "module",
   "exports": {
+    "./types": {
+      "types": "./src/@types/ui-phylogenetic-tree.d.ts",
+      "import": "./src/@types/ui-phylogenetic-tree.d.ts"
+    },
     "./components/PhylogeneticTree": {
       "types": "./src/components/PhylogeneticTree/index.ts",
       "import": "./src/components/PhylogeneticTree/index.ts"
+    },
+    "./models/theme.models": {
+      "types": "./src/models/theme.models.ts",
+      "import": "./src/models/theme.models.ts"
     },
     "./models/tree.models": {
       "types": "./src/models/tree.models.ts",
@@ -62,25 +70,36 @@
     "eslint": "10.12.0",
     "jsdom": "30.1.2",
     "playwright": "1.64.1",
+    "reflect-metadata": "0.2.2",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "typescript": "6.0.3",
     "vite": "8.3.4",
     "vite-plugin-dts": "5.1.2",
     "vitest": "5.0.4",
-    "vitest-browser-react": "2.3.0"
+    "vitest-browser-react": "2.3.0",
+    "tsyringe": "4.10.0"
   },
   "peerDependencies": {
     "@gen-epix/ui-core": "workspace:^",
     "@mui/material": "*",
-    "react": "*"
+    "react": "*",
+    "tsyringe": "*"
   },
   "publishConfig": {
     "access": "public",
     "exports": {
+      "./types": {
+        "types": "./dist/@types/ui-phylogenetic-tree.d.ts",
+        "import": "./dist/@types/ui-phylogenetic-tree.d.ts"
+      },
       "./components/PhylogeneticTree": {
         "types": "./dist/components/PhylogeneticTree/index.d.ts",
         "import": "./dist/components/PhylogeneticTree/index.js"
+      },
+      "./models/theme.models": {
+        "types": "./dist/models/theme.models.d.ts",
+        "import": "./dist/models/theme.models.js"
       },
       "./models/tree.models": {
         "types": "./dist/models/tree.models.d.ts",

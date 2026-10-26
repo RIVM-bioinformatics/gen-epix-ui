@@ -3,69 +3,40 @@ import {
   describe,
   expect,
   it,
-  vi,
 } from 'vitest';
-import { createElement } from 'react';
-import type { PropsWithChildren } from 'react';
 import { renderHook } from '@testing-library/react';
-import { container } from 'tsyringe';
-import type { CoreComponentsConfig } from '@gen-epix/ui-core-components/context/CoreComponentsConfigContext';
 
 import type { ConfigBase } from '../../models/config.models';
-import { ClientCommonConfigContext } from '../../context/ClientCommonConfigContext';
-import type { ClientCommonConfig } from '../../context/ClientCommonConfigContext';
+import { createDemoTheme } from '../../theme/demoTheme';
+import { StandardConfigUtil } from '../../utils/StandardConfigUtil';
+import { DependencyContainerUtil } from '../../utils/DependencyContainerUtil';
 
 import { useConfig } from './useConfig';
 
 type TestConfig = {
-  customLabel: string;
+  customValue: string;
 } & ConfigBase;
 
-const config = {
-  applicationName: 'Test application',
-  customLabel: 'Custom setting',
-} as TestConfig;
-
-const clientCommonConfig: ClientCommonConfig<TestConfig> = {
-  config,
-  container,
-  coreComponentsConfig: {
-    spinner: {
-      defaultCircularProgressSize: 24,
-      defaultTakingLongerTimeoutMs: 1000,
-    },
-  } satisfies CoreComponentsConfig,
+const INITIAL_CONFIG: ConfigBase = {
+  ...StandardConfigUtil.createConfig(),
+  theme: createDemoTheme('light'),
 };
-
-const wrapper = ({ children }: PropsWithChildren) => createElement(
-  ClientCommonConfigContext.Provider,
-  { value: clientCommonConfig },
-  children,
-);
 
 describe('useConfig', () => {
   afterEach(() => {
-    vi.restoreAllMocks();
+    DependencyContainerUtil.registerConfig(INITIAL_CONFIG);
   });
 
-  it('returns the context configuration using the default type', () => {
-    const { result } = renderHook(() => useConfig(), { wrapper });
+  it('returns the configuration registered in the shared container', () => {
+    const config: TestConfig = {
+      ...INITIAL_CONFIG,
+      customValue: 'custom',
+    };
+    DependencyContainerUtil.registerConfig(config);
+
+    const { result } = renderHook(() => useConfig<TestConfig>());
 
     expect(result.current).toBe(config);
-  });
-
-  it('preserves a caller-provided extended config type', () => {
-    const { result } = renderHook(() => useConfig<TestConfig>(), { wrapper });
-
-    expect(result.current).toBe(config);
-    expect(result.current.customLabel).toBe('Custom setting');
-  });
-
-  it('throws when the client configuration context is unavailable', () => {
-    vi.spyOn(console, 'error').mockImplementation(() => undefined);
-
-    expect(() => renderHook(() => useConfig())).toThrowError(
-      new Error('ClientCommonConfigContext is not available'),
-    );
+    expect(result.current.customValue).toBe('custom');
   });
 });

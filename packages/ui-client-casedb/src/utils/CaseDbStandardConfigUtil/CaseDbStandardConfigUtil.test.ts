@@ -18,9 +18,9 @@ import { CaseDbStandardConfigUtil } from './CaseDbStandardConfigUtil';
 const createConfig = () => CaseDbStandardConfigUtil.createConfig();
 
 const mockLocation = (href: string): void => {
-  vi.spyOn(WindowService, 'getInstance').mockReturnValue({
-    window: { document: { location: { href } } },
-  } as unknown as WindowService);
+  vi.spyOn(container.resolve(WindowService), 'window', 'get').mockReturnValue({
+    document: { location: { href } },
+  } as unknown as typeof globalThis & Window);
 };
 
 beforeAll(async () => {

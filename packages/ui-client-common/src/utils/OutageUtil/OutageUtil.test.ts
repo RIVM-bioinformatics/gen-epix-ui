@@ -24,7 +24,7 @@ const addHoursToNow = (hours: number): string => {
 describe('OutageUtil', () => {
   describe('filterOutages', () => {
     beforeAll(() => {
-      DependencyContainerUtil.createContainer({
+      DependencyContainerUtil.registerConfig({
         outages: {
           NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES: 8,
         },

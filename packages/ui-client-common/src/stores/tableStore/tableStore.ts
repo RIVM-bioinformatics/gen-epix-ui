@@ -10,9 +10,10 @@ import {
   createJSONStorage,
   persist,
 } from 'zustand/middleware';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { container } from 'tsyringe';
 import type { UnwrapArray } from '@gen-epix/ui-core/models/generic.models';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import {
   DEFAULT_FILTER_GROUP,
@@ -400,7 +401,7 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
         frontendFilters: Object.fromEntries(frontendFilterPriorities.map(filterPriority => [filterPriority, filters.filter(filter => filter.filterPriority === filterPriority)])),
       });
       if (navigateFunction) {
-        const searchParams = new URLSearchParams(WindowService.getInstance().window.document.location.search);
+        const searchParams = new URLSearchParams(container.resolve(WindowService).window.document.location.search);
         filters.forEach(filter => {
           const searchParamStringValue = searchParams.get(filter.id);
           if (!searchParamStringValue) {

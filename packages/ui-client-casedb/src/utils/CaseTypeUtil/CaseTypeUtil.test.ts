@@ -15,6 +15,7 @@ import type {
   CaseDbRefCol,
   CaseDbRefDim,
 } from '@gen-epix/api-casedb';
+import { container } from 'tsyringe';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { CaseTypeUtil } from './CaseTypeUtil';
@@ -109,7 +110,7 @@ describe('CaseTypeUtil.createCaseTypeLink', () => {
 
     expect(CaseTypeUtil.createCaseTypeLink(caseType)).toBe(relativeLink);
     expect(CaseTypeUtil.createCaseTypeLink(caseType, false)).toBe(relativeLink);
-    expect(CaseTypeUtil.createCaseTypeLink(caseType, true)).toBe(`${WindowService.getInstance().window.location.origin}${relativeLink}`);
+    expect(CaseTypeUtil.createCaseTypeLink(caseType, true)).toBe(`${container.resolve(WindowService).window.location.origin}${relativeLink}`);
   });
 });
 

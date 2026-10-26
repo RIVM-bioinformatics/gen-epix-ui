@@ -10,18 +10,25 @@ import {
 } from '@mui/material';
 
 export const createCaseDbDemoThemeOptions = (paletteMode: PaletteMode): ThemeOptions => {
+  const commonThemeOptions = createDemoThemeOptions(paletteMode);
   const themeOptions: ThemeOptions = {
-    ...createDemoThemeOptions(paletteMode),
-    'gen-epix-ui-client-casedb': {
-      lineList: {
+    ...commonThemeOptions,
+    components: {
+      ...commonThemeOptions.components,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      GenEpixUiClientCasedbLineList: {
         font: '0.8rem "Noto Sans Mono"',
       },
-      tree: {
-        color: '#000',
-        dimFn: (color: string) => lighten(color, 0.8),
-        font: 'bold 0.7rem "Noto Sans Mono"',
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      GenEpixUiPhylogeneticTree: {
+        defaultProps: {
+          dimFn: (color: string) => lighten(color, 0.8),
+        },
+        labelFont: '0.8rem "Noto Sans Mono"',
+        scaleFont: 'bold 0.8rem "Noto Sans Mono"',
         supportLineColorLinked: '#000',
         supportLineColorUnlinked: lighten('#000', 0.75),
+        treeColor: '#000',
       },
     },
   };

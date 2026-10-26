@@ -595,8 +595,6 @@ export const TreeWidget = () => {
             ancestorDotRadius={treeConfig.ANCESTOR_DOT_RADIUS}
             ariaLabel={treeCanvasAriaLabel}
             backgroundColor={theme.palette.background.paper}
-            dimFn={theme['gen-epix-ui-client-casedb'].tree.dimFn}
-            fontFamily={theme.typography.fontFamily}
             headerHeight={treeConfig.HEADER_HEIGHT}
             highlightedNodeNamesSubject={phylogeneticTreeHighlightedNodeNamesSubject}
             initialViewState={initialTreeViewState}
@@ -624,11 +622,7 @@ export const TreeWidget = () => {
             shouldShowDistances={isShowDistancesEnabled}
             shouldShowSupportLinesWhenUnlinked={isShowSupportLinesWhenUnlinkedEnabled}
             sortedLeafNames={sortedLeafNames}
-            supportLineColorLinked={theme['gen-epix-ui-client-casedb'].tree.supportLineColorLinked}
-            supportLineColorUnlinked={theme['gen-epix-ui-client-casedb'].tree.supportLineColorUnlinked}
             tree={tree}
-            treeColor={theme['gen-epix-ui-client-casedb'].tree.color}
-            treeFont={theme['gen-epix-ui-client-casedb'].tree.font}
             treePadding={treeConfig.TREE_PADDING}
             visibleRangeSubject={dashboardContext.lineListRangeSubject}
           />
