@@ -29,7 +29,7 @@ import {
   TableFiltersSidebarItem,
   TableFiltersSidebarItemIcon,
 } from '@gen-epix/ui-client-common/components/ui/Table';
-import { KeyboardShortcutService } from '@gen-epix/ui-core/classes/services/KeyboardShortcutService';
+import { KEYBOARD_SHORTCUT_SERVICE_TOKEN } from '@gen-epix/ui-client-common/constants/api.constants';
 
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import type { CaseSetInfoDialogRefMethods } from '../CaseSetInfoDialog';
@@ -134,13 +134,13 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
 
   useEffect(() => {
     const removers = [
-      KeyboardShortcutService.getInstance().registerShortcut({ callback: () => {
+      container.resolve(KEYBOARD_SHORTCUT_SERVICE_TOKEN).registerShortcut({ callback: () => {
         setIsFilterSidebarOpen(x => !x);
       }, key: 'f' }),
-      KeyboardShortcutService.getInstance().registerShortcut({ callback: () => {
+      container.resolve(KEYBOARD_SHORTCUT_SERVICE_TOKEN).registerShortcut({ callback: () => {
         setIsSettingsSidebarOpen(x => !x);
       }, key: 's' }),
-      KeyboardShortcutService.getInstance().registerShortcut({ callback: () => {
+      container.resolve(KEYBOARD_SHORTCUT_SERVICE_TOKEN).registerShortcut({ callback: () => {
         caseTypeInfoDialogRef.current.open();
       }, key: 'i' }),
     ];

@@ -6,10 +6,8 @@ import {
 } from 'tsyringe';
 import type { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import {
-  CONFIG_TOKEN,
-  WINDOW_SERVICE_TOKEN,
-} from '../../../constants/config.constants';
+import { CONFIG_TOKEN } from '../../../constants/config.constants';
+import { WINDOW_SERVICE_TOKEN } from '../../../constants/api.constants';
 import type { ConfigBase } from '../../../models/config.models';
 
 

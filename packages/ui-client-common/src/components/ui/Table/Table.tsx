@@ -47,10 +47,10 @@ import { TableVirtuoso } from 'react-virtuoso';
 import { useDebouncedCallback } from 'use-debounce';
 import { useShallow } from 'zustand/shallow';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import type { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { useScrollbarSize } from '@gen-epix/ui-core/hooks/useScrollbarSize';
 
+import { WINDOW_SERVICE_TOKEN } from '../../../constants/api.constants';
 import { PageEventBusService } from '../../../classes/services/PageEventBusService';
 import { useConfig } from '../../../hooks/useConfig';
 import type {
@@ -128,6 +128,7 @@ export const Table = <TRowData, TDataContext = null>({
   const theme = useTheme();
   const { t } = useTranslation();
   const config = useConfig();
+  const windowService = container.resolve(WINDOW_SERVICE_TOKEN);
   const tableStore = useTableStoreContext<TRowData, TDataContext>();
 
   const { DEFAULT_OVERSCAN_MAIN, DEFAULT_OVERSCAN_REVERSE } = config.table;
@@ -399,12 +400,11 @@ export const Table = <TRowData, TDataContext = null>({
       updateColumnSizesInVisualSettings();
       updateColumnOrderInDOM();
     };
-    const windowService = WindowService.getInstance();
     windowService.window.addEventListener('resize', onWindowResize);
     return () => {
       windowService.window.removeEventListener('resize', onWindowResize);
     };
-  }, [updateColumnOrderInDOM, updateColumnSizesInVisualSettings]);
+  }, [updateColumnOrderInDOM, updateColumnSizesInVisualSettings, windowService.window]);
 
   const calculateColumnBoundaries = useCallback((tableColumn: TableColumn<TRowData, TDataContext>) => {
     const visibleTableSettingsColumns = getVisibleTableSettingsColumns();
@@ -441,7 +441,7 @@ export const Table = <TRowData, TDataContext = null>({
 
     if (event.type === 'start') {
       // Prevent a horizontal scroll on the entire page when dragging the column
-      WindowService.getInstance().body.style.setProperty('overflow', 'hidden');
+      windowService.body.style.setProperty('overflow', 'hidden');
 
       // Prevent text selection while dragging
       tableContainer?.style.setProperty('--selection-background', 'none');
@@ -465,13 +465,13 @@ export const Table = <TRowData, TDataContext = null>({
         filter: blur(0.5px);
         box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.5);
       `;
-      WindowService.getInstance().body.appendChild(dragConfigRef.current.clonedElement);
+      windowService.body.appendChild(dragConfigRef.current.clonedElement);
     }
     if (event.type === 'end') {
       // Restore the original behaviors and styles
-      WindowService.getInstance().body.style.removeProperty('overflow');
+      windowService.body.style.removeProperty('overflow');
       tableContainer?.style.setProperty('--selection-background', 'highlight');
-      WindowService.getInstance().document.getSelection().empty();
+      windowService.document.getSelection().empty();
       dragConfigRef.current.clonedElement.remove();
       event.target.style.setProperty('opacity', '1');
     }
@@ -489,7 +489,7 @@ export const Table = <TRowData, TDataContext = null>({
         calculateColumnBoundaries(tableColumn);
       }
     }
-  }, [calculateColumnBoundaries, getScrollerElement, moveColumn, tableContainer?.style, theme.zIndex.modal, updateColumnOrderInDOM]);
+  }, [calculateColumnBoundaries, getScrollerElement, moveColumn, tableContainer?.style, theme.zIndex.modal, updateColumnOrderInDOM, windowService.body, windowService.document]);
 
   const renderFixedHeaderContent = useCallback(() => {
     return (

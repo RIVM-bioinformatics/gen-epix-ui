@@ -16,10 +16,10 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
+import { WINDOW_SERVICE_TOKEN } from '../../../constants/api.constants';
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { LogService } from '../../../classes/services/LogService';
 import { useConfig } from '../../../hooks/useConfig';
@@ -63,7 +63,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   const login = useCallback(() => {
     const perform = async () => {
-      const { hash, pathname, search } = WindowService.getInstance().window.location;
+      const { hash, pathname, search } = container.resolve(WINDOW_SERVICE_TOKEN).window.location;
 
       const state: AuthState = {
         preLoginLocation: {

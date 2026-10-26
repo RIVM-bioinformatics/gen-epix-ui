@@ -23,7 +23,6 @@ import {
   string,
 } from 'yup';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { Autocomplete } from '@gen-epix/ui-core-form/components/fields/Autocomplete';
 import type {
@@ -32,7 +31,10 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
-import { API_ORGANIZATION_TOKEN } from '../../../constants/api.constants';
+import {
+  API_ORGANIZATION_TOKEN,
+  WINDOW_SERVICE_TOKEN,
+} from '../../../constants/api.constants';
 import { ResponseHandler } from '../ResponseHandler';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import { NotificationService } from '../../../classes/services/NotificationService';
@@ -82,7 +84,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
   const { handleSubmit } = formMethods;
 
   const onRefreshPageClick = useCallback(() => {
-    WindowService.getInstance().window.location.reload();
+    container.resolve(WINDOW_SERVICE_TOKEN).window.location.reload();
   }, []);
 
   const onFormSubmit = useCallback((formValues: FormFields): void => {

@@ -8,10 +8,8 @@ import { container } from 'tsyringe';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import {
-  CONFIG_TOKEN,
-  WINDOW_SERVICE_TOKEN,
-} from '../../constants/config.constants';
+import { CONFIG_TOKEN } from '../../constants/config.constants';
+import { WINDOW_SERVICE_TOKEN } from '../../constants/api.constants';
 import type { ConfigBase } from '../../models/config.models';
 import { createDemoTheme } from '../../theme/demoTheme';
 import { StandardConfigUtil } from '../StandardConfigUtil';

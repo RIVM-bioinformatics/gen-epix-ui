@@ -28,14 +28,16 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import axios from 'axios';
 import type { CommonDbPackageMetadata } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
-import { API_SYSTEM_TOKEN } from '../../../constants/api.constants';
+import {
+  API_SYSTEM_TOKEN,
+  WINDOW_SERVICE_TOKEN,
+} from '../../../constants/api.constants';
 import { ResponseHandler } from '../ResponseHandler';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { useConfig } from '../../../hooks/useConfig';
@@ -124,7 +126,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
   }, [item, onActionsChange, onClose, t]);
 
   const onItemURLClick = useCallback((url: string) => {
-    WindowService.getInstance().window.open(url, '_blank');
+    container.resolve(WINDOW_SERVICE_TOKEN).window.open(url, '_blank');
   }, []);
 
   const onItemLicenseClick = useCallback((entry: CommonDbPackageMetadata) => {

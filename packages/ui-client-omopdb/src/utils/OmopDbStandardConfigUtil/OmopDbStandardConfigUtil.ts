@@ -1,8 +1,8 @@
 import { container } from 'tsyringe';
 import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
 import { StandardConfigUtil } from '@gen-epix/ui-client-common/utils/StandardConfigUtil';
+import { WINDOW_SERVICE_TOKEN } from '@gen-epix/ui-client-common/constants/api.constants';
 import { t } from 'i18next';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import type { OmopDbConfig } from '../../models/config.models';
 
@@ -64,7 +64,7 @@ export class OmopDbStandardConfigUtil {
       enablePageEvents: false,
 
       getAPIBaseUrl: () => {
-        const { location: { href } } = WindowService.getInstance().window.document;
+        const { location: { href } } = container.resolve(WINDOW_SERVICE_TOKEN).window.document;
         const { hostname } = new URL(href);
         switch (hostname) {
           case '127.0.0.1':
@@ -76,7 +76,7 @@ export class OmopDbStandardConfigUtil {
         }
       },
       getEnvironmentMessage: () => {
-        const { location: { href } } = WindowService.getInstance().window.document;
+        const { location: { href } } = container.resolve(WINDOW_SERVICE_TOKEN).window.document;
         const { hostname } = new URL(href);
         let environment: string;
         switch (hostname) {

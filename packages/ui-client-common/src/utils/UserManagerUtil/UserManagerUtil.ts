@@ -4,13 +4,15 @@ import type {
   UserManagerSettings,
 } from 'oidc-client-ts';
 import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { container } from 'tsyringe';
+
+import { WINDOW_SERVICE_TOKEN } from '../../constants/api.constants';
 
 export class UserManagerUtil {
   public static readonly userManager: UserManager;
 
   public static getSettings(oidcConfiguration: CommonDbIdentityProvider): UserManagerSettings {
-    const url = new URL(WindowService.getInstance().window.location.href);
+    const url = new URL(container.resolve(WINDOW_SERVICE_TOKEN).window.location.href);
     url.search = '';
     url.pathname = '/post-login';
     const redirect_uri = url.toString();

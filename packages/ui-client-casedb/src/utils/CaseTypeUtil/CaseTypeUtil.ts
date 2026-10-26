@@ -11,8 +11,9 @@ import {
   CaseDbColType,
   CaseDbDimType,
 } from '@gen-epix/api-casedb';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { container } from 'tsyringe';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import { WINDOW_SERVICE_TOKEN } from '@gen-epix/ui-client-common/constants/api.constants';
 
 
 export const SELECTION_FILTER_GROUP = 'selection';
@@ -22,7 +23,7 @@ export class CaseTypeUtil {
   public static createCaseTypeLink(caseType: CaseDbCaseType | CaseDbCompleteCaseType, full?: boolean): string {
     const path = `/cases/${StringUtil.createSlug(caseType.name)}/${caseType.id}`;
     if (full) {
-      return `${WindowService.getInstance().window.location.origin}${path}`;
+      return `${container.resolve(WINDOW_SERVICE_TOKEN).window.location.origin}${path}`;
     }
     return path;
   }

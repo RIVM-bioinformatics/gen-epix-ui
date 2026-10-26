@@ -9,7 +9,10 @@ import type {
   NavigateOptions,
   To,
 } from 'react-router-dom';
+import { container } from 'tsyringe';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
+import { WINDOW_SERVICE_TOKEN } from '../../constants/api.constants';
 import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
@@ -33,6 +36,8 @@ import {
   createTableStorePersistConfiguration,
   updateSearchParams,
 } from './tableStore';
+
+container.registerInstance(WINDOW_SERVICE_TOKEN, WindowService.getInstance());
 
 type TestNavigateFunction = (destination: number | To, options?: NavigateOptions) => void;
 

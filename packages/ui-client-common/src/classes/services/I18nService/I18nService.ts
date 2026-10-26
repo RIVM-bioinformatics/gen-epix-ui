@@ -10,7 +10,7 @@ import {
   singleton,
 } from 'tsyringe';
 
-import { WINDOW_SERVICE_TOKEN } from '../../../constants/config.constants';
+import { WINDOW_SERVICE_TOKEN } from '../../../constants/api.constants';
 
 export type LanguageConfig = {
   bundles: string[];

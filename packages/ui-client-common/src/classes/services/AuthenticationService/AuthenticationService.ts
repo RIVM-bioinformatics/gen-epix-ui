@@ -14,7 +14,7 @@ import { AuthorizationService } from '../AuthorizationService';
 import type { AuthState } from '../../../models/auth.models';
 import { oidcStore } from '../../../stores/oidcStore';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
-import { WINDOW_SERVICE_TOKEN } from '../../../constants/config.constants';
+import { WINDOW_SERVICE_TOKEN } from '../../../constants/api.constants';
 
 export const createdAtMetaDataKey = Symbol('createdAt');
 
