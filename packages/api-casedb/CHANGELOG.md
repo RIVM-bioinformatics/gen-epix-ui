@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.4.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v4.4.0...api-casedb-v4.4.1) (2026-10-26)
+
+
+### Bug Fixes
+
+* add unit tests and optimize implementation ([4f96ee8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4f96ee8e79dd83f706086ebaaf59e293b818f510))
+
 ## [4.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v4.3.1...api-casedb-v4.4.0) (2026-10-14)
 
 
