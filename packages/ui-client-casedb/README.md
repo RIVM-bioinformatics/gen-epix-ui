@@ -40,6 +40,7 @@ import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nSer
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { CaseDbApp } from '@gen-epix/ui-client-casedb/components/app/CaseDbApp';
 import { setupCaseDb } from '@gen-epix/ui-client-casedb/setup/setup';
+import { container } from 'tsyringe';
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
@@ -52,7 +53,7 @@ const init = async () => {
   await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {
       return Promise.resolve(
-        WindowService.getInstance().window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE)
+        container.resolve(WindowService).window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE)
           ?? window.navigator.language.split('-')[0]
           ?? 'en',
       );
@@ -73,7 +74,7 @@ const init = async () => {
     ],
     setNewLanguageCode: async (code: string) => {
       return Promise.resolve(
-        WindowService.getInstance().window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code),
+        container.resolve(WindowService).window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code),
       );
     },
   });
