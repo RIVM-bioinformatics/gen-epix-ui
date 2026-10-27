@@ -13,6 +13,8 @@ import dts from 'vite-plugin-dts';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vitest/config';
+import type { Target } from 'vite-plugin-static-copy';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { esmExternalRequirePlugin } from 'vite';
 
 type PackageManifest = {
@@ -97,6 +99,20 @@ export default defineConfig({
       entryRoot: './src',
       insertTypesEntry: false,
       tsconfigPath: './tsconfig.build.json',
+    }),
+    viteStaticCopy({
+      targets: ([
+        {
+          dest: '@types',
+          rename: { stripBase: true },
+          src: [
+            './src/@types/**/*.d.ts',
+          ],
+        },
+      ] satisfies Target[]).filter((target) => {
+        const sources = Array.isArray(target.src) ? target.src : [target.src];
+        return sources.some((pattern) => globSync(pattern).length > 0);
+      }),
     }),
   ],
   test: {
