@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-omopdb-v4.4.1...api-omopdb-v4.5.0) (2026-10-27)
+
+
+### Features
+
+* update dependencies ([6a41e8f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/6a41e8f267c3f257e28331badaf0c0b27a9940c4))
+
 ## [4.4.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-omopdb-v4.4.0...api-omopdb-v4.4.1) (2026-10-26)
 
 

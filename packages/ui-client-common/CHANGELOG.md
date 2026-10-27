@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v4.5.1...ui-client-common-v4.6.0) (2026-10-27)
+
+
+### Features
+
+* update dependencies ([6a41e8f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/6a41e8f267c3f257e28331badaf0c0b27a9940c4))
+
 ## [4.5.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v4.5.0...ui-client-common-v4.5.1) (2026-10-26)
 
 
