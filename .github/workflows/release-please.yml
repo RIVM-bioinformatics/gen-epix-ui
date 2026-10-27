@@ -70,6 +70,7 @@ jobs:
   publish:
     needs: release-please
     if: ${{ needs.release-please.outputs.releases-created == 'true' }}
+    name: Publish ${{ matrix.package }}
     strategy:
       matrix:
         include:
