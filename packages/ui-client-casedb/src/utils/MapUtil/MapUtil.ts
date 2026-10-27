@@ -84,7 +84,7 @@ export class MapUtil {
     const { numCases: totalNumCases, statisticsPerRegion } = MapUtil.getRegionStatistics(sortedData, col.id, regions);
 
     const pieChartOptionsBase: Partial<PieSeriesOption> = {
-      animation: false,
+      animation: true,
       coordinateSystem: 'geo',
       label: {
         show: false,

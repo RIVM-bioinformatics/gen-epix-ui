@@ -620,7 +620,7 @@ export const DataCollectionVisualizationPage = () => {
     return items.length > 0 ? items.join(', ') : t`None`;
   }, [t]);
 
-  const getOptions = useCallback(() => {
+  const options = useMemo(() => {
     return {
       animation: false,
       series: [
@@ -823,7 +823,7 @@ export const DataCollectionVisualizationPage = () => {
               <EChartsReact
                 echarts={echartsCore}
                 notMerge
-                option={getOptions()}
+                option={options}
                 style={{
                   height: '100%',
                   width: '100%',

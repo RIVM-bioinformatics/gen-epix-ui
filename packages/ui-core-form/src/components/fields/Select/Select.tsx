@@ -127,7 +127,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
           error={hasError}
           input={(
             <OutlinedInput
-              endAdornment={disabled ? undefined : (
+              endAdornment={disabled || required ? undefined : (
                 <InputAdornment
                   position={'start'}
                   sx={{

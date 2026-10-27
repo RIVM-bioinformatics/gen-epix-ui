@@ -27,9 +27,9 @@ import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
-import { Autocomplete } from '@gen-epix/ui-core-form/components/fields/Autocomplete';
 import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form.models';
 import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
+import { Select } from '@gen-epix/ui-core-form/components/fields/Select';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { EventBusService } from '../../../classes/services/EventBusService';
@@ -150,13 +150,13 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
             autoComplete={'off'}
             onSubmit={onSubmit}
           >
-            <Autocomplete
-              disabled={geneticSequenceColOptions.length < 2}
+            <Select
               label={t`Genetic sequence column`}
               name={'geneticSequenceColId'}
               // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
               onChange={(value: string) => setGeneticSequenceColId(value)}
               options={geneticSequenceColOptions}
+              required
             />
           </form>
         </FormProvider>

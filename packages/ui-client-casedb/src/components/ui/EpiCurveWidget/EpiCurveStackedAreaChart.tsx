@@ -119,58 +119,56 @@ export const EpiCurveStackedAreaChart = ({
     return caseIdsByColor[referenceColor] ?? candidateCaseIds;
   }, [caseIdsByColor, stratification]);
 
-  const getOptions = useCallback(() => {
-    return {
-      color: StratificationUtil.getEchartsColors(stratification, theme),
-      grid: {
-        bottom: 64,
-        left: 48,
-        right: 8,
-        top: 16,
-      },
-      series: seriesData.series,
-      tooltip: {
-        formatter: (params) => {
-          const typedParams = params as Array<{ marker?: string; name: string; seriesIndex: number; seriesName: string; value: number[] }>;
-          if (!typedParams?.length) {
-            return '';
-          }
+  const option = useMemo(() => ({
+    color: StratificationUtil.getEchartsColors(stratification, theme),
+    grid: {
+      bottom: 64,
+      left: 48,
+      right: 8,
+      top: 16,
+    },
+    series: seriesData.series,
+    tooltip: {
+      formatter: (params) => {
+        const typedParams = params as Array<{ marker?: string; name: string; seriesIndex: number; seriesName: string; value: number[] }>;
+        if (!typedParams?.length) {
+          return '';
+        }
 
-          const header = typedParams[0].name;
-          const hoveredSeriesIndex = hoveredSeriesIndexRef.current;
-          const lines = typedParams.map(param => {
-            const line = `${param.marker ?? ''}${param.seriesName} (${Number(param.value[1]).toFixed(1)}%)`;
-            if (hoveredSeriesIndex !== null && param.seriesIndex === hoveredSeriesIndex) {
-              return `<b>${line}</b>`;
-            }
-            return line;
-          });
-          return [header, ...lines].join('<br/>');
-        },
+        const header = typedParams[0].name;
+        const hoveredSeriesIndex = hoveredSeriesIndexRef.current;
+        const lines = typedParams.map(param => {
+          const line = `${param.marker ?? ''}${param.seriesName} (${Number(param.value[1]).toFixed(1)}%)`;
+          if (hoveredSeriesIndex !== null && param.seriesIndex === hoveredSeriesIndex) {
+            return `<b>${line}</b>`;
+          }
+          return line;
+        });
+        return [header, ...lines].join('<br/>');
+      },
+      show: true,
+      trigger: 'axis',
+      triggerOn: 'mousemove',
+    },
+    xAxis: {
+      axisLabel: {
+        height: 100,
+        rotate: 45,
+      },
+      axisTick: {
+        alignWithLabel: true,
         show: true,
-        trigger: 'axis',
-        triggerOn: 'mousemove',
       },
-      xAxis: {
-        axisLabel: {
-          height: 100,
-          rotate: 45,
-        },
-        axisTick: {
-          alignWithLabel: true,
-          show: true,
-        },
-        data: xAxisIntervals.map(x => getXAxisLabel(x)),
-        type: 'category',
-      },
-      yAxis: {
-        max: seriesData.max,
-        min: 0,
-        minInterval: 1,
-        type: 'value',
-      },
-    } satisfies EChartsOption;
-  }, [stratification, theme, seriesData.series, seriesData.max, xAxisIntervals, getXAxisLabel]);
+      data: xAxisIntervals.map(x => getXAxisLabel(x)),
+      type: 'category',
+    },
+    yAxis: {
+      max: seriesData.max,
+      min: 0,
+      minInterval: 1,
+      type: 'value',
+    },
+  } satisfies EChartsOption), [stratification, theme, seriesData.series, seriesData.max, xAxisIntervals, getXAxisLabel]);
 
   const setHighlightedSeries = useCallback((seriesIndex: null | number) => {
     const instance = chartInstanceRef.current;
@@ -319,7 +317,7 @@ export const EpiCurveStackedAreaChart = ({
       notMerge
       onChartReady={onInternalChartReady}
       onEvents={onEvents}
-      option={getOptions()}
+      option={option}
       ref={setChartRef}
       style={{
         height: '100%',

@@ -246,6 +246,7 @@ describe('MapUtil', () => {
 
       expect(result.mapCaseCount).toBe(4);
       expect(result.series).toHaveLength(1);
+      expect(result.series[0]).toMatchObject({ animation: true });
       expect(pie.center).toEqual([5, 52]);
       expect(pie.radius).toBe(14);
       expect(radiusSpy).toHaveBeenCalledWith(4);

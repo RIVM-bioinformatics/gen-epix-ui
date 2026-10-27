@@ -199,7 +199,7 @@ export const MapWidget = () => {
     [col, getPieChartRadius, sortedData, regions, stratification],
   );
 
-  const getOptions = useCallback(() => {
+  const options = useMemo(() => {
     if (!regionSetShape) {
       return;
     }
@@ -456,7 +456,7 @@ export const MapWidget = () => {
             notMerge
             onChartReady={onChartReady}
             onEvents={onEvents}
-            option={getOptions()}
+            option={options}
             ref={setChartRef}
             style={{
               height: '100%',

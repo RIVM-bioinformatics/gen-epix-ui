@@ -178,7 +178,7 @@ export const HistogramWidget = () => {
     return HistogramUtil.getColors(aCol, completeCaseType, sortedData);
   }, [completeCaseType, aCol, sortedData]);
 
-  const getOptions = useCallback(() => {
+  const options = useMemo(() => {
     if (!shouldShowGraph) {
       return null;
     }
@@ -460,7 +460,7 @@ export const HistogramWidget = () => {
               notMerge
               onChartReady={onChartReady}
               onEvents={onEvents}
-              option={getOptions()}
+              option={options}
               opts={echartsOpts as unknown}
               ref={setChartRef}
               style={{

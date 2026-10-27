@@ -110,49 +110,47 @@ export const EpiCurveBarChart = ({
     onChartReady?.(chart);
   }, [onChartReady]);
 
-  const getOptions = useCallback(() => {
-    return {
-      grid: {
-        bottom: 64,
-        left: 48,
-        right: 8,
-        top: 16,
-      },
-      series: seriesData.series,
-      tooltip: {
-        formatter: (params) => {
-          const typedParams = params as { name: string; seriesName: string; value: number[] };
+  const option = useMemo(() => ({
+    grid: {
+      bottom: 64,
+      left: 48,
+      right: 8,
+      top: 16,
+    },
+    series: seriesData.series,
+    tooltip: {
+      formatter: (params) => {
+        const typedParams = params as { name: string; seriesName: string; value: number[] };
 
-          // For bar chart, show count
-          if (stratification?.legendaItems?.length) {
-            return `${typedParams.name} - ${typedParams.seriesName} (n=${typedParams.value[1]})`;
-          }
-          return `${typedParams.name} (n=${typedParams.value[1]})`;
-        },
+        // For bar chart, show count
+        if (stratification?.legendaItems?.length) {
+          return `${typedParams.name} - ${typedParams.seriesName} (n=${typedParams.value[1]})`;
+        }
+        return `${typedParams.name} (n=${typedParams.value[1]})`;
+      },
+      show: true,
+      trigger: 'item',
+      triggerOn: 'mousemove',
+    },
+    xAxis: {
+      axisLabel: {
+        height: 100,
+        rotate: 45,
+      },
+      axisTick: {
+        alignWithLabel: true,
         show: true,
-        trigger: 'item',
-        triggerOn: 'mousemove',
       },
-      xAxis: {
-        axisLabel: {
-          height: 100,
-          rotate: 45,
-        },
-        axisTick: {
-          alignWithLabel: true,
-          show: true,
-        },
-        data: xAxisIntervals.map(x => getXAxisLabel(x)),
-        type: 'category',
-      },
-      yAxis: {
-        max: seriesData.max,
-        min: 0,
-        minInterval: 1,
-        type: 'value',
-      },
-    } satisfies EChartsOption;
-  }, [stratification, seriesData.series, seriesData.max, xAxisIntervals, getXAxisLabel]);
+      data: xAxisIntervals.map(x => getXAxisLabel(x)),
+      type: 'category',
+    },
+    yAxis: {
+      max: seriesData.max,
+      min: 0,
+      minInterval: 1,
+      type: 'value',
+    },
+  } satisfies EChartsOption), [stratification, seriesData.series, seriesData.max, xAxisIntervals, getXAxisLabel]);
 
   const onEvents = useMemo<EChartsReactProps['onEvents']>(() => {
     const getCaseIdsFromEvent = (event: unknown): string[] => {
@@ -187,7 +185,7 @@ export const EpiCurveBarChart = ({
       notMerge
       onChartReady={onInternalChartReady}
       onEvents={onEvents}
-      option={getOptions()}
+      option={option}
       ref={setChartRef}
       style={{
         height: '100%',
