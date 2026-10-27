@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.6.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.6.0...ui-phylogenetic-tree-v3.6.1) (2026-10-27)
+
+
+### Bug Fixes
+
+* fix copy@type files during build for ui-phylogenetic-tree ([7b5105f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7b5105f3b7c8221c3d802266ef25b3d575de4554))
+
 ## [3.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.5.2...ui-phylogenetic-tree-v3.6.0) (2026-10-27)
 
 
