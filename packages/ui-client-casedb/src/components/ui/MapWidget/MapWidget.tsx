@@ -97,7 +97,7 @@ export const MapWidget = () => {
   const colLabel = col?.label ?? '';
   const [contextMenuConfig, setContextMenuConfig] = useState<ContextMenuConfigWithPosition | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const chartRef = useRef<EChartsReact>(null);
+  const [chartRef, setChartRef] = useState<EChartsReact>();
   const { dimensions: { height, width } } = useDimensions(containerRef, undefined);
 
   const dashboardContext = use(DashboardContext);
@@ -294,18 +294,18 @@ export const MapWidget = () => {
           }
         });
       });
-      if (!chartRef?.current) {
+      if (!chartRef) {
         return;
       }
 
       if (highlighting.caseIds.length) {
-        chartRef.current.getEchartsInstance()?.dispatchAction({
+        chartRef.getEchartsInstance()?.dispatchAction({
           dataIndex: foundDataIndexes,
           seriesIndex: foundSerieIndexes,
           type: 'highlight',
         });
       } else {
-        chartRef.current.getEchartsInstance()?.dispatchAction({
+        chartRef.getEchartsInstance()?.dispatchAction({
           type: 'downplay',
         });
       }
@@ -400,11 +400,13 @@ export const MapWidget = () => {
         disabled: !canShowWidget,
         items: [
           {
-            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
+            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.getEchartsInstance(), 'png', completeCaseType, t),
+            disabled: !chartRef,
             label: t`Save as PNG`,
           },
           {
-            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
+            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.getEchartsInstance(), 'jpeg', completeCaseType, t),
+            disabled: !chartRef,
             label: t`Save as JPEG`,
           },
         ],
@@ -425,7 +427,7 @@ export const MapWidget = () => {
       });
       eventBusService.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
-  }, [completeCaseType, canShowWidget, t]);
+  }, [completeCaseType, canShowWidget, t, chartRef]);
 
   return (
     <DashboardWidget
@@ -455,7 +457,7 @@ export const MapWidget = () => {
             onChartReady={onChartReady}
             onEvents={onEvents}
             option={getOptions()}
-            ref={chartRef}
+            ref={setChartRef}
             style={{
               height: '100%',
               position: 'absolute',

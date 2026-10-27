@@ -481,14 +481,17 @@ export const TreeWidget = () => {
         items: [
           {
             callback: () => CaseDbDownloadUtil.downloadNewick(baseName, newick, completeCaseType, t),
+            disabled: !treeCanvas,
             label: t`Save as Newick`,
           },
           {
             callback: () => CaseDbDownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'jpeg', completeCaseType, t),
+            disabled: !treeCanvas,
             label: t`Save as JPEG`,
           },
           {
             callback: () => CaseDbDownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'png', completeCaseType, t),
+            disabled: !treeCanvas,
             label: t`Save as PNG`,
           },
         ],

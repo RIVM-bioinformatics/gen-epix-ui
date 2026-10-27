@@ -54,6 +54,8 @@ The demo requires a running Case DB backend. From the repository root, start the
 pnpm start
 ```
 
+The app initializes i18next and loads its locale resources before creating and registering the configuration. Config factories evaluate translated labels eagerly, so keep this order when customizing the demo.
+
 ## Funding
 
 This work was funded by the European Union under the EU4Health Programme (EU4H), project ID 101113520 (NLWGSHERA2).

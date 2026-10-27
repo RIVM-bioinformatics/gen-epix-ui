@@ -11,9 +11,6 @@ import { ConfigUtil } from './utils/ConfigUtil';
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
 const init = async () => {
-  const config = ConfigUtil.createConfig();
-  DependencyContainerUtil.registerConfig(config);
-
   await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {
       return Promise.resolve(container.resolve(WindowService).window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE) ?? window.navigator.language.split('-')[0] ?? 'en');
@@ -37,6 +34,8 @@ const init = async () => {
     },
   });
 
+  const config = ConfigUtil.createConfig();
+  DependencyContainerUtil.registerConfig(config);
   setupCaseDb();
 
   createRoot(document.getElementById('root')).render(

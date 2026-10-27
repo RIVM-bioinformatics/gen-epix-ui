@@ -11,7 +11,10 @@ import {
   useMemo,
   useRef,
 } from 'react';
-import type { Ref } from 'react';
+import type {
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import isString from 'lodash/isString';
 import intersection from 'lodash/intersection';
 import { useTheme } from '@mui/material';
@@ -24,7 +27,6 @@ import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 
 export interface EpiCurveStackedAreaChartProps {
-  chartRef: Ref<EChartsReact>;
   echarts: unknown;
   getXAxisLabel: (value: Date) => string;
   includeMissingValues: boolean;
@@ -32,12 +34,12 @@ export interface EpiCurveStackedAreaChartProps {
   onCaseIdsChange?: (caseIds: string[]) => void;
   onChartReady?: (chart: EChartsType) => void;
   onPointMouseUp?: (payload: { caseIds: string[]; focussedDate: string; mouseEvent: MouseEvent }) => void;
+  setChartRef: Dispatch<SetStateAction<EChartsReact>>;
   stratification?: Stratification;
   xAxisIntervals: Date[];
 }
 
 export const EpiCurveStackedAreaChart = ({
-  chartRef,
   echarts,
   getXAxisLabel,
   includeMissingValues,
@@ -45,6 +47,7 @@ export const EpiCurveStackedAreaChart = ({
   onCaseIdsChange,
   onChartReady,
   onPointMouseUp,
+  setChartRef,
   stratification,
   xAxisIntervals,
 }: EpiCurveStackedAreaChartProps) => {
@@ -317,7 +320,7 @@ export const EpiCurveStackedAreaChart = ({
       onChartReady={onInternalChartReady}
       onEvents={onEvents}
       option={getOptions()}
-      ref={chartRef}
+      ref={setChartRef}
       style={{
         height: '100%',
         position: 'absolute',

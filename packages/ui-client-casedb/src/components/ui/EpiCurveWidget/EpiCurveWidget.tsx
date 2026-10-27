@@ -30,7 +30,6 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import isString from 'lodash/isString';
@@ -90,7 +89,7 @@ export const EpiCurveWidget = () => {
   const { t } = useTranslation();
   const [contextMenuConfig, setContextMenuConfig] = useState<ContextMenuConfigWithPosition | null>(null);
   const [chartType, setChartType] = useState<ChartType>('bar');
-  const chartRef = useRef<EChartsReact>(null);
+  const [chartRef, setChartRef] = useState<EChartsReact>();
   const dashboardContext = use(DashboardContext);
   const userProfileStore = use(UserProfileStoreContext);
 
@@ -354,11 +353,13 @@ export const EpiCurveWidget = () => {
         disabled: !canShowWidget,
         items: [
           {
-            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
+            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.getEchartsInstance(), 'png', completeCaseType, t),
+            disabled: !chartRef,
             label: t`Save as PNG`,
           },
           {
-            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
+            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.getEchartsInstance(), 'jpeg', completeCaseType, t),
+            disabled: !chartRef,
             label: t`Save as JPEG`,
           },
         ],
@@ -377,7 +378,7 @@ export const EpiCurveWidget = () => {
       });
       eventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
-  }, [completeCaseType, canShowWidget, t]);
+  }, [completeCaseType, canShowWidget, t, chartRef]);
 
   return (
     <DashboardWidget
@@ -403,20 +404,19 @@ export const EpiCurveWidget = () => {
         >
           {items?.length > 0 && chartType === 'bar' && (
             <EpiCurveBarChart
-              chartRef={chartRef}
               echarts={echartsCore}
               getXAxisLabel={getXAxisLabel}
               items={items}
               onCaseIdsChange={onChartCaseIdsChange}
               onChartReady={onChartReady}
               onPointMouseUp={onChartPointMouseUp}
+              setChartRef={setChartRef}
               stratification={stratification}
               xAxisIntervals={xAxisIntervals}
             />
           )}
           {items?.length > 0 && chartType === 'area' && (
             <EpiCurveStackedAreaChart
-              chartRef={chartRef}
               echarts={echartsCore}
               getXAxisLabel={getXAxisLabel}
               includeMissingValues={isIncludeMissingValuesInAreaChartEnabled}
@@ -424,6 +424,7 @@ export const EpiCurveWidget = () => {
               onCaseIdsChange={onChartCaseIdsChange}
               onChartReady={onChartReady}
               onPointMouseUp={onChartPointMouseUp}
+              setChartRef={setChartRef}
               stratification={stratification}
               xAxisIntervals={xAxisIntervals}
             />

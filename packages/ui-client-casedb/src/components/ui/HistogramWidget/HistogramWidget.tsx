@@ -71,7 +71,7 @@ export const HistogramWidget = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const config = useConfig();
-  const chartRef = useRef<EChartsReact>(null);
+  const [chartRef, setChartRef] = useState<EChartsReact>();
   const chartInstanceRef = useRef<EChartsType | null>(null);
   const echartsOpts = useMemo(() => ({
     nonce: config.nonce,
@@ -256,13 +256,13 @@ export const HistogramWidget = () => {
         disabled: !canShowWidget,
         items: [
           {
-            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Histogram`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
-            disabled: !shouldShowGraph,
+            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Histogram`, chartRef.getEchartsInstance(), 'png', completeCaseType, t),
+            disabled: !shouldShowGraph || !chartRef,
             label: t`Save as PNG`,
           },
           {
-            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Histogram`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
-            disabled: !shouldShowGraph,
+            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Histogram`, chartRef.getEchartsInstance(), 'jpeg', completeCaseType, t),
+            disabled: !shouldShowGraph || !chartRef,
             label: t`Save as JPEG`,
           },
         ],
@@ -281,7 +281,7 @@ export const HistogramWidget = () => {
       });
       eventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
-  }, [completeCaseType, shouldShowGraph, canShowWidget, t]);
+  }, [completeCaseType, shouldShowGraph, canShowWidget, t, chartRef]);
 
   const highlight = useCallback((caseIds: string[]) => {
     dashboardContext.highlight({
@@ -462,7 +462,7 @@ export const HistogramWidget = () => {
               onEvents={onEvents}
               option={getOptions()}
               opts={echartsOpts as unknown}
-              ref={chartRef}
+              ref={setChartRef}
               style={{
                 height: '100%',
                 position: 'absolute',
