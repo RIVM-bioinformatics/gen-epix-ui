@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.6.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.6.1...ui-phylogenetic-tree-v3.6.2) (2026-10-27)
+
+
+### Bug Fixes
+
+* trigger release ([df916c1](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/df916c128015c60d1d662640e784dac7f16c400c))
+
 ## [3.6.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.6.0...ui-phylogenetic-tree-v3.6.1) (2026-10-27)
 
 
