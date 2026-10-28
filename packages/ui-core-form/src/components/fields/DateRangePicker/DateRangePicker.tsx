@@ -247,6 +247,9 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
           disabled={disabled || loading}
           id={id}
           required={required}
+          sx={{
+            marginBottom: theme.spacing(1),
+          }}
         >
           {label}
           {!disabled && (

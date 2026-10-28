@@ -900,102 +900,102 @@ export type CaseDbColType = typeof CaseDbColType[keyof typeof CaseDbColType];
 
 
 export const CaseDbCommandName = {
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
-    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    RefDimCrudCommand: 'RefDimCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
     CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    ColSetCrudCommand: 'ColSetCrudCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
     CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
     IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    AnonymizeUserCommand: 'AnonymizeUserCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
     RetrieveOwnUserCommand: 'RetrieveOwnUserCommand',
-    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
     UserCrudCommand: 'UserCrudCommand',
     RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    RetrieveSeqDistancesByCasesCommand: 'RetrieveSeqDistancesByCasesCommand',
     ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
+    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    DeleteAllRefDataCommand: 'DeleteAllRefDataCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
     CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
     RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RefColCrudCommand: 'RefColCrudCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
-    UpdateCaseCreatedInDataCollectionCommand: 'UpdateCaseCreatedInDataCollectionCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveSeqDistancesByCasesCommand: 'RetrieveSeqDistancesByCasesCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    DeleteAllRefDataCommand: 'DeleteAllRefDataCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
     SiteCrudCommand: 'SiteCrudCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
-    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    RefDimCrudCommand: 'RefDimCrudCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
     RegionCrudCommand: 'RegionCrudCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    UpdateCaseCreatedInDataCollectionCommand: 'UpdateCaseCreatedInDataCollectionCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    ColSetCrudCommand: 'ColSetCrudCommand',
+    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
 } as const;
 
 export type CaseDbCommandName = typeof CaseDbCommandName[keyof typeof CaseDbCommandName];
@@ -1105,7 +1105,7 @@ export interface CaseDbCompositeFilter {
     'key'?: string | null;
     'type'?: string;
     /**
-     * The list of filters.
+     * The list of scalar or nested composite filters.
      */
     'filters': Array<CaseDbFiltersInner>;
     'operator'?: CaseDbLogicalOperator;
@@ -1659,7 +1659,7 @@ export type CaseDbFilter1 = CaseDbCompositeFilter | CaseDbContainsStringFilter |
 /**
  * @type CaseDbFiltersInner
  */
-export type CaseDbFiltersInner = CaseDbContainsStringFilter | CaseDbDateRangeFilter | CaseDbDatetimeRangeFilter | CaseDbEqualsBooleanFilter | CaseDbEqualsNumberFilter | CaseDbEqualsStringFilter | CaseDbEqualsUuidFilter | CaseDbExistsFilter | CaseDbFilter | CaseDbNoFilter | CaseDbNumberRangeFilter | CaseDbNumberSetFilter | CaseDbPartialDateRangeFilter | CaseDbRegexFilter | CaseDbStringSetFilter | CaseDbUuidSetFilter;
+export type CaseDbFiltersInner = CaseDbCompositeFilter | CaseDbContainsStringFilter | CaseDbDateRangeFilter | CaseDbDatetimeRangeFilter | CaseDbEqualsBooleanFilter | CaseDbEqualsNumberFilter | CaseDbEqualsStringFilter | CaseDbEqualsUuidFilter | CaseDbExistsFilter | CaseDbFilter | CaseDbNoFilter | CaseDbNumberRangeFilter | CaseDbNumberSetFilter | CaseDbPartialDateRangeFilter | CaseDbRegexFilter | CaseDbStringSetFilter | CaseDbUuidSetFilter;
 
 /**
  * Represents a protocol for calculating and storing genetic distances.
@@ -2966,7 +2966,7 @@ export type CaseDbUploadAction = typeof CaseDbUploadAction[keyof typeof CaseDbUp
 
 
 /**
- * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
+ * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are. With ``fail_batch_on_item_error=False``, cases that fail verification are left out and the other cases are uploaded, still as one unit of work. This is only allowed for cases without read sets or sequences: their samples are uploaded to SEQDB in a separate request that cannot yet leave out the samples of the cases that failed.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail. ``fail_batch_on_item_error=False`` with     read sets or sequences in the batch also causes validation to fail.
  */
 export interface CaseDbUploadCasesCommand {
     /**
@@ -2975,6 +2975,10 @@ export interface CaseDbUploadCasesCommand {
     'verify_only'?: boolean;
     'on_exists'?: CaseDbUploadAction;
     'on_new'?: CaseDbUploadAction;
+    /**
+     * If true, a verification error in one item stops the whole batch. If false, the items that failed verification are left out and the other items are uploaded.
+     */
+    'fail_batch_on_item_error'?: boolean;
     /**
      * The ID of the command
      */
@@ -19403,7 +19407,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
+         * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are. With ``fail_batch_on_item_error=False``, cases that fail verification are left out and the other cases are uploaded, still as one unit of work. This is only allowed for cases without read sets or sequences: their samples are uploaded to SEQDB in a separate request that cannot yet leave out the samples of the cases that failed.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail. ``fail_batch_on_item_error=False`` with     read sets or sequences in the batch also causes validation to fail.
          * @summary Upload Cases
          * @param {CaseDbUploadCasesCommand} uploadCasesCommand 
          * @param {*} [options] Override http request option.
@@ -23667,7 +23671,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
+         * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are. With ``fail_batch_on_item_error=False``, cases that fail verification are left out and the other cases are uploaded, still as one unit of work. This is only allowed for cases without read sets or sequences: their samples are uploaded to SEQDB in a separate request that cannot yet leave out the samples of the cases that failed.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail. ``fail_batch_on_item_error=False`` with     read sets or sequences in the batch also causes validation to fail.
          * @summary Upload Cases
          * @param {CaseDbUploadCasesCommand} uploadCasesCommand 
          * @param {*} [options] Override http request option.
@@ -27282,7 +27286,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
+     * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are. With ``fail_batch_on_item_error=False``, cases that fail verification are left out and the other cases are uploaded, still as one unit of work. This is only allowed for cases without read sets or sequences: their samples are uploaded to SEQDB in a separate request that cannot yet leave out the samples of the cases that failed.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail. ``fail_batch_on_item_error=False`` with     read sets or sequences in the batch also causes validation to fail.
      * @summary Upload Cases
      * @param {CaseDbUploadCasesCommand} uploadCasesCommand 
      * @param {*} [options] Override http request option.

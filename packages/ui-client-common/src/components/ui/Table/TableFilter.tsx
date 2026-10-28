@@ -4,7 +4,10 @@ import {
   Tooltip,
 } from '@mui/material';
 import type { UnwrapArray } from '@gen-epix/ui-core/models/generic.models';
-import { useController } from 'react-hook-form';
+import {
+  useController,
+  useWatch,
+} from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 
@@ -14,7 +17,10 @@ import { GeoFilter } from '../../../classes/filters/GeoFilter';
 import { MultiSelectFilter } from '../../../classes/filters/MultiSelectFilter';
 import { NumberRangeFilter } from '../../../classes/filters/NumberRangeFilter';
 import { TextFilter } from '../../../classes/filters/TextFilter';
-import type { Filters } from '../../../models/filter.models';
+import type {
+  Filters,
+  FilterValues,
+} from '../../../models/filter.models';
 import { useTableStoreContext } from '../../../stores/tableStore';
 import { BooleanFilterField } from '../../filters/BooleanFilterField';
 import { DateFilterField } from '../../filters/DateFilterField';
@@ -36,6 +42,13 @@ export const TableFilter = ({ filter }: TableFilterProps) => {
   const tableStore = useTableStoreContext();
   const showMissingValuesFilter = useStore(tableStore, (state) => state.showMissingValuesFilter);
 
+  const currentFilterValue = useWatch<FilterValues>({ name: filter.id });
+  const isInitialFilterValue = filter.isInitialFilterValue(currentFilterValue);
+  const label = isInitialFilterValue ? t`Select missing values` : t`Include missing values`;
+  const tooltipTitle = isInitialFilterValue
+    ? t`When enabled, select only items with missing values.`
+    : t`When enabled, include items with missing values alongside items matching the selected values.`;
+
   return (
     <>
       {filter instanceof TextFilter && <TextFilterField filter={filter} />}
@@ -48,7 +61,7 @@ export const TableFilter = ({ filter }: TableFilterProps) => {
         <Tooltip
           arrow
           placement={'top'}
-          title={t`Include cases with missing values in addition to selected values.`}
+          title={tooltipTitle}
         >
           <FormControlLabel
             control={(
@@ -59,7 +72,7 @@ export const TableFilter = ({ filter }: TableFilterProps) => {
                 onChange={field.onChange}
               />
             )}
-            label={t`Missing`}
+            label={label}
           />
         </Tooltip>
       )}
