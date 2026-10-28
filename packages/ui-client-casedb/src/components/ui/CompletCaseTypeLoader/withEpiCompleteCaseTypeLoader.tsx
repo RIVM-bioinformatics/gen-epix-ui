@@ -10,7 +10,7 @@ import { CompletCaseTypeLoader } from './CompletCaseTypeLoader';
 export type WithEpiCompleteCaseTypeLoaderProps = CompletCaseTypeLoaderProps;
 
 export const withEpiCompleteCaseTypeLoader = <P extends WithEpiCompleteCaseTypeLoaderProps>(WrappedComponent: ComponentType<P>): ComponentType<P> => {
-  return (props: WithEpiCompleteCaseTypeLoaderProps) => {
+  const WithEpiCompleteCaseTypeLoader = (props: WithEpiCompleteCaseTypeLoaderProps) => {
     const [isCompleteCaseTypeLoaded, setIsCompleteCaseTypeLoaded] = useState<boolean>(false);
 
     const onCompleteCaseTypeLoaded = useCallback(() => {
@@ -30,4 +30,6 @@ export const withEpiCompleteCaseTypeLoader = <P extends WithEpiCompleteCaseTypeL
       </CompletCaseTypeLoader>
     );
   };
+
+  return WithEpiCompleteCaseTypeLoader;
 };

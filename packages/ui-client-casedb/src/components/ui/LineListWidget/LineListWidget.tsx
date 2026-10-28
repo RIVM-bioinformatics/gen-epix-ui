@@ -62,12 +62,12 @@ import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import type { CaseDbConfig } from '../../../models/config.models';
 import { CaseDbTableUtil } from '../../../utils/CaseDbTableUtil';
-import { CASE_INFO_DIALOG_TAB_NAME } from '../CaseInfoDialog';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { DashboardWidget } from '../Dashboard';
 import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import { LineListIsOwnCaseService } from '../../../classes/services/LineListService/LineListIsOwnCaseService';
+import { CASE_INFO_DIALOG_TAB_NAME } from '../../../models/case-db.models';
 
 import { LineListWidgetIsInEventCell } from './LineListWidgetIsInEventCell';
 import { LineListWidgetIsOwnCaseCell } from './LineListWidgetIsOwnCaseCell';

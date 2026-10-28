@@ -10,6 +10,12 @@ import type {
 } from '@gen-epix/api-casedb';
 
 
+export enum CASE_INFO_DIALOG_TAB_NAME {
+  EDIT = 'EDIT',
+  INFO = 'INFO',
+  SHARING = 'SHARING',
+}
+
 export enum FILTER_TYPE {
   DATE = 'DATE',
   GEO = 'GEO',
@@ -32,6 +38,7 @@ export type CaseTypeRowValue = {
   short: string;
 };
 
+
 //Note: this type exists because the backend sends this as a JSON string.
 export type ConceptBoundaryProps = {
   lb: number;
@@ -40,7 +47,6 @@ export type ConceptBoundaryProps = {
   ub_in: boolean;
   unit: string;
 };
-
 
 export type DataCache = {
   conceptsById: { [id: string]: CaseDbConcept };
@@ -85,12 +91,12 @@ export type FindSimilarCasesResult = {
   similarCaseIds: string[];
 };
 
+
 export type Highlighting = {
   caseIds: string[];
   origin: string;
   scrollIntoView?: boolean;
 };
-
 
 export type LineListRangeSubjectValue = {
   endIndex: number;
