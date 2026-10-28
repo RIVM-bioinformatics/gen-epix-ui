@@ -32,6 +32,7 @@ export class DateFilter extends FilterAbstract<[Date, Date]> implements Filter<[
   public initialFilterValue: [Date, Date] = [null, null];
   public maxDate: Date;
   public minDate: Date;
+  public override supportsMissingValuesFilter = true;
 
   public constructor(kwArgs: DateFilterKwArgs) {
     super({
@@ -50,8 +51,13 @@ export class DateFilter extends FilterAbstract<[Date, Date]> implements Filter<[
 
   public fromURLSearchParameterValue(searchParameterValue: string): [Date, Date] {
     try {
-      const sanitizedValue = (JSON.parse(searchParameterValue) as string[]).map(value => {
-        if (!value) {
+      const parsedValue = this.parseFilterValueFromURLSearchParameterValue(searchParameterValue);
+      if (!Array.isArray(parsedValue)) {
+        throw new TypeError('Date filter URL value must be an array.');
+      }
+
+      const sanitizedValue = parsedValue.map(value => {
+        if (typeof value !== 'string' || !value) {
           return null;
         }
         const date = this.dateParser(value);
@@ -128,9 +134,5 @@ export class DateFilter extends FilterAbstract<[Date, Date]> implements Filter<[
       upper_bound: hasValidUpperBound ? format(upperBound, DATE_FORMAT.DATE) : undefined,
       upper_bound_censor: hasValidUpperBound ? '<=' : undefined,
     };
-  }
-
-  public toURLSearchParameterValue(): string {
-    return JSON.stringify(this.filterValue);
   }
 }

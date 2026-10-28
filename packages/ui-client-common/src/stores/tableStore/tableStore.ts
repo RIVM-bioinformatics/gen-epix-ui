@@ -41,6 +41,7 @@ export interface CreateTableStoreInitialStateKwArgs<TData, TDataContext = null> 
   idSelectorCallback: (row: TData) => string;
   isRowEnabledCallback?: (row: TData, dataContext: TDataContext) => boolean;
   navigatorFunction?: NavigateFunction;
+  showMissingValuesFilter?: boolean;
 }
 export type CreateTableStoreKwArgs<TData, TDataContext = null> = {
   storageNamePostFix?: string;
@@ -70,7 +71,7 @@ export interface TableStoreActions<TData, TDataContext = null> {
   setColumnVisualSettingsUncondensed: (columnVisualSettingsUncondensed: TableColumnVisualSettings[]) => void;
   setCurrentColumnVisualSettings: (columnVisualSettings: TableColumnVisualSettings[]) => void;
   setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => void;
-  setFilterValue: (id: string, value: unknown) => Promise<void>;
+  setFilterValue: (id: string, value: unknown, includeMissingValues?: boolean) => Promise<void>;
   setFilterValues: (filterValues: FilterValues) => Promise<void>;
   setIsCondensed: (isCondensed: boolean) => void;
   setNavigateFunction: (navigateFunction: NavigateFunction) => void;
@@ -110,6 +111,7 @@ export interface TableStoreState<TData, TDataContext = null> {
   isRowEnabledCallback: (row: TData, dataContext: TDataContext) => boolean;
   navigateFunction: NavigateFunction;
   selectedIds: string[];
+  showMissingValuesFilter: boolean;
   sortByField: string;
   sortDirection: TableSortDirection;
   sortedData: TData[];
@@ -122,7 +124,7 @@ type Get<TData, TDataContext = null> = () => TableStore<TData, TDataContext>;
 type Set<TData, TDataContext = null> = (partial: ((state: TableStore<TData, TDataContext>) => Partial<TableStore<TData, TDataContext>> | TableStore<TData, TDataContext>) | Partial<TableStore<TData, TDataContext>> | TableStore<TData, TDataContext>, replace?: false) => void;
 
 export const createTableStoreInitialState = <TData, TDataContext = null>(kwArgs: CreateTableStoreInitialStateKwArgs<TData, TDataContext>): TableStoreState<TData, TDataContext> => {
-  const { defaultSortByField, defaultSortDirection, idSelectorCallback, isRowEnabledCallback, navigatorFunction } = kwArgs;
+  const { defaultSortByField, defaultSortDirection, idSelectorCallback, isRowEnabledCallback, navigatorFunction, showMissingValuesFilter } = kwArgs;
   const url = new URL(document.location.href);
   const searchParams = url.searchParams;
 
@@ -166,6 +168,7 @@ export const createTableStoreInitialState = <TData, TDataContext = null>(kwArgs:
     isRowEnabledCallback,
     navigateFunction: navigatorFunction,
     selectedIds: [],
+    showMissingValuesFilter: showMissingValuesFilter ?? false,
     sortByField,
     sortDirection,
     sortedData: [],
@@ -282,13 +285,16 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
       const columnMap = keyBy(columns, 'id');
       const items = data.filter((row, rowIndex) => {
         return filters.every(filter => {
-          if (filter.isInitialFilterValue(filter.filterValue)) {
+          if (!filter.isFilterActive()) {
             return true;
           }
 
           const column = columnMap[filter.id];
           const value = column.valueGetter ? column.valueGetter({ column, dataContext, id: column.id, row, rowIndex }) : row[column.id as keyof TData];
-          return (filter.matchRowValue as (value: unknown) => boolean)(value);
+          return filter.matchRowValueIncludingMissingValues(
+            value,
+            rowValue => (filter.matchRowValue as (value: unknown) => boolean)(rowValue),
+          );
         });
       });
 
@@ -355,10 +361,13 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
       setColumnVisualSettingsCondensed(isCondensed ? TableUtil.createCondensedVisualColumnSettingsFromColumnSettings(columns, get().columnVisualSettingsUncondensed) : null);
     },
     resetFilters: async () => {
-      const { setFilterValues } = get();
+      const { filters, setFilterValues, showMissingValuesFilter } = get();
       const filterValues: FilterValues = {};
-      get().filters.forEach(filter => {
+      filters.forEach(filter => {
         filterValues[filter.id] = filter.initialFilterValue;
+        if (showMissingValuesFilter) {
+          filterValues[filter.includeMissingValuesFormFieldName] = false;
+        }
       });
       await setFilterValues(filterValues);
     },
@@ -394,7 +403,10 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
       }
     },
     setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => {
-      const { navigateFunction } = get();
+      const { navigateFunction, showMissingValuesFilter } = get();
+      filters.forEach(filter => {
+        filter.setIncludeMissingValues(false);
+      });
       set({ filterDimensions, filters, frontendFilterPriorities });
       set({ backendFilters: filters.filter(filter => filter.filterMode === FILTER_MODE.BACKEND) });
       set({
@@ -408,11 +420,14 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
             return;
           }
           filter.setFilterValue(filter.fromURLSearchParameterValue(searchParamStringValue));
+          if (!showMissingValuesFilter) {
+            filter.setIncludeMissingValues(false);
+          }
         });
       }
     },
-    setFilterValue: async (id: string, value: unknown) => {
-      const { filterDimensions, filters, setFilterValues, setVisibleFilterWithinDimension } = get();
+    setFilterValue: async (id: string, value: unknown, includeMissingValues?: boolean) => {
+      const { filterDimensions, filters, setFilterValues, setVisibleFilterWithinDimension, showMissingValuesFilter } = get();
       const filterValues: FilterValues = {};
       let foundFilter: UnwrapArray<Filters>;
       filters.forEach(filter => {
@@ -422,6 +437,11 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
         } else {
           filterValues[filter.id] = filter.filterValue;
         }
+        if (showMissingValuesFilter) {
+          filterValues[filter.includeMissingValuesFormFieldName] = filter.id === id
+            ? includeMissingValues ?? filter.includeMissingValues
+            : filter.includeMissingValues;
+        }
       });
 
       if (foundFilter?.filterDimensionId) {
@@ -429,14 +449,16 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
         const otherFiltersWithinDimension = filters.filter(filter => filter.filterDimensionId === filterDimension.id && filter.id !== foundFilter.id);
         otherFiltersWithinDimension.forEach(filter => {
           filterValues[filter.id] = filter.initialFilterValue;
+          if (showMissingValuesFilter) {
+            filterValues[filter.includeMissingValuesFormFieldName] = false;
+          }
         });
         setVisibleFilterWithinDimension(foundFilter.filterDimensionId, foundFilter.id);
       }
       await setFilterValues(filterValues);
     },
     setFilterValues: async (filterValues: FilterValues) => {
-      const { fetchData, filters, frontendFilterPriorities, navigateFunction, reloadFilterData, reloadSelectedIds, updateUrl } = get();
-
+      const { fetchData, filters, frontendFilterPriorities, navigateFunction, reloadFilterData, reloadSelectedIds, showMissingValuesFilter, updateUrl } = get();
       const backendFilterValues: FilterValues = {};
       const frontendFilterValues: { [key: string]: FilterValues } = {};
 
@@ -445,11 +467,17 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
 
       filters.forEach(filter => {
         if (filter.filterMode === FILTER_MODE.BACKEND) {
-          previousBackendFilterValues[filter.id] = filter.filterValue;
+          previousBackendFilterValues[filter.id] = {
+            filterValue: filter.filterValue,
+            includeMissingValues: filter.includeMissingValues,
+          };
         }
         if (filter.filterMode === FILTER_MODE.FRONTEND) {
           previousFrontendFilterValues[filter.filterPriority] = previousFrontendFilterValues[filter.filterPriority] || {};
-          previousFrontendFilterValues[filter.filterPriority][filter.id] = filter.filterValue;
+          previousFrontendFilterValues[filter.filterPriority][filter.id] = {
+            filterValue: filter.filterValue,
+            includeMissingValues: filter.includeMissingValues,
+          };
         }
       });
 
@@ -457,6 +485,13 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
         draft.forEach(filter => {
           if (filterValues[filter.id] !== undefined) {
             filter.setFilterValue(filterValues[filter.id]);
+          }
+          const includeMissingValues = filterValues[filter.includeMissingValuesFormFieldName];
+          if (showMissingValuesFilter && includeMissingValues !== undefined) {
+            if (typeof includeMissingValues !== 'boolean') {
+              throw new TypeError('Missing-value filter setting must be a boolean.');
+            }
+            filter.setIncludeMissingValues(includeMissingValues);
           }
         });
         return draft;
@@ -467,7 +502,7 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
         const url = new URL(document.location.href);
         let searchParams = url.searchParams;
         newFilters.forEach(filter => {
-          if (filter.isInitialFilterValue(filter.filterValue)) {
+          if (!filter.isFilterActive()) {
             searchParams.delete(filter.id);
             return;
           }
@@ -478,11 +513,17 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
 
       newFilters.forEach(filter => {
         if (filter.filterMode === FILTER_MODE.BACKEND) {
-          backendFilterValues[filter.id] = filter.filterValue;
+          backendFilterValues[filter.id] = {
+            filterValue: filter.filterValue,
+            includeMissingValues: filter.includeMissingValues,
+          };
         }
         if (filter.filterMode === FILTER_MODE.FRONTEND) {
           frontendFilterValues[filter.filterPriority] = frontendFilterValues[filter.filterPriority] || {};
-          frontendFilterValues[filter.filterPriority][filter.id] = filter.filterValue;
+          frontendFilterValues[filter.filterPriority][filter.id] = {
+            filterValue: filter.filterValue,
+            includeMissingValues: filter.includeMissingValues,
+          };
         }
       });
 

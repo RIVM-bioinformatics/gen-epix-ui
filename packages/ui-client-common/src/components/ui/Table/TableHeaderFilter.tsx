@@ -31,18 +31,22 @@ export const TableHeaderFilter = <TRowData, TDataContext>({ filter, onFilterChan
   const tableStore = useTableStoreContext<TRowData, TDataContext>();
   const { t } = useTranslation();
   const setFilterValue = useStore(tableStore, (state) => state.setFilterValue);
+  const showMissingValuesFilter = useStore(tableStore, (state) => state.showMissingValuesFilter);
+  const missingValuesFormFieldName = filter.includeMissingValuesFormFieldName;
 
   const initialDefaultValues = useMemo<FilterValues>(() => {
     return {
       [filter.id]: filter.initialFilterValue,
+      ...(showMissingValuesFilter ? { [missingValuesFormFieldName]: false } : {}),
     };
-  }, [filter.id, filter.initialFilterValue]);
+  }, [filter.id, filter.initialFilterValue, missingValuesFormFieldName, showMissingValuesFilter]);
 
   const initialValues = useMemo<FilterValues>(() => {
     return {
       [filter.id]: filter.filterValue ?? filter.initialFilterValue,
+      ...(showMissingValuesFilter ? { [missingValuesFormFieldName]: filter.includeMissingValues } : {}),
     };
-  }, [filter.id, filter.filterValue, filter.initialFilterValue]);
+  }, [filter.id, filter.filterValue, filter.includeMissingValues, filter.initialFilterValue, missingValuesFormFieldName, showMissingValuesFilter]);
 
   const formMethods = useForm<FilterValues>({
     defaultValues: initialDefaultValues,
@@ -53,15 +57,23 @@ export const TableHeaderFilter = <TRowData, TDataContext>({ filter, onFilterChan
 
   const onFormSubmit = useCallback(async (formFields: FilterValues) => {
 
-    await setFilterValue(filter.id, formFields[filter.id]);
+    await setFilterValue(
+      filter.id,
+      formFields[filter.id],
+      showMissingValuesFilter ? formFields[missingValuesFormFieldName] === true : undefined,
+    );
     onFilterChange();
-  }, [filter.id, onFilterChange, setFilterValue]);
+  }, [filter.id, missingValuesFormFieldName, onFilterChange, setFilterValue, showMissingValuesFilter]);
 
   const onResetButtonClick = useCallback(async () => {
 
-    await setFilterValue(filter.id, filter.initialFilterValue);
+    await setFilterValue(
+      filter.id,
+      filter.initialFilterValue,
+      showMissingValuesFilter ? false : undefined,
+    );
     onFilterChange();
-  }, [filter.id, filter.initialFilterValue, onFilterChange, setFilterValue]);
+  }, [filter.id, filter.initialFilterValue, onFilterChange, setFilterValue, showMissingValuesFilter]);
 
   return (
     <FormProvider {...formMethods}>
@@ -83,7 +95,7 @@ export const TableHeaderFilter = <TRowData, TDataContext>({ filter, onFilterChan
           }}
         >
           <Button
-            disabled={filter.isInitialFilterValue()}
+            disabled={!filter.isFilterActive()}
             onClick={onResetButtonClick}
             variant={'outlined'}
           >

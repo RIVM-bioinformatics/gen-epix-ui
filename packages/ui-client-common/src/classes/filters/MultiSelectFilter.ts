@@ -18,6 +18,7 @@ export class MultiSelectFilter extends FilterAbstract<string[]> implements Filte
   public initialFilterValue: string[] = [];
   public maxNumOptionsExpanded = 5;
   public options: AutoCompleteOption[];
+  public override supportsMissingValuesFilter = true;
   private readonly optionsMap: Map<string, string> = new Map<string, string>();
 
   public constructor(kwArgs: MultiSelectFilterKwArgs) {

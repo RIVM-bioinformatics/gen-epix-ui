@@ -167,7 +167,7 @@ export const Table = <TRowData, TDataContext = null>({
 
   // If applying filters or sorting and the results in the table don't change, we need to re-render the table manually to reflect the changes in filters / sorting in the headers.
   // re-render the table when the filters change
-  useStore(tableStore, (state) => JSON.stringify(state.filters.map(x => x.filterValue)));
+  useStore(tableStore, (state) => JSON.stringify(state.filters.map(filter => [filter.filterValue, filter.includeMissingValues])));
   // re-render the table when the sort by field or direction changes
   useStore(tableStore, useShallow((state) => state.sortByField));
   useStore(tableStore, useShallow((state) => state.sortDirection));

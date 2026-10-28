@@ -217,9 +217,10 @@ export const TableHeaderCell = <TRowData, TDataContext = null>(props: TableHeade
     return filters.find((f) => f.id === column.id);
   }, [column.id, filters]);
 
-  const hasActiveFilter = useMemo(() => {
-    return !!filter && !filter.isInitialFilterValue();
-  }, [filter]);
+  const hasActiveFilter = useStore(tableStore, (state) => {
+    const filterForColumn = state.filters.find(candidate => candidate.id === column.id);
+    return filterForColumn?.isFilterActive() ?? false;
+  });
 
   const onCustomHeaderIconClick = useCallback(() => {
     column.customHeaderIcon?.onClick({ column, dataContext });

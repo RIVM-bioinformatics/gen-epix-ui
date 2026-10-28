@@ -45,6 +45,7 @@ describe('FilterAbstract', () => {
     expect(filter.filterPriority).toBe('priority');
     expect(filter.filterDimensionId).toBeNull();
     expect(filter.showInSidebar).toBe(true);
+    expect(filter.supportsMissingValuesFilter).toBe(false);
   });
 
   it.each(['dimension-id', ''])('preserves the provided filter dimension %j', (filterDimensionId) => {
@@ -65,6 +66,45 @@ describe('FilterAbstract', () => {
       ids: [1, null],
     });
     expect(filter.fromURLSearchParameterValue('null')).toBeNull();
+  });
+
+  it('restores missing-value state from a URL envelope and clears it for legacy values', () => {
+    const filter = createFilter();
+    filter.setIncludeMissingValues(true);
+
+    expect(filter.fromURLSearchParameterValue('{"genEpixFilterState":1,"genEpixFilterValue":"value","includeMissingValues":true}')).toBe('value');
+    expect(filter.includeMissingValues).toBe(true);
+
+    expect(filter.fromURLSearchParameterValue('"legacy value"')).toBe('legacy value');
+    expect(filter.includeMissingValues).toBe(false);
+  });
+
+  it.each([
+    ['[]', []],
+    ['{"genEpixFilterState":2,"genEpixFilterValue":"value","includeMissingValues":true}', {
+      genEpixFilterState: 2,
+      genEpixFilterValue: 'value',
+      includeMissingValues: true,
+    }],
+    ['{"genEpixFilterState":1,"includeMissingValues":true}', {
+      genEpixFilterState: 1,
+      includeMissingValues: true,
+    }],
+    ['{"genEpixFilterState":1,"genEpixFilterValue":"value"}', {
+      genEpixFilterState: 1,
+      genEpixFilterValue: 'value',
+    }],
+    ['{"genEpixFilterState":1,"genEpixFilterValue":"value","includeMissingValues":false}', {
+      genEpixFilterState: 1,
+      genEpixFilterValue: 'value',
+      includeMissingValues: false,
+    }],
+  ])('does not interpret legacy or invalid state %s as a missing-value envelope', (value, expectedValue) => {
+    const filter = createFilter();
+    filter.setIncludeMissingValues(true);
+
+    expect(filter.fromURLSearchParameterValue(value)).toEqual(expectedValue);
+    expect(filter.includeMissingValues).toBe(false);
   });
 
   it.each(['', '   ', 'not-json'])('logs and returns null for invalid JSON %j', (value) => {
@@ -96,6 +136,16 @@ describe('FilterAbstract', () => {
     expect(filter.isInitialFilterValue(null)).toBe(false);
   });
 
+  it('distinguishes an active value from an active missing-value selection', () => {
+    const filter = createFilter();
+    filter.initialFilterValue = 'initial';
+    filter.filterValue = 'initial';
+
+    expect(filter.isFilterActive()).toBe(false);
+    expect(filter.isFilterActive('initial', true)).toBe(true);
+    expect(filter.isFilterActive('changed', false)).toBe(true);
+  });
+
   it('stores the assigned filter value without replacing its reference', () => {
     const filter = createFilter();
     const value = { selected: ['one', 'two'] };
@@ -105,6 +155,83 @@ describe('FilterAbstract', () => {
 
     filter.setFilterValue(null);
     expect(filter.filterValue).toBeNull();
+  });
+
+  it.each([
+    [null, true],
+    [undefined, true],
+    ['', true],
+    [[], true],
+    [['value'], false],
+    [0, false],
+    [false, false],
+    [' ', false],
+  ])('identifies whether %j represents a missing value', (value, expectedResult) => {
+    expect(FilterAbstract.isMissingValue(value)).toBe(expectedResult);
+  });
+
+  it('matches values unchanged when missing-value selection is disabled', () => {
+    const filter = createFilter();
+    const matchRowValue = vi.fn((value: unknown) => value === 'matched');
+
+    expect(filter.matchRowValueIncludingMissingValues(null, matchRowValue)).toBe(false);
+    expect(filter.matchRowValueIncludingMissingValues('matched', matchRowValue)).toBe(true);
+    expect(matchRowValue).toHaveBeenCalledTimes(2);
+  });
+
+  it('matches only missing rows when Missing is the only selection', () => {
+    const filter = createFilter();
+    filter.initialFilterValue = 'initial';
+    filter.filterValue = 'initial';
+    filter.setIncludeMissingValues(true);
+    const matchRowValue = vi.fn(() => true);
+
+    expect(filter.matchRowValueIncludingMissingValues(null, matchRowValue)).toBe(true);
+    expect(filter.matchRowValueIncludingMissingValues('value', matchRowValue)).toBe(false);
+    expect(matchRowValue).not.toHaveBeenCalled();
+  });
+
+  it('matches missing rows alongside selected values', () => {
+    const filter = createFilter();
+    filter.initialFilterValue = 'initial';
+    filter.filterValue = 'selected';
+    filter.setIncludeMissingValues(true);
+    const matchRowValue = vi.fn((value: unknown) => value === 'selected');
+
+    expect(filter.matchRowValueIncludingMissingValues(undefined, matchRowValue)).toBe(true);
+    expect(filter.matchRowValueIncludingMissingValues('selected', matchRowValue)).toBe(true);
+    expect(filter.matchRowValueIncludingMissingValues('other', matchRowValue)).toBe(false);
+    expect(matchRowValue).toHaveBeenCalledTimes(2);
+  });
+
+  it('builds Exists and nested OR backend filters for missing values', () => {
+    const filter = createFilter();
+    const valueFilter = {
+      key: 'filter-id',
+      pattern: 'value',
+      type: 'REGEX',
+    };
+
+    expect(filter.toBackendFilterWithMissingValues(valueFilter)).toBe(valueFilter);
+
+    filter.setIncludeMissingValues(true);
+    expect(filter.toBackendFilterWithMissingValues()).toEqual({
+      invert: true,
+      key: 'filter-id',
+      type: 'EXISTS',
+    });
+    expect(filter.toBackendFilterWithMissingValues(valueFilter)).toEqual({
+      filters: [
+        valueFilter,
+        {
+          invert: true,
+          key: 'filter-id',
+          type: 'EXISTS',
+        },
+      ],
+      operator: 'OR',
+      type: 'COMPOSITE',
+    });
   });
 
   it.each([
@@ -131,5 +258,39 @@ describe('FilterAbstract', () => {
     expect(() => filter.toURLSearchParameterValue()).toThrowError(
       new TypeError('Filter value cannot be serialized as JSON.'),
     );
+  });
+
+  it('serializes missing-value state without changing the legacy value representation', () => {
+    const filter = createFilter();
+    filter.setFilterValue('selected');
+    filter.setIncludeMissingValues(true);
+
+    expect(JSON.parse(filter.toURLSearchParameterValue())).toEqual({
+      genEpixFilterState: 1,
+      genEpixFilterValue: 'selected',
+      includeMissingValues: true,
+    });
+
+    filter.setIncludeMissingValues(false);
+    expect(filter.toURLSearchParameterValue()).toBe('"selected"');
+  });
+
+  it('throws when the serialized missing-value envelope cannot be represented as JSON', () => {
+    const filter = createFilter();
+    filter.setFilterValue('selected');
+    filter.setIncludeMissingValues(true);
+    vi.spyOn(JSON, 'stringify')
+      .mockReturnValueOnce('"selected"')
+      .mockReturnValueOnce(undefined);
+
+    expect(() => filter.toURLSearchParameterValue()).toThrowError(
+      new TypeError('Filter value cannot be serialized as JSON.'),
+    );
+  });
+
+  it('encodes dots in missing-value form field names', () => {
+    const filter = createFilter({ id: 'filter.with.dots' });
+
+    expect(filter.includeMissingValuesFormFieldName).toBe('__includeMissingValues_filter%2Ewith%2Edots');
   });
 });

@@ -49,12 +49,13 @@ export const TableFiltersSidebarItemIcon = FilterAltIcon;
 type TableFiltersSidebarItemContentFilterDimensionProps = {
   readonly filterDimension: FilterDimension;
   readonly onFilterVisibilityChange: (filterDimensionId: string, filterId: string) => void;
+  readonly showMissingValuesFilter: boolean;
   readonly visibleFilterWithinDimension: string;
 };
 
-const TableFiltersSidebarItemContentFilterDimension = <TRowData, TDataContext = null>({ filterDimension, onFilterVisibilityChange, visibleFilterWithinDimension }: TableFiltersSidebarItemContentFilterDimensionProps) => {
+const TableFiltersSidebarItemContentFilterDimension = <TRowData, TDataContext = null>({ filterDimension, onFilterVisibilityChange, showMissingValuesFilter, visibleFilterWithinDimension }: TableFiltersSidebarItemContentFilterDimensionProps) => {
   const tableStore = useTableStoreContext<TRowData, TDataContext>();
-  const filters = useStoreWithEqualityFn(tableStore, (state) => state.filters, (a, b) => JSON.stringify(a.map(filter => filter.filterValue)) === JSON.stringify(b.map(filter => filter.filterValue)));
+  const filters = useStoreWithEqualityFn(tableStore, (state) => state.filters, (a, b) => JSON.stringify(a.map(filter => [filter.filterValue, filter.includeMissingValues])) === JSON.stringify(b.map(filter => [filter.filterValue, filter.includeMissingValues])));
   const dimensionFilters = filterDimension.filterIds.map(filterId => filters.find(filter => filter.id === filterId));
 
   const { setValue } = useFormContext<FilterValues>();
@@ -94,9 +95,15 @@ const TableFiltersSidebarItemContentFilterDimension = <TRowData, TDataContext = 
             onFilterVisibilityChange(filterDimension.id, filter.id);
             filterDimension.filterIds.forEach((id) => {
               if (id !== filter.id) {
-                setValue(id, filters.find(f => f.id === id).initialFilterValue, {
+                const otherFilter = filters.find(f => f.id === id);
+                setValue(id, otherFilter.initialFilterValue, {
                   shouldDirty: true,
                 });
+                if (showMissingValuesFilter) {
+                  setValue(otherFilter.includeMissingValuesFormFieldName, false, {
+                    shouldDirty: true,
+                  });
+                }
               }
             });
           },
@@ -105,7 +112,7 @@ const TableFiltersSidebarItemContentFilterDimension = <TRowData, TDataContext = 
         label: filteredDimensionFilters[0].label,
       }
       : null;
-  }, [dimensionFilters, filterDimension.filterIds, filterDimension.id, filteredDimensionFilters, filters, setValue, onFilterVisibilityChange, shouldShowDropDown]);
+  }, [dimensionFilters, filterDimension.filterIds, filterDimension.id, filteredDimensionFilters, filters, setValue, onFilterVisibilityChange, shouldShowDropDown, showMissingValuesFilter]);
 
   if (!filteredDimensionFilters.length) {
     return null;
@@ -177,20 +184,33 @@ export const TableFiltersSidebarItemContent = <TRowData, TDataContext = null>({ 
   const tableStore = useTableStoreContext<TRowData, TDataContext>();
   const setFilterValues = useStore(tableStore, (state) => state.setFilterValues);
   const filterDimensions = useStore(tableStore, (state) => state.filterDimensions);
-  const filters = useStoreWithEqualityFn(tableStore, (state) => state.filters, (a, b) => JSON.stringify(a.map(filter => filter.filterValue)) === JSON.stringify(b.map(filter => filter.filterValue)));
-  const hasActiveFilter = useStore(tableStore, (state) => state.filters.some(filter => !filter.isInitialFilterValue(filter.filterValue)));
+  const filters = useStoreWithEqualityFn(tableStore, (state) => state.filters, (a, b) => JSON.stringify(a.map(filter => [filter.filterValue, filter.includeMissingValues])) === JSON.stringify(b.map(filter => [filter.filterValue, filter.includeMissingValues])));
+  const hasActiveFilter = useStore(tableStore, (state) => state.filters.some(filter => filter.isFilterActive()));
+  const showMissingValuesFilter = useStore(tableStore, (state) => state.showMissingValuesFilter);
   const resetFilters = useStore(tableStore, (state) => state.resetFilters);
   const visibleFilterWithinDimensions = useStore(tableStore, (state) => state.visibleFilterWithinDimensions);
   const setVisibleFilterWithinDimensions = useStore(tableStore, (state) => state.setVisibleFilterWithinDimensions);
   const [internalVisibleFilterWithinDimensions, setInternalVisibleFilterWithinDimensions] = useState(visibleFilterWithinDimensions);
 
-  const initialDefaultValues = useMemo(() => {
-    return Object.fromEntries(filters.map(filter => [filter.id, filter.initialFilterValue]));
-  }, [filters]);
+  const initialDefaultValues = useMemo<FilterValues>(() => {
+    const values: FilterValues = Object.fromEntries(filters.map(filter => [filter.id, filter.initialFilterValue]));
+    if (showMissingValuesFilter) {
+      filters.forEach(filter => {
+        values[filter.includeMissingValuesFormFieldName] = false;
+      });
+    }
+    return values;
+  }, [filters, showMissingValuesFilter]);
 
-  const initialValues = useMemo(() => {
-    return Object.fromEntries(filters.map(filter => [filter.id, filter.filterValue ?? filter.initialFilterValue]));
-  }, [filters]);
+  const initialValues = useMemo<FilterValues>(() => {
+    const values: FilterValues = Object.fromEntries(filters.map(filter => [filter.id, filter.filterValue ?? filter.initialFilterValue]));
+    if (showMissingValuesFilter) {
+      filters.forEach(filter => {
+        values[filter.includeMissingValuesFormFieldName] = filter.includeMissingValues;
+      });
+    }
+    return values;
+  }, [filters, showMissingValuesFilter]);
 
   const formMethods = useForm<FilterValues>({
     defaultValues: initialDefaultValues,
@@ -208,8 +228,11 @@ export const TableFiltersSidebarItemContent = <TRowData, TDataContext = null>({ 
   const formValues = useWatch({ control, defaultValue: initialValues });
 
   const hasActiveFormFilters = useMemo(() => {
-    return Object.entries(formValues).some(([id, value]) => !filters.find(f => f.id === id).isInitialFilterValue(value));
-  }, [filters, formValues]);
+    return filters.some(filter => filter.isFilterActive(
+      formValues[filter.id],
+      showMissingValuesFilter && formValues[filter.includeMissingValuesFormFieldName] === true,
+    ));
+  }, [filters, formValues, showMissingValuesFilter]);
 
   const onFormSubmit = useCallback(async (formFields: FilterValues): Promise<void> => {
 
@@ -233,7 +256,12 @@ export const TableFiltersSidebarItemContent = <TRowData, TDataContext = null>({ 
     setValue(id, filter.initialFilterValue, {
       shouldDirty: true,
     });
-  }, [filters, setValue]);
+    if (showMissingValuesFilter) {
+      setValue(filter.includeMissingValuesFormFieldName, false, {
+        shouldDirty: true,
+      });
+    }
+  }, [filters, setValue, showMissingValuesFilter]);
 
   const filteredFilters = useMemo(() => filters.filter(filter => filter.showInSidebar), [filters]);
 
@@ -261,12 +289,18 @@ export const TableFiltersSidebarItemContent = <TRowData, TDataContext = null>({ 
                 </Box>
               )}
               <Box>
-                {Object.entries(formValues).map(([id, value]) => {
-                  const filter = filters.find(f => f.id === id);
-                  if (!filter.isInitialFilterValue(formValues[id])) {
+                {filters.map(filter => {
+                  const value = formValues[filter.id];
+                  const includeMissingValues = showMissingValuesFilter
+                    && formValues[filter.includeMissingValuesFormFieldName] === true;
+                  if (filter.isFilterActive(value, includeMissingValues)) {
+                    const selectedValues = filter.isInitialFilterValue(value) ? '' : filter.getPresentationValue(value, t);
+                    const presentationValue = [selectedValues, includeMissingValues ? t`Missing` : '']
+                      .filter(Boolean)
+                      .join(', ');
                     return (
                       <Box
-                        key={id}
+                        key={filter.id}
                         sx={{
                           alignItems: 'center',
                           display: 'grid',
@@ -286,13 +320,13 @@ export const TableFiltersSidebarItemContent = <TRowData, TDataContext = null>({ 
                           <Box
                             component={'strong'}
                           >
-                            {filter.getPresentationValue(value, t)}
+                            {presentationValue}
                           </Box>
                         </Box>
                         <IconButton
-                          aria-label={t('Remove filter with label {{filterLabel}} and value {{filterValue}}', { filterLabel: filter.label, filterValue: filter.getPresentationValue(value, t) })}
+                          aria-label={t('Remove filter with label {{filterLabel}} and value {{filterValue}}', { filterLabel: filter.label, filterValue: presentationValue })}
                           // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
-                          onClick={() => removeFilter(id)}
+                          onClick={() => removeFilter(filter.id)}
                           size={'small'}
                         >
                           <CloseIcon />
@@ -348,6 +382,7 @@ export const TableFiltersSidebarItemContent = <TRowData, TDataContext = null>({ 
                         filterDimension={filterDimension}
                         key={filterDimension.id}
                         onFilterVisibilityChange={onFilterVisibilityChange}
+                        showMissingValuesFilter={showMissingValuesFilter}
                         visibleFilterWithinDimension={internalVisibleFilterWithinDimensions[filterDimension.id]}
                       />
                     );

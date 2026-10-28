@@ -211,8 +211,13 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             set({ isDataLoading: true });
             const { filters, setBaseData } = get();
             const activeFilters = filters
-              .filter(filter => filter.filterMode === FILTER_MODE.BACKEND && !filter.isInitialFilterValue())
-              .map(activeFilter => activeFilter.toBackendFilter())
+              .filter(filter => filter.filterMode === FILTER_MODE.BACKEND && filter.isFilterActive())
+              .map(activeFilter => {
+                const valueFilter = activeFilter.isInitialFilterValue(activeFilter.filterValue)
+                  ? undefined
+                  : activeFilter.toBackendFilter();
+                return activeFilter.toBackendFilterWithMissingValues(valueFilter);
+              })
               .filter(x => !!x);
             const compositeFilter: CaseDbCompositeFilter = activeFilters.length
               ? {

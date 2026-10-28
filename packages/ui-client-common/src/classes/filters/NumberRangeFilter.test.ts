@@ -27,6 +27,7 @@ describe('NumberRangeFilter', () => {
     expect(firstFilter.filterValue).not.toBe(firstFilter.initialFilterValue);
     expect(firstFilter.min).toBe(-10);
     expect(firstFilter.max).toBe(10);
+    expect(firstFilter.supportsMissingValuesFilter).toBe(true);
 
     firstFilter.filterValue[0] = 1;
     expect(secondFilter.filterValue).toEqual([null, null]);

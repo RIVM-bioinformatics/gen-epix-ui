@@ -33,6 +33,8 @@ const INVALID_DATE_PARSER_CASES: Array<[string, [Date, Date]]> = [
   ['["2024-01-01","2024-01-02","2024-01-03"]', [null, null]],
   ['["","2024-01-02"]', [null, createDate('2024-01-02')]],
   ['["not-a-date","2024-01-02"]', [null, createDate('2024-01-02')]],
+  ['[null,"2024-01-02"]', [null, createDate('2024-01-02')]],
+  ['[123,"2024-01-02"]', [null, createDate('2024-01-02')]],
 ];
 
 const RANGE_MATCH_CASES: Array<[string, boolean]> = [
@@ -59,6 +61,7 @@ describe('DateFilter', () => {
     expect(filter.maxDate).toEqual(new Date('2025-12-31T12:00:00.000Z'));
     expect(filter.dateFormat).toBe(DATE_FORMAT.DATE);
     expect(filter.backendFilterType).toBe('DATE_RANGE');
+    expect(filter.supportsMissingValuesFilter).toBe(true);
   });
 
   it('preserves configured filter dimension, date format, and backend type', () => {
@@ -275,5 +278,18 @@ describe('DateFilter', () => {
     expect(filter.toURLSearchParameterValue()).toBe(
       JSON.stringify([createDate('2024-01-02'), null]),
     );
+  });
+
+  it('round-trips missing-value state with the selected date range', () => {
+    const filter = createFilter();
+    filter.filterValue = [createDate('2024-01-02'), createDate('2024-01-04')];
+    filter.setIncludeMissingValues(true);
+    const restoredFilter = createFilter();
+
+    expect(restoredFilter.fromURLSearchParameterValue(filter.toURLSearchParameterValue())).toEqual([
+      createDate('2024-01-02'),
+      createDate('2024-01-04'),
+    ]);
+    expect(restoredFilter.includeMissingValues).toBe(true);
   });
 });

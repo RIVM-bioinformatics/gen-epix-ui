@@ -634,6 +634,80 @@ describe('dashboard data and filters', () => {
     });
   });
 
+  it('sends an inverted Exists filter when Missing is the only backend filter selection', async () => {
+    const { retrieveCaseIdsByQuery, store } = createDashboardHarness();
+    const textFilter = new TextFilter({
+      filterMode: FILTER_MODE.BACKEND,
+      filterPriority: 'backend',
+      id: 'text-filter',
+      label: 'Text filter',
+    });
+    textFilter.setIncludeMissingValues(true);
+    store.setState({
+      filters: [...store.getState().filters, textFilter],
+      globalAbortSignal: new AbortController().signal,
+      showMissingValuesFilter: true,
+    });
+
+    await store.getState().fetchData();
+
+    expect(retrieveCaseIdsByQuery.mock.calls[0]?.[0].filter).toEqual({
+      filters: [{
+        invert: true,
+        key: 'text-filter',
+        type: 'EXISTS',
+      }],
+      operator: 'AND',
+      type: 'COMPOSITE',
+    });
+  });
+
+  it('keeps missing-value OR composites nested alongside other backend filters', async () => {
+    const { retrieveCaseIdsByQuery, store } = createDashboardHarness();
+    const textFilter = new TextFilter({
+      filterMode: FILTER_MODE.BACKEND,
+      filterPriority: 'backend',
+      id: 'text-filter',
+      label: 'Text filter',
+    });
+    textFilter.filterValue = 'word';
+    textFilter.setIncludeMissingValues(true);
+    const secondFilter = new TextFilter({
+      filterMode: FILTER_MODE.BACKEND,
+      filterPriority: 'backend',
+      id: 'second-filter',
+      label: 'Second filter',
+    });
+    secondFilter.filterValue = 'other';
+    store.setState({
+      filters: [...store.getState().filters, textFilter, secondFilter],
+      globalAbortSignal: new AbortController().signal,
+      showMissingValuesFilter: true,
+    });
+
+    await store.getState().fetchData();
+
+    expect(retrieveCaseIdsByQuery.mock.calls[0]?.[0].filter).toEqual({
+      filters: [
+        {
+          filters: [
+            textFilter.toBackendFilter(),
+            {
+              invert: true,
+              key: 'text-filter',
+              type: 'EXISTS',
+            },
+          ],
+          operator: 'OR',
+          type: 'COMPOSITE',
+        },
+        secondFilter.toBackendFilter(),
+      ],
+      operator: 'AND',
+      type: 'COMPOSITE',
+    });
+  });
+
   it('clears loading and exposes a current fetch error', async () => {
     const { retrieveCaseIdsByQuery, store } = createDashboardHarness();
     const error = new Error('Case query failed');

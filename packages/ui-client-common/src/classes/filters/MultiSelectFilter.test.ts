@@ -43,6 +43,7 @@ describe('MultiSelectFilter', () => {
     expect(firstFilter.initialFilterValue).toEqual([]);
     expect(firstFilter.filterValue).not.toBe(firstFilter.initialFilterValue);
     expect(firstFilter.options).toEqual(createOptions());
+    expect(firstFilter.supportsMissingValuesFilter).toBe(true);
 
     firstFilter.filterValue.push('alpha');
     expect(secondFilter.filterValue).toEqual([]);
