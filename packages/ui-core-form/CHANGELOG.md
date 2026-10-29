@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.5.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-form-v4.5.0...ui-core-form-v4.5.1) (2026-10-29)
+
+
+### Bug Fixes
+
+* download sequence dialog should not disable input when only one option is available ([1182428](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1182428d68caf757b660549ec62eb2f6df318635))
+* enable animations in map widget ([1182428](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1182428d68caf757b660549ec62eb2f6df318635))
+* select input should not show clear icon when required ([1182428](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1182428d68caf757b660549ec62eb2f6df318635))
+* stabalize echarts options to prevent double animations ([1182428](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1182428d68caf757b660549ec62eb2f6df318635))
+
 ## [4.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-form-v4.4.2...ui-core-form-v4.5.0) (2026-10-27)
 
 
