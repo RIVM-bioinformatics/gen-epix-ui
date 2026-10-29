@@ -59,7 +59,10 @@ const TREE_THEME = createTheme({
   components: {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     GenEpixUiPhylogeneticTree: {
+      backgroundColor: BACKGROUND_COLOR,
       labelFont: TREE_FONT,
+      regularFillColorSupportLine: REGULAR_FILL_COLOR_SUPPORT_LINE,
+      scaleColor: SCALE_COLOR,
       scaleFont: `bold 11px ${FONT_FAMILY}`,
       supportLineColorLinked: SUPPORT_LINE_COLOR_LINKED,
       supportLineColorUnlinked: SUPPORT_LINE_COLOR_UNLINKED,
@@ -326,7 +329,6 @@ const createTreeElement = (options: ResolvedRenderTreeOptions) => {
         <PhylogeneticTree
           ancestorDotRadius={ANCESTOR_DOT_RADIUS}
           ariaLabel={options.ariaLabel}
-          backgroundColor={BACKGROUND_COLOR}
           dimFn={DIM_FN}
           headerHeight={HEADER_HEIGHT}
           highlightedNodeNamesSubject={options.highlightedNodeNamesSubject}
@@ -347,8 +349,6 @@ const createTreeElement = (options: ResolvedRenderTreeOptions) => {
           onViewStateChange={options.onViewStateChange}
           panningThreshold={PANNING_THRESHOLD}
           ref={options.ref}
-          regularFillColorSupportLine={REGULAR_FILL_COLOR_SUPPORT_LINE}
-          scaleColor={SCALE_COLOR}
           scaleIncrements={SCALE_INCREMENTS}
           scrollSubject={options.externalScrollSubject}
           shouldShowDistances={options.shouldShowDistances ?? false}

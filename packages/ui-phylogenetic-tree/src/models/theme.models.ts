@@ -1,9 +1,12 @@
 export interface GenEpixUiPhylogeneticTreeComponentTheme {
-  labelFont: string;
-  scaleFont: string;
-  supportLineColorLinked: string;
-  supportLineColorUnlinked: string;
-  treeColor: string;
+  backgroundColor?: string;
+  labelFont?: string;
+  regularFillColorSupportLine?: string;
+  scaleColor?: string;
+  scaleFont?: string;
+  supportLineColorLinked?: string;
+  supportLineColorUnlinked?: string;
+  treeColor?: string;
 }
 
 export interface GenEpixUiPhylogeneticTreeTheme {

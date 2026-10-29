@@ -62,7 +62,6 @@ export interface CaseDbConfig extends ConfigBase {
     MIN_ZOOM_SPEED: number;
     MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL: number;
     PANNING_THRESHOLD: number;
-    REGULAR_FILL_COLOR_SUPPORT_LINE: string;
     SCALE_INCREMENTS: number[];
     TAKING_LONGER_TIMEOUT_MS: number;
     TREE_PADDING: number;
