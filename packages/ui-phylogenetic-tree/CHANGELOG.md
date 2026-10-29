@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.6.2...ui-phylogenetic-tree-v3.7.0) (2026-10-29)
+
+
+### Features
+
+* add more theming support for ui-phylogenetic-tree ([8e47aba](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/8e47abab3f10b6c98971435ae054d82573fd1508))
+
 ## [3.6.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.6.1...ui-phylogenetic-tree-v3.6.2) (2026-10-27)
 
 
