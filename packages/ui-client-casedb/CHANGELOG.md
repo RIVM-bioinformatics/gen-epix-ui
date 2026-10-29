@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.7.0...ui-client-casedb-v4.8.0) (2026-10-29)
+
+
+### Features
+
+* add more theming support for ui-phylogenetic-tree ([8e47aba](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/8e47abab3f10b6c98971435ae054d82573fd1508))
+
+
+### Bug Fixes
+
+* download sequence dialog should not disable input when only one option is available ([1182428](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1182428d68caf757b660549ec62eb2f6df318635))
+* enable animations in map widget ([1182428](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1182428d68caf757b660549ec62eb2f6df318635))
+* fix app initialization and fix download options emitted when widget not ready ([12da8ba](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/12da8bae2fbe07818b9b760df4c3ed73c72559c0))
+* select input should not show clear icon when required ([1182428](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1182428d68caf757b660549ec62eb2f6df318635))
+* stabalize echarts options to prevent double animations ([1182428](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1182428d68caf757b660549ec62eb2f6df318635))
+
 ## [4.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.6.1...ui-client-casedb-v4.7.0) (2026-10-27)
 
 
