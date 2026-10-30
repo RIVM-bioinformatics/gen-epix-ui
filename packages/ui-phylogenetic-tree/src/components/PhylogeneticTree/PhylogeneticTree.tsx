@@ -25,7 +25,6 @@ import type {
   TreeNode,
   TreePathProperties,
 } from '../../models/tree.models';
-import type { GenEpixUiPhylogeneticTreeComponentTheme } from '../../models/theme.models';
 import { TreeUtil } from '../../utils/TreeUtil';
 
 export type PhylogeneticTreeHighlightedNodeNamesSubjectValue = {
@@ -40,6 +39,17 @@ export type PhylogeneticTreePathClickEvent = {
 
 const DEFAULT_DIM_FN = (color: string) => lighten(color, 0.8);
 
+
+export interface PhylogeneticTreeComponentTheme {
+  backgroundColor?: string;
+  labelFont?: string;
+  regularFillColorSupportLine?: string;
+  scaleColor?: string;
+  scaleFont?: string;
+  supportLineColorLinked?: string;
+  supportLineColorUnlinked?: string;
+  treeColor?: string;
+}
 
 export type PhylogeneticTreeProps = {
   readonly ancestorDotRadius: number;
@@ -136,7 +146,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
     visibleRangeSubject,
   } = useThemeProps({ name: 'GenEpixUiPhylogeneticTree', props: inProps });
   const theme = useTheme();
-  const phylogeneticTreeTheme = useMemo<GenEpixUiPhylogeneticTreeComponentTheme>(() => ({
+  const phylogeneticTreeTheme = useMemo<PhylogeneticTreeComponentTheme>(() => ({
     ...{
       backgroundColor: theme.palette.background.paper,
       labelFont: `bold 0.8rem ${theme.typography.fontFamily}`,
@@ -146,7 +156,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
       supportLineColorLinked: '#000',
       supportLineColorUnlinked: lighten('#000', 0.75),
       treeColor: '#000',
-    } satisfies GenEpixUiPhylogeneticTreeComponentTheme,
+    } satisfies PhylogeneticTreeComponentTheme,
     ...theme.components.GenEpixUiPhylogeneticTree,
   }), [theme]);
 
