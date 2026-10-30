@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.5.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-omopdb-v4.5.0...ui-client-omopdb-v4.5.1) (2026-10-30)
+
+
+### Bug Fixes
+
+* fix theme ([#207](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/207)) ([7d43386](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7d4338679c3e0e7a7ec581e1098069c973dc7214))
+
 ## [4.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-omopdb-v4.4.1...ui-client-omopdb-v4.5.0) (2026-10-27)
 
 
