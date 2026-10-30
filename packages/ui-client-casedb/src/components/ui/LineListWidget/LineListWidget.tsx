@@ -76,12 +76,23 @@ import { LineListWidgetPrimaryMenu } from './LineListWidgetPrimaryMenu';
 import { LineListWidgetSecondaryMenu } from './LineListWidgetSecondaryMenu';
 import { useEpiLineListWidgetEmitDownloadOptions } from './useEpiLineListWidgetEmitDownloadOptions';
 
+export interface LineListWidgetTheme {
+  font: string;
+}
+
 export const LineListWidget = () => {
+  const theme = useTheme();
+  const lineListWidgetTheme = useMemo<LineListWidgetTheme>(() => ({
+    ...{
+      font: theme.typography.fontFamily,
+    } satisfies LineListWidgetTheme,
+    ...(theme.components?.GenEpixUiClientCasedbLineList ?? {}),
+  }), [theme]);
+
   const { caseSet } = use(DashboardContext);
   const dashboardContext = use(DashboardContext);
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
-  const theme = useTheme();
   const config = useConfig<CaseDbConfig>();
   const rowHighlightingSubject = useMemo(() => new Subject<string[]>([]), []);
   const tableRef = useRef<TableRef>(null);
@@ -649,7 +660,7 @@ export const LineListWidget = () => {
         }}
       >
         <Table
-          font={theme.components.GenEpixUiClientCasedbLineList.font}
+          font={lineListWidgetTheme.font}
           forceHorizontalOverflow
           getRowName={getRowName}
           initialVisibleItemIndex={dashboardStore.getState().getWidgetData<LineListWidgetData>(DASHBOARD_COMPONENT_NAME.LINE_LIST)?.visibleItemItemIndex}

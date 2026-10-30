@@ -7,6 +7,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useMemo } from 'react';
 
 import { useConfig } from '../../../hooks/useConfig';
 
@@ -19,11 +20,23 @@ export type ApplicationBarProps = {
   readonly singleAction?: boolean;
 };
 
+export type ApplicationBarTheme = {
+  background: string;
+  primaryColor: string;
+};
+
 export const ApplicationBar = ({
   fullWidth,
   singleAction,
 }: ApplicationBarProps) => {
   const theme = useTheme();
+  const applicationBarTheme = useMemo<ApplicationBarTheme>(() => ({
+    ...{
+      background: theme.palette.primary.main,
+      primaryColor: theme.palette.primary.contrastText,
+    } satisfies ApplicationBarTheme,
+    ...(theme.components?.GenEpixUiClientCommonApplicationBar ?? {}),
+  }), [theme]);
   const config = useConfig();
 
   return (
@@ -32,7 +45,7 @@ export const ApplicationBar = ({
       position={'static'}
       square
       sx={{
-        background: theme.components.GenEpixUiClientCommonNavbar.background,
+        background: applicationBarTheme.background,
         boxShadow: 'none',
       }}
     >
@@ -57,7 +70,7 @@ export const ApplicationBar = ({
               <Typography
                 component={'h1'}
                 sx={{
-                  color: theme.components.GenEpixUiClientCommonNavbar.primaryColor,
+                  color: applicationBarTheme.primaryColor,
                   fontSize: '1.3rem',
                 }}
                 variant={'body2'}
