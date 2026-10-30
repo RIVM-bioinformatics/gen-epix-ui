@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.7.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.7.0...ui-phylogenetic-tree-v3.7.1) (2026-10-30)
+
+
+### Bug Fixes
+
+* put PhylogeneticTreeComponentTheme in the correct place ([3fbafe0](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/3fbafe0e008177443abcc7d37d6fd0a21d3f0cbf))
+
 ## [3.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.6.2...ui-phylogenetic-tree-v3.7.0) (2026-10-29)
 
 
