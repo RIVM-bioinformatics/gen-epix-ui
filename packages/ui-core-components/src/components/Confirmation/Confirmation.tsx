@@ -1,9 +1,83 @@
+import type { ReactElement } from 'react';
+import {
+  useCallback,
+  useEffect,
+} from 'react';
+import { DialogContentText } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+
+import type { DialogAction } from '../Dialog/Dialog';
+import type {
+  WithDialogRefMethods,
+  WithDialogRenderProps,
+} from '../../hoc/withDialog';
 import { withDialog } from '../../hoc/withDialog';
 
-import type { ConfirmationProps } from './ConfirmationRender';
-import { ConfirmationRender } from './ConfirmationRender';
+export interface ConfirmationProps<TOpenProps = never> extends WithDialogRenderProps<TOpenProps> {
+  readonly body?: string;
+  readonly cancelLabel?: string;
+  readonly confirmLabel: string;
+  readonly onCancel?: (openProps: TOpenProps) => void;
+  readonly onConfirm: (openProps: TOpenProps) => void;
+}
 
-export const Confirmation = withDialog<ConfirmationProps, unknown>(ConfirmationRender, {
+export type ConfirmationRefMethods<TOpenProps = never> = WithDialogRefMethods<ConfirmationProps, TOpenProps>;
+
+export const Confirmation = withDialog<ConfirmationProps, unknown>(<TOpenProps,>({
+  body,
+  cancelLabel,
+  confirmLabel,
+  onActionsChange,
+  onCancel,
+  onClose,
+  onConfirm,
+  openProps,
+}: ConfirmationProps<TOpenProps>): ReactElement => {
+  const { t } = useTranslation();
+  const onCancelButtonClick = useCallback((): void => {
+    if (onCancel) {
+      onCancel(openProps);
+    }
+    onClose();
+  }, [onCancel, onClose, openProps]);
+
+  const onConfirmButtonClick = useCallback((): void => {
+    onConfirm(openProps);
+    onClose();
+  }, [onConfirm, openProps, onClose]);
+
+  useEffect(() => {
+    const actions: DialogAction[] = [];
+    if (cancelLabel) {
+      actions.push({
+        ...TestIdUtil.createAttributes('Confirmation-cancelButton'),
+        color: 'secondary',
+        label: cancelLabel ?? t`Cancel`,
+        onClick: onCancelButtonClick,
+        variant: 'outlined',
+      });
+    }
+    actions.push({
+      ...TestIdUtil.createAttributes('Confirmation-confirmButton'),
+      autoFocus: true,
+      color: 'primary',
+      label: confirmLabel ?? t`OK`,
+      onClick: onConfirmButtonClick,
+      variant: 'contained',
+    });
+    onActionsChange(actions);
+  }, [cancelLabel, onCancelButtonClick, confirmLabel, onConfirmButtonClick, onActionsChange, onCancel, t]);
+
+  if (!body) {
+    return null;
+  }
+  return (
+    <DialogContentText {...TestIdUtil.createAttributes('Confirmation-textContent')}>
+      {body}
+    </DialogContentText>
+  );
+}, {
   fullWidth: true,
   maxWidth: 'sm',
   testId: 'Confirmation',
