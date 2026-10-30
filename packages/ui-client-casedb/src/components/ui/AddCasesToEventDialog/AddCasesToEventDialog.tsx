@@ -34,7 +34,6 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
-import { useEditMutation } from '@gen-epix/ui-client-common/hooks/useEditMutation';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
@@ -42,6 +41,7 @@ import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
 import { Select } from '@gen-epix/ui-core-form/components/fields/Select';
 import { Autocomplete } from '@gen-epix/ui-core-form/components/fields/Autocomplete';
+import { useCreateMutation } from '@gen-epix/ui-client-common/hooks/useCreateMutation';
 
 import {
   useCaseSetOptionsQuery,
@@ -190,7 +190,7 @@ export const AddCasesToEventDialog = withDialog<AddCasesToEventDialogProps, AddC
     onClose();
   }, [fetchData, onClose]);
 
-  const { isMutating: isMutatingItems, mutate: mutateItems } = useEditMutation<CaseDbCaseSetMember[]>({
+  const { isMutating: isMutatingItems, mutate: mutateItems } = useCreateMutation<CaseDbCaseSetMember[]>({
     associationQueryKeys: container.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
     getErrorNotificationMessage: () => t('Failed add case(s) to {{caseSetName}}', { caseSetName: caseSetsMapQuery.map.get(caseSetId).name }),
     getProgressNotificationMessage: () => t('Adding case(s) to {{caseSetName}}', { caseSetName: caseSetsMapQuery.map.get(caseSetId).name }),

@@ -385,7 +385,7 @@ export const CrudPage = <
     return keys;
   }, [associationQueryKeys, resourceQueryKeyBase]);
 
-  const { mutate: mutateEdit, setPreviousItem: mutateEditSetPreviousItem } = useEditMutation<TData, TFormFields>({
+  const { mutate: mutateEdit } = useEditMutation<TData, TFormFields>({
     associationQueryKeys: calculatedAssociationQueryKeys,
     getErrorNotificationMessage: getEditErrorNotificationMessage,
     getIntermediateItem: getOptimisticUpdateIntermediateItem,
@@ -421,12 +421,11 @@ export const CrudPage = <
 
   const onEditDialogSave = useCallback((formValues: TFormFields, item: TData) => {
     if (item?.id) {
-      mutateEditSetPreviousItem(item);
-      mutateEdit(formValues);
+      mutateEdit(formValues, item);
     } else {
       mutateCreate(formValues);
     }
-  }, [mutateCreate, mutateEdit, mutateEditSetPreviousItem]);
+  }, [mutateCreate, mutateEdit]);
 
   const onEditIconClick = useCallback((params: TableRowParams<TTableData, null>) => {
     editItem(params.row);
