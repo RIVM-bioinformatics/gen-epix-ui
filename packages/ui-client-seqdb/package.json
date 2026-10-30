@@ -26,10 +26,6 @@
       "types": "./src/models/config.models.ts",
       "import": "./src/models/config.models.ts"
     },
-    "./models/theme.models": {
-      "types": "./src/models/theme.models.ts",
-      "import": "./src/models/theme.models.ts"
-    },
     "./pages/HomePage": {
       "types": "./src/pages/HomePage/index.ts",
       "import": "./src/pages/HomePage/index.ts"
@@ -160,10 +156,6 @@
       "./models/config.models": {
         "types": "./dist/models/config.models.d.ts",
         "import": "./dist/models/config.models.js"
-      },
-      "./models/theme.models": {
-        "types": "./dist/models/theme.models.d.ts",
-        "import": "./dist/models/theme.models.js"
       },
       "./pages/HomePage": {
         "types": "./dist/pages/HomePage/index.d.ts",

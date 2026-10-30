@@ -338,10 +338,6 @@
       "types": "./src/models/table.models.ts",
       "import": "./src/models/table.models.ts"
     },
-    "./models/theme.models": {
-      "types": "./src/models/theme.models.ts",
-      "import": "./src/models/theme.models.ts"
-    },
     "./pages/AcceptInvitationPage": {
       "types": "./src/pages/AcceptInvitationPage/index.ts",
       "import": "./src/pages/AcceptInvitationPage/index.ts"
@@ -923,10 +919,6 @@
       "./models/table.models": {
         "types": "./dist/models/table.models.d.ts",
         "import": "./dist/models/table.models.js"
-      },
-      "./models/theme.models": {
-        "types": "./dist/models/theme.models.d.ts",
-        "import": "./dist/models/theme.models.js"
       },
       "./pages/AcceptInvitationPage": {
         "types": "./dist/pages/AcceptInvitationPage/index.d.ts",

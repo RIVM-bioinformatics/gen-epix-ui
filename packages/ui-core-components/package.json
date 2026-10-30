@@ -69,10 +69,6 @@
     "./models/stepper.model": {
       "types": "./src/models/stepper.model.ts",
       "import": "./src/models/stepper.model.ts"
-    },
-    "./models/theme.models": {
-      "types": "./src/models/theme.models.ts",
-      "import": "./src/models/theme.models.ts"
     }
   },
   "files": [
@@ -193,10 +189,6 @@
       "./models/stepper.model": {
         "types": "./dist/models/stepper.model.d.ts",
         "import": "./dist/models/stepper.model.js"
-      },
-      "./models/theme.models": {
-        "types": "./dist/models/theme.models.d.ts",
-        "import": "./dist/models/theme.models.js"
       }
     },
     "files": [

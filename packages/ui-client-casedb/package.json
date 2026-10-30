@@ -402,10 +402,6 @@
       "types": "./src/models/stratification.models.ts",
       "import": "./src/models/stratification.models.ts"
     },
-    "./models/theme.models": {
-      "types": "./src/models/theme.models.ts",
-      "import": "./src/models/theme.models.ts"
-    },
     "./models/upload.models": {
       "types": "./src/models/upload.models.ts",
       "import": "./src/models/upload.models.ts"
@@ -1181,10 +1177,6 @@
       "./models/stratification.models": {
         "types": "./dist/models/stratification.models.d.ts",
         "import": "./dist/models/stratification.models.js"
-      },
-      "./models/theme.models": {
-        "types": "./dist/models/theme.models.d.ts",
-        "import": "./dist/models/theme.models.js"
       },
       "./models/upload.models": {
         "types": "./dist/models/upload.models.d.ts",
