@@ -25,6 +25,7 @@ import type {
   TreeNode,
   TreePathProperties,
 } from '../../models/tree.models';
+import type { GenEpixUiPhylogeneticTreeComponentTheme } from '../../models/theme.models';
 import { TreeUtil } from '../../utils/TreeUtil';
 
 export type PhylogeneticTreeHighlightedNodeNamesSubjectValue = {
@@ -39,10 +40,10 @@ export type PhylogeneticTreePathClickEvent = {
 
 const DEFAULT_DIM_FN = (color: string) => lighten(color, 0.8);
 
+
 export type PhylogeneticTreeProps = {
   readonly ancestorDotRadius: number;
   readonly ariaLabel: string;
-  readonly backgroundColor: string;
   readonly dimFn?: (color: string) => string;
   readonly getLeafLabel?: (nodeName: string) => string;
   readonly headerHeight: number;
@@ -65,8 +66,6 @@ export type PhylogeneticTreeProps = {
   readonly onViewStateChange?: (viewState: PhylogeneticTreeViewState) => void;
   readonly panningThreshold: number;
   readonly ref?: Ref<PhylogeneticTreeRef>;
-  readonly regularFillColorSupportLine: string;
-  readonly scaleColor: string;
   readonly scaleIncrements: number[];
   readonly scrollSubject?: Subject<PhylogeneticTreeScrollSubjectValue>;
   readonly shouldShowDistances?: boolean;
@@ -104,7 +103,6 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
   const {
     ancestorDotRadius,
     ariaLabel,
-    backgroundColor,
     dimFn = DEFAULT_DIM_FN,
     getLeafLabel,
     headerHeight,
@@ -127,8 +125,6 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
     onViewStateChange,
     panningThreshold,
     ref,
-    regularFillColorSupportLine,
-    scaleColor,
     scaleIncrements,
     scrollSubject,
     shouldShowDistances,
@@ -140,6 +136,19 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
     visibleRangeSubject,
   } = useThemeProps({ name: 'GenEpixUiPhylogeneticTree', props: inProps });
   const theme = useTheme();
+  const phylogeneticTreeTheme = useMemo<GenEpixUiPhylogeneticTreeComponentTheme>(() => ({
+    ...{
+      backgroundColor: theme.palette.background.paper,
+      labelFont: `bold 0.8rem ${theme.typography.fontFamily}`,
+      regularFillColorSupportLine: theme.palette.divider,
+      scaleColor: 'rgba(0, 0, 0, 0.87)',
+      scaleFont: `bold 0.8rem ${theme.typography.fontFamily}`,
+      supportLineColorLinked: '#000',
+      supportLineColorUnlinked: lighten('#000', 0.75),
+      treeColor: '#000',
+    } satisfies GenEpixUiPhylogeneticTreeComponentTheme,
+    ...theme.components.GenEpixUiPhylogeneticTree,
+  }), [theme]);
 
   const scrollbarSize = useScrollbarSize();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -462,7 +471,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
         TreeUtil.drawTreeCanvas({
-          backgroundColor,
+          backgroundColor: phylogeneticTreeTheme.backgroundColor,
           canvas: treeCanvas,
           devicePixelRatio,
           dimFn,
@@ -473,24 +482,24 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
           horizontalScrollPosition,
           isLinked,
           itemHeight,
-          labelFont: theme.components.GenEpixUiPhylogeneticTree.labelFont,
+          labelFont: phylogeneticTreeTheme.labelFont,
           nodeNameColors,
           pixelToGeneticDistanceRatio,
           range,
-          regularFillColorSupportLine,
-          scaleColor,
-          scaleFont: theme.components.GenEpixUiPhylogeneticTree.scaleFont,
+          regularFillColorSupportLine: phylogeneticTreeTheme.regularFillColorSupportLine,
+          scaleColor: phylogeneticTreeTheme.scaleColor,
+          scaleFont: phylogeneticTreeTheme.scaleFont,
           scrollPosition,
           shouldShowDistances,
           shouldShowLeafLabels,
           shouldShowSupportLinesWhenUnlinked,
-          supportLineColorLinked: theme.components.GenEpixUiPhylogeneticTree.supportLineColorLinked,
-          supportLineColorUnlinked: theme.components.GenEpixUiPhylogeneticTree.supportLineColorUnlinked,
+          supportLineColorLinked: phylogeneticTreeTheme.supportLineColorLinked,
+          supportLineColorUnlinked: phylogeneticTreeTheme.supportLineColorUnlinked,
           tickerMarkScale,
           treeAssembly,
           treeCanvasHeight,
           treeCanvasWidth,
-          treeColor: theme.components.GenEpixUiPhylogeneticTree.treeColor,
+          treeColor: phylogeneticTreeTheme.treeColor,
           treePadding,
           verticalScrollPosition,
           zoomLevel,
@@ -539,7 +548,6 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
       cancelAnimationFrame(animationFrameId);
     };
   }, [
-    backgroundColor,
     devicePixelRatio,
     dimFn,
     getTickerMarkScale,
@@ -549,8 +557,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
     itemHeight,
     nodeNameColors,
     pixelToGeneticDistanceRatio,
-    regularFillColorSupportLine,
-    scaleColor,
+    phylogeneticTreeTheme,
     scrollPositionSubject,
     scrollSubject,
     shouldShowDistances,

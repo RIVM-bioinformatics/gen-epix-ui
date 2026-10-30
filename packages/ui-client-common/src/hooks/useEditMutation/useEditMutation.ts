@@ -4,7 +4,6 @@ import type { ReactElement } from 'react';
 import {
   useCallback,
   useMemo,
-  useRef,
 } from 'react';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 
@@ -31,6 +30,11 @@ export type UseEditMutationProps<TData, TVariables = TData> = {
   readonly resourceQueryKey?: string[];
 };
 
+type EditMutationVariables<TData, TVariables> = {
+  readonly previousItem: TData;
+  readonly variables: TVariables;
+};
+
 const isSingleGenericData = (item: GenericData | GenericData[]): item is GenericData => !Array.isArray(item);
 
 export const useEditMutation = <TData extends GenericData | GenericData[], TVariables = TData>({
@@ -45,40 +49,33 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
   resourceQueryKey,
 }: UseEditMutationProps<TData, TVariables>) => {
   const queryClient = container.resolve(QueryClientService).queryClient;
-  const previousItemRef = useRef<TData>(undefined);
 
-  const setPreviousItem = useCallback((item: TData) => {
-    previousItemRef.current = item;
-  }, []);
-
-  const mutationFn = useCallback(async (variables: TVariables) => {
+  const mutationFn = useCallback(async ({ previousItem, variables }: EditMutationVariables<TData, TVariables>) => {
     if (!queryFn) {
       throw new Error('Edit mutation queryFn is required');
     }
-    return queryFn(ObjectUtil.deepNullifyEmptyStrings(variables), previousItemRef.current);
-  }, [previousItemRef, queryFn]);
+    return queryFn(ObjectUtil.deepNullifyEmptyStrings(variables), previousItem);
+  }, [queryFn]);
 
-  const editMutation = useMutation<TData, Error, TVariables, MutationContextEdit<TData>>({
+  const editMutation = useMutation<TData, Error, EditMutationVariables<TData, TVariables>, MutationContextEdit<TData>>({
     mutationFn,
-    onError: async (error, variables, context) => {
-      previousItemRef.current = undefined;
+    onError: async (error, mutationVariables, context) => {
       const safeContext: MutationContextEdit<TData> = context ?? {};
       if (resourceQueryKey && Array.isArray(safeContext.previousData)) {
         queryClient.setQueryData<TData[]>(resourceQueryKey, safeContext.previousData);
       }
       await container.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
       if (onError) {
-        await onError(error, variables, safeContext);
+        await onError(error, mutationVariables.variables, safeContext);
       }
       const errorMessage = safeContext.item
-        ? getErrorNotificationMessage(safeContext.item, variables, error)
+        ? getErrorNotificationMessage(safeContext.item, mutationVariables.variables, error)
         : String(error);
       if (safeContext.notificationKey) {
         container.resolve(NotificationService).fulfillNotification(safeContext.notificationKey, NotificationUtil.wrapErrorNotificationMessage(errorMessage, error), 'error');
       }
     },
-    onMutate: async (variables) => {
-      const previousItem = previousItemRef.current;
+    onMutate: async ({ previousItem, variables }) => {
       if (!previousItem) {
         throw new Error('previousItem is not set');
       }
@@ -104,8 +101,7 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
       }
       return { item: previousItem, notificationKey };
     },
-    onSuccess: async (item, variables, context) => {
-      previousItemRef.current = undefined;
+    onSuccess: async (item, mutationVariables, context) => {
       if (resourceQueryKey && Array.isArray(context?.previousData) && isSingleGenericData(item)) {
         const previousItemId = (context.item as GenericData)?.id;
         queryClient.setQueryData<GenericData[]>(resourceQueryKey, (oldItems) => {
@@ -117,14 +113,17 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
       }
       await container.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
       if (onSuccess) {
-        await onSuccess(item, variables, context);
+        await onSuccess(item, mutationVariables.variables, context);
       }
       container.resolve(NotificationService).fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
     },
   });
 
   // Note: must be done in useMemo to avoid render loops (useMutation returns a new object every time)
-  const mutate = useMemo(() => editMutation.mutate, [editMutation.mutate]);
+  const editMutate = editMutation.mutate;
+  const mutate = useMemo(() => (variables: TVariables, previousItem: TData) => {
+    editMutate({ previousItem, variables });
+  }, [editMutate]);
   const isMutating = useMemo(() => editMutation.isPending, [editMutation.isPending]);
-  return useMemo(() => ({ isMutating, mutate, setPreviousItem }), [isMutating, mutate, setPreviousItem]);
+  return useMemo(() => ({ isMutating, mutate }), [isMutating, mutate]);
 };

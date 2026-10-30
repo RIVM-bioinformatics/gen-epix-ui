@@ -104,7 +104,7 @@ export const CaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: Cas
     ] as const;
   }, [caseSet, caseSetCategoryOptionsQuery.isLoading, caseSetCategoryOptionsQuery.options, caseSetStatusOptionsQuery.isLoading, caseSetStatusOptionsQuery.options, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options]);
 
-  const { isMutating: isEditing, mutate: mutateEdit, setPreviousItem } = useEditMutation<CaseDbCaseSet, FormFields>({
+  const { isMutating: isEditing, mutate: mutateEdit } = useEditMutation<CaseDbCaseSet, FormFields>({
     getErrorNotificationMessage: (data) => t('Failed to edit event: {{name}}', { name: data.name }),
     getIntermediateItem: (variables: FormFields, previousItem: CaseDbCaseSet) => ({ ...previousItem, ...variables }),
     getProgressNotificationMessage: (data) => t('Saving event: {{name}}', { name: data.name }),
@@ -123,9 +123,8 @@ export const CaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: Cas
   }, [isEditing, onIsSavingChange]);
 
   const onFormSubmit = useCallback((formData: FormFields) => {
-    setPreviousItem(caseSet);
-    mutateEdit(formData);
-  }, [caseSet, mutateEdit, setPreviousItem]);
+    mutateEdit(formData, caseSet);
+  }, [caseSet, mutateEdit]);
 
   const values = useMemo(() => FormUtil.createFormValues<FormFields, CaseDbCaseSet>(formFieldDefinitions, caseSet), [formFieldDefinitions, caseSet]);
 

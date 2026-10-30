@@ -597,7 +597,6 @@ export const TreeWidget = () => {
           <PhylogeneticTree
             ancestorDotRadius={treeConfig.ANCESTOR_DOT_RADIUS}
             ariaLabel={treeCanvasAriaLabel}
-            backgroundColor={theme.palette.background.paper}
             headerHeight={treeConfig.HEADER_HEIGHT}
             highlightedNodeNamesSubject={phylogeneticTreeHighlightedNodeNamesSubject}
             initialViewState={initialTreeViewState}
@@ -618,8 +617,6 @@ export const TreeWidget = () => {
             onViewStateChange={onTreeViewStateChange}
             panningThreshold={treeConfig.PANNING_THRESHOLD}
             ref={treeRef}
-            regularFillColorSupportLine={treeConfig.REGULAR_FILL_COLOR_SUPPORT_LINE}
-            scaleColor={theme.palette.text.primary}
             scaleIncrements={treeConfig.SCALE_INCREMENTS}
             scrollSubject={dashboardContext.linkedScrollSubject}
             shouldShowDistances={isShowDistancesEnabled}

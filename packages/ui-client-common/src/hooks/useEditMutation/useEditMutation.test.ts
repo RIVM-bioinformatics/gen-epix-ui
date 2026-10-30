@@ -109,11 +109,7 @@ describe('useEditMutation', () => {
       { wrapper },
     );
     act(() => {
-      result.current.setPreviousItem(previousItem);
-    });
-
-    act(() => {
-      result.current.mutate(variables);
+      result.current.mutate(variables, previousItem);
     });
 
     await waitFor(() => {
@@ -170,12 +166,11 @@ describe('useEditMutation', () => {
       { wrapper },
     );
     act(() => {
-      result.current.setPreviousItem(previousItem);
       result.current.mutate({
         empty: '',
         name: 'Updated name',
         nested: { value: '' },
-      });
+      }, previousItem);
     });
 
     await waitFor(() => {
@@ -233,12 +228,11 @@ describe('useEditMutation', () => {
       { wrapper },
     );
     act(() => {
-      result.current.setPreviousItem(previousItem);
       result.current.mutate({
         empty: '',
         name: 'Updated',
         nested: { value: '' },
-      });
+      }, previousItem);
     });
 
     await waitFor(() => {
@@ -266,12 +260,11 @@ describe('useEditMutation', () => {
       { wrapper },
     );
     act(() => {
-      result.current.setPreviousItem(previousItem);
       result.current.mutate({
         empty: '',
         name: 'Changed',
         nested: { value: '' },
-      });
+      }, previousItem);
     });
 
     await waitFor(() => {
@@ -299,6 +292,7 @@ describe('useEditMutation', () => {
     );
 
     act(() => {
+      // @ts-expect-error A previous item is required for edit mutations.
       result.current.mutate({
         empty: '',
         name: 'Updated',
@@ -334,12 +328,11 @@ describe('useEditMutation', () => {
       { wrapper },
     );
     act(() => {
-      result.current.setPreviousItem(previousItem);
       result.current.mutate({
         empty: '',
         name: 'Updated',
         nested: { value: '' },
-      });
+      }, previousItem);
     });
 
     await waitFor(() => {
@@ -367,12 +360,11 @@ describe('useEditMutation', () => {
       { wrapper },
     );
     act(() => {
-      result.current.setPreviousItem(previousItem);
       result.current.mutate({
         empty: '',
         name: 'Updated',
         nested: { value: '' },
-      });
+      }, previousItem);
     });
 
     await waitFor(() => {
@@ -407,12 +399,11 @@ describe('useEditMutation', () => {
       { wrapper },
     );
     act(() => {
-      result.current.setPreviousItem(previousItem);
       result.current.mutate({
         empty: '',
         name: 'Updated',
         nested: { value: '' },
-      });
+      }, previousItem);
     });
 
     await waitFor(() => {
