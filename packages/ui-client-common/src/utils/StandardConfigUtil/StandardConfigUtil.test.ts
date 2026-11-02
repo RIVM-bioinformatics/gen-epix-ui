@@ -54,8 +54,8 @@ describe('StandardConfigUtil.createConfig', () => {
     expect(config.outages.NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES).toBe(8);
     expect(config.table).toEqual({
       CONDENSED_WIDTH_PX: 150,
-      DEFAULT_OVERSCAN_MAIN: 10,
-      DEFAULT_OVERSCAN_REVERSE: 10,
+      DEFAULT_OVERSCAN_MAIN: 30,
+      DEFAULT_OVERSCAN_REVERSE: 30,
     });
     expect(config.userFeedback.SHOW_USER_FEEDBACK_TOOLTIP_AFTER_MS).toBe(120000);
     expect(config.userInactivityConfirmation).toEqual({

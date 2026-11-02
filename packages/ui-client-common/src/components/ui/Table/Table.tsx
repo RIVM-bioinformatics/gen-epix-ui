@@ -314,6 +314,7 @@ export const Table = <TRowData, TDataContext = null>({
   }, [setCurrentColumnVisualSettingsInStore]);
 
   const saveColumnVisualSettingsToStoreDebounced = useDebouncedCallback(() => {
+    console.log('saveColumnVisualSettingsToStoreDebounced');
     saveColumnVisualSettingsToStore();
   }, 500, { trailing: true });
 
