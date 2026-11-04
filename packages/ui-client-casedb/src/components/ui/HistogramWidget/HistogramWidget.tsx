@@ -34,6 +34,7 @@ import type {
   CaseDbColType,
 } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
+import { NestedDropdown } from '@gen-epix/ui-core-components/components/NestedMenu';
 import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { useStore } from 'zustand';
 import { BarChart } from 'echarts/charts';
@@ -195,49 +196,68 @@ export const HistogramWidget = () => {
     });
   }, [shouldShowGraph, colors, theme, conceptsB, series, conceptsA, aCol, bCol, t]);
 
-  const titleMenu = useMemo<MenuItemData | string>(() => {
-    let label: string;
-    if (aCol && bCol) {
-      label = t('Histogram: {{aColLabel}} and {{bColLabel}}', { aColLabel: aCol.label, bColLabel: bCol.label });
-    } else {
-      label = t`Histogram`;
-    }
-
+  const axisMenus = useMemo<null | ReactElement>(() => {
     if (!defaultCols?.newColA || !defaultCols?.newColB) {
-      return label;
+      return null;
     }
 
-    const mainMenu: MenuItemData = {
-      disabled: !canShowWidget || allowedCols.length < 2,
-      items: [],
-      label,
+    const selectedACol = aCol ?? defaultCols.newColA;
+    const selectedBCol = bCol ?? defaultCols.newColB;
+    const isMenuDisabled = !canShowWidget || allowedCols.length < 2;
+    const xAxisMenu: MenuItemData = {
+      disabled: isMenuDisabled,
+      items: allowedCols.filter(col => col.id !== selectedACol.id).map(col => ({
+        active: selectedBCol.id === col.id || undefined,
+        callback: () => {
+          onMenuItemClick(selectedACol, col);
+        },
+        label: col.label,
+      })),
+      label: t('X-Axis: {{label}}', { label: selectedBCol.label }),
+    };
+    const yAxisMenu: MenuItemData = {
+      disabled: isMenuDisabled,
+      items: allowedCols.filter(col => col.id !== selectedBCol.id).map(col => ({
+        active: selectedACol.id === col.id || undefined,
+        callback: () => {
+          onMenuItemClick(col, selectedBCol);
+        },
+        label: col.label,
+      })),
+      label: t('Y-Axis: {{label}}', { label: selectedACol.label }),
     };
 
-
-    allowedCols.forEach(x => {
-      const subMenu: MenuItemData = {
-        active: aCol?.id === x.id || undefined,
-        items: [],
-        label: t('Grouping: {{label}}', { label: x.label }),
-      };
-      allowedCols.forEach(y => {
-        if (x.id === y.id) {
-          return;
-        }
-        subMenu.items.push({
-          active: (aCol?.id === x.id || undefined) && (bCol?.id === y.id || undefined),
-          callback: () => {
-            onMenuItemClick(x, y);
-          },
-          label: t('X-Axis: {{label}}', { label: y.label }),
-        });
-      });
-      mainMenu.items.push(subMenu);
-    });
-
-
-    return mainMenu;
-  }, [aCol, bCol, canShowWidget, allowedCols, defaultCols?.newColA, defaultCols?.newColB, t, onMenuItemClick]);
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 1,
+          maxWidth: '45vw',
+          width: 320,
+        }}
+      >
+        {[xAxisMenu, yAxisMenu].map(menu => (
+          <NestedDropdown
+            ButtonProps={{
+              color: 'primary',
+              disabled: menu.disabled,
+              size: 'small',
+              variant: 'text',
+            }}
+            ContainerProps={{
+              sx: {
+                flex: '1 1 160px',
+                minWidth: 0,
+              },
+            }}
+            key={menu.label}
+            menuItemsData={menu}
+            MenuProps={{ elevation: 3 }}
+          />
+        ))}
+      </Box>
+    );
+  }, [aCol, bCol, canShowWidget, allowedCols, defaultCols, t, onMenuItemClick]);
 
   const onChartReady = useCallback((chart: EChartsType) => {
     chartInstanceRef.current = chart;
@@ -437,7 +457,8 @@ export const HistogramWidget = () => {
   return (
     <DashboardWidget
       expandDisabled={!canShowWidget}
-      title={titleMenu}
+      primaryMenu={axisMenus ?? undefined}
+      title={t`Histogram`}
       warningMessage={canShowWidget && histogramCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
       widgetName={DASHBOARD_COMPONENT_NAME.HISTOGRAM}
     >
