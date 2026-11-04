@@ -17,13 +17,19 @@ import isObject from 'lodash/isObject';
 import type {
   PropsWithChildren,
   ReactElement,
+  MouseEvent as ReactMouseEvent,
   RefObject,
 } from 'react';
-import { useCallback } from 'react';
+import {
+  useCallback,
+  useMemo,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { CopyToClipboardButton } from '../CopyToClipboardButton';
+
+import { createDialogPopperClickGuard } from './createDialogPopperClickGuard';
 
 export type DialogAction = DialogActionButton | ReactElement;
 
@@ -72,12 +78,25 @@ export const Dialog = ({
   titleVariant = 'h5',
 }: PropsWithChildren<DialogProps>): ReactElement => {
   const { t } = useTranslation();
-  const onMuiDialogClose = useCallback<NonNullable<MuiDialogProps['onClose']>>((_event, reason) => {
+  const dialogPopperClickGuard = useMemo(() => createDialogPopperClickGuard(), []);
+  const onMuiDialogClickCapture = useCallback((event: ReactMouseEvent<HTMLDivElement>) => {
+    dialogPopperClickGuard.onClickCapture(event, event.detail, dialogContentRef?.current);
+  }, [dialogContentRef, dialogPopperClickGuard]);
+  const onMuiDialogPointerDownCapture = useCallback(() => {
+    dialogPopperClickGuard.onPointerDownCapture(dialogContentRef?.current);
+  }, [dialogContentRef, dialogPopperClickGuard]);
+  const onMuiDialogPointerCancelCapture = useCallback(() => {
+    dialogPopperClickGuard.onPointerCancelCapture();
+  }, [dialogPopperClickGuard]);
+  const onMuiDialogClose = useCallback<NonNullable<MuiDialogProps['onClose']>>((event, reason) => {
+    if (reason === 'backdropClick' && dialogPopperClickGuard.shouldIgnoreBackdropClick(event)) {
+      return;
+    }
     if (disableBackdropClick && (reason === 'backdropClick' || reason === 'escapeKeyDown')) {
       return;
     }
     onClose?.();
-  }, [disableBackdropClick, onClose]);
+  }, [dialogPopperClickGuard, disableBackdropClick, onClose]);
 
   const onGetClipboardValue = useCallback(() => {
     return permalink;
@@ -89,7 +108,10 @@ export const Dialog = ({
       fullScreen={fullScreen}
       fullWidth={fullWidth}
       maxWidth={maxWidth}
+      onClickCapture={onMuiDialogClickCapture}
       onClose={onMuiDialogClose}
+      onPointerCancelCapture={onMuiDialogPointerCancelCapture}
+      onPointerDownCapture={onMuiDialogPointerDownCapture}
       open
       sx={{
         '& .MuiDialogContent-root, & .MuiCardContent-root:last-child': {
