@@ -301,41 +301,17 @@ public units need the same folder+barrel shape to be consumable.
 - Do not commit accidental generated metadata for agent tools.
 - Preserve release configuration and changelogs unless release work is requested.
 
-## Agent Customization Source Of Truth
+## Agent skills
 
-This repo keeps shared agent assets under `.agents`.
-
-- Put repository-wide agent context in `AGENTS.md`.
-- Put reusable skills in `.agents/skills/<skill-name>/SKILL.md`.
-- Put reusable hook/helper scripts in `.agents/scripts/`.
-- Keep `CLAUDE.md` as a thin wrapper that imports `@AGENTS.md`.
-- Keep `.claude/skills` as a symlink to `../.agents/skills`.
-- Do not create duplicated skill copies in `.github/skills`, `.codex/skills`, or
- `.claude/skills/<skill-name>`.
-- Do not keep generated `agents/openai.yaml` files.
-
-When creating or updating skills:
-
-- Use lowercase hyphenated skill names.
-- Use only `name` and `description` in skill YAML frontmatter unless a local
- convention requires more.
-- Put trigger phrases in the `description`; the skill body only loads after the
- skill is selected.
-- Keep skill bodies concise and procedural.
-- Reference shared scripts by `.agents/scripts/...` paths.
-
-Validate agent wiring with:
-
-```sh
-test -f .agents/skills/<skill-name>/SKILL.md
-test ! -e .agents/skills/<skill-name>/agents/openai.yaml
-find .agents/skills -maxdepth 2 -type f | sort
-find -L .claude/skills -maxdepth 2 -type f | sort
-rg -n --glob '!**/skill-generation/SKILL.md' "\.github/skills|\.codex/skills|agents/openai\.yaml|\.claude/skills/[^ ]" CLAUDE.md .claude .codex .github .agents/skills
-```
-
-The final `rg` command should not find stale source-of-truth references.
-Legitimate references to `.claude/skills` as a folder-level symlink are okay.
+- Repository-only skills live in `.agents/skills/<name>/SKILL.md` (read by Codex and Copilot).
+  Shared skills come from the `gen-epix-agent-skills` plugins; do not copy them here.
+- Claude Code reads `.claude/skills`, a git symlink to `../.agents/skills`. On Windows it only
+  works with Developer Mode on and `git config core.symlinks true`; otherwise the link is a
+  small text file and Claude Code sees no repository skills.
+- Bundled scripts live inside the skill folder. Use the `skill-generation` skill to add or
+  change a skill.
+- To change how a shared skill behaves in this repository, add a `## Skill rules: <name>`
+  section to this file. It may make the skill's safety rules stricter, never looser.
 
 ## Pull Request And Git Guidance
 
