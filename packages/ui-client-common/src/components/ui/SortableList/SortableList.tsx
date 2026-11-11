@@ -142,7 +142,16 @@ export const SortableList = <T extends SortableListBaseItem>({
           />
         </Box>
         {renderItemContent(item)}
-        <Box role={'cell'}>
+        <Box
+          role={'cell'}
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            paddingRight: theme.spacing(1),
+            width: '100%',
+          }}
+        >
           <SortableListItemDragHandle
             name={t('Drag handle for {{label}}', { label: item.label })}
           />
