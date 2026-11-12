@@ -16,7 +16,6 @@ import type {
   SetStateAction,
 } from 'react';
 import isString from 'lodash/isString';
-import intersection from 'lodash/intersection';
 import { useTheme } from '@mui/material';
 
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
@@ -61,6 +60,13 @@ export const EpiCurveStackedAreaChart = ({
     EpiCurveUtil.getAreaChartSeriesData(items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification),
   [items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification]);
 
+  const caseIdsByPoint = useMemo(() => {
+    const series = seriesData.series as Array<{ data?: Array<[unknown, unknown, string]> }> | null;
+    return series?.map(serie => serie.data?.map(dataArray => (
+      isString(dataArray[2]) ? JSON.parse(dataArray[2]) as string[] : []
+    )) ?? []) ?? [];
+  }, [seriesData.series]);
+
   // Fast lookup table: color -> all caseIds having that stratification color.
   const caseIdsByColor = useMemo(() => {
     const buckets: { [color: string]: string[] } = {};
@@ -89,16 +95,11 @@ export const EpiCurveStackedAreaChart = ({
   }, [caseIdsByColor, seriesData]);
 
   const getCaseIdsForPoint = useCallback((seriesIndex: number, dataIndex: number): string[] => {
-    if (!seriesData.series || seriesIndex < 0 || dataIndex < 0) {
+    if (seriesIndex < 0 || dataIndex < 0) {
       return [];
     }
-    const series = (seriesData.series as Array<{ data?: unknown[] }>)?.[seriesIndex];
-    const point = (series?.data as Array<[unknown, unknown, string]>)?.[dataIndex];
-    if (point?.[2] && isString(point[2])) {
-      return JSON.parse(point[2]) as string[];
-    }
-    return [];
-  }, [seriesData]);
+    return caseIdsByPoint[seriesIndex]?.[dataIndex] ?? [];
+  }, [caseIdsByPoint]);
 
   const expandToStratificationColorCaseIds = useCallback((candidateCaseIds: string[]): string[] => {
     if (!candidateCaseIds.length) {
@@ -207,15 +208,11 @@ export const EpiCurveStackedAreaChart = ({
       }
 
       const highlightTargets: Array<{ dataIndex: number; seriesIndex: number }> = [];
-      seriesData.series?.forEach((serie, serieIndex) => {
-        const serieData = (serie as { data: unknown[] }).data;
-        serieData?.forEach((dataArray: unknown, dataIndex: number) => {
-          const caseIds = JSON.parse((dataArray as [unknown, unknown, string])[2]) as string[];
-          if (intersection(caseIds, highlighting.caseIds).length) {
-            highlightTargets.push({
-              dataIndex,
-              seriesIndex: serieIndex,
-            });
+      const highlightedCaseIds = new Set(highlighting.caseIds);
+      caseIdsByPoint.forEach((seriesCaseIds, seriesIndex) => {
+        seriesCaseIds.forEach((caseIds, dataIndex) => {
+          if (caseIds.some(caseId => highlightedCaseIds.has(caseId))) {
+            highlightTargets.push({ dataIndex, seriesIndex });
           }
         });
       });
@@ -236,7 +233,7 @@ export const EpiCurveStackedAreaChart = ({
     return () => {
       unsubscribe();
     };
-  }, [dashboardContext, seriesData]);
+  }, [caseIdsByPoint, dashboardContext]);
 
   const onInternalChartReady = useCallback((chart: EChartsType) => {
     chartInstanceRef.current = chart;
@@ -255,16 +252,16 @@ export const EpiCurveStackedAreaChart = ({
         return caseIdsBySeriesIndex[eventData.seriesIndex] ?? [];
       }
 
-      const caseIdsFromData = eventData?.data?.[2];
-      if (isString(caseIdsFromData)) {
-        return expandToStratificationColorCaseIds(JSON.parse(caseIdsFromData) as string[]);
-      }
-
       if (typeof eventData.seriesIndex === 'number'
         && typeof eventData.dataIndex === 'number'
         && eventData.seriesIndex >= 0
         && eventData.dataIndex >= 0) {
         return expandToStratificationColorCaseIds(getCaseIdsForPoint(eventData.seriesIndex, eventData.dataIndex));
+      }
+
+      const caseIdsFromData = eventData?.data?.[2];
+      if (isString(caseIdsFromData)) {
+        return expandToStratificationColorCaseIds(JSON.parse(caseIdsFromData) as string[]);
       }
 
       return [];

@@ -98,10 +98,7 @@ export class QueryClientService<TQueryKey extends string = string> {
   }
 
   public getValidQueryData<T>(queryKey: string[]): T {
-    const cache = this.queryCache.find({
-      queryKey,
-    });
-    if (cache?.state?.isInvalidated) {
+    if (this.queryClient.getQueryState(queryKey)?.isInvalidated) {
       return undefined;
     }
     return this.queryClient.getQueryData<T>(queryKey);

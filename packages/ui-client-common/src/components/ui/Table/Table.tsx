@@ -200,6 +200,14 @@ export const Table = <TRowData, TDataContext = null>({
     return tableColumnVisualSettingsRef?.current?.filter(c => c.isVisible) ?? [];
   }, []);
 
+  const tableColumnsById = useMemo(() => {
+    const columnsById = new Map<string, TableColumn<TRowData, TDataContext>>();
+    tableColumns.forEach((column) => {
+      columnsById.set(column.id, column);
+    });
+    return columnsById;
+  }, [tableColumns]);
+
   const updateTableWidth = useCallback(() => {
     if (!tableColumnVisualSettingsRef?.current?.length || !tableContainer) {
       return;
@@ -517,7 +525,7 @@ export const Table = <TRowData, TDataContext = null>({
         }}
       >
         {getVisibleTableSettingsColumns().map((tableSettingsColumn, tableSettingsColumnIndex) => {
-          const tableColumn = tableColumns.find(c => c.id === tableSettingsColumn.id);
+          const tableColumn = tableColumnsById.get(tableSettingsColumn.id);
           if (!tableColumn) {
             return null;
           }
@@ -540,13 +548,16 @@ export const Table = <TRowData, TDataContext = null>({
         })}
       </Box>
     );
-  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumns, renderSelectableHeaderContent, onColumnDividerMouseDown, onColumnDividerKeyDown, onTableHeaderCellDrag]);
+  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumnsById, renderSelectableHeaderContent, onColumnDividerMouseDown, onColumnDividerKeyDown, onTableHeaderCellDrag]);
 
   const renderItemContent = useCallback((index: number, row: TRowData) => {
     return (
       <>
         {getVisibleTableSettingsColumns().map((tableSettingsColumn, columnIndex) => {
-          const tableColumn = tableColumns.find(c => c.id === tableSettingsColumn.id);
+          const tableColumn = tableColumnsById.get(tableSettingsColumn.id);
+          if (!tableColumn) {
+            return null;
+          }
           let title: string;
           if (tableColumn.cellTitleGetter) {
             title = tableColumn.cellTitleGetter({ column: tableColumn, dataContext, id: tableSettingsColumn.id, row, rowIndex: index });
@@ -616,7 +627,7 @@ export const Table = <TRowData, TDataContext = null>({
         })}
       </>
     );
-  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderSelectableCell, renderReadableIndexCell, rowHeight, t, tableColumns, theme, dataContext, isCondensed]);
+  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderSelectableCell, renderReadableIndexCell, rowHeight, t, tableColumnsById, theme, dataContext, isCondensed]);
 
   const onRowMouseEnterCallback = useCallback((row: TRowData) => {
     onRowMouseEnter(row);
@@ -633,18 +644,23 @@ export const Table = <TRowData, TDataContext = null>({
     }
 
     const unsubscribe = rowHighlightingSubject.subscribe((highlightedRowIds, previousHighlightedRowIds) => {
-      // remove previous highlighting
-      previousHighlightedRowIds.forEach(rowId => {
-        tableContainer.querySelectorAll(`[data-testid=virtuoso-item-list] [data-id='${rowId}']`).forEach(rowNode => {
-          (rowNode as HTMLElement).classList.remove('highlighted');
-        });
-      });
+      if (!highlightedRowIds.length && !previousHighlightedRowIds.length) {
+        return;
+      }
 
-      // add current highlighting
-      highlightedRowIds.forEach(rowId => {
-        tableContainer.querySelectorAll(`[data-testid=virtuoso-item-list] [data-id='${rowId}']`).forEach(rowNode => {
-          (rowNode as HTMLElement).classList.add('highlighted');
-        });
+      const currentHighlightedIds = new Set(highlightedRowIds);
+      const previousHighlightedIds = new Set(previousHighlightedRowIds);
+      tableContainer.querySelectorAll<HTMLElement>('[data-testid=virtuoso-item-list] [data-id]').forEach(rowNode => {
+        const rowId = rowNode.getAttribute('data-id');
+        if (rowId === null) {
+          return;
+        }
+
+        if (currentHighlightedIds.has(rowId)) {
+          rowNode.classList.add('highlighted');
+        } else if (previousHighlightedIds.has(rowId)) {
+          rowNode.classList.remove('highlighted');
+        }
       });
     });
     return () => {

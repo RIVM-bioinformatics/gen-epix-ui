@@ -27,7 +27,7 @@ import { NotificationService } from '@gen-epix/ui-client-common/classes/services
 import { AxiosUtil } from '@gen-epix/ui-client-common/utils/AxiosUtil';
 import { FILTER_MODE } from '@gen-epix/ui-client-common/classes/abstracts/FilterAbstract';
 import { TextFilter } from '@gen-epix/ui-client-common/classes/filters';
-import { TreeUtil } from '@gen-epix/ui-phylogenetic-tree/utils/TreeUtil';
+import { TreeService } from '@gen-epix/ui-phylogenetic-tree/classes/services/TreeService';
 import { NewickUtil } from '@gen-epix/ui-phylogenetic-tree/utils/NewickUtil';
 import type { TreeNode } from '@gen-epix/ui-phylogenetic-tree/models/tree.models';
 
@@ -50,6 +50,8 @@ import type {
 import { STRATIFICATION_MODE } from '../../models/stratification.models';
 
 import { createDashboardStore as createDashboardStoreImplementation } from './dashboardStore';
+
+const treeService = container.resolve(TreeService);
 
 const completeCaseType: CaseDbCompleteCaseType = {
   case_date_dim_id: null,
@@ -130,7 +132,7 @@ const prepareTree = (store: ReturnType<typeof createDashboardStoreImplementation
     tree,
     treeResponse: tree,
   });
-  vi.spyOn(TreeUtil, 'createTreeAddresses').mockReturnValue({});
+  vi.spyOn(treeService, 'createTreeAddresses').mockReturnValue({});
   return tree;
 };
 
@@ -318,7 +320,7 @@ describe('dashboard data and filters', () => {
   it('adds and removes a tree filter and resets tree addresses', async () => {
     const { store } = createDashboardHarness();
     const root = prepareTree(store);
-    vi.spyOn(TreeUtil, 'findNewTreeRoot').mockReturnValue(root);
+    vi.spyOn(treeService, 'findNewTreeRoot').mockReturnValue(root);
 
     await store.getState().addTreeFilter('leaf-1');
     expect(store.getState().filters.find(filter => filter.id === 'sequence_id')?.filterValue).toBe('leaf-1');
@@ -344,7 +346,7 @@ describe('dashboard data and filters', () => {
     const { store } = createDashboardHarness();
     const root = prepareTree(store);
     const parent = createTreeNode('parent');
-    const findNewTreeRoot = vi.spyOn(TreeUtil, 'findNewTreeRoot').mockImplementation((_tree, nodeName, selector) => {
+    const findNewTreeRoot = vi.spyOn(treeService, 'findNewTreeRoot').mockImplementation((_tree, nodeName, selector) => {
       if (selector === 'parent' || nodeName === 'parent') {
         return parent;
       }
@@ -369,7 +371,7 @@ describe('dashboard data and filters', () => {
   it('removes an unchanged tree filter but keeps a changed tree filter value', async () => {
     const { store } = createDashboardHarness();
     const root = prepareTree(store);
-    vi.spyOn(TreeUtil, 'findNewTreeRoot').mockReturnValue(root);
+    vi.spyOn(treeService, 'findNewTreeRoot').mockReturnValue(root);
     const notificationService = container.resolve(NotificationService);
     const showNotification = vi.spyOn(notificationService, 'showNotification');
 
@@ -393,7 +395,7 @@ describe('dashboard data and filters', () => {
   it('removes tree filtering from similar-case results and reapplies similar-case stratification', async () => {
     const { store } = createDashboardHarness();
     const root = prepareTree(store);
-    vi.spyOn(TreeUtil, 'findNewTreeRoot').mockReturnValue(root);
+    vi.spyOn(treeService, 'findNewTreeRoot').mockReturnValue(root);
     const notificationService = container.resolve(NotificationService);
     const showNotification = vi.spyOn(notificationService, 'showNotification');
     const similarCaseResults: FindSimilarCasesResult[] = [{
@@ -490,9 +492,9 @@ describe('dashboard data and filters', () => {
       treeConfiguration: createTreeConfiguration(),
     });
     const parse = vi.spyOn(NewickUtil, 'parse').mockReturnValue(parsedTree);
-    const sanitizeTree = vi.spyOn(TreeUtil, 'sanitizeTree').mockReturnValue(sanitizedTree);
+    const sanitizeTree = vi.spyOn(treeService, 'sanitizeTree').mockReturnValue(sanitizedTree);
     const getSortedNames = vi.spyOn(NewickUtil, 'getSortedNames').mockReturnValue(['case-1', 'case-2']);
-    vi.spyOn(TreeUtil, 'createTreeAddresses').mockReturnValue({});
+    vi.spyOn(treeService, 'createTreeAddresses').mockReturnValue({});
     const response: CaseDbPhylogeneticTree = {
       newick_repr: '(case-1,case-2)root;',
       protocol_id: 'protocol-1',

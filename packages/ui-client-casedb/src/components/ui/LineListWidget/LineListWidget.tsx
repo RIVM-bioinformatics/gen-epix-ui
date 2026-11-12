@@ -61,7 +61,10 @@ import type {
 } from '../../../models/stratification.models';
 import { STRATIFICATION_MODE } from '../../../models/stratification.models';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
+import {
+  CaseTypeUtil,
+  TREE_FILTER_GROUP,
+} from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import type { CaseDbConfig } from '../../../models/config.models';
 import { CaseDbTableUtil } from '../../../utils/CaseDbTableUtil';
@@ -103,6 +106,7 @@ export const LineListWidget = () => {
   const dashboardStore = use(DashboardStoreContext);
   const completeCaseType = useStore(dashboardStore, (state) => state.completeCaseType);
   const sortedData = useStore(dashboardStore, (state) => state.sortedData);
+  const filteredCases = useStore(dashboardStore, (state) => state.filteredData[TREE_FILTER_GROUP]);
   const isCondensed = useStore(dashboardStore, (state) => state.isCondensed);
   const stratification = useStore(dashboardStore, (state) => state.stratification?.mode === STRATIFICATION_MODE.FIELD ? state.stratification : null);
   const updateWidgetData = useStore(dashboardStore, (state) => state.updateWidgetData);
@@ -463,13 +467,13 @@ export const LineListWidget = () => {
         col,
         completeCaseType,
         mode: STRATIFICATION_MODE.FIELD,
-        sortedData,
+        sortedData: filteredCases,
         useExtraGradients: true,
       });
     });
 
     return cache;
-  }, [completeCaseType, isCondensed, sortedData]);
+  }, [completeCaseType, filteredCases, isCondensed]);
 
   const cellColorGetter = useCallback((params: TableRowAndColumnParams<CaseDbCase, CaseDbCompleteCaseType>): string | undefined => {
     const columnStratification = columnStratificationCache[params.column.id];

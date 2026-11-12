@@ -10,11 +10,12 @@ import {
   ThemeProvider,
 } from '@mui/material/styles';
 import { render } from 'vitest-browser-react';
+import { container } from 'tsyringe';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { DevicePixelRatioService } from '@gen-epix/ui-core/classes/services/DevicePixelRatioService';
 
+import { TreeService } from '../../classes/services/TreeService';
 import type { TreeNode } from '../../models/tree.models';
-import { TreeUtil } from '../../utils/TreeUtil';
 import { NewickUtil } from '../../utils/NewickUtil';
 
 import type {
@@ -218,7 +219,7 @@ const waitForCanvasPaint = async (canvas: HTMLCanvasElement, assertion: () => bo
 };
 
 const parseTree = (newick: string) => {
-  return TreeUtil.sanitizeTree(NewickUtil.parse(newick), 20);
+  return container.resolve(TreeService).sanitizeTree(NewickUtil.parse(newick), 20);
 };
 
 const getLayoutNode = (layout: TreeLayout, nodeName: string) => {

@@ -1,8 +1,8 @@
 import { Decimal } from 'decimal.js';
 import first from 'lodash/first';
-import intersection from 'lodash/intersection';
 import last from 'lodash/last';
 import round from 'lodash/round';
+import { singleton } from 'tsyringe';
 import { NumberUtil } from '@gen-epix/ui-core/utils/NumberUtil';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
@@ -10,7 +10,7 @@ import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
-} from '../../models/tree.models';
+} from '../../../models/tree.models';
 
 type NodeAssemblyResult = {
   nodeNames: string[];
@@ -38,7 +38,10 @@ type TreeAssemblyContext = {
   treePadding: number;
 };
 
-export class TreeUtil {
+@singleton()
+export class TreeService {
+  private readonly pathVerticalBounds = new WeakMap<Path2D, { maxY: number; minY: number }>();
+
   /**
    * Traverses the tree and produces a {@link TreeAssembly} containing all
    * pre-computed `Path2D` shapes and metadata needed to render the tree.
@@ -54,9 +57,15 @@ export class TreeUtil {
    * @param params.sortedLeafNames - Custom sorting order of leaf nodes by name, derived from ordering (e.g. table row order). Must contain all leaf node names.
    * @returns A fully populated {@link TreeAssembly} ready for rendering.
    */
-  public static assembleTree(params: { ancestorDotRadius: number; itemHeight: number; leafDotRadius: number; minimumDistancePercentageToShowLabel: number; pixelToGeneticDistanceRatio: number; rootNode: TreeNode; sortedLeafNames: string[]; treeCanvasWidth: number; treePadding: number }): TreeAssembly {
+  public assembleTree(params: { ancestorDotRadius: number; itemHeight: number; leafDotRadius: number; minimumDistancePercentageToShowLabel: number; pixelToGeneticDistanceRatio: number; rootNode: TreeNode; sortedLeafNames: string[]; treeCanvasWidth: number; treePadding: number }): TreeAssembly {
     const { ancestorDotRadius, itemHeight, leafDotRadius, minimumDistancePercentageToShowLabel, pixelToGeneticDistanceRatio, rootNode, sortedLeafNames, treeCanvasWidth, treePadding } = params;
     let leafIndex = 0;
+    const sortedLeafIndices = new Map<string, number>();
+    sortedLeafNames.forEach((name, index) => {
+      if (!sortedLeafIndices.has(name)) {
+        sortedLeafIndices.set(name, index);
+      }
+    });
     const treeAssembly: TreeAssembly = {
       ancestorNodes: [],
       distanceTexts: [],
@@ -93,12 +102,12 @@ export class TreeUtil {
       });
 
       if (!node.children?.length) {
-        const result = TreeUtil.assembleLeafNode(treeAssemblyContext, node, distance, leafIndex, sortedLeafNames.indexOf(node.name));
+        const result = this.assembleLeafNode(treeAssemblyContext, node, distance, leafIndex, sortedLeafIndices.get(node.name) ?? -1);
         leafIndex++;
         return result;
       }
 
-      return TreeUtil.assembleAncestorNode(treeAssemblyContext, node, nodeRenderResults);
+      return this.assembleAncestorNode(treeAssemblyContext, node, nodeRenderResults);
     };
 
     traverseTree(rootNode);
@@ -116,9 +125,10 @@ export class TreeUtil {
    * @param rootNode - The root of the tree to address.
    * @returns A map from node name to its dot-notation address string.
    */
-  public static createTreeAddresses(rootNode: TreeNode): { [key: string]: string } {
+  public createTreeAddresses(rootNode: TreeNode): { [key: string]: string } {
     const treeAddresses: { [key: string]: string } = {};
-    const traverse = (node: TreeNode, address: number[] = []): TreeNode => {
+    const address: number[] = [];
+    const traverse = (node: TreeNode): void => {
       treeAddresses[node.name] = address.join('.');
       if (node.children?.length) {
         const hasZeroBranchLength = node.children.some(child => (child.branchLength?.toNumber() ?? 0) === 0);
@@ -126,14 +136,17 @@ export class TreeUtil {
         let index = hasZeroBranchLength ? 2 : 1;
         node.children.forEach((child) => {
           if ((child.branchLength?.toNumber() ?? 0) === 0) {
-            traverse(child, [...address, 1]);
+            address.push(1);
+            traverse(child);
+            address.pop();
           } else {
-            traverse(child, [...address, index]);
+            address.push(index);
+            traverse(child);
+            address.pop();
             index++;
           }
         });
       }
-      return node;
     };
     traverse(rootNode);
     return treeAddresses;
@@ -148,10 +161,10 @@ export class TreeUtil {
    * @param params.y - Vertical position of the divider in logical pixels.
    * @param params.devicePixelRatio - Screen DPR for correct positioning.
    */
-  public static drawDivider(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; y: number }): void {
+  public drawDivider(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; y: number }): void {
     const { canvas, devicePixelRatio, y } = params;
 
-    TreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
+    this.draw(canvas, devicePixelRatio, (ctx) => {
       ctx.strokeStyle = '#EEEEEE';
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -175,14 +188,14 @@ export class TreeUtil {
    * @param params.horizontalScrollPosition - Current horizontal scroll offset in pixels.
    * @param params.regularFillColorSupportLine - Color for the guide lines.
    */
-  public static drawGuides(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; endY?: number; geneticTreeWidth: Decimal; horizontalScrollPosition: number; paddingBottom?: number; paddingTop?: number; pixelToGeneticDistanceRatio: number; regularFillColorSupportLine: string; startY?: number; tickerMarkScale: TickerMarkScale; treePadding: number; zoomLevel: number }): void {
+  public drawGuides(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; endY?: number; geneticTreeWidth: Decimal; horizontalScrollPosition: number; paddingBottom?: number; paddingTop?: number; pixelToGeneticDistanceRatio: number; regularFillColorSupportLine: string; startY?: number; tickerMarkScale: TickerMarkScale; treePadding: number; zoomLevel: number }): void {
     const { canvas, devicePixelRatio, endY, geneticTreeWidth, horizontalScrollPosition = 0, paddingBottom = 0, paddingTop = 0, pixelToGeneticDistanceRatio, regularFillColorSupportLine, startY, tickerMarkScale, treePadding, zoomLevel } = params;
-    const canvasHeight = canvas.clientHeight || canvas.height / devicePixelRatio;
+    const canvasHeight = endY === undefined ? canvas.height / devicePixelRatio : endY;
 
-    TreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
+    this.draw(canvas, devicePixelRatio, (ctx) => {
       ctx.strokeStyle = regularFillColorSupportLine;
       ctx.setLineDash([3, 1]);
-      TreeUtil.forEachScaleLine({
+      this.forEachScaleLine({
         callback: (x) => {
           // Draw the guide lines
           ctx.beginPath();
@@ -220,12 +233,12 @@ export class TreeUtil {
    * @param params.devicePixelRatio - Screen DPR.
    * @param params.horizontalScrollPosition - Current horizontal scroll offset in pixels.
    */
-  public static drawScale(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; geneticTreeWidth: Decimal; headerHeight: number; horizontalScrollPosition: number; pixelToGeneticDistanceRatio: number; scaleColor: string; scaleFont: string; tickerMarkScale: TickerMarkScale; treePadding: number; zoomLevel: number }): void {
+  public drawScale(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; geneticTreeWidth: Decimal; headerHeight: number; horizontalScrollPosition: number; pixelToGeneticDistanceRatio: number; scaleColor: string; scaleFont: string; tickerMarkScale: TickerMarkScale; treePadding: number; zoomLevel: number }): void {
     const { canvas, devicePixelRatio, geneticTreeWidth, headerHeight, horizontalScrollPosition = 0, pixelToGeneticDistanceRatio, scaleColor, scaleFont, tickerMarkScale, treePadding, zoomLevel } = params;
 
-    TreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
+    this.draw(canvas, devicePixelRatio, (ctx) => {
       ctx.fillStyle = scaleColor;
-      TreeUtil.forEachScaleLine({
+      this.forEachScaleLine({
         callback: (x, i, numberOfLines) => {
           ctx.beginPath();
           ctx.textAlign = 'center';
@@ -274,7 +287,7 @@ export class TreeUtil {
    * @param params.isLinked - Whether to draw the dashed support lines linking leaf nodes to the table.
    * @param params.shouldShowSupportLinesWhenUnlinked - Whether to render support lines when unlinked.
    */
-  public static drawTree(params: {
+  public drawTree(params: {
     canvas: HTMLCanvasElement;
     devicePixelRatio: number;
     dimFn: (color: string) => string;
@@ -299,8 +312,30 @@ export class TreeUtil {
     zoomLevel: number;
   }): void {
     const { canvas, devicePixelRatio, dimFn, getLeafLabel: getNodeLabel, headerHeight = 0, highlightedNodeNames = [], horizontalScrollPosition, isLinked, itemHeight, labelFont, nodeNameColors, range, scrollPosition = 0, shouldShowDistances, shouldShowLeafLabels: shouldShowLabels, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, verticalScrollPosition, zoomLevel } = params;
-    const ctx = TreeUtil.getCanvasContext(canvas);
+    const ctx = this.getCanvasContext(canvas);
+    const highlightedNodeNamesSet = new Set(highlightedNodeNames);
     const bodyStartY = headerHeight * devicePixelRatio;
+    const treePixelsPerUnit = devicePixelRatio / zoomLevel;
+    const visibleTreeTop = verticalScrollPosition / treePixelsPerUnit;
+    const visibleTreeBottom = (verticalScrollPosition + canvas.height - bodyStartY) / treePixelsPerUnit;
+    const canCullToViewport = canvas.height > 0;
+    const pathViewportPadding = 1 / treePixelsPerUnit;
+    const isPathVisible = (shape: Path2D) => {
+      const bounds = this.pathVerticalBounds.get(shape);
+      return !canCullToViewport || !bounds ||
+        (bounds.maxY >= visibleTreeTop - pathViewportPadding &&
+          bounds.minY <= visibleTreeBottom + pathViewportPadding);
+    };
+    const textViewportPadding = Math.max(itemHeight, 16);
+    const isTextVisible = (y: number) => !canCullToViewport ||
+      (y >= visibleTreeTop - textViewportPadding && y <= visibleTreeBottom + textViewportPadding);
+    const leafCount = Math.max(treeAssembly.leafNodes.length, treeAssembly.leafTreeLines.length, treeAssembly.nodeLabels.length);
+    const visibleLeafStart = canCullToViewport && itemHeight > 0
+      ? Math.min(leafCount, Math.max(0, Math.floor(visibleTreeTop / itemHeight) - 1))
+      : 0;
+    const visibleLeafEnd = canCullToViewport && itemHeight > 0
+      ? Math.max(visibleLeafStart, Math.min(leafCount, Math.ceil(visibleTreeBottom / itemHeight) + 1))
+      : leafCount;
     const setRegularTransform = () => {
       ctx.setTransform(
         (1 / zoomLevel) * devicePixelRatio, // The scale factor(X direction)
@@ -331,18 +366,24 @@ export class TreeUtil {
       ctx.lineWidth = 1;
 
       treeAssembly.verticalAncestorTreeLines.forEach(({ nodeNames, shape }) => {
-        ctx.strokeStyle = TreeUtil.getFillStyle(treeColor, dimFn, highlightedNodeNames, nodeNames);
+        if (!isPathVisible(shape)) {
+          return;
+        }
+        ctx.strokeStyle = this.getFillStyle(treeColor, dimFn, highlightedNodeNamesSet, nodeNames);
         ctx.stroke(shape);
       });
       treeAssembly.horizontalAncestorTreeLines.forEach(({ nodeNames, shape }) => {
-        ctx.strokeStyle = TreeUtil.getFillStyle(treeColor, dimFn, highlightedNodeNames, nodeNames);
+        if (!isPathVisible(shape)) {
+          return;
+        }
+        ctx.strokeStyle = this.getFillStyle(treeColor, dimFn, highlightedNodeNamesSet, nodeNames);
         ctx.stroke(shape);
       });
 
       if (range) {
+        const canvasBodyHeight = canvas.height - bodyStartY;
         treeAssembly.supportLines.forEach(({ fromX, fromY, nodeName, toX, toY }) => {
           // a) leaf node is visible in the tree canvas viewport
-          const canvasBodyHeight = canvas.height - bodyStartY;
           const leafScreenY = (fromY / zoomLevel) * devicePixelRatio - verticalScrollPosition;
           const isLeafVisible = leafScreenY >= 0 && leafScreenY <= canvasBodyHeight;
 
@@ -352,7 +393,7 @@ export class TreeUtil {
             sortingIndex >= range.startIndex &&
             sortingIndex <= range.endIndex;
 
-          const isHighlighted = highlightedNodeNames.length && highlightedNodeNames.includes(nodeName);
+          const isHighlighted = highlightedNodeNamesSet.has(nodeName);
 
           if (!isLeafVisible && !isEndInRange) {
             return;
@@ -367,9 +408,9 @@ export class TreeUtil {
           }
           ctx.beginPath();
           if (isLinked) {
-            ctx.strokeStyle = TreeUtil.getFillStyle(supportLineColorLinked, dimFn, highlightedNodeNames, nodeName);
+            ctx.strokeStyle = this.getFillStyle(supportLineColorLinked, dimFn, highlightedNodeNamesSet, nodeName);
           } else {
-            ctx.strokeStyle = TreeUtil.getFillStyle(supportLineColorUnlinked, dimFn, highlightedNodeNames, nodeName);
+            ctx.strokeStyle = this.getFillStyle(supportLineColorUnlinked, dimFn, highlightedNodeNamesSet, nodeName);
           }
           ctx.moveTo(fromX, fromY);
           setTransFormForSupportLine();
@@ -382,7 +423,10 @@ export class TreeUtil {
 
       if (shouldShowDistances) {
         treeAssembly.distanceTexts.forEach(({ nodeNames, text, x, y }) => {
-          const isHighlighted = highlightedNodeNames.length && intersection(nodeNames, highlightedNodeNames).length > 0;
+          if (!isTextVisible(y)) {
+            return;
+          }
+          const isHighlighted = nodeNames.some(nodeName => highlightedNodeNamesSet.has(nodeName));
           if (isHighlighted) {
             ctx.fillStyle = treeColor;
             ctx.fillText(text, x, y);
@@ -391,28 +435,41 @@ export class TreeUtil {
       }
 
       if (shouldShowLabels) {
-        treeAssembly.nodeLabels.forEach(({ nodeName, x, y }) => {
+        for (let index = visibleLeafStart; index < visibleLeafEnd; index++) {
+          const { nodeName, x, y } = treeAssembly.nodeLabels[index];
+          if (!isTextVisible(y)) {
+            continue;
+          }
           ctx.textBaseline = 'middle';
           ctx.textAlign = 'left';
-          ctx.fillStyle = TreeUtil.getFillStyle(treeColor, dimFn, highlightedNodeNames, nodeName);
+          ctx.fillStyle = this.getFillStyle(treeColor, dimFn, highlightedNodeNamesSet, nodeName);
           ctx.fillText(getNodeLabel?.(nodeName) ?? nodeName ?? '', x, y);
-        });
+        }
       }
 
       treeAssembly.ancestorNodes.forEach(({ nodeNames, shape }) => {
-        ctx.fillStyle = TreeUtil.getFillStyle(treeColor, dimFn, highlightedNodeNames, nodeNames);
+        if (!isPathVisible(shape)) {
+          return;
+        }
+        ctx.fillStyle = this.getFillStyle(treeColor, dimFn, highlightedNodeNamesSet, nodeNames);
         ctx.fill(shape);
       });
 
-      treeAssembly.leafTreeLines.forEach(({ nodeName, shape }) => {
-        ctx.strokeStyle = TreeUtil.getFillStyle(treeColor, dimFn, highlightedNodeNames, nodeName);
-        ctx.stroke(shape);
-      });
+      for (let index = visibleLeafStart; index < visibleLeafEnd; index++) {
+        const leafTreeLine = treeAssembly.leafTreeLines[index];
+        if (leafTreeLine) {
+          ctx.strokeStyle = this.getFillStyle(treeColor, dimFn, highlightedNodeNamesSet, leafTreeLine.nodeName);
+          ctx.stroke(leafTreeLine.shape);
+        }
+      }
 
-      treeAssembly.leafNodes.forEach(({ nodeName, shape }) => {
-        ctx.fillStyle = TreeUtil.getFillStyle(nodeNameColors?.[nodeName] ?? treeColor, dimFn, highlightedNodeNames, nodeName);
-        ctx.fill(shape);
-      });
+      for (let index = visibleLeafStart; index < visibleLeafEnd; index++) {
+        const leafNode = treeAssembly.leafNodes[index];
+        if (leafNode) {
+          ctx.fillStyle = this.getFillStyle(nodeNameColors?.[leafNode.nodeName] ?? treeColor, dimFn, highlightedNodeNamesSet, leafNode.nodeName);
+          ctx.fill(leafNode.shape);
+        }
+      }
     };
 
     if (headerHeight > 0) {
@@ -466,7 +523,7 @@ export class TreeUtil {
    * @param params.devicePixelRatio - Screen DPR for HiDPI rendering.
    * @param params.geneticTreeWidth - Total genetic width of the tree.
    */
-  public static drawTreeCanvas(params: {
+  public drawTreeCanvas(params: {
     backgroundColor: string;
     canvas: HTMLCanvasElement;
     devicePixelRatio: number;
@@ -501,25 +558,31 @@ export class TreeUtil {
     zoomLevel: number;
   }): void {
     const { backgroundColor, canvas, devicePixelRatio, dimFn, geneticTreeWidth, getLeafLabel, headerHeight = 0, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, labelFont, nodeNameColors, pixelToGeneticDistanceRatio, range, regularFillColorSupportLine, scaleColor, scaleFont, scrollPosition = 0, shouldShowDistances, shouldShowLeafLabels, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, tickerMarkScale, treeAssembly, treeCanvasHeight, treeCanvasWidth, treeColor, treePadding, verticalScrollPosition, zoomLevel } = params;
-    const ctx = TreeUtil.getCanvasContext(canvas);
+    const canvasWidth = Math.trunc(canvas.clientWidth * devicePixelRatio);
+    const canvasHeight = Math.trunc(canvas.clientHeight * devicePixelRatio);
+    const ctx = this.getCanvasContext(canvas);
+    if (canvas.width !== canvasWidth) {
+      canvas.width = canvasWidth;
+    }
+    if (canvas.height !== canvasHeight) {
+      canvas.height = canvasHeight;
+    }
     ctx.reset();
-    canvas.width = canvas.clientWidth * devicePixelRatio;
-    canvas.height = canvas.clientHeight * devicePixelRatio;
     ctx.imageSmoothingEnabled = zoomLevel > 1;
     ctx.imageSmoothingQuality = 'high';
 
-    TreeUtil.drawBackground({ backgroundColor, canvas, devicePixelRatio, treeCanvasHeight: treeCanvasHeight + headerHeight, treeCanvasWidth });
-    TreeUtil.drawGuides({ canvas, devicePixelRatio, endY: headerHeight + treeCanvasHeight, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, regularFillColorSupportLine, startY: headerHeight, tickerMarkScale, treePadding, zoomLevel });
+    this.drawBackground({ backgroundColor, canvas, devicePixelRatio, treeCanvasHeight: treeCanvasHeight + headerHeight, treeCanvasWidth });
+    this.drawGuides({ canvas, devicePixelRatio, endY: headerHeight + treeCanvasHeight, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, regularFillColorSupportLine, startY: headerHeight, tickerMarkScale, treePadding, zoomLevel });
 
     if (headerHeight > 0) {
-      TreeUtil.drawGuides({ canvas, devicePixelRatio, endY: headerHeight, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, regularFillColorSupportLine, startY: headerHeight * 0.7, tickerMarkScale, treePadding, zoomLevel });
-      TreeUtil.drawGuides({ canvas, devicePixelRatio, endY: headerHeight * 0.3, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, regularFillColorSupportLine, startY: 0, tickerMarkScale, treePadding, zoomLevel });
-      TreeUtil.drawScale({ canvas, devicePixelRatio, geneticTreeWidth, headerHeight, horizontalScrollPosition, pixelToGeneticDistanceRatio, scaleColor, scaleFont, tickerMarkScale, treePadding, zoomLevel });
-      TreeUtil.drawDivider({ canvas, devicePixelRatio, y: 0 });
-      TreeUtil.drawDivider({ canvas, devicePixelRatio, y: headerHeight - 1 });
+      this.drawGuides({ canvas, devicePixelRatio, endY: headerHeight, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, regularFillColorSupportLine, startY: headerHeight * 0.7, tickerMarkScale, treePadding, zoomLevel });
+      this.drawGuides({ canvas, devicePixelRatio, endY: headerHeight * 0.3, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, regularFillColorSupportLine, startY: 0, tickerMarkScale, treePadding, zoomLevel });
+      this.drawScale({ canvas, devicePixelRatio, geneticTreeWidth, headerHeight, horizontalScrollPosition, pixelToGeneticDistanceRatio, scaleColor, scaleFont, tickerMarkScale, treePadding, zoomLevel });
+      this.drawDivider({ canvas, devicePixelRatio, y: 0 });
+      this.drawDivider({ canvas, devicePixelRatio, y: headerHeight - 1 });
     }
 
-    TreeUtil.drawTree({ canvas, devicePixelRatio, dimFn, getLeafLabel, headerHeight, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, labelFont, nodeNameColors, range, scrollPosition, shouldShowDistances, shouldShowLeafLabels, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, verticalScrollPosition, zoomLevel });
+    this.drawTree({ canvas, devicePixelRatio, dimFn, getLeafLabel, headerHeight, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, labelFont, nodeNameColors, range, scrollPosition, shouldShowDistances, shouldShowLeafLabels, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, verticalScrollPosition, zoomLevel });
   }
 
   /**
@@ -536,7 +599,7 @@ export class TreeUtil {
    * @param selector - Whether to return the matching node itself (`'node'`) or its parent (`'parent'`).
    * @returns A shallow copy of the new root with adjusted branch length properties.
    */
-  public static findNewTreeRoot(rootNode: TreeNode, nodeName: string, selector: 'node' | 'parent'): TreeNode {
+  public findNewTreeRoot(rootNode: TreeNode, nodeName: string, selector: 'node' | 'parent'): TreeNode {
     let newRoot: TreeNode;
     const findNewRoot = (node: TreeNode) => {
       if (newRoot) {
@@ -576,7 +639,7 @@ export class TreeUtil {
    * @returns The minimum positive branch length found on any leaf, or `Infinity`
    *   if the tree is empty or all leaves have zero/undefined branch lengths.
    */
-  public static getMinGeneticScaleUnit(tree: TreeNode): Decimal {
+  public getMinGeneticScaleUnit(tree: TreeNode): Decimal {
     if (!tree) {
       return new Decimal(Infinity);
     }
@@ -603,7 +666,7 @@ export class TreeUtil {
    * @param params.newZoomLevel - The zoom level after the change.
    * @returns The adjusted scroll position that keeps the cursor-point visually stable.
    */
-  public static getNewScrollPositionForZoomLevel(params: { currentZoomLevel: number; dimensionSize: number; eventOffset: number; newZoomLevel: number; scrollPosition: number }): number {
+  public getNewScrollPositionForZoomLevel(params: { currentZoomLevel: number; dimensionSize: number; eventOffset: number; newZoomLevel: number; scrollPosition: number }): number {
     const { currentZoomLevel, dimensionSize, eventOffset, newZoomLevel, scrollPosition } = params;
 
     const fullSizeTreePosition = ((eventOffset * devicePixelRatio) + scrollPosition) * currentZoomLevel;
@@ -626,10 +689,10 @@ export class TreeUtil {
    * @param params.devicePixelRatio - Screen DPR for correct coordinate scaling.
    * @returns The {@link TreePathProperties} of the hit shape, or `undefined` if nothing was hit.
    */
-  public static getPathPropertiesFromCanvas(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; event: MouseEvent; treeAssembly: TreeAssembly }): TreePathProperties {
+  public getPathPropertiesFromCanvas(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; event: MouseEvent; treeAssembly: TreeAssembly }): TreePathProperties {
     const { canvas, devicePixelRatio, event, treeAssembly } = params;
 
-    const ctx = TreeUtil.getCanvasContext(canvas);
+    const ctx = this.getCanvasContext(canvas);
     const rect = (event.target as HTMLCanvasElement).getBoundingClientRect();
     const canvasX = (event.clientX - rect.left) * devicePixelRatio;
     const canvasY = (event.clientY - rect.top) * devicePixelRatio;
@@ -691,7 +754,7 @@ export class TreeUtil {
    * @param params.isLinked - Whether the tree is linked to the case list scroll position.
    * @returns Clamped `{ newPositionX, newPositionY }` values.
    */
-  public static getSanitizedScrollPosition(params: { devicePixelRatio: number; headerHeight: number; internalZoomLevel: number; isLinked: boolean; positionX: number; positionY: number; treeCanvasHeight: number; treeCanvasWidth: number; treeHeight: number; treePadding: number }): { newPositionX: number; newPositionY: number } {
+  public getSanitizedScrollPosition(params: { devicePixelRatio: number; headerHeight: number; internalZoomLevel: number; isLinked: boolean; positionX: number; positionY: number; treeCanvasHeight: number; treeCanvasWidth: number; treeHeight: number; treePadding: number }): { newPositionX: number; newPositionY: number } {
     const { devicePixelRatio, headerHeight, internalZoomLevel, isLinked, positionX, positionY, treeCanvasHeight, treeCanvasWidth, treeHeight, treePadding } = params;
     let positionYMax: number;
     let positionYMin: number;
@@ -752,7 +815,7 @@ export class TreeUtil {
    * @param kwArgs.zoomLevel - Current zoom level (>1 means zoomed out, items appear smaller).
    * @returns The new vertical scroll position for the tree canvas, clamped to [0, treeHeight - treeCanvasHeight].
    */
-  public static getScrollPositionFromTreeVisibility(kwArgs: {
+  public getScrollPositionFromTreeVisibility(kwArgs: {
     itemHeight: number;
     treeCanvasHeight: number;
     treeHeight: number;
@@ -791,7 +854,7 @@ export class TreeUtil {
    * @returns A {@link TickerMarkScale} describing the number of lines and the genetic distance per line.
    *   Returns zeroed values when any required input is falsy.
    */
-  public static getTickerMarkScale(params: { geneticTreeWidth: Decimal; maxScaleWidthPx: number; minGeneticScaleUnit: Decimal; minScaleWidthPx: number; scaleIncrements: number[]; treeWidthMinusPadding: number; zoomLevel: number }): TickerMarkScale {
+  public getTickerMarkScale(params: { geneticTreeWidth: Decimal; maxScaleWidthPx: number; minGeneticScaleUnit: Decimal; minScaleWidthPx: number; scaleIncrements: number[]; treeWidthMinusPadding: number; zoomLevel: number }): TickerMarkScale {
     const { geneticTreeWidth, maxScaleWidthPx, minGeneticScaleUnit, minScaleWidthPx, scaleIncrements, treeWidthMinusPadding, zoomLevel } = params;
     if (!treeWidthMinusPadding || !geneticTreeWidth || !minGeneticScaleUnit || minGeneticScaleUnit.isZero()) {
       return { geneticDistanceOfSingleLine: 0, minGeneticScaleUnit: new Decimal(0), numberOfLines: 0 };
@@ -843,7 +906,7 @@ export class TreeUtil {
    * @param rootNode - The root of the tree to sanitize. Mutated in place.
    * @returns The sanitized root node.
    */
-  public static sanitizeTree(rootNode: TreeNode, fallbackDistance: number): TreeNode {
+  public sanitizeTree(rootNode: TreeNode, fallbackDistance: number): TreeNode {
     const sanitize = (node: TreeNode): SanitizeResult => {
       const results: SanitizeResult[] = [];
       node.children?.forEach(child => {
@@ -903,7 +966,7 @@ export class TreeUtil {
    * @param childRenderResults - Assembly results returned by all direct children.
    * @returns The pixel coordinates of the branch start and aggregated case IDs, for use by the parent.
    */
-  private static assembleAncestorNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, childRenderResults: NodeAssemblyResult[]): NodeAssemblyResult {
+  private assembleAncestorNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, childRenderResults: NodeAssemblyResult[]): NodeAssemblyResult {
     const firstChild = first(childRenderResults);
     const lastChild = last(childRenderResults);
 
@@ -912,7 +975,7 @@ export class TreeUtil {
     const ancestorXPxStart = ancestorXPxEnd - ancestorXPxDistance;
     const ancestorYPx = (firstChild.y + lastChild.y) / 2;
     const nodeNames = childRenderResults.map(r => r.nodeNames).flat();
-    const label = TreeUtil.getDistanceLabel(treeAssemblyContext, node.branchLength);
+    const label = this.getDistanceLabel(treeAssemblyContext, node.branchLength);
 
     const centerToTopChildRenderResults = childRenderResults.filter(c => c.y < ancestorYPx).sort((a, b) => a.y - b.y);
     const centerToBottomChildRenderResults = childRenderResults.filter(c => c.y > ancestorYPx).sort((a, b) => b.y - a.y);
@@ -928,6 +991,7 @@ export class TreeUtil {
         chunkPath.moveTo(childRenderResult.x, childRenderResult.y + 0.5);
         chunkPath.lineTo(childRenderResult.x, lineToYPx);
         chunkPath.closePath();
+        this.setPathVerticalBounds(chunkPath, childRenderResult.y + 0.5, lineToYPx);
         treeAssemblyContext.treeAssembly.verticalAncestorTreeLines.push({ nodeNames: [...chunkNodeNames], shape: chunkPath });
         treeAssemblyContext.treeAssembly.verticalLinePathPropertiesMap.set(chunkPath, {
           subTreeLeaveNames: chunkNodeNames,
@@ -940,6 +1004,7 @@ export class TreeUtil {
     horizontalLineAccordingToDistancePath.moveTo(ancestorXPxStart - 0.5, ancestorYPx);
     horizontalLineAccordingToDistancePath.lineTo(ancestorXPxEnd + 0.5, ancestorYPx);
     horizontalLineAccordingToDistancePath.closePath();
+    this.setPathVerticalBounds(horizontalLineAccordingToDistancePath, ancestorYPx, ancestorYPx);
     treeAssemblyContext.treeAssembly.horizontalAncestorTreeLines.push({ nodeNames: [node.name, ...nodeNames], shape: horizontalLineAccordingToDistancePath });
     treeAssemblyContext.treeAssembly.horizontalLinePathPropertiesMap.set(horizontalLineAccordingToDistancePath, {
       subTreeLeaveNames: nodeNames,
@@ -954,6 +1019,7 @@ export class TreeUtil {
       // add circle at beginning of the line representing the node itself
       const circlePath = new Path2D();
       circlePath.arc(ancestorXPxEnd, ancestorYPx, treeAssemblyContext.ancestorDotRadius, 0, 2 * Math.PI, false);
+      this.setPathVerticalBounds(circlePath, ancestorYPx - treeAssemblyContext.ancestorDotRadius, ancestorYPx + treeAssemblyContext.ancestorDotRadius);
       treeAssemblyContext.treeAssembly.ancestorNodes.push({ nodeNames: [node.name, ...nodeNames], shape: circlePath });
       treeAssemblyContext.treeAssembly.nodePathPropertiesMap.set(circlePath, {
         subTreeLeaveNames: node.subTreeLeaveNames,
@@ -983,19 +1049,20 @@ export class TreeUtil {
    * @param sortingIndex - Sorting index of this leaf derived from linked view order. Used to draw the support line.
    * @returns The pixel coordinates of the branch start and the node name, for use by the parent.
    */
-  private static assembleLeafNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, distance = 0, leafIndex = 0, sortingIndex = 0): NodeAssemblyResult {
+  private assembleLeafNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, distance = 0, leafIndex = 0, sortingIndex = 0): NodeAssemblyResult {
     const leafX = distance + (node.branchLength?.toNumber() ?? 0);
     const leafXPxEnd = leafX * treeAssemblyContext.pixelToGeneticDistanceRatio + treeAssemblyContext.treePadding;
     const leafYPx = ((leafIndex) * treeAssemblyContext.itemHeight) + (treeAssemblyContext.itemHeight / 2);
     const leafXPxDistance = (node.branchLength?.toNumber() ?? 0) * treeAssemblyContext.pixelToGeneticDistanceRatio;
     const leafXPxStart = leafXPxEnd - leafXPxDistance;
-    const distanceLabel = TreeUtil.getDistanceLabel(treeAssemblyContext, node.branchLength);
+    const distanceLabel = this.getDistanceLabel(treeAssemblyContext, node.branchLength);
 
     // add horizontal line according to distance
     const horizontalLineAccordingToDistancePath = new Path2D();
     horizontalLineAccordingToDistancePath.moveTo(leafXPxStart - 0.5, leafYPx);
     horizontalLineAccordingToDistancePath.lineTo(leafXPxEnd, leafYPx);
     horizontalLineAccordingToDistancePath.closePath();
+    this.setPathVerticalBounds(horizontalLineAccordingToDistancePath, leafYPx, leafYPx);
     treeAssemblyContext.treeAssembly.leafTreeLines.push({ nodeName: node.name, shape: horizontalLineAccordingToDistancePath });
     treeAssemblyContext.treeAssembly.horizontalLinePathPropertiesMap.set(horizontalLineAccordingToDistancePath, {
       subTreeLeaveNames: node.subTreeLeaveNames,
@@ -1016,6 +1083,7 @@ export class TreeUtil {
     const circlePath = new Path2D();
     circlePath.arc(leafXPxEnd, leafYPx, treeAssemblyContext.leafDotRadius, 0, 2 * Math.PI, false);
     circlePath.closePath();
+    this.setPathVerticalBounds(circlePath, leafYPx - treeAssemblyContext.leafDotRadius, leafYPx + treeAssemblyContext.leafDotRadius);
 
     treeAssemblyContext.treeAssembly.nodePathPropertiesMap.set(circlePath, {
       subTreeLeaveNames: node.subTreeLeaveNames,
@@ -1038,8 +1106,8 @@ export class TreeUtil {
    * @param devicePixelRatio - Screen DPR to scale up for HiDPI rendering.
    * @param callback - Drawing operations to perform inside the transform.
    */
-  private static draw(canvas: HTMLCanvasElement, devicePixelRatio: number, callback: (ctx: CanvasRenderingContext2D) => void): void {
-    const ctx = TreeUtil.getCanvasContext(canvas);
+  private draw(canvas: HTMLCanvasElement, devicePixelRatio: number, callback: (ctx: CanvasRenderingContext2D) => void): void {
+    const ctx = this.getCanvasContext(canvas);
     ctx.scale(devicePixelRatio, devicePixelRatio);
     ctx.translate(0.5, 0.5);
     callback(ctx);
@@ -1056,9 +1124,9 @@ export class TreeUtil {
    * @param params.treeCanvasHeight - Height of the area to fill in pixels.
    * @param params.devicePixelRatio - Screen DPR for HiDPI rendering.
    */
-  private static drawBackground(params: { backgroundColor: string; canvas: HTMLCanvasElement; devicePixelRatio: number; treeCanvasHeight: number; treeCanvasWidth: number }): void {
+  private drawBackground(params: { backgroundColor: string; canvas: HTMLCanvasElement; devicePixelRatio: number; treeCanvasHeight: number; treeCanvasWidth: number }): void {
     const { backgroundColor, canvas, devicePixelRatio, treeCanvasHeight, treeCanvasWidth } = params;
-    TreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
+    this.draw(canvas, devicePixelRatio, (ctx) => {
       ctx.fillStyle = backgroundColor;
       ctx.fillRect(0, 0, treeCanvasWidth, treeCanvasHeight);
     });
@@ -1080,7 +1148,7 @@ export class TreeUtil {
    * @param params.horizontalScrollPosition - Current horizontal scroll offset in pixels (default 0).
    * @param params.callback - Called for each line with `(x, index, numberOfLines)`.
    */
-  private static forEachScaleLine(params: { callback: (x: number, i: number, numberOfLines: number) => void; devicePixelRatio: number; geneticTreeWidth: Decimal; horizontalScrollPosition?: number; pixelToGeneticDistanceRatio: number; tickerMarkScale: TickerMarkScale; treePadding: number; zoomLevel: number }): void {
+  private forEachScaleLine(params: { callback: (x: number, i: number, numberOfLines: number) => void; devicePixelRatio: number; geneticTreeWidth: Decimal; horizontalScrollPosition?: number; pixelToGeneticDistanceRatio: number; tickerMarkScale: TickerMarkScale; treePadding: number; zoomLevel: number }): void {
     const { callback, devicePixelRatio, geneticTreeWidth, horizontalScrollPosition = 0, pixelToGeneticDistanceRatio, tickerMarkScale, treePadding, zoomLevel } = params;
 
     const numberOfLines = tickerMarkScale.numberOfLines;
@@ -1096,7 +1164,7 @@ export class TreeUtil {
     }
   }
 
-  private static getCanvasContext(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
+  private getCanvasContext(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
     const ctx = canvas.getContext('2d');
     if (!ctx) {
       throw new Error('Failed to acquire 2D canvas context.');
@@ -1121,7 +1189,7 @@ export class TreeUtil {
    * @param branchLength - The genetic distance of the branch to label.
    * @returns A rounded numeric string, or `null` if the label should be hidden.
    */
-  private static getDistanceLabel(treeAssemblyContext: TreeAssemblyContext, branchLength: Decimal): string {
+  private getDistanceLabel(treeAssemblyContext: TreeAssemblyContext, branchLength: Decimal): string {
     const labelPrecision = treeAssemblyContext.rootNode.maxBranchLength ? Math.max(1, 4 - String(Math.round(treeAssemblyContext.rootNode.maxBranchLength.toNumber())).length) : null;
     if (!treeAssemblyContext.rootNode.maxBranchLength || treeAssemblyContext.rootNode.maxBranchLength.toNumber() === 0 || !branchLength || branchLength.toNumber() === 0) {
       return null;
@@ -1143,19 +1211,23 @@ export class TreeUtil {
    * @param nodeNames - The node name(s) associated with the shape being drawn.
    * @returns The resolved colour string.
    */
-  private static getFillStyle(color: string, dimFn: (color: string) => string, highlightedNodeNames: string[], nodeNames: string | string[]): string {
-    if (highlightedNodeNames.length) {
-      let isHighlighted: boolean;
-      if (Array.isArray(nodeNames)) {
-        isHighlighted = intersection(nodeNames, highlightedNodeNames).length > 0;
-      } else {
-        isHighlighted = highlightedNodeNames.includes(nodeNames);
-      }
+  private getFillStyle(color: string, dimFn: (color: string) => string, highlightedNodeNames: ReadonlySet<string>, nodeNames: string | string[]): string {
+    if (highlightedNodeNames.size) {
+      const isHighlighted = Array.isArray(nodeNames)
+        ? nodeNames.some(nodeName => highlightedNodeNames.has(nodeName))
+        : highlightedNodeNames.has(nodeNames);
       if (isHighlighted) {
         return color;
       }
       return dimFn(color);
     }
     return color;
+  }
+
+  private setPathVerticalBounds(path: Path2D, firstY: number, secondY: number): void {
+    this.pathVerticalBounds.set(path, {
+      maxY: Math.max(firstY, secondY),
+      minY: Math.min(firstY, secondY),
+    });
   }
 }

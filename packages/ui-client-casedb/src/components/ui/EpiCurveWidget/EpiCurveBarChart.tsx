@@ -16,7 +16,6 @@ import type {
   SetStateAction,
 } from 'react';
 import isString from 'lodash/isString';
-import intersection from 'lodash/intersection';
 import { useTheme } from '@mui/material';
 
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
@@ -55,6 +54,13 @@ export const EpiCurveBarChart = ({
   // Calculate series data only when rendering
   const seriesData = useMemo(() => EpiCurveUtil.getBarChartSeriesData(items, xAxisIntervals, getXAxisLabel, stratification, theme), [items, xAxisIntervals, getXAxisLabel, stratification, theme]);
 
+  const caseIdsByPoint = useMemo(() => {
+    const series = seriesData.series as Array<{ data?: Array<[unknown, unknown, string]> }> | null;
+    return series?.map(serie => serie.data?.map(dataArray => (
+      isString(dataArray[2]) ? JSON.parse(dataArray[2]) as string[] : []
+    )) ?? []) ?? [];
+  }, [seriesData.series]);
+
   useEffect(() => {
     const unsubscribe = dashboardContext.highlightSubject.subscribe((highlighting) => {
       if (highlighting.origin === DASHBOARD_COMPONENT_NAME.EPI_CURVE) {
@@ -74,15 +80,11 @@ export const EpiCurveBarChart = ({
       }
 
       const highlightTargets: Array<{ dataIndex: number; seriesIndex: number }> = [];
-      seriesData.series?.forEach((serie, serieIndex) => {
-        const serieData = (serie as { data: unknown[] }).data;
-        serieData?.forEach((dataArray: unknown, dataIndex: number) => {
-          const caseIds = JSON.parse((dataArray as [unknown, unknown, string])[2]) as string[];
-          if (intersection(caseIds, highlighting.caseIds).length) {
-            highlightTargets.push({
-              dataIndex,
-              seriesIndex: serieIndex,
-            });
+      const highlightedCaseIds = new Set(highlighting.caseIds);
+      caseIdsByPoint.forEach((seriesCaseIds, seriesIndex) => {
+        seriesCaseIds.forEach((caseIds, dataIndex) => {
+          if (caseIds.some(caseId => highlightedCaseIds.has(caseId))) {
+            highlightTargets.push({ dataIndex, seriesIndex });
           }
         });
       });
@@ -103,7 +105,7 @@ export const EpiCurveBarChart = ({
     return () => {
       unsubscribe();
     };
-  }, [dashboardContext, seriesData]);
+  }, [caseIdsByPoint, dashboardContext]);
 
   const onInternalChartReady = useCallback((chart: EChartsType) => {
     chartInstanceRef.current = chart;
@@ -154,7 +156,12 @@ export const EpiCurveBarChart = ({
 
   const onEvents = useMemo<EChartsReactProps['onEvents']>(() => {
     const getCaseIdsFromEvent = (event: unknown): string[] => {
-      const caseIds = (event as { data?: [unknown, unknown, string] })?.data?.[2];
+      const eventData = event as { data?: [unknown, unknown, string]; dataIndex?: number; seriesIndex?: number };
+      if (typeof eventData.seriesIndex === 'number' && typeof eventData.dataIndex === 'number') {
+        return caseIdsByPoint[eventData.seriesIndex]?.[eventData.dataIndex] ?? [];
+      }
+
+      const caseIds = eventData?.data?.[2];
       if (isString(caseIds)) {
         return JSON.parse(caseIds) as string[];
       }
@@ -177,7 +184,7 @@ export const EpiCurveBarChart = ({
         });
       },
     };
-  }, [onCaseIdsChange, onPointMouseUp]);
+  }, [caseIdsByPoint, onCaseIdsChange, onPointMouseUp]);
 
   return (
     <EChartsReact

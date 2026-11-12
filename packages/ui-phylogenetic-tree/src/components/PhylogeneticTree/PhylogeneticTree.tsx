@@ -14,18 +14,19 @@ import {
   useState,
 } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import { container } from 'tsyringe';
 import { DevicePixelRatioService } from '@gen-epix/ui-core/classes/services/DevicePixelRatioService';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { useScrollbarSize } from '@gen-epix/ui-core/hooks/useScrollbarSize';
 import { useDimensions } from '@gen-epix/ui-core/hooks/useDimensions';
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 
+import { TreeService } from '../../classes/services/TreeService';
 import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
 } from '../../models/tree.models';
-import { TreeUtil } from '../../utils/TreeUtil';
 
 export type PhylogeneticTreeHighlightedNodeNamesSubjectValue = {
   highlightedNodeNames: string[];
@@ -148,6 +149,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
     visibleRangeSubject,
   } = useThemeProps({ name: 'GenEpixUiPhylogeneticTree', props: inProps });
   const theme = useTheme();
+  const treeService = useMemo(() => container.resolve(TreeService), []);
   const phylogeneticTreeTheme = useMemo<PhylogeneticTreeComponentTheme>(() => ({
     ...{
       backgroundColor: theme.palette.background.paper,
@@ -294,7 +296,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
       throw new Error('internalZoomLevel cannot be 0');
     }
 
-    const { newPositionX, newPositionY } = TreeUtil.getSanitizedScrollPosition({
+    const { newPositionX, newPositionY } = treeService.getSanitizedScrollPosition({
       devicePixelRatio,
       headerHeight,
       internalZoomLevel,
@@ -317,7 +319,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
     if (isLinked && internalZoomLevel === 1 && positionYChanged) {
       updateScrollSubjectDebounced(newPositionY);
     }
-  }, [canvasScrollSubject, devicePixelRatio, headerHeight, isLinked, treeCanvasHeight, treeCanvasWidth, treeHeight, treePadding, updateScrollSubjectDebounced]);
+  }, [canvasScrollSubject, devicePixelRatio, headerHeight, isLinked, treeCanvasHeight, treeCanvasWidth, treeHeight, treePadding, treeService, updateScrollSubjectDebounced]);
 
   useEffect(() => {
     updateScrollPosition({
@@ -359,7 +361,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
       return;
     }
 
-    const newScrollPosition = TreeUtil.getScrollPositionFromTreeVisibility({
+    const newScrollPosition = treeService.getScrollPositionFromTreeVisibility({
       itemHeight,
       treeCanvasHeight,
       treeHeight,
@@ -369,7 +371,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
     });
 
     link(newScrollPosition);
-  }, [itemHeight, link, scrollPositionSubject, tree, treeCanvasHeight, treeHeight, zoomLevelSubject]);
+  }, [itemHeight, link, scrollPositionSubject, tree, treeCanvasHeight, treeHeight, treeService, zoomLevelSubject]);
 
   useImperativeHandle(ref, () => ({
     link,
@@ -390,25 +392,25 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
   });
 
   const getTickerMarkScale = useCallback((zoomLevel: number) => {
-    return TreeUtil.getTickerMarkScale({
+    return treeService.getTickerMarkScale({
       geneticTreeWidth: tree?.maxBranchLength,
       maxScaleWidthPx,
-      minGeneticScaleUnit: TreeUtil.getMinGeneticScaleUnit(tree),
+      minGeneticScaleUnit: treeService.getMinGeneticScaleUnit(tree),
       minScaleWidthPx,
       scaleIncrements,
       treeWidthMinusPadding,
       zoomLevel,
     });
-  }, [maxScaleWidthPx, minScaleWidthPx, scaleIncrements, tree, treeWidthMinusPadding]);
+  }, [maxScaleWidthPx, minScaleWidthPx, scaleIncrements, tree, treeService, treeWidthMinusPadding]);
 
   const getPathPropertiesFromCanvas = useCallback((canvas: HTMLCanvasElement, event: MouseEvent): TreePathProperties => {
-    return TreeUtil.getPathPropertiesFromCanvas({
+    return treeService.getPathPropertiesFromCanvas({
       canvas,
       devicePixelRatio,
       event,
       treeAssembly,
     });
-  }, [devicePixelRatio, treeAssembly]);
+  }, [devicePixelRatio, treeAssembly, treeService]);
 
   useEffect(() => {
     if (!scrollSubject) {
@@ -452,7 +454,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
       return;
     }
 
-    setTreeAssembly(TreeUtil.assembleTree({
+    setTreeAssembly(treeService.assembleTree({
       ancestorDotRadius,
       itemHeight,
       leafDotRadius,
@@ -463,7 +465,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
       treeCanvasWidth,
       treePadding,
     }));
-  }, [ancestorDotRadius, itemHeight, leafDotRadius, sortedLeafNames, minimumDistancePercentageToShowLabel, pixelToGeneticDistanceRatio, tree, treeCanvasWidth, treePadding]);
+  }, [ancestorDotRadius, itemHeight, leafDotRadius, sortedLeafNames, minimumDistancePercentageToShowLabel, pixelToGeneticDistanceRatio, tree, treeCanvasWidth, treePadding, treeService]);
 
   useEffect(() => {
     if (!treeCanvas || !treeAssembly || !tree) {
@@ -482,7 +484,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
     const render = () => {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
-        TreeUtil.drawTreeCanvas({
+        treeService.drawTreeCanvas({
           backgroundColor: phylogeneticTreeTheme.backgroundColor,
           canvas: treeCanvas,
           devicePixelRatio,
@@ -582,6 +584,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
     treeCanvasHeight,
     treeCanvasWidth,
     treePadding,
+    treeService,
     visibleRangeSubject,
     zoomLevelSubject,
     theme,
@@ -655,10 +658,12 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
       const pathProperties = getPathPropertiesFromCanvas(treeCanvas, event);
       if (pathProperties) {
         treeCanvas.style.cursor = 'pointer';
-        highlightedNodeNamesSubject?.next({
-          highlightedNodeNames: pathProperties.subTreeLeaveNames,
-          persistedHighlightedNodeNames: highlightedNodeNamesSubject?.data?.persistedHighlightedNodeNames ?? [],
-        });
+        if (highlightedNodeNamesSubject?.data?.highlightedNodeNames !== pathProperties.subTreeLeaveNames) {
+          highlightedNodeNamesSubject?.next({
+            highlightedNodeNames: pathProperties.subTreeLeaveNames,
+            persistedHighlightedNodeNames: highlightedNodeNamesSubject?.data?.persistedHighlightedNodeNames ?? [],
+          });
+        }
       } else {
         treeCanvas.style.cursor = 'default';
         clearHighlighting();
@@ -701,14 +706,14 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
       const newZoomLevel = Math.min(maxZoomLevel, Math.max(minZoomLevel, zoomLevel + (event.deltaY > 0 ? zoomSpeed : -zoomSpeed)));
       const treeBodyOffsetY = event.offsetY - headerHeight;
 
-      const newScrollPositionY = TreeUtil.getNewScrollPositionForZoomLevel({
+      const newScrollPositionY = treeService.getNewScrollPositionForZoomLevel({
         currentZoomLevel: zoomLevel,
         dimensionSize: treeHeight,
         eventOffset: treeBodyOffsetY,
         newZoomLevel,
         scrollPosition: canvasScrollSubject.data.y,
       });
-      const newScrollPositionX = TreeUtil.getNewScrollPositionForZoomLevel({
+      const newScrollPositionX = treeService.getNewScrollPositionForZoomLevel({
         currentZoomLevel: zoomLevel,
         dimensionSize: treeCanvasWidth,
         eventOffset: event.offsetX,
@@ -766,6 +771,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
     zoomLevelSubject,
     hasLink,
     isLinked,
+    treeService,
   ]);
 
   const shouldRenderCanvas = !!tree && treeCanvasWidth > 0 && tree.size > 0;

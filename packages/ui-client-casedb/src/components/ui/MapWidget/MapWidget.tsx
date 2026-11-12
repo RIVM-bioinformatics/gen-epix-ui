@@ -37,7 +37,6 @@ import type {
   EChartsType,
 } from 'echarts';
 import { useTranslation } from 'react-i18next';
-import intersection from 'lodash/intersection';
 import round from 'lodash/round';
 import { useStore } from 'zustand';
 import type {
@@ -281,31 +280,32 @@ export const MapWidget = () => {
 
   useEffect(() => {
     const unsubscribe = dashboardContext.highlightSubject.subscribe((highlighting) => {
-      const foundSerieIndexes: number[] = [];
+      const instance = chartRef?.getEchartsInstance();
+      if (!instance || highlighting.origin === DASHBOARD_COMPONENT_NAME.MAP) {
+        return;
+      }
+
+      const foundSerieIndexes = new Set<number>();
       const foundDataIndexes: number[] = [];
+      const highlightedCaseIds = new Set(highlighting.caseIds);
       series.forEach((serie, serieIndex) => {
         serie.data.forEach((dataArray, dataIndex) => {
           const caseIds = (dataArray as GenEpixPieSeriesOptionEventData).genEpixData.caseIds;
-          if (intersection(caseIds, highlighting.caseIds).length) {
-            if (!foundSerieIndexes.includes(serieIndex)) {
-              foundSerieIndexes.push(serieIndex);
-            }
+          if (caseIds.some(caseId => highlightedCaseIds.has(caseId))) {
+            foundSerieIndexes.add(serieIndex);
             foundDataIndexes.push(dataIndex);
           }
         });
       });
-      if (!chartRef) {
-        return;
-      }
 
       if (highlighting.caseIds.length) {
-        chartRef.getEchartsInstance()?.dispatchAction({
+        instance.dispatchAction({
           dataIndex: foundDataIndexes,
-          seriesIndex: foundSerieIndexes,
+          seriesIndex: [...foundSerieIndexes],
           type: 'highlight',
         });
       } else {
-        chartRef.getEchartsInstance()?.dispatchAction({
+        instance.dispatchAction({
           type: 'downplay',
         });
       }

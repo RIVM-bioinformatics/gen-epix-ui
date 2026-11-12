@@ -14,6 +14,10 @@
       "types": "./src/@types/ui-phylogenetic-tree.d.ts",
       "import": "./src/@types/ui-phylogenetic-tree.d.ts"
     },
+    "./classes/services/TreeService": {
+      "types": "./src/classes/services/TreeService/index.ts",
+      "import": "./src/classes/services/TreeService/index.ts"
+    },
     "./components/PhylogeneticTree": {
       "types": "./src/components/PhylogeneticTree/index.ts",
       "import": "./src/components/PhylogeneticTree/index.ts"
@@ -29,10 +33,6 @@
     "./utils/NewickUtil": {
       "types": "./src/utils/NewickUtil/index.ts",
       "import": "./src/utils/NewickUtil/index.ts"
-    },
-    "./utils/TreeUtil": {
-      "types": "./src/utils/TreeUtil/index.ts",
-      "import": "./src/utils/TreeUtil/index.ts"
     }
   },
   "files": [
@@ -94,6 +94,10 @@
         "types": "./dist/@types/ui-phylogenetic-tree.d.ts",
         "import": "./dist/@types/ui-phylogenetic-tree.d.ts"
       },
+      "./classes/services/TreeService": {
+        "types": "./dist/classes/services/TreeService/index.d.ts",
+        "import": "./dist/classes/services/TreeService/index.js"
+      },
       "./components/PhylogeneticTree": {
         "types": "./dist/components/PhylogeneticTree/index.d.ts",
         "import": "./dist/components/PhylogeneticTree/index.js"
@@ -109,10 +113,6 @@
       "./utils/NewickUtil": {
         "types": "./dist/utils/NewickUtil/index.d.ts",
         "import": "./dist/utils/NewickUtil/index.js"
-      },
-      "./utils/TreeUtil": {
-        "types": "./dist/utils/TreeUtil/index.d.ts",
-        "import": "./dist/utils/TreeUtil/index.js"
       }
     },
     "files": [
