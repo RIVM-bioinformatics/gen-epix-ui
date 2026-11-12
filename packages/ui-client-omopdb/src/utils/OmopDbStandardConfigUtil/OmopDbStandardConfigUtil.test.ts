@@ -31,7 +31,7 @@ beforeAll(async () => {
           ['Accessibility', 'Accessibility'],
           ['Contact', 'Contact'],
           ['Copyright', 'Copyright'],
-          ['Dutch', 'Dutch'],
+          ['Nederlands', 'Nederlands'],
           ['English', 'English'],
           ['Information for the press', 'Information for the press'],
           ['Languages', 'Languages'],
@@ -83,7 +83,7 @@ describe('OmopDbStandardConfigUtil.createConfig', () => {
         label: 'Accessibility',
       },
     ]);
-    expect(sections[2].items.map(item => item.label)).toEqual(['English', 'Dutch']);
+    expect(sections[2].items.map(item => item.label)).toEqual(['English', 'Nederlands']);
   });
 
   it('changes the selected language from the footer actions', () => {

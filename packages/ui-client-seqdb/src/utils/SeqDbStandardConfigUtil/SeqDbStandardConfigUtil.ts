@@ -54,7 +54,7 @@ export class SeqDbStandardConfigUtil {
                 onClick: onEnglishClick,
               },
               {
-                label: t`Dutch`,
+                label: t`Nederlands`,
                 onClick: onDutchClick,
               },
             ],

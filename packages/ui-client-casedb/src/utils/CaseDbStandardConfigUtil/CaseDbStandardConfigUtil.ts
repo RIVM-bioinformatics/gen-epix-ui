@@ -83,7 +83,7 @@ export class CaseDbStandardConfigUtil {
                 onClick: onEnglishClick,
               },
               {
-                label: t`Dutch`,
+                label: t`Nederlands`,
                 onClick: onDutchClick,
               },
             ],

@@ -63,7 +63,7 @@ describe('SeqDbStandardConfigUtil.createConfig', () => {
       },
     ]);
     const languageItems = footer.sections[2].items;
-    expect(languageItems.map(item => item.label)).toEqual(['English', 'Dutch']);
+    expect(languageItems.map(item => item.label)).toEqual(['English', 'Nederlands']);
     expect(languageItems.every(item => typeof item.onClick === 'function')).toBe(true);
   });
 
