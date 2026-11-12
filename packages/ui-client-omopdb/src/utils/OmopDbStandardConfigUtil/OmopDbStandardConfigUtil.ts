@@ -50,12 +50,12 @@ export class OmopDbStandardConfigUtil {
             header: t`Languages`,
             items: [
               {
-                label: t`English`,
-                onClick: onEnglishClick,
+                label: t`Nederlands`,
+                onClick: onDutchClick,
               },
               {
-                label: t`Dutch`,
-                onClick: onDutchClick,
+                label: t`English`,
+                onClick: onEnglishClick,
               },
             ],
           },

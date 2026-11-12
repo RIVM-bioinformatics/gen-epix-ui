@@ -900,102 +900,102 @@ export type CaseDbColType = typeof CaseDbColType[keyof typeof CaseDbColType];
 
 
 export const CaseDbCommandName = {
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
-    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    ColSetCrudCommand: 'ColSetCrudCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
     AnonymizeUserCommand: 'AnonymizeUserCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    ColSetCrudCommand: 'ColSetCrudCommand',
+    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
+    DeleteAllRefDataCommand: 'DeleteAllRefDataCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
     InviteUserCommand: 'InviteUserCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
     OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
     OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
     OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
-    RetrieveOwnUserCommand: 'RetrieveOwnUserCommand',
-    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RefColCrudCommand: 'RefColCrudCommand',
     OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
-    UpdateCaseCreatedInDataCollectionCommand: 'UpdateCaseCreatedInDataCollectionCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveSeqDistancesByCasesCommand: 'RetrieveSeqDistancesByCasesCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    DeleteAllRefDataCommand: 'DeleteAllRefDataCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
-    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
     RefDimCrudCommand: 'RefDimCrudCommand',
     RegionCrudCommand: 'RegionCrudCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    RetrieveOwnUserCommand: 'RetrieveOwnUserCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
+    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
+    RetrieveSeqDistancesByCasesCommand: 'RetrieveSeqDistancesByCasesCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    UpdateCaseCreatedInDataCollectionCommand: 'UpdateCaseCreatedInDataCollectionCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
 } as const;
 
 export type CaseDbCommandName = typeof CaseDbCommandName[keyof typeof CaseDbCommandName];
@@ -1659,7 +1659,7 @@ export type CaseDbFilter1 = CaseDbCompositeFilter | CaseDbContainsStringFilter |
 /**
  * @type CaseDbFiltersInner
  */
-export type CaseDbFiltersInner = CaseDbContainsStringFilter | CaseDbDateRangeFilter | CaseDbDatetimeRangeFilter | CaseDbEqualsBooleanFilter | CaseDbEqualsNumberFilter | CaseDbEqualsStringFilter | CaseDbEqualsUuidFilter | CaseDbExistsFilter | CaseDbFilter | CaseDbNoFilter | CaseDbNumberRangeFilter | CaseDbNumberSetFilter | CaseDbPartialDateRangeFilter | CaseDbRegexFilter | CaseDbStringSetFilter | CaseDbUuidSetFilter;
+export type CaseDbFiltersInner = CaseDbCompositeFilter | CaseDbContainsStringFilter | CaseDbDateRangeFilter | CaseDbDatetimeRangeFilter | CaseDbEqualsBooleanFilter | CaseDbEqualsNumberFilter | CaseDbEqualsStringFilter | CaseDbEqualsUuidFilter | CaseDbExistsFilter | CaseDbFilter | CaseDbNoFilter | CaseDbNumberRangeFilter | CaseDbNumberSetFilter | CaseDbPartialDateRangeFilter | CaseDbRegexFilter | CaseDbStringSetFilter | CaseDbUuidSetFilter;
 
 /**
  * Represents a protocol for calculating and storing genetic distances.
@@ -2966,7 +2966,7 @@ export type CaseDbUploadAction = typeof CaseDbUploadAction[keyof typeof CaseDbUp
 
 
 /**
- * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
+ * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are. With ``fail_batch_on_item_error=False``, cases that fail verification are left out and the other cases are uploaded, still as one unit of work. This is only allowed for cases without read sets or sequences: their samples are uploaded to SEQDB in a separate request that cannot yet leave out the samples of the cases that failed.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail. ``fail_batch_on_item_error=False`` with     read sets or sequences in the batch also causes validation to fail.
  */
 export interface CaseDbUploadCasesCommand {
     /**
@@ -2975,6 +2975,10 @@ export interface CaseDbUploadCasesCommand {
     'verify_only'?: boolean;
     'on_exists'?: CaseDbUploadAction;
     'on_new'?: CaseDbUploadAction;
+    /**
+     * If true, a verification error in one item stops the whole batch. If false, the items that failed verification are left out and the other items are uploaded.
+     */
+    'fail_batch_on_item_error'?: boolean;
     /**
      * The ID of the command
      */
@@ -9800,7 +9804,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9830,7 +9834,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Delete One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -9864,7 +9868,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -9901,7 +9905,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -9941,7 +9945,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Get Exists One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -9975,7 +9979,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Get Exists Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10012,7 +10016,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -10046,7 +10050,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10083,7 +10087,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Post One
          * @param {CaseDbCaseSetMember} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -10118,7 +10122,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -10163,7 +10167,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -10208,7 +10212,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Post Some
          * @param {Array<CaseDbCaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -10243,7 +10247,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseSetMember} caseSetMember 
@@ -10282,7 +10286,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Put Some
          * @param {Array<CaseDbCaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -19403,7 +19407,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
+         * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are. With ``fail_batch_on_item_error=False``, cases that fail verification are left out and the other cases are uploaded, still as one unit of work. This is only allowed for cases without read sets or sequences: their samples are uploaded to SEQDB in a separate request that cannot yet leave out the samples of the cases that failed.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail. ``fail_batch_on_item_error=False`` with     read sets or sequences in the batch also causes validation to fail.
          * @summary Upload Cases
          * @param {CaseDbUploadCasesCommand} uploadCasesCommand 
          * @param {*} [options] Override http request option.
@@ -20195,7 +20199,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20207,7 +20211,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Delete One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20220,7 +20224,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20233,7 +20237,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20247,7 +20251,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Get Exists One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20260,7 +20264,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Get Exists Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20273,7 +20277,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20286,7 +20290,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20299,7 +20303,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Post One
          * @param {CaseDbCaseSetMember} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -20312,7 +20316,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20327,7 +20331,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20342,7 +20346,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Post Some
          * @param {Array<CaseDbCaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -20355,7 +20359,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseSetMember} caseSetMember 
@@ -20369,7 +20373,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
          * @summary CaseDbCase Set Members  Put Some
          * @param {Array<CaseDbCaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -23667,7 +23671,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
+         * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are. With ``fail_batch_on_item_error=False``, cases that fail verification are left out and the other cases are uploaded, still as one unit of work. This is only allowed for cases without read sets or sequences: their samples are uploaded to SEQDB in a separate request that cannot yet leave out the samples of the cases that failed.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail. ``fail_batch_on_item_error=False`` with     read sets or sequences in the batch also causes validation to fail.
          * @summary Upload Cases
          * @param {CaseDbUploadCasesCommand} uploadCasesCommand 
          * @param {*} [options] Override http request option.
@@ -24330,7 +24334,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24340,7 +24344,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Delete One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24351,7 +24355,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24362,7 +24366,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -24374,7 +24378,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Get Exists One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24385,7 +24389,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Get Exists Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24396,7 +24400,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24407,7 +24411,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24418,7 +24422,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Post One
      * @param {CaseDbCaseSetMember} caseSetMember 
      * @param {*} [options] Override http request option.
@@ -24429,7 +24433,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -24442,7 +24446,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -24455,7 +24459,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Post Some
      * @param {Array<CaseDbCaseSetMember>} caseSetMember 
      * @param {*} [options] Override http request option.
@@ -24466,7 +24470,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Put One
      * @param {string} objectId 
      * @param {CaseDbCaseSetMember} caseSetMember 
@@ -24478,7 +24482,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.  When ABAC is applied, and a READ_ALL operation is requested, a query_filter must be provided. The query_filter must filter at least either case_id or case_set_id on a restricted set of IDs and may not contain other filters.
      * @summary CaseDbCase Set Members  Put Some
      * @param {Array<CaseDbCaseSetMember>} caseSetMember 
      * @param {*} [options] Override http request option.
@@ -27282,7 +27286,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
+     * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are. With ``fail_batch_on_item_error=False``, cases that fail verification are left out and the other cases are uploaded, still as one unit of work. This is only allowed for cases without read sets or sequences: their samples are uploaded to SEQDB in a separate request that cannot yet leave out the samples of the cases that failed.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail. ``fail_batch_on_item_error=False`` with     read sets or sequences in the batch also causes validation to fail.
      * @summary Upload Cases
      * @param {CaseDbUploadCasesCommand} uploadCasesCommand 
      * @param {*} [options] Override http request option.

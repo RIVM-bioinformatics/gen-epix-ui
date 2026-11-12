@@ -98,8 +98,8 @@
     "uuid": "14.0.3"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.9.0",
-    "@gen-epix/translation-util": "0.6.0",
+    "@gen-epix/eslint-config": "0.10.0",
+    "@gen-epix/translation-util": "0.7.0",
     "@gen-epix/ui-core": "workspace:^",
     "@mui/icons-material": "9.5.0",
     "@mui/material": "9.5.0",
@@ -107,15 +107,15 @@
     "@types/lodash": "4.17.27",
     "@types/react": "19.3.0",
     "eslint": "10.14.0",
-    "i18next": "26.7.1",
+    "i18next": "27.1.1",
     "react": "19.3.1",
-    "react-hook-form": "7.91.0",
-    "react-i18next": "17.1.11",
+    "react-hook-form": "7.92.0",
+    "react-i18next": "18.0.1",
     "typescript": "6.0.3",
-    "vite": "8.3.5",
+    "vite": "8.3.8",
     "vite-plugin-dts": "5.1.2",
     "vite-plugin-static-copy": "4.1.1",
-    "vitest": "5.0.5"
+    "vitest": "5.1.0"
   },
   "peerDependencies": {
     "@gen-epix/ui-core": "workspace:^",

@@ -10,6 +10,7 @@ import type {
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { Theme } from '@mui/material';
 import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
+import type { TFunction } from 'i18next';
 
 import { DataService } from '../../classes/services/DataService';
 import type { CaseDbConfig } from '../../models/config.models';
@@ -25,7 +26,7 @@ export type GetChartOptionsParams = {
   conceptsA: CaseDbConcept[];
   conceptsB: CaseDbConcept[];
   series: SeriesItem[];
-  t: (key: string, options?: Record<string, unknown>) => string;
+  t: TFunction<'translation', undefined>;
   theme: Theme;
 };
 
