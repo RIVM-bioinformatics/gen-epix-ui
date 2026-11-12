@@ -3,6 +3,7 @@ export * from './TableActionsCell';
 export * from './TableCaption';
 export * from './TableCell';
 export * from './TableCellAsyncContent';
+export * from './TableColumnsEditorDialog';
 export * from './TableFilter';
 export * from './TableFiltersSidebarItem';
 export * from './TableHeader';

@@ -1,10 +1,10 @@
 import type { ComponentsProps } from '@mui/material/styles';
 
-import type { PhylogeneticTreeProps } from '../components/PhylogeneticTree';
 import type {
-  GenEpixUiPhylogeneticTreeComponentTheme,
-  GenEpixUiPhylogeneticTreeTheme,
-} from '../models/theme.models';
+  PhylogeneticTreeComponentTheme,
+  PhylogeneticTreeProps,
+} from '../components/PhylogeneticTree';
+import type { GenEpixUiPhylogeneticTreeTheme } from '../models/theme.models';
 
 declare module '@mui/material/styles' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Required to augment MUI's generic interface.
@@ -12,7 +12,7 @@ declare module '@mui/material/styles' {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     GenEpixUiPhylogeneticTree?: {
       defaultProps?: ComponentsProps['GenEpixUiPhylogeneticTree'];
-    } & GenEpixUiPhylogeneticTreeComponentTheme;
+    } & PhylogeneticTreeComponentTheme;
   }
 
   interface ComponentsPropsList {

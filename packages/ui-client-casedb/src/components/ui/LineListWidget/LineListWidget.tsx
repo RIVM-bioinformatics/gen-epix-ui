@@ -36,7 +36,10 @@ import type {
   TableRowAndColumnParams,
   TableRowParams,
 } from '@gen-epix/ui-client-common/models/table.models';
-import type { TableRef } from '@gen-epix/ui-client-common/components/ui/Table';
+import type {
+  TableColumnsEditorDialogItem,
+  TableRef,
+} from '@gen-epix/ui-client-common/components/ui/Table';
 import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { FeatureFlagsService } from '@gen-epix/ui-client-common/classes/services/FeatureFlagsService';
 import { Table } from '@gen-epix/ui-client-common/components/ui/Table';
@@ -76,12 +79,23 @@ import { LineListWidgetPrimaryMenu } from './LineListWidgetPrimaryMenu';
 import { LineListWidgetSecondaryMenu } from './LineListWidgetSecondaryMenu';
 import { useEpiLineListWidgetEmitDownloadOptions } from './useEpiLineListWidgetEmitDownloadOptions';
 
+export interface LineListWidgetTheme {
+  font: string;
+}
+
 export const LineListWidget = () => {
+  const theme = useTheme();
+  const lineListWidgetTheme = useMemo<LineListWidgetTheme>(() => ({
+    ...{
+      font: theme.typography.fontFamily,
+    } satisfies LineListWidgetTheme,
+    ...(theme.components?.GenEpixUiClientCasedbLineList ?? {}),
+  }), [theme]);
+
   const { caseSet } = use(DashboardContext);
   const dashboardContext = use(DashboardContext);
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
-  const theme = useTheme();
   const config = useConfig<CaseDbConfig>();
   const rowHighlightingSubject = useMemo(() => new Subject<string[]>([]), []);
   const tableRef = useRef<TableRef>(null);
@@ -633,6 +647,90 @@ export const LineListWidget = () => {
     return row.id;
   }, []);
 
+  const renderColumnsEditorHeaderContent = useCallback(() => {
+    return (
+      <Box
+        role={'presentation'}
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+        }}
+      >
+        <Box
+          component={'div'}
+          role={'columnheader'}
+          sx={{ fontWeight: 'bold' }}
+        >
+          {t`Column`}
+        </Box>
+        <Box
+          component={'div'}
+          role={'columnheader'}
+          sx={{ fontWeight: 'bold' }}
+        >
+          {t`Dimension`}
+        </Box>
+        <Box
+          component={'div'}
+          role={'columnheader'}
+          sx={{ fontWeight: 'bold' }}
+        >
+          {t`Column type`}
+        </Box>
+      </Box>
+    );
+  }, [t]);
+
+  const renderColumnsEditorItemContent = useCallback((item: TableColumnsEditorDialogItem<CaseDbCase, unknown>) => {
+    const columnContext = item.column.columnContext as CaseDbCol;
+    const columnDim = completeCaseType.dims[columnContext.dim_id];
+    const refCol = completeCaseType.ref_cols[columnContext.ref_col_id];
+    return (
+      <Box
+        role={'presentation'}
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+        }}
+      >
+        <Box
+          component={'span'}
+          role={'cell'}
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {item.label}
+        </Box>
+        <Box
+          component={'span'}
+          role={'cell'}
+          sx={{
+
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {columnDim.label}
+        </Box>
+        <Box
+          component={'span'}
+          role={'cell'}
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {refCol.col_type}
+        </Box>
+      </Box>
+    );
+  }, [completeCaseType]);
+
   return (
     <DashboardWidget
       isLoading={isDataLoading}
@@ -649,7 +747,7 @@ export const LineListWidget = () => {
         }}
       >
         <Table
-          font={theme.components.GenEpixUiClientCasedbLineList.font}
+          font={lineListWidgetTheme.font}
           forceHorizontalOverflow
           getRowName={getRowName}
           initialVisibleItemIndex={dashboardStore.getState().getWidgetData<LineListWidgetData>(DASHBOARD_COMPONENT_NAME.LINE_LIST)?.visibleItemItemIndex}
@@ -660,6 +758,8 @@ export const LineListWidget = () => {
           onVerticalScrollPositionChange={onVerticalScrollPositionChange}
           onVisibleItemIndexChange={onTableVisibleItemIndexChange}
           ref={tableRef}
+          renderColumnsEditorHeaderContent={renderColumnsEditorHeaderContent}
+          renderColumnsEditorItemContent={renderColumnsEditorItemContent}
           rowHeight={3}
           rowHighlightingSubject={rowHighlightingSubject}
         />

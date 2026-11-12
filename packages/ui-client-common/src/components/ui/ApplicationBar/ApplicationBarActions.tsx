@@ -9,6 +9,7 @@ import {
   useCallback,
   useEffect,
   useId,
+  useMemo,
   useState,
 } from 'react';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
@@ -26,8 +27,22 @@ export type ApplicationBarActionsProps = {
   readonly fullWidth?: boolean;
 };
 
+export type ApplicationBarActionsTheme = {
+  background: string;
+  environmentMessageColor: string;
+  primaryColor: string;
+};
+
 export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps) => {
   const theme = useTheme();
+  const applicationBarActionsTheme = useMemo<ApplicationBarActionsTheme>(() => ({
+    ...{
+      background: theme.palette.primary.main,
+      environmentMessageColor: '#ffea00',
+      primaryColor: theme.palette.primary.contrastText,
+    } satisfies ApplicationBarActionsTheme,
+    ...(theme.components?.GenEpixUiClientCommonApplicationBarActions ?? {}),
+  }), [theme]);
   const { t } = useTranslation();
   const config = useConfig();
   const environmentMessage = config.getEnvironmentMessage();
@@ -67,7 +82,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
         aria-label={t`Toggle menu`}
         onClick={onMenuButtonClick}
         sx={{
-          color: theme.components.GenEpixUiClientCommonNavbar.primaryColor,
+          color: applicationBarActionsTheme.primaryColor,
           [theme.breakpoints.up('md')]: {
             display: 'none',
           },
@@ -81,7 +96,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
           display: 'flex',
           [theme.breakpoints.down('md')]: {
             alignItems: 'start',
-            background: theme.components.GenEpixUiClientCommonNavbar.background,
+            background: applicationBarActionsTheme.background,
             display: isMenuOpen ? 'flex' : 'none',
             flexDirection: 'column',
             left: 0,
@@ -104,7 +119,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
             aria-hidden={'true'}
             sx={{
               alignItems: 'center',
-              color: theme.components.GenEpixUiClientCommonNavbar.environmentMessageColor,
+              color: applicationBarActionsTheme.environmentMessageColor,
               display: 'flex',
               fontWeight: 700,
               marginRight: fullWidth ? 0 : 1,

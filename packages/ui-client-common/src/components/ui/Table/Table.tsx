@@ -18,8 +18,8 @@ import type {
   CSSProperties,
   KeyboardEvent as ReactKeyboardEvent,
   MouseEvent as ReactMouseEvent,
+  ReactNode,
   Ref,
-  RefObject,
 } from 'react';
 import {
   forwardRef,
@@ -72,7 +72,10 @@ import { TableActionsCell } from './TableActionsCell';
 import { TableCell } from './TableCell';
 import type { TableCellProps } from './TableCell';
 import { TableColumnsEditorDialog } from './TableColumnsEditorDialog';
-import type { TableColumnsEditorDialogRefMethods } from './TableColumnsEditorDialog';
+import type {
+  TableColumnsEditorDialogItem,
+  TableColumnsEditorDialogRefMethods,
+} from './TableColumnsEditorDialog';
 import { TableCheckboxCell } from './TableCheckboxCell';
 import { TableCheckboxHeader } from './TableCheckboxHeader';
 import { TableReadableIndexCell } from './TableReadableIndexCell';
@@ -95,6 +98,8 @@ export type TableProps<TRowData, TDataContext = null> = {
   readonly overscanMain?: number;
   readonly overscanReverse?: number;
   readonly ref?: Ref<TableRef>;
+  readonly renderColumnsEditorHeaderContent?: () => ReactNode;
+  readonly renderColumnsEditorItemContent?: (item: TableColumnsEditorDialogItem<TRowData, TDataContext>) => ReactNode;
   readonly rowHeight?: number;
   readonly rowHighlightingSubject?: Subject<string[]>;
   readonly sx?: SxProps<Theme>;
@@ -121,6 +126,8 @@ export const Table = <TRowData, TDataContext = null>({
   overscanMain,
   overscanReverse,
   ref,
+  renderColumnsEditorHeaderContent,
+  renderColumnsEditorItemContent,
   rowHeight = 4,
   rowHighlightingSubject,
   sx,
@@ -314,6 +321,7 @@ export const Table = <TRowData, TDataContext = null>({
   }, [setCurrentColumnVisualSettingsInStore]);
 
   const saveColumnVisualSettingsToStoreDebounced = useDebouncedCallback(() => {
+    console.log('saveColumnVisualSettingsToStoreDebounced');
     saveColumnVisualSettingsToStore();
   }, 500, { trailing: true });
 
@@ -888,8 +896,10 @@ export const Table = <TRowData, TDataContext = null>({
           totalCount={sortedData.length}
         />
       )}
-      <TableColumnsEditorDialog
-        ref={tableColumnsEditorDialogRef as RefObject<TableColumnsEditorDialogRefMethods<unknown, unknown>>}
+      <TableColumnsEditorDialog<TRowData, TDataContext>
+        ref={tableColumnsEditorDialogRef}
+        renderHeaderContent={renderColumnsEditorHeaderContent}
+        renderItemContent={renderColumnsEditorItemContent}
       />
     </Box>
   );

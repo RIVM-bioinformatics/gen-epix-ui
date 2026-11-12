@@ -171,18 +171,30 @@ export const createDemoThemeOptions = (paletteMode: PaletteMode): ThemeOptions =
       },
     },
     components: {
-      GenEpixUiClientCommonFooter: {
+      GenEpixUiClientCommonApplicationBar: {
         background: '#154273',
-        color: '#fff',
-        sectionBorderColor: '#fff',
+        primaryColor: '#fff',
       },
-      GenEpixUiClientCommonNavbar: {
-        activeBackground: '#fff',
-        activeColor: '#154273',
+      GenEpixUiClientCommonApplicationBarActions: {
         background: '#154273',
         environmentMessageColor: '#ffea00',
         primaryColor: '#fff',
-        secondaryColor: '#ddeff8',
+      },
+      GenEpixUiClientCommonApplicationBarNavigationMenu: {
+        activeBackground: '#fff',
+        activeColor: '#154273',
+        background: '#154273',
+        primaryColor: '#fff',
+      },
+      GenEpixUiClientCommonApplicationFooter: {
+        background: '#154273',
+      },
+      GenEpixUiClientCommonApplicationFooterLink: {
+        color: '#fff',
+      },
+      GenEpixUiClientCommonApplicationFooterLinkSection: {
+        color: '#fff',
+        sectionBorder: '1px solid#fff',
       },
       GenEpixUiCoreComponentsSpinner: {
         defaultProps: {

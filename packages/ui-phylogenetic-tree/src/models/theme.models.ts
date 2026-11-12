@@ -1,17 +1,9 @@
-export interface GenEpixUiPhylogeneticTreeComponentTheme {
-  backgroundColor?: string;
-  labelFont?: string;
-  regularFillColorSupportLine?: string;
-  scaleColor?: string;
-  scaleFont?: string;
-  supportLineColorLinked?: string;
-  supportLineColorUnlinked?: string;
-  treeColor?: string;
-}
+import type { PhylogeneticTreeComponentTheme } from '../components/PhylogeneticTree';
+
 
 export interface GenEpixUiPhylogeneticTreeTheme {
   components: {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    GenEpixUiPhylogeneticTree: GenEpixUiPhylogeneticTreeComponentTheme;
+    GenEpixUiPhylogeneticTree: PhylogeneticTreeComponentTheme;
   };
 }

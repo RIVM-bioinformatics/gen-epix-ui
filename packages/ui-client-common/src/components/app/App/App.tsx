@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
+import { useOsxScrollbarAlwaysVisible } from '@gen-epix/ui-core/hooks/useOsxScrollbarAlwaysVisible';
 
 import { API_BASE_TOKEN } from '../../../constants/api.constants';
 import { BackendVersionService } from '../../../classes/services/BackendVersionService';
@@ -24,6 +25,7 @@ export type AppProps = {
 };
 
 export const App = () => {
+  useOsxScrollbarAlwaysVisible();
   const config = useConfig();
 
   const authenticationService = container.resolve(AuthenticationService);

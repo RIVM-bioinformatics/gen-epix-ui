@@ -7,7 +7,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import LinkIcon from '@mui/icons-material/Link';
 import { useStore } from 'zustand';
-import { useShallow } from 'zustand/shallow';
 import { useTheme } from '@mui/material';
 import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 
@@ -21,8 +20,8 @@ export const LineListWidgetSecondaryMenu = () => {
   const theme = useTheme();
   const dashboardStore = use(DashboardStoreContext);
   const { t } = useTranslation();
-  const isTreeLinked = useStore(dashboardStore, useShallow((state) => state.getWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE).zoomLevel === 1));
-  const setSorting = useStore(dashboardStore, useShallow((state) => state.setSorting));
+  const isTreeLinked = useStore(dashboardStore, (state) => state.getWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE).zoomLevel === 1);
+  const setSorting = useStore(dashboardStore, (state) => state.setSorting);
 
   const onLinkButtonClick = useCallback(() => {
     const perform = async () => {

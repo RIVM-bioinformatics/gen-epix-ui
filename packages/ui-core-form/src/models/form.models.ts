@@ -46,6 +46,7 @@ export type AutocompleteValue = number | string;
 export type BaseFormFieldDefinition = {
   contentAfter?: ReactElement;
   contentBefore?: ReactElement;
+  order?: number;
 };
 
 export type CheckboxOption = OptionBase<number | string>;
@@ -90,6 +91,7 @@ export type FormGroupDefinition = {
   groupKey: string;
   label: string;
   messages?: FormGroupMessage[];
+  order?: number;
 };
 export type FormGroupMessage = {
   buttonLabel?: string;

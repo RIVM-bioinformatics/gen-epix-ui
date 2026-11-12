@@ -23,8 +23,19 @@ export type ApplicationFooterProps = {
   readonly fullWidth?: boolean;
 };
 
+export type ApplicationFooterTheme = {
+  background: string;
+};
+
 export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
   const theme = useTheme();
+  const applicationFooterTheme = useMemo<ApplicationFooterTheme>(() => ({
+    ...{
+      background: theme.palette.primary.main,
+    } satisfies ApplicationFooterTheme,
+    ...(theme.components?.GenEpixUiClientCommonApplicationFooter ?? {}),
+  }), [theme]);
+
   const navId = useId();
   const { t } = useTranslation();
   const config = useConfig();
@@ -55,7 +66,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
     <Box
       component={'footer'}
       sx={{
-        background: theme.components.GenEpixUiClientCommonFooter.background,
+        background: applicationFooterTheme.background,
         position: 'relative',
         [theme.breakpoints.up('md')]: {
           paddingBottom: theme.spacing(1),
@@ -83,7 +94,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
           paddingLeft: '0 !important',
           paddingRight: '0 !important',
           [theme.breakpoints.down('md')]: {
-            background: theme.components.GenEpixUiClientCommonFooter.background,
+            background: applicationFooterTheme.background,
             bottom: theme.spacing(5),
             display: isMenuOpen ? 'block' : 'none',
             left: 0,

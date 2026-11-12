@@ -6,6 +6,7 @@ import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlin
 import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
 import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import {
   useCallback,
   useMemo,
@@ -96,7 +97,8 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
       {
         callback: () => onColumnsEditorMenuItemClick(),
         divider: true,
-        label: t`Change order / visibility`,
+        label: t`Column editor`,
+        leftIcon: <EditOutlinedIcon sx={{ fontSize: '1.5rem' }} />,
       },
       {
         autoCloseDisabled: true,

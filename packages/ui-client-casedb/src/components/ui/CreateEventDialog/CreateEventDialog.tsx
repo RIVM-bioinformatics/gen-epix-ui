@@ -234,11 +234,6 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
         name: 'code',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
-        label: t`Description`,
-        name: 'description',
-      } as const satisfies FormFieldDefinition<FormFields>,
-      {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         label: t`Category`,
         loading: caseSetCategoryOptionsQuery.isLoading,
@@ -252,6 +247,11 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
         name: 'case_set_status_id',
         options: caseSetStatusOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
+        label: t`Description`,
+        name: 'description',
+      } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [caseSetCategoryOptionsQuery.isLoading, caseSetCategoryOptionsQuery.options, caseSetStatusOptionsQuery.isLoading, caseSetStatusOptionsQuery.options, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options, createInDataCollectionOptions, dataCollectionOptionsQuery.isLoading, isCompleteCaseTypeLoading, openProps.completeCaseType, openProps.rows?.length, shareInDataCollectionOptions, sharedInDataCollectionIds.length, t]);
 
@@ -261,7 +261,6 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
     caseSetStatusOptionsQuery,
     dataCollectionOptionsQuery,
   ]);
-
 
   const isLoading = LoadableUtil.isSomeLoading(loadables);
 

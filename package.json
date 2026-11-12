@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "license": "EUPL-1.2",
   "private": true,
-  "packageManager": "pnpm@12.15.0",
+  "packageManager": "pnpm@12.18.0",
   "scripts": {
     "update-exports": "lerna run update-exports",
     "start": "concurrently \"pnpm --filter @gen-epix/demo-client-casedb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-casedb run start\"",
@@ -21,9 +21,10 @@
     "build": "lerna run build"
   },
   "devDependencies": {
-    "@gen-epix/generate-common-api": "0.3.0",
-    "concurrently": "10.0.6",
+    "@gen-epix/generate-common-api": "0.5.0",
+    "concurrently": "10.0.7",
     "lerna": "10.1.1",
+    "playwright": "1.65.0",
     "typescript": "6.0.3"
   }
 }

@@ -27,7 +27,8 @@ export const SortableListItemDragHandle = ({ name }: SortableListItemDragHandleP
       ref={ref}
       sx={{
         '&:focus-visible': {
-          boxShadow: `0 0px 0px 2px ${theme.palette.primary.main}`,
+          outline: `2px solid ${theme.palette.primary.main}`,
+          outlineOffset: 2,
         },
         '&:hover': {
           backgroundColor: theme.palette.action.hover,
@@ -45,6 +46,7 @@ export const SortableListItemDragHandle = ({ name }: SortableListItemDragHandleP
         outline: 'none',
         touchAction: 'none',
       }}
+      type={'button'}
     >
       <DragIndicatorIcon />
     </Box>

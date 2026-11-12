@@ -71,6 +71,7 @@ import type {
 } from '../../../models/case-db.models';
 import type { TreeWidgetDataPersistable } from '../../../models/dashboard.models';
 import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
+import { EventBusService } from '../../../classes/services/EventBusService';
 
 import { FindSimilarCasesDialogDateRangeChart } from './FindSimilarCasesDialogDateRangeChart';
 
@@ -107,6 +108,7 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
   const dashboardStore = use(DashboardStoreContext);
   const treeConfiguration = dashboardStore.getState().getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE).treeConfiguration;
   const setFindSimilarCasesResults = useStore(dashboardStore, (state) => state.setFindSimilarCasesResults);
+  const setSorting = useStore(dashboardStore, (state) => state.setSorting);
   const findSimilarCasesResults = useStore(dashboardStore, (state) => state.findSimilarCasesResults);
   const treeConfigurations = useMemo(() => TreeWidgetUtil.getTreeConfigurations(openProps.completeCaseType), [openProps.completeCaseType]);
   const [formData, setFormData] = useState<FormFields>(null);
@@ -296,9 +298,11 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
       });
       return draft;
     }));
+    await setSorting(null, null);
+    container.resolve(EventBusService).emit('onLinkLineListAndTree');
 
     onClose();
-  }, [setFindSimilarCasesResults, findSimilarCasesResults, onClose, similarCaseIdsNotInLineListWithDateFilter, formData?.maxDistance, formData?.treeColId, openProps.allRows]);
+  }, [setFindSimilarCasesResults, findSimilarCasesResults, setSorting, onClose, formData?.treeColId, formData?.maxDistance, openProps.allRows, similarCaseIdsNotInLineListWithDateFilter]);
 
   useEffect(() => {
     const actions: DialogAction[] = [];

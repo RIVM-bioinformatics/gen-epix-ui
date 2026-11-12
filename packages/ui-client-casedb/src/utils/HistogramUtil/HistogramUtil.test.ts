@@ -1,12 +1,14 @@
 import { container } from 'tsyringe';
 import {
   afterEach,
+  beforeAll,
   beforeEach,
   describe,
   expect,
   it,
   vi,
 } from 'vitest';
+import i18next from 'i18next';
 import type { Theme } from '@mui/material';
 import type {
   CaseDbCase,
@@ -83,6 +85,22 @@ const makeCompleteCaseType = (
 // ---------------------------------------------------------------------------
 
 let savedData: DataCache;
+
+const mockI18n = i18next.createInstance();
+const mockT = mockI18n.t;
+
+beforeAll(async () => {
+  await mockI18n.init({
+    lng: 'en',
+    resources: {
+      en: {
+        translation: {
+          '{{numCases}} case(s)': '{{numCases}} case(s)',
+        },
+      },
+    },
+  });
+});
 
 beforeEach(() => {
   savedData = { ...container.resolve(DataService).data };
@@ -562,16 +580,6 @@ describe('HistogramUtil', () => {
 
   // -------------------------------------------------------------------------
   describe('getChartOptions', () => {
-    const mockT = (key: string, opts?: Record<string, unknown>) => {
-      if (opts) {
-        return Object.entries(opts).reduce(
-          (acc, [k, v]) => acc.replace(`{{${k}}}`, v !== null && v !== undefined ? String(v as boolean | number | string) : ''),
-          key,
-        );
-      }
-      return key;
-    };
-
     const mockTheme = {
       palette: {
         primary: { main: '#0000ff' },

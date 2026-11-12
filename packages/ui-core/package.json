@@ -46,6 +46,10 @@
       "types": "./src/hooks/useDimensions/index.ts",
       "import": "./src/hooks/useDimensions/index.ts"
     },
+    "./hooks/useOsxScrollbarAlwaysVisible": {
+      "types": "./src/hooks/useOsxScrollbarAlwaysVisible/index.ts",
+      "import": "./src/hooks/useOsxScrollbarAlwaysVisible/index.ts"
+    },
     "./hooks/useScrollbarSize": {
       "types": "./src/hooks/useScrollbarSize/index.ts",
       "import": "./src/hooks/useScrollbarSize/index.ts"
@@ -121,21 +125,21 @@
     "uuid": "14.0.3"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.8.0",
+    "@gen-epix/eslint-config": "0.10.0",
     "@testing-library/react": "^16.3.3",
     "@types/lodash": "4.17.27",
     "@types/react": "19.3.0",
     "@types/react-dom": "^19.3.0",
-    "eslint": "10.13.0",
-    "jsdom": "30.1.3",
+    "eslint": "10.14.0",
+    "jsdom": "31.0.0",
     "reflect-metadata": "0.2.2",
     "react": "19.3.1",
     "react-dom": "^19.3.1",
     "typescript": "6.0.3",
-    "vite": "8.3.5",
+    "vite": "8.3.8",
     "vite-plugin-dts": "5.1.2",
     "vite-plugin-static-copy": "4.1.1",
-    "vitest": "5.0.5",
+    "vitest": "5.1.0",
     "tsyringe": "4.10.0"
   },
   "peerDependencies": {
@@ -180,6 +184,10 @@
       "./hooks/useDimensions": {
         "types": "./dist/hooks/useDimensions/index.d.ts",
         "import": "./dist/hooks/useDimensions/index.js"
+      },
+      "./hooks/useOsxScrollbarAlwaysVisible": {
+        "types": "./dist/hooks/useOsxScrollbarAlwaysVisible/index.d.ts",
+        "import": "./dist/hooks/useOsxScrollbarAlwaysVisible/index.js"
       },
       "./hooks/useScrollbarSize": {
         "types": "./dist/hooks/useScrollbarSize/index.d.ts",

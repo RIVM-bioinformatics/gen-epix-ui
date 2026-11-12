@@ -65,6 +65,11 @@ export const CaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: Cas
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
       {
+        definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
+        label: t`Description`,
+        name: 'description',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         disabled: !!caseSet,
         label: t`Case type`,
@@ -81,11 +86,6 @@ export const CaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: Cas
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         label: t`Code`,
         name: 'code',
-      } as const satisfies FormFieldDefinition<FormFields>,
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
-        label: t`Description`,
-        name: 'description',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,

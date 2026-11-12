@@ -35,9 +35,25 @@ export type ApplicationBarNavigationMenuProps = {
   readonly fullWidth?: boolean;
 };
 
+export type ApplicationBarNavigationMenuTheme = {
+  activeBackground: string;
+  activeColor: string;
+  background: string;
+  primaryColor: string;
+};
+
 export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNavigationMenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const applicationBarNavigationMenuTheme = useMemo<ApplicationBarNavigationMenuTheme>(() => ({
+    ...{
+      activeBackground: theme.palette.primary.contrastText,
+      activeColor: theme.palette.primary.main,
+      background: theme.palette.primary.main,
+      primaryColor: theme.palette.primary.contrastText,
+    } satisfies ApplicationBarNavigationMenuTheme,
+    ...(theme.components?.GenEpixUiClientCommonApplicationBarNavigationMenu ?? {}),
+  }), [theme]);
   const authorizationService = useMemo(() => container.resolve(AuthorizationService), []);
   const navId = useId();
 
@@ -83,7 +99,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
         aria-label={t`Toggle navigation menu`}
         onClick={onMenuButtonClick}
         sx={{
-          color: theme.components.GenEpixUiClientCommonNavbar.primaryColor,
+          color: applicationBarNavigationMenuTheme.primaryColor,
           [theme.breakpoints.up('md')]: {
             display: 'none',
           },
@@ -97,7 +113,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
         sx={{
           flexGrow: 1,
           [theme.breakpoints.down('md')]: {
-            background: theme.components.GenEpixUiClientCommonNavbar.background,
+            background: applicationBarNavigationMenuTheme.background,
             display: isMenuOpen ? 'block' : 'none',
             left: 0,
             paddingBottom: 4,
@@ -129,12 +145,12 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
                 sx={{
                   '&:has(.active:not([aria-disabled="true"]))': {
                     '& svg': {
-                      color: theme.components.GenEpixUiClientCommonNavbar.activeColor,
+                      color: applicationBarNavigationMenuTheme.activeColor,
                     },
                     a: {
-                      color: theme.components.GenEpixUiClientCommonNavbar.activeColor,
+                      color: applicationBarNavigationMenuTheme.activeColor,
                     },
-                    background: theme.components.GenEpixUiClientCommonNavbar.activeBackground,
+                    background: applicationBarNavigationMenuTheme.activeBackground,
                   },
                   '& svg': {
                     color: isDisabled ? theme.palette.grey[400] : undefined,
@@ -143,7 +159,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
                   alignItems: 'center',
                   color: isDisabled
                     ? theme.palette.grey[400]
-                    : theme.components.GenEpixUiClientCommonNavbar.primaryColor,
+                    : applicationBarNavigationMenuTheme.primaryColor,
                   display: 'flex',
                   fontWeight: 800,
                   height: 48,
