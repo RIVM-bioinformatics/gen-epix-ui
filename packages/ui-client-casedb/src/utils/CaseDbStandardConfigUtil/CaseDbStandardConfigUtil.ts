@@ -79,12 +79,12 @@ export class CaseDbStandardConfigUtil {
             header: t`Languages`,
             items: [
               {
-                label: t`Nederlands`,
-                onClick: onDutchClick,
-              },
-              {
                 label: t`English`,
                 onClick: onEnglishClick,
+              },
+              {
+                label: t`Dutch`,
+                onClick: onDutchClick,
               },
             ],
           },
