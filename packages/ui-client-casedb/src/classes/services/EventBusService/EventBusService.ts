@@ -44,6 +44,7 @@ type EpiEvent = {
   onFastaDownloadActionsChanged: DialogAction[];
   onFastaDownloadActionsRequested: FastaDownloadProps;
   onLinkLineListAndTree: void;
+  onUnlinkLineListAndTree: { userInitiated: boolean } | undefined;
   openAddCasesToEventDialog: AddCasesToEventDialogOpenProps;
   openCaseInfoDialog: CaseInfoDialogOpenProps;
   openContactDetailsDialog: EpiContactDetailsDialogOpenProps;

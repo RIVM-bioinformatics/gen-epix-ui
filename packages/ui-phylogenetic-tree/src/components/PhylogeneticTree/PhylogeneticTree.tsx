@@ -56,6 +56,7 @@ export type PhylogeneticTreeProps = {
   readonly ariaLabel: string;
   readonly dimFn?: (color: string) => string;
   readonly getLeafLabel?: (nodeName: string) => string;
+  readonly hasLink?: boolean;
   readonly headerHeight: number;
   readonly highlightedNodeNamesSubject?: Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>;
   readonly initialViewState?: Partial<PhylogeneticTreeViewState>;
@@ -115,6 +116,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
     ariaLabel,
     dimFn = DEFAULT_DIM_FN,
     getLeafLabel,
+    hasLink,
     headerHeight,
     highlightedNodeNamesSubject,
     initialViewState,
@@ -690,7 +692,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
         updateScrollPosition({ internalZoomLevel: zoomLevel, positionX: canvasScrollSubject.data.x + (event.deltaX || event.deltaY), positionY: canvasScrollSubject.data.y });
         return;
       }
-      if (event.metaKey || event.ctrlKey) {
+      if (event.metaKey || event.ctrlKey || (hasLink && isLinked)) {
         updateScrollPosition({ internalZoomLevel: zoomLevel, positionX: canvasScrollSubject.data.x, positionY: canvasScrollSubject.data.y + (event.deltaX || event.deltaY) });
         return;
       }
@@ -762,6 +764,8 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
     treeHeight,
     updateScrollPosition,
     zoomLevelSubject,
+    hasLink,
+    isLinked,
   ]);
 
   const shouldRenderCanvas = !!tree && treeCanvasWidth > 0 && tree.size > 0;
