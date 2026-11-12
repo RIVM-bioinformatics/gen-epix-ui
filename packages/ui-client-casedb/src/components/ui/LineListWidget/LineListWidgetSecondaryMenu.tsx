@@ -5,49 +5,46 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import LinkIcon from '@mui/icons-material/Link';
 import { useStore } from 'zustand';
-import { useTheme } from '@mui/material';
 import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { WidgetMenu } from '../WidgetMenu';
+import { TreeLineListLinkToggle } from '../TreeLineListLinkToggle';
 import { EventBusService } from '../../../classes/services/EventBusService';
 import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import type { TreeWidgetData } from '../../../models/dashboard.models';
 
 export const LineListWidgetSecondaryMenu = () => {
-  const theme = useTheme();
   const dashboardStore = use(DashboardStoreContext);
   const { t } = useTranslation();
   const isTreeLinked = useStore(dashboardStore, (state) => state.getWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE).zoomLevel === 1);
   const setSorting = useStore(dashboardStore, (state) => state.setSorting);
 
-  const onLinkButtonClick = useCallback(() => {
+  const onLinkToggleClick = useCallback(() => {
+    if (isTreeLinked) {
+      container.resolve(EventBusService).emit('onUnlinkLineListAndTree', { userInitiated: true });
+      return;
+    }
+
     const perform = async () => {
       await setSorting(null, null);
       container.resolve(EventBusService).emit('onLinkLineListAndTree');
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
-  }, [setSorting]);
+  }, [isTreeLinked, setSorting]);
 
   const menu = useMemo<MenuItemData[]>(() => {
     return [
       {
-        callback: onLinkButtonClick,
-        disabled: isTreeLinked,
-        label: t`Link and snap the Tree to the Line list (resets tree zoom level and Line List sorting)`,
-        leftIcon: (
-          <LinkIcon
-            sx={{
-              color: isTreeLinked ? undefined : theme.palette.error.main,
-            }}
-          />
-        ),
+        callback: onLinkToggleClick,
+        label: isTreeLinked ? t`Unlink Tree and Line List` : t`Link Tree and Line List`,
+        leftIcon: <TreeLineListLinkToggle isLinked={isTreeLinked} />,
+        uid: 'tree-line-list-link-toggle',
       },
     ];
-  }, [isTreeLinked, onLinkButtonClick, t, theme.palette.error.main]);
+  }, [isTreeLinked, onLinkToggleClick, t]);
 
   return <WidgetMenu menu={menu} />;
 };

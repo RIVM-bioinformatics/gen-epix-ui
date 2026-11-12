@@ -5,13 +5,11 @@ import {
   ListItemIcon,
   ListItemText,
   MenuItem,
-  useTheme,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import LinkIcon from '@mui/icons-material/Link';
 import type { ReactElement } from 'react';
 import {
   use,
@@ -54,6 +52,7 @@ import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil';
 import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { TreeDescription } from '../TreeDescription';
+import { TreeLineListLinkToggle } from '../TreeLineListLinkToggle';
 import { WidgetUnavailable } from '../WidgetUnavailable';
 import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 import type { CaseDbConfig } from '../../../models/config.models';
@@ -69,7 +68,6 @@ type ZoomInMenuItemConfig = {
 };
 
 export const TreeWidget = () => {
-  const theme = useTheme();
   const { t } = useTranslation();
   const config = useConfig<CaseDbConfig>();
   const treeConfig = config.tree;
@@ -252,15 +250,19 @@ export const TreeWidget = () => {
     });
   }, [dashboardStore, treeConfigurations, updateWidgetDataPersistable]);
 
+  const unlinkTree = useCallback(() => {
+    treeRef.current?.unlink({
+      positionX: 0,
+      positionY: 0,
+      zoomLevel: config.tree.INITIAL_UNLINKED_ZOOM_LEVEL,
+    });
+  }, [config.tree.INITIAL_UNLINKED_ZOOM_LEVEL]);
+
   useEffect(() => {
     if (sortByField && isTreeLinked && shouldShowTree) {
-      treeRef.current?.unlink({
-        positionX: 0,
-        positionY: 0,
-        zoomLevel: config.tree.INITIAL_UNLINKED_ZOOM_LEVEL,
-      });
+      unlinkTree();
     }
-  }, [config.tree.INITIAL_UNLINKED_ZOOM_LEVEL, isTreeLinked, shouldShowTree, sortByField]);
+  }, [isTreeLinked, shouldShowTree, sortByField, unlinkTree]);
 
   const updateEpiTreeWidgetDataDebounced = useDebouncedCallback((viewState: PhylogeneticTreeViewState) => {
     updateWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE, {
@@ -294,10 +296,14 @@ export const TreeWidget = () => {
 
   }, [setSorting]);
 
-  const onLinkButtonClick = useCallback(() => {
-    linkLineListToTree();
+  const onLinkToggleClick = useCallback(() => {
+    if (isTreeLinked) {
+      container.resolve(EventBusService).emit('onUnlinkLineListAndTree', { userInitiated: true });
+      return;
+    }
 
-  }, [linkLineListToTree]);
+    linkLineListToTree();
+  }, [isTreeLinked, linkLineListToTree]);
 
   const resetZoomLevelAndScrollPosition = useCallback(() => {
     treeRef.current?.link(0);
@@ -455,18 +461,13 @@ export const TreeWidget = () => {
         leftIcon: <ClearIcon />,
       },
       {
-        callback: onLinkButtonClick,
-        label: t`Link and snap the Line List to the Tree (resets tree zoom level and Line List sorting)`,
-        leftIcon: (
-          <LinkIcon
-            sx={{
-              color: isTreeLinked ? undefined : theme.palette.error.main,
-            }}
-          />
-        ),
+        callback: onLinkToggleClick,
+        label: isTreeLinked ? t`Unlink Tree and Line List` : t`Link Tree and Line List`,
+        leftIcon: <TreeLineListLinkToggle isLinked={isTreeLinked} />,
+        uid: 'tree-line-list-link-toggle',
       },
     ];
-  }, [hasActiveTreeFilter, isTreeLinked, onLinkButtonClick, onRemoveTreeFilterButtonClick, onTreeFilterStepOutButtonClick, t, theme.palette.error.main]);
+  }, [hasActiveTreeFilter, isTreeLinked, onLinkToggleClick, onRemoveTreeFilterButtonClick, onTreeFilterStepOutButtonClick, t]);
 
   useEffect(() => {
     const emitDownloadOptions = () => {
@@ -517,12 +518,17 @@ export const TreeWidget = () => {
 
 
   useEffect(() => {
+
+    const eventBusService = container.resolve(EventBusService);
     // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
-    const removeEventListener = container.resolve(EventBusService).addEventListener('onLinkLineListAndTree', () => treeRef.current?.link());
+    const removeLinkEventListener = eventBusService.addEventListener('onLinkLineListAndTree', () => treeRef.current?.link());
+    // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
+    const removeUnlinkEventListener = eventBusService.addEventListener('onUnlinkLineListAndTree', () => unlinkTree());
     return () => {
-      removeEventListener();
+      removeLinkEventListener();
+      removeUnlinkEventListener();
     };
-  }, []);
+  }, [unlinkTree]);
 
 
   const onLinkStateChange = useCallback((linked: boolean) => {
@@ -597,6 +603,7 @@ export const TreeWidget = () => {
           <PhylogeneticTree
             ancestorDotRadius={treeConfig.ANCESTOR_DOT_RADIUS}
             ariaLabel={treeCanvasAriaLabel}
+            hasLink
             headerHeight={treeConfig.HEADER_HEIGHT}
             highlightedNodeNamesSubject={phylogeneticTreeHighlightedNodeNamesSubject}
             initialViewState={initialTreeViewState}
