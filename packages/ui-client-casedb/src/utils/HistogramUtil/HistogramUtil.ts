@@ -10,6 +10,7 @@ import type {
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { Theme } from '@mui/material';
 import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
+import type { TFunction } from 'i18next';
 
 import { DataService } from '../../classes/services/DataService';
 import type { CaseDbConfig } from '../../models/config.models';
@@ -25,7 +26,7 @@ export type GetChartOptionsParams = {
   conceptsA: CaseDbConcept[];
   conceptsB: CaseDbConcept[];
   series: SeriesItem[];
-  t: (key: string, options?: Record<string, unknown>) => string;
+  t: TFunction<'translation', undefined>;
   theme: Theme;
 };
 
@@ -314,17 +315,24 @@ export class HistogramUtil {
       const aKey = aValue.raw;
       const bKey = bValue.raw;
 
-      if (!countMap.has(aKey)) {
-        countMap.set(aKey, new Map<string, number>());
+      let aMap = countMap.get(aKey);
+      if (!aMap) {
+        aMap = new Map<string, number>();
+        countMap.set(aKey, aMap);
       }
-      const aMap = countMap.get(aKey);
       aMap.set(bKey, (aMap.get(bKey) ?? 0) + (caseDbCase.count ?? 1));
 
-      if (!caseIdsMap.has(aKey)) {
-        caseIdsMap.set(aKey, new Map<string, string[]>());
+      let aCaseIdsMap = caseIdsMap.get(aKey);
+      if (!aCaseIdsMap) {
+        aCaseIdsMap = new Map<string, string[]>();
+        caseIdsMap.set(aKey, aCaseIdsMap);
       }
-      const aCaseIdsMap = caseIdsMap.get(aKey);
-      aCaseIdsMap.set(bKey, [...(aCaseIdsMap.get(bKey) ?? []), caseDbCase.id]);
+      let caseIds = aCaseIdsMap.get(bKey);
+      if (!caseIds) {
+        caseIds = [];
+        aCaseIdsMap.set(bKey, caseIds);
+      }
+      caseIds.push(caseDbCase.id);
     });
 
     return conceptsA.map(aConcept => {

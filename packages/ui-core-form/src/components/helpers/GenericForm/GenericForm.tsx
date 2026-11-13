@@ -43,6 +43,8 @@ import { RadioGroup } from '../../fields/RadioGroup';
 import { Switch } from '../../fields/Switch';
 import { useIsFormFieldRequiredFromSchema } from '../../../hooks/useIsFormFieldRequiredFromSchema';
 
+const sortByOrder = <T extends { readonly order?: number }>(definitions: readonly T[]) => [...definitions].sort((first, second) => (first.order ?? Infinity) - (second.order ?? Infinity));
+
 export type GenericFormProps<TFormFields extends FieldValues> = {
   readonly defaultFormValues?: Partial<TFormFields>;
   readonly disableAll?: boolean;
@@ -205,21 +207,24 @@ export const GenericForm = <TFormFields extends FieldValues>({
   }, [renderField, renderFormFieldDefinition]);
 
   const formFieldsContent = useMemo(() => {
-    if (!formGroupDefinitions?.length) {
+    const orderedFormFieldDefinitions = sortByOrder(formFieldDefinitions);
+    const orderedFormGroupDefinitions = sortByOrder(formGroupDefinitions ?? []);
+
+    if (!orderedFormGroupDefinitions.length) {
       return (
         <>
-          {formFieldDefinitions.map(renderSingleField)}
+          {orderedFormFieldDefinitions.map(renderSingleField)}
         </>
       );
     }
 
     const groupFieldsMap = new Map<string, FormFieldDefinition<TFormFields>[]>();
-    for (const group of formGroupDefinitions) {
+    for (const group of orderedFormGroupDefinitions) {
       groupFieldsMap.set(group.groupKey, []);
     }
 
     const ungroupedFields: FormFieldDefinition<TFormFields>[] = [];
-    for (const field of formFieldDefinitions) {
+    for (const field of orderedFormFieldDefinitions) {
       if (field.groupKey && groupFieldsMap.has(field.groupKey)) {
         groupFieldsMap.get(field.groupKey)?.push(field);
       } else {
@@ -229,7 +234,7 @@ export const GenericForm = <TFormFields extends FieldValues>({
 
     return (
       <>
-        {formGroupDefinitions.map(group => {
+        {orderedFormGroupDefinitions.map(group => {
           const groupFields = groupFieldsMap.get(group.groupKey) ?? [];
           if (!groupFields.length) {
             return null;

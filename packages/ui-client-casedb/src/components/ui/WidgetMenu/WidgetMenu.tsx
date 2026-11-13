@@ -41,7 +41,7 @@ export const WidgetMenu = ({
         return (
           <WidgetHeaderIconButton
             disabled={menuItemsData.disabled}
-            key={menuItemsData.label}
+            key={menuItemsData.uid ?? menuItemsData.label}
             label={menuItemsData.label}
             // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
             onClick={() => menuItemsData.callback()}

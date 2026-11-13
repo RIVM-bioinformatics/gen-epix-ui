@@ -18,8 +18,8 @@ import type {
   CSSProperties,
   KeyboardEvent as ReactKeyboardEvent,
   MouseEvent as ReactMouseEvent,
+  ReactNode,
   Ref,
-  RefObject,
 } from 'react';
 import {
   forwardRef,
@@ -72,7 +72,10 @@ import { TableActionsCell } from './TableActionsCell';
 import { TableCell } from './TableCell';
 import type { TableCellProps } from './TableCell';
 import { TableColumnsEditorDialog } from './TableColumnsEditorDialog';
-import type { TableColumnsEditorDialogRefMethods } from './TableColumnsEditorDialog';
+import type {
+  TableColumnsEditorDialogItem,
+  TableColumnsEditorDialogRefMethods,
+} from './TableColumnsEditorDialog';
 import { TableCheckboxCell } from './TableCheckboxCell';
 import { TableCheckboxHeader } from './TableCheckboxHeader';
 import { TableReadableIndexCell } from './TableReadableIndexCell';
@@ -95,6 +98,8 @@ export type TableProps<TRowData, TDataContext = null> = {
   readonly overscanMain?: number;
   readonly overscanReverse?: number;
   readonly ref?: Ref<TableRef>;
+  readonly renderColumnsEditorHeaderContent?: () => ReactNode;
+  readonly renderColumnsEditorItemContent?: (item: TableColumnsEditorDialogItem<TRowData, TDataContext>) => ReactNode;
   readonly rowHeight?: number;
   readonly rowHighlightingSubject?: Subject<string[]>;
   readonly sx?: SxProps<Theme>;
@@ -121,11 +126,15 @@ export const Table = <TRowData, TDataContext = null>({
   overscanMain,
   overscanReverse,
   ref,
+  renderColumnsEditorHeaderContent,
+  renderColumnsEditorItemContent,
   rowHeight = 4,
   rowHighlightingSubject,
   sx,
 }: TableProps<TRowData, TDataContext>) => {
   const theme = useTheme();
+  const rowHeightCss = theme.spacing(rowHeight);
+  const rowHeightPx = +rowHeightCss.replace('px', '');
   const { t } = useTranslation();
   const config = useConfig();
   const windowService = container.resolve(WindowService);
@@ -192,6 +201,14 @@ export const Table = <TRowData, TDataContext = null>({
   const getVisibleTableSettingsColumns = useCallback(() => {
     return tableColumnVisualSettingsRef?.current?.filter(c => c.isVisible) ?? [];
   }, []);
+
+  const tableColumnsById = useMemo(() => {
+    const columnsById = new Map<string, TableColumn<TRowData, TDataContext>>();
+    tableColumns.forEach((column) => {
+      columnsById.set(column.id, column);
+    });
+    return columnsById;
+  }, [tableColumns]);
 
   const updateTableWidth = useCallback(() => {
     if (!tableColumnVisualSettingsRef?.current?.length || !tableContainer) {
@@ -314,6 +331,7 @@ export const Table = <TRowData, TDataContext = null>({
   }, [setCurrentColumnVisualSettingsInStore]);
 
   const saveColumnVisualSettingsToStoreDebounced = useDebouncedCallback(() => {
+    console.log('saveColumnVisualSettingsToStoreDebounced');
     saveColumnVisualSettingsToStore();
   }, 500, { trailing: true });
 
@@ -509,7 +527,7 @@ export const Table = <TRowData, TDataContext = null>({
         }}
       >
         {getVisibleTableSettingsColumns().map((tableSettingsColumn, tableSettingsColumnIndex) => {
-          const tableColumn = tableColumns.find(c => c.id === tableSettingsColumn.id);
+          const tableColumn = tableColumnsById.get(tableSettingsColumn.id);
           if (!tableColumn) {
             return null;
           }
@@ -523,7 +541,7 @@ export const Table = <TRowData, TDataContext = null>({
               onColumnDividerKeyDown={onColumnDividerKeyDown}
               onColumnDividerMouseDown={onColumnDividerMouseDown}
               onCustomDrag={onTableHeaderCellDrag}
-              order={tableColumnVisualSettingsRef.current.findIndex(c => c.id === tableSettingsColumn.id)}
+              order={tableSettingsColumnIndex}
               role={'columnheader'}
               width={tableSettingsColumn.calculatedWidth}
               xOffset={tableSettingsColumn.offsetX}
@@ -532,13 +550,18 @@ export const Table = <TRowData, TDataContext = null>({
         })}
       </Box>
     );
-  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumns, renderSelectableHeaderContent, onColumnDividerMouseDown, onColumnDividerKeyDown, onTableHeaderCellDrag]);
+  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumnsById, renderSelectableHeaderContent, onColumnDividerMouseDown, onColumnDividerKeyDown, onTableHeaderCellDrag]);
 
   const renderItemContent = useCallback((index: number, row: TRowData) => {
+    const isRowEnabled = isRowEnabledCallback ? isRowEnabledCallback(row, dataContext) : true;
+
     return (
       <>
         {getVisibleTableSettingsColumns().map((tableSettingsColumn, columnIndex) => {
-          const tableColumn = tableColumns.find(c => c.id === tableSettingsColumn.id);
+          const tableColumn = tableColumnsById.get(tableSettingsColumn.id);
+          if (!tableColumn) {
+            return null;
+          }
           let title: string;
           if (tableColumn.cellTitleGetter) {
             title = tableColumn.cellTitleGetter({ column: tableColumn, dataContext, id: tableSettingsColumn.id, row, rowIndex: index });
@@ -558,10 +581,10 @@ export const Table = <TRowData, TDataContext = null>({
           const baseProps: Partial<TableCellProps<TRowData, TDataContext>> = {
             backgroundColor: isCondensed && tableColumn.cellColorGetter ? tableColumn.cellColorGetter({ column: tableColumn, dataContext, id: tableSettingsColumn.id, row, rowIndex: index }) : undefined,
             columnIndex,
-            enabled: isRowEnabledCallback ? isRowEnabledCallback(row, dataContext) : true,
-            height: theme.spacing(rowHeight),
+            enabled: isRowEnabled,
+            height: rowHeightCss,
             onClick: onTableRowClick,
-            order: tableColumnVisualSettingsRef.current.findIndex(c => c.id === tableSettingsColumn.id),
+            order: columnIndex,
             row,
             rowIndex: index,
             sx: tableColumn.sx,
@@ -608,7 +631,7 @@ export const Table = <TRowData, TDataContext = null>({
         })}
       </>
     );
-  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderSelectableCell, renderReadableIndexCell, rowHeight, t, tableColumns, theme, dataContext, isCondensed]);
+  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderSelectableCell, renderReadableIndexCell, rowHeightCss, t, tableColumnsById, dataContext, isCondensed]);
 
   const onRowMouseEnterCallback = useCallback((row: TRowData) => {
     onRowMouseEnter(row);
@@ -625,18 +648,23 @@ export const Table = <TRowData, TDataContext = null>({
     }
 
     const unsubscribe = rowHighlightingSubject.subscribe((highlightedRowIds, previousHighlightedRowIds) => {
-      // remove previous highlighting
-      previousHighlightedRowIds.forEach(rowId => {
-        tableContainer.querySelectorAll(`[data-testid=virtuoso-item-list] [data-id='${rowId}']`).forEach(rowNode => {
-          (rowNode as HTMLElement).classList.remove('highlighted');
-        });
-      });
+      if (!highlightedRowIds.length && !previousHighlightedRowIds.length) {
+        return;
+      }
 
-      // add current highlighting
-      highlightedRowIds.forEach(rowId => {
-        tableContainer.querySelectorAll(`[data-testid=virtuoso-item-list] [data-id='${rowId}']`).forEach(rowNode => {
-          (rowNode as HTMLElement).classList.add('highlighted');
-        });
+      const currentHighlightedIds = new Set(highlightedRowIds);
+      const previousHighlightedIds = new Set(previousHighlightedRowIds);
+      tableContainer.querySelectorAll<HTMLElement>('[data-testid=virtuoso-item-list] [data-id]').forEach(rowNode => {
+        const rowId = rowNode.getAttribute('data-id');
+        if (rowId === null) {
+          return;
+        }
+
+        if (currentHighlightedIds.has(rowId)) {
+          rowNode.classList.add('highlighted');
+        } else if (previousHighlightedIds.has(rowId)) {
+          rowNode.classList.remove('highlighted');
+        }
       });
     });
     return () => {
@@ -695,15 +723,14 @@ export const Table = <TRowData, TDataContext = null>({
     }
     if (tableRef.current && onVisibleItemIndexChange) {
       const scrollTop = scrollerElement.scrollTop;
-      const rowHeightPx = +theme.spacing(rowHeight).replace('px', '');
       const topItemIndex = Math.floor(scrollTop / rowHeightPx);
       onVisibleItemIndexChange(topItemIndex);
     }
-  }, [getScrollerElement, onVerticalScrollPositionChange, onVisibleItemIndexChange, theme, rowHeight]);
+  }, [getScrollerElement, onVerticalScrollPositionChange, onVisibleItemIndexChange, rowHeightPx]);
 
   const handleItemSize = useCallback(() => {
-    return +theme.spacing(rowHeight).replace('px', '');
-  }, [rowHeight, theme]);
+    return rowHeightPx;
+  }, [rowHeightPx]);
 
   const setVerticalScrollPosition = useCallback((position: number) => {
     const scrollerElement = getScrollerElement();
@@ -868,7 +895,7 @@ export const Table = <TRowData, TDataContext = null>({
           }}
           data={sortedData}
           fixedHeaderContent={renderFixedHeaderContent}
-          fixedItemHeight={+theme.spacing(rowHeight).replace('px', '')}
+          fixedItemHeight={rowHeightPx}
           initialTopMostItemIndex={initialVisibleItemIndex ?? 0}
           isScrolling={onVirtuosoIsScrolling}
           itemContent={renderItemContent}
@@ -888,8 +915,10 @@ export const Table = <TRowData, TDataContext = null>({
           totalCount={sortedData.length}
         />
       )}
-      <TableColumnsEditorDialog
-        ref={tableColumnsEditorDialogRef as RefObject<TableColumnsEditorDialogRefMethods<unknown, unknown>>}
+      <TableColumnsEditorDialog<TRowData, TDataContext>
+        ref={tableColumnsEditorDialogRef}
+        renderHeaderContent={renderColumnsEditorHeaderContent}
+        renderItemContent={renderColumnsEditorItemContent}
       />
     </Box>
   );

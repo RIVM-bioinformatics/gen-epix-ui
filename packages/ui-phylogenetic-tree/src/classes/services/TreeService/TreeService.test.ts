@@ -1,4 +1,5 @@
 import { Decimal } from 'decimal.js';
+import { container } from 'tsyringe';
 import { vi } from 'vitest';
 import type { ArgumentTypes } from '@gen-epix/ui-core/models/generic.models';
 
@@ -6,10 +7,12 @@ import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
-} from '../../models/tree.models';
-import { NewickUtil } from '../NewickUtil';
+} from '../../../models/tree.models';
+import { NewickUtil } from '../../../utils/NewickUtil';
 
-import { TreeUtil } from './TreeUtil';
+import { TreeService } from './TreeService';
+
+const treeService = container.resolve(TreeService);
 
 // Path2D is a browser API not available in jsdom — provide a minimal stub
 if (typeof Path2D === 'undefined') {
@@ -70,7 +73,7 @@ const assembleTreeForTest = (params: {
 }): TreeAssembly => {
   const { ancestorDotRadius = 3, leafDotRadius = 4, minimumDistancePercentageToShowLabel = 5, sortedLeafNames: sortedLeafNames, treePadding = 10, ...rest } = params;
 
-  return TreeUtil.assembleTree({
+  return treeService.assembleTree({
     ...rest,
     ancestorDotRadius,
     leafDotRadius,
@@ -80,13 +83,13 @@ const assembleTreeForTest = (params: {
   });
 };
 
-describe('TreeUtil', () => {
+describe('TreeService', () => {
   describe('getScrollPositionFromTreeVisibility', () => {
     const TABLE_ROW_HEIGHT = 30;
 
     it('returns 0 when scrolled to the top', () => {
       // 30 items total, canvas shows 10, no scroll
-      expect(TreeUtil.getScrollPositionFromTreeVisibility({
+      expect(treeService.getScrollPositionFromTreeVisibility({
         itemHeight: TABLE_ROW_HEIGHT,
         treeCanvasHeight: 300,
         treeHeight: 900,
@@ -99,7 +102,7 @@ describe('TreeUtil', () => {
     it('returns the correct position when scrolled to the middle', () => {
       // scrolledByItems = 10, maxItemsInView = 10, average = 15
       // newScrollPosition = 15 * 30 - 150 = 300
-      expect(TreeUtil.getScrollPositionFromTreeVisibility({
+      expect(treeService.getScrollPositionFromTreeVisibility({
         itemHeight: TABLE_ROW_HEIGHT,
         treeCanvasHeight: 300,
         treeHeight: 900,
@@ -112,7 +115,7 @@ describe('TreeUtil', () => {
     it('returns treeHeight - treeCanvasHeight when scrolled past the end', () => {
       // scrolledByItems = 30 (over-scrolled), lastItemInView clamped to treeSize (30)
       // average = 30, newScrollPosition clamped to 900 - 300 = 600
-      expect(TreeUtil.getScrollPositionFromTreeVisibility({
+      expect(treeService.getScrollPositionFromTreeVisibility({
         itemHeight: TABLE_ROW_HEIGHT,
         treeCanvasHeight: 300,
         treeHeight: 900,
@@ -126,7 +129,7 @@ describe('TreeUtil', () => {
       // zoomLevel = 2: scaledItemHeight = 15, maxItemsInView = 20
       // firstItemInView = 0, lastItemInView = min(20, 30) = 20, average = 10
       // newScrollPosition = 10 * 30 - 150 = 150
-      expect(TreeUtil.getScrollPositionFromTreeVisibility({
+      expect(treeService.getScrollPositionFromTreeVisibility({
         itemHeight: TABLE_ROW_HEIGHT,
         treeCanvasHeight: 300,
         treeHeight: 900,
@@ -142,7 +145,7 @@ describe('TreeUtil', () => {
       // scaledItemHeight = 30, scrolledByItems = 0, maxItemsInView = 20
       // lastItemInView = min(20, 10) = 10, average = 5
       // candidate = 5 * 30 - 300 = -150 -> clamped to 0
-      expect(TreeUtil.getScrollPositionFromTreeVisibility({
+      expect(treeService.getScrollPositionFromTreeVisibility({
         itemHeight: TABLE_ROW_HEIGHT,
         treeCanvasHeight: 600,
         treeHeight: 300,
@@ -159,7 +162,7 @@ describe('TreeUtil', () => {
     const SCALE_INCREMENTS = [1, 2, 5, 10, 20, 50];
 
     it('returns [0,0,0] when treeWidthMinusPadding is 0', () => {
-      expect(TreeUtil.getTickerMarkScale({
+      expect(treeService.getTickerMarkScale({
         geneticTreeWidth: new Decimal(80),
         maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
         minGeneticScaleUnit: new Decimal(1),
@@ -171,7 +174,7 @@ describe('TreeUtil', () => {
     });
 
     it('returns [0,0,0] when minGeneticScaleUnit is 0', () => {
-      expect(TreeUtil.getTickerMarkScale({
+      expect(treeService.getTickerMarkScale({
         geneticTreeWidth: new Decimal(80),
         maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
         minGeneticScaleUnit: new Decimal(0),
@@ -186,7 +189,7 @@ describe('TreeUtil', () => {
       // geneticTreeWidth=0.8, minGeneticScaleUnit=1:
       // 0.8/1 + 1 = 1.8 < maxNumLines(26) -> maxNumLines = max(ceil(0.8), 2) = 2
       // minNumLines(9) > 2 -> minNumLines = 2 -> maxNumLines === 2 -> [2, 1, 1]
-      expect(TreeUtil.getTickerMarkScale({
+      expect(treeService.getTickerMarkScale({
         geneticTreeWidth: new Decimal(0.8),
         maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
         minGeneticScaleUnit: new Decimal(1),
@@ -202,7 +205,7 @@ describe('TreeUtil', () => {
       // 4/1 + 1 = 5 < maxNumLines(26) -> maxNumLines = max(ceil(4), 2) = 4
       // minNumLines(9) > 4 -> minNumLines = 4, maxNumLines = 4
       // numLines=4, increment=1: product=4, leftover=0 -> [5, 1, 1]
-      expect(TreeUtil.getTickerMarkScale({
+      expect(treeService.getTickerMarkScale({
         geneticTreeWidth: new Decimal(4),
         maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
         minGeneticScaleUnit: new Decimal(1),
@@ -216,7 +219,7 @@ describe('TreeUtil', () => {
     it('skips increments smaller than minGeneticScaleUnit', () => {
       // minGeneticScaleUnit=5 causes increments [1, 2] to be skipped
       // numLines=16, increment=5: product=80, leftover=0 -> [17, 5, 5]
-      expect(TreeUtil.getTickerMarkScale({
+      expect(treeService.getTickerMarkScale({
         geneticTreeWidth: new Decimal(80),
         maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
         minGeneticScaleUnit: new Decimal(5),
@@ -230,7 +233,7 @@ describe('TreeUtil', () => {
     it('accounts for zoom level by reducing effective width', () => {
       // zoomLevel=2: width=600 -> minNumLines=5, maxNumLines=14
       // numLines=8, increment=10: product=80, leftover=0 -> [9, 10, 1]
-      expect(TreeUtil.getTickerMarkScale({
+      expect(treeService.getTickerMarkScale({
         geneticTreeWidth: new Decimal(80),
         maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
         minGeneticScaleUnit: new Decimal(1),
@@ -242,7 +245,7 @@ describe('TreeUtil', () => {
     });
 
     it('determines the tick mark scale for various tree widths', () => {
-      const cases: Array<[ArgumentTypes<typeof TreeUtil.getTickerMarkScale>[0], ReturnType<typeof TreeUtil.getTickerMarkScale>]> = [
+      const cases: Array<[ArgumentTypes<typeof treeService.getTickerMarkScale>[0], ReturnType<typeof treeService.getTickerMarkScale>]> = [
         [{
           geneticTreeWidth: new Decimal(16),
           maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
@@ -273,7 +276,7 @@ describe('TreeUtil', () => {
       ];
 
       cases.forEach(([input, expectedOutput]) => {
-        expect(TreeUtil.getTickerMarkScale(input)).toEqual(expectedOutput);
+        expect(treeService.getTickerMarkScale(input)).toEqual(expectedOutput);
       });
     });
   });
@@ -283,12 +286,12 @@ describe('TreeUtil', () => {
 
     it('returns the same root node reference', () => {
       const root = makeNode('Root', 0, [makeLeaf('A'), makeLeaf('B')]);
-      expect(TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE)).toBe(root);
+      expect(treeService.sanitizeTree(root, FALLBACK_DISTANCE)).toBe(root);
     });
 
     it('leaves a leaf node (no children) unchanged', () => {
       const leaf = makeLeaf('A');
-      TreeUtil.sanitizeTree(leaf, FALLBACK_DISTANCE);
+      treeService.sanitizeTree(leaf, FALLBACK_DISTANCE);
       expect(leaf.children).toBeUndefined();
       expect(leaf.subTreeNames).toEqual([]);
     });
@@ -300,7 +303,7 @@ describe('TreeUtil', () => {
       const inner = makeNode('Inner', 1, [b, makeLeaf('C')]);
       const root = makeNode('Root', 0, [a, inner]);
 
-      TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      treeService.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.children?.map(c => c.name)).toEqual(['A', 'Inner']);
     });
@@ -313,7 +316,7 @@ describe('TreeUtil', () => {
       const inner = makeNode('Inner', 0, [b, c]);
       const root = makeNode('Root', 0, [a, inner]);
 
-      TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      treeService.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.children?.map(n => n.name)).toEqual(['A', 'B', 'C']);
     });
@@ -325,7 +328,7 @@ describe('TreeUtil', () => {
         makeNode('Inner', 0, [makeLeaf('B'), makeLeaf('C')]),
       ]);
 
-      TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      treeService.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.subTreeNames).toEqual(['A', 'B', 'C']);
     });
@@ -335,7 +338,7 @@ describe('TreeUtil', () => {
       const root = makeNode('Root', 0, [makeLeaf('A'), inner]);
       const originalSubTreeNames = [...root.subTreeNames];
 
-      TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      treeService.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.children?.map(n => n.name)).toEqual(['A', 'Inner']);
       expect(root.subTreeNames).toEqual(originalSubTreeNames);
@@ -352,7 +355,7 @@ describe('TreeUtil', () => {
       } as TreeNode;
       const root = makeNode('Root', 0, [makeLeaf('A'), inner]);
 
-      TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      treeService.sanitizeTree(root, FALLBACK_DISTANCE);
 
       // inner treated as zero-branch -> its children B,C hoisted to root
       expect(root.children?.map(n => n.name)).toEqual(['A', 'B', 'C']);
@@ -365,7 +368,7 @@ describe('TreeUtil', () => {
         makeNode('Inner2', 0, [makeLeaf('C'), makeLeaf('D')]),
       ]);
 
-      TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      treeService.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.children?.map(n => n.name)).toEqual(['A', 'B', 'C', 'D']);
       expect(root.subTreeNames).toEqual(['A', 'B', 'C', 'D']);
@@ -378,7 +381,7 @@ describe('TreeUtil', () => {
         makeNode('Inner2', 1, [makeLeaf('C'), makeLeaf('D')]),
       ]);
 
-      TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      treeService.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.children?.map(n => n.name)).toEqual(['A', 'B', 'Inner2']);
       expect(root.subTreeNames).toEqual(['A', 'B', 'Inner2', 'C', 'D']);
@@ -396,7 +399,7 @@ describe('TreeUtil', () => {
       const a = makeLeaf('A');
       const root = makeNode('Root', 0, [a, outer]);
 
-      TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      treeService.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.children?.map(n => n.name)).toEqual(['A', 'B', 'C', 'D']);
     });
@@ -412,7 +415,7 @@ describe('TreeUtil', () => {
         ]),
       ]);
 
-      TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      treeService.sanitizeTree(root, FALLBACK_DISTANCE);
 
       // 'Outer' is removed; 'Inner' stays because it was spliced from Outer (not Root) subTreeNames
       expect(root.subTreeNames).toEqual(['A', 'Inner', 'B', 'C', 'D']);
@@ -422,7 +425,7 @@ describe('TreeUtil', () => {
       // Only some children have bl=0 -> edge case should NOT apply
       const root = makeNode('Root', 0, [makeLeaf('A', 1), makeLeaf('B', 0)]);
 
-      TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      treeService.sanitizeTree(root, FALLBACK_DISTANCE);
 
       // B still has bl=0 (not assigned fallbackDistance)
       expect(root.children?.[1]?.branchLength?.toNumber()).toBe(0);
@@ -435,7 +438,7 @@ describe('TreeUtil', () => {
       const c = makeLeaf('C', 0);
       const root = makeNode('Root', 0, [a, b, c]);
 
-      const sanitizedRoot = TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      const sanitizedRoot = treeService.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(sanitizedRoot.name).toBe('root');
       expect(sanitizedRoot.children).toHaveLength(1);
@@ -455,7 +458,7 @@ describe('TreeUtil', () => {
       const b = { name: 'B', size: 1, subTreeLeaveNames: ['B'], subTreeNames: [] } as TreeNode;
       const root = makeNode('Root', 0, [a, b]);
 
-      const sanitizedRoot = TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      const sanitizedRoot = treeService.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(sanitizedRoot.name).toBe('root');
       expect(sanitizedRoot.children).toHaveLength(1);
@@ -478,7 +481,7 @@ describe('TreeUtil', () => {
       const leaves = ['L1', 'L2', 'L3', 'L4'].map(name => makeLeaf(name, 0));
       const root = makeNode('Root', 0, leaves);
 
-      const sanitizedRoot = TreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      const sanitizedRoot = treeService.sanitizeTree(root, FALLBACK_DISTANCE);
       const generatedRoot = sanitizedRoot.children?.[0];
 
       expect(sanitizedRoot.name).toBe('root');
@@ -494,14 +497,14 @@ describe('TreeUtil', () => {
   describe('createTreeAddresses', () => {
     it('assigns an empty string address to a single root leaf', () => {
       const root = makeLeaf('root');
-      expect(TreeUtil.createTreeAddresses(root)).toEqual({ root: '' });
+      expect(treeService.createTreeAddresses(root)).toEqual({ root: '' });
     });
 
     it('treats a child with undefined branchLength as zero-branch (uses ?? 0 fallback)', () => {
       // child has no branchLength -> (child.branchLength?.toNumber() ?? 0) === 0 -> assigned index 1
       const zeroBLChild = { name: 'z', size: 1, subTreeLeaveNames: ['z'], subTreeNames: [] } as TreeNode;
       const root = makeNode('root', 0, [zeroBLChild, makeLeaf('a', 1)]);
-      const addresses = TreeUtil.createTreeAddresses(root);
+      const addresses = treeService.createTreeAddresses(root);
       expect(addresses['z']).toBe('1');
       expect(addresses['a']).toBe('2');
     });
@@ -509,7 +512,7 @@ describe('TreeUtil', () => {
     it('assigns "" to the root and "1","2" to two positive-branch children', () => {
       // No zero-branch children -> index starts at 1
       const root = makeNode('root', 0, [makeLeaf('a'), makeLeaf('b')]);
-      expect(TreeUtil.createTreeAddresses(root)).toEqual({
+      expect(treeService.createTreeAddresses(root)).toEqual({
         a: '1',
         b: '2',
         root: '',
@@ -519,7 +522,7 @@ describe('TreeUtil', () => {
     it('increments index for each additional positive-branch child', () => {
       // Three positive-branch children -> "1", "2", "3"
       const root = makeNode('root', 0, [makeLeaf('a'), makeLeaf('b'), makeLeaf('c')]);
-      expect(TreeUtil.createTreeAddresses(root)).toEqual({
+      expect(treeService.createTreeAddresses(root)).toEqual({
         a: '1',
         b: '2',
         c: '3',
@@ -530,7 +533,7 @@ describe('TreeUtil', () => {
     it('assigns address "1" to a single zero-branch child', () => {
       // hasZeroBranchLength=true -> zero-branch children always get index 1
       const root = makeNode('root', 0, [makeLeaf('a', 0)]);
-      expect(TreeUtil.createTreeAddresses(root)).toEqual({
+      expect(treeService.createTreeAddresses(root)).toEqual({
         a: '1',
         root: '',
       });
@@ -539,7 +542,7 @@ describe('TreeUtil', () => {
     it('assigns "1" to zero-branch child and "2" to following positive-branch child', () => {
       // hasZeroBranchLength=true -> index starts at 2 for non-zero; zero child gets 1
       const root = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 1)]);
-      expect(TreeUtil.createTreeAddresses(root)).toEqual({
+      expect(treeService.createTreeAddresses(root)).toEqual({
         a: '1',
         b: '2',
         root: '',
@@ -549,7 +552,7 @@ describe('TreeUtil', () => {
     it('assigns "2" to a positive-branch child that appears before a zero-branch child', () => {
       // hasZeroBranchLength=true -> non-zero children start at index 2, zero gets 1
       const root = makeNode('root', 0, [makeLeaf('a', 1), makeLeaf('b', 0)]);
-      expect(TreeUtil.createTreeAddresses(root)).toEqual({
+      expect(treeService.createTreeAddresses(root)).toEqual({
         a: '2',
         b: '1',
         root: '',
@@ -559,7 +562,7 @@ describe('TreeUtil', () => {
     it('assigns "1" to all zero-branch children when every child has zero branch length', () => {
       // All children route to the same index 1
       const root = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 0), makeLeaf('c', 0)]);
-      expect(TreeUtil.createTreeAddresses(root)).toEqual({
+      expect(treeService.createTreeAddresses(root)).toEqual({
         a: '1',
         b: '1',
         c: '1',
@@ -572,7 +575,7 @@ describe('TreeUtil', () => {
       // root: "", left: "1", a: "1.1", b: "1.2", right: "2"
       const left = makeNode('left', 1, [makeLeaf('a'), makeLeaf('b')]);
       const root = makeNode('root', 0, [left, makeLeaf('right')]);
-      expect(TreeUtil.createTreeAddresses(root)).toEqual({
+      expect(treeService.createTreeAddresses(root)).toEqual({
         a: '1.1',
         b: '1.2',
         left: '1',
@@ -587,7 +590,7 @@ describe('TreeUtil', () => {
       // At inner level, no zero-branch -> a: "1.1", b: "1.2"
       const inner = makeNode('inner', 0, [makeLeaf('a'), makeLeaf('b')]);
       const root = makeNode('root', 0, [inner, makeLeaf('c')]);
-      expect(TreeUtil.createTreeAddresses(root)).toEqual({
+      expect(treeService.createTreeAddresses(root)).toEqual({
         a: '1.1',
         b: '1.2',
         c: '2',
@@ -604,7 +607,7 @@ describe('TreeUtil', () => {
       const y = makeNode('y', 1, [makeLeaf('p'), makeLeaf('q')]);
       const x = makeNode('x', 0, [y]);
       const root = makeNode('root', 0, [x, makeLeaf('z')]);
-      expect(TreeUtil.createTreeAddresses(root)).toEqual({
+      expect(treeService.createTreeAddresses(root)).toEqual({
         p: '1.1.1',
         q: '1.1.2',
         root: '',
@@ -619,14 +622,14 @@ describe('TreeUtil', () => {
     it("selector 'node': returns a new object — not the original node reference", () => {
       const target = { ...makeLeaf('target', 3), maxBranchLength: new Decimal(10) };
       const root = makeNode('root', 0, [target]);
-      const result = TreeUtil.findNewTreeRoot(root, 'target', 'node');
+      const result = treeService.findNewTreeRoot(root, 'target', 'node');
       expect(result).not.toBe(target);
     });
 
     it("selector 'node': sets branchLength to 0 on the matched node", () => {
       const target = { ...makeLeaf('target', 3), maxBranchLength: new Decimal(10) };
       const root = makeNode('root', 0, [target]);
-      const result = TreeUtil.findNewTreeRoot(root, 'target', 'node');
+      const result = treeService.findNewTreeRoot(root, 'target', 'node');
       expect(result.branchLength.toNumber()).toBe(0);
     });
 
@@ -634,14 +637,14 @@ describe('TreeUtil', () => {
       // maxBranchLength=10, branchLength=3 -> result maxBranchLength = 7
       const target = { ...makeLeaf('target', 3), maxBranchLength: new Decimal(10) };
       const root = makeNode('root', 0, [target]);
-      const result = TreeUtil.findNewTreeRoot(root, 'target', 'node');
+      const result = treeService.findNewTreeRoot(root, 'target', 'node');
       expect(result.maxBranchLength.toNumber()).toBe(7);
     });
 
     it("selector 'node': preserves other properties of the matched node", () => {
       const target = { ...makeLeaf('target', 3), maxBranchLength: new Decimal(10) };
       const root = makeNode('root', 0, [target]);
-      const result = TreeUtil.findNewTreeRoot(root, 'target', 'node');
+      const result = treeService.findNewTreeRoot(root, 'target', 'node');
       expect(result.name).toBe('target');
       expect(result.subTreeLeaveNames).toEqual(['target']);
     });
@@ -656,7 +659,7 @@ describe('TreeUtil', () => {
         subTreeLeaveNames: ['a'],
         subTreeNames: ['a'],
       };
-      const result = TreeUtil.findNewTreeRoot(root, 'root', 'node');
+      const result = treeService.findNewTreeRoot(root, 'root', 'node');
       expect(result.name).toBe('root');
       expect(result.branchLength.toNumber()).toBe(0);
       expect(result.maxBranchLength.toNumber()).toBe(6); // 8 - 2
@@ -665,7 +668,7 @@ describe('TreeUtil', () => {
     it("selector 'node': finds a direct child leaf", () => {
       const target = { ...makeLeaf('target', 4), maxBranchLength: new Decimal(12) };
       const root = makeNode('root', 0, [makeLeaf('other'), target]);
-      const result = TreeUtil.findNewTreeRoot(root, 'target', 'node');
+      const result = treeService.findNewTreeRoot(root, 'target', 'node');
       expect(result.name).toBe('target');
       expect(result.branchLength.toNumber()).toBe(0);
       expect(result.maxBranchLength.toNumber()).toBe(8); // 12 - 4
@@ -675,7 +678,7 @@ describe('TreeUtil', () => {
       const deepTarget = { ...makeLeaf('deepTarget', 5), maxBranchLength: new Decimal(15) };
       const inner = makeNode('inner', 2, [deepTarget, makeLeaf('sibling')]);
       const root = makeNode('root', 0, [makeLeaf('unrelated'), inner]);
-      const result = TreeUtil.findNewTreeRoot(root, 'deepTarget', 'node');
+      const result = treeService.findNewTreeRoot(root, 'deepTarget', 'node');
       expect(result.name).toBe('deepTarget');
       expect(result.branchLength.toNumber()).toBe(0);
       expect(result.maxBranchLength.toNumber()).toBe(10); // 15 - 5
@@ -691,7 +694,7 @@ describe('TreeUtil', () => {
         subTreeLeaveNames: ['a', 'b'],
         subTreeNames: ['a', 'b'],
       };
-      const result = TreeUtil.findNewTreeRoot(root, 'a', 'parent');
+      const result = treeService.findNewTreeRoot(root, 'a', 'parent');
       expect(result.name).toBe('root');
       expect(result.branchLength.toNumber()).toBe(0);
       expect(result.maxBranchLength.toNumber()).toBe(10); // 10 - 0
@@ -708,7 +711,7 @@ describe('TreeUtil', () => {
         subTreeNames: ['target', 'sibling'],
       };
       const root = makeNode('root', 0, [makeLeaf('unrelated'), parent]);
-      const result = TreeUtil.findNewTreeRoot(root, 'target', 'parent');
+      const result = treeService.findNewTreeRoot(root, 'target', 'parent');
       expect(result.name).toBe('parent');
       expect(result.branchLength.toNumber()).toBe(0);
       expect(result.maxBranchLength.toNumber()).toBe(6); // 9 - 3
@@ -725,7 +728,7 @@ describe('TreeUtil', () => {
         subTreeNames: ['target', 'sibling'],
       };
       const root = makeNode('root', 0, [parent]);
-      const result = TreeUtil.findNewTreeRoot(root, 'target', 'parent');
+      const result = treeService.findNewTreeRoot(root, 'target', 'parent');
       expect(result.children).toBe(parent.children);
       expect(result.subTreeLeaveNames).toEqual(['target', 'sibling']);
     });
@@ -734,7 +737,7 @@ describe('TreeUtil', () => {
       // branchLength=5, maxBranchLength=5 -> maxBranchLength result = 0
       const target = { ...makeLeaf('target', 5), maxBranchLength: new Decimal(5) };
       const root = makeNode('root', 0, [target]);
-      const result = TreeUtil.findNewTreeRoot(root, 'target', 'node');
+      const result = treeService.findNewTreeRoot(root, 'target', 'node');
       expect(result.branchLength.toNumber()).toBe(0);
       expect(result.maxBranchLength.toNumber()).toBe(0);
     });
@@ -742,32 +745,32 @@ describe('TreeUtil', () => {
     it('throws a descriptive error when the requested node is absent', () => {
       const root = makeNode('root', 0, [makeLeaf('present')]);
 
-      expect(() => TreeUtil.findNewTreeRoot(root, 'missing', 'node')).toThrowError('Tree node "missing" was not found.');
+      expect(() => treeService.findNewTreeRoot(root, 'missing', 'node')).toThrowError('Tree node "missing" was not found.');
     });
   });
 
   describe('getMinGeneticScaleUnit', () => {
     it('returns Infinity when passed a falsy value', () => {
-      expect(TreeUtil.getMinGeneticScaleUnit(null).toNumber()).toBe(Infinity);
+      expect(treeService.getMinGeneticScaleUnit(null).toNumber()).toBe(Infinity);
     });
 
     it('returns the branchLength of a single leaf node', () => {
-      expect(TreeUtil.getMinGeneticScaleUnit(makeLeaf('a', 3)).toNumber()).toBe(3);
+      expect(treeService.getMinGeneticScaleUnit(makeLeaf('a', 3)).toNumber()).toBe(3);
     });
 
     it('returns Infinity for a leaf whose branchLength is 0 (zero is treated as missing)', () => {
-      expect(TreeUtil.getMinGeneticScaleUnit(makeLeaf('a', 0)).toNumber()).toBe(Infinity);
+      expect(treeService.getMinGeneticScaleUnit(makeLeaf('a', 0)).toNumber()).toBe(Infinity);
     });
 
     it('returns Infinity for a leaf with no branchLength set', () => {
       const leaf: TreeNode = { name: 'a', size: 1, subTreeLeaveNames: ['a'], subTreeNames: [] };
-      expect(TreeUtil.getMinGeneticScaleUnit(leaf).toNumber()).toBe(Infinity);
+      expect(treeService.getMinGeneticScaleUnit(leaf).toNumber()).toBe(Infinity);
     });
 
     it('returns the minimum among multiple leaf children', () => {
       // leaves: 3, 1, 7 -> min = 1
       const root = makeNode('root', 0, [makeLeaf('a', 3), makeLeaf('b', 1), makeLeaf('c', 7)]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(1);
+      expect(treeService.getMinGeneticScaleUnit(root).toNumber()).toBe(1);
     });
 
     it('ignores internal (non-leaf) node branch lengths when finding the minimum', () => {
@@ -775,31 +778,31 @@ describe('TreeUtil', () => {
       // leaf b branchLength=2 is the true minimum
       const inner = makeNode('inner', 0.5, [makeLeaf('b', 2), makeLeaf('c', 5)]);
       const root = makeNode('root', 0, [makeLeaf('a', 3), inner]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(2);
+      expect(treeService.getMinGeneticScaleUnit(root).toNumber()).toBe(2);
     });
 
     it('skips zero-branch leaves and returns the minimum positive one', () => {
       // leaf a=0 (skipped), leaf b=4, leaf c=2 -> min = 2
       const root = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 4), makeLeaf('c', 2)]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(2);
+      expect(treeService.getMinGeneticScaleUnit(root).toNumber()).toBe(2);
     });
 
     it('returns Infinity when all leaves have zero branchLength', () => {
       const root = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 0)]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(Infinity);
+      expect(treeService.getMinGeneticScaleUnit(root).toNumber()).toBe(Infinity);
     });
 
     it('ignores negative leaf branch lengths when finding the minimum positive scale unit', () => {
       const root = makeNode('root', 0, [makeLeaf('a', -1), makeLeaf('b', 2), makeLeaf('c', 3)]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(2);
+      expect(treeService.getMinGeneticScaleUnit(root).toNumber()).toBe(2);
     });
 
     it('keeps the scale unit positive for a tree with tiny negative leaf branch lengths', () => {
       const tree = NewickUtil.parse('(((EPI_ISL_402126,EPI_ISL_402127),(EPI_ISL_402119,EPI_ISL_402120)):0.002092509375,((((((EPI_ISL_402123,EPI_ISL_402124),EPI_ISL_402125):0.0020971899999999988,((EPI_ISL_402130,EPI_ISL_402131):0.0012432290000000002,EPI_ISL_402132:0.002955551):0.0021345700000000006):0.0020992670833333343,(EPI_ISL_402128,EPI_ISL_402129):0.004207167916666666):0.00000802875000000063,EPI_ISL_402121:-0.000008030000000000406):0.0000050187500000003354,EPI_ISL_402122:-0.0000050187500000003354):0.002092509375);');
-      const minGeneticScaleUnit = TreeUtil.getMinGeneticScaleUnit(tree);
+      const minGeneticScaleUnit = treeService.getMinGeneticScaleUnit(tree);
 
       expect(minGeneticScaleUnit.toNumber()).toBe(0.002955551);
-      expect(TreeUtil.getTickerMarkScale({
+      expect(treeService.getTickerMarkScale({
         geneticTreeWidth: tree.maxBranchLength,
         maxScaleWidthPx: 144,
         minGeneticScaleUnit,
@@ -816,17 +819,17 @@ describe('TreeUtil', () => {
       const deep = makeLeaf('deep', 0.1);
       const inner = makeNode('inner', 2, [deep, makeLeaf('sibling', 3)]);
       const root = makeNode('root', 0, [makeLeaf('a', 5), inner]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(0.1);
+      expect(treeService.getMinGeneticScaleUnit(root).toNumber()).toBe(0.1);
     });
 
     it('handles a tree where the root is itself a leaf (no children)', () => {
       const leaf = makeLeaf('solo', 7);
-      expect(TreeUtil.getMinGeneticScaleUnit(leaf).toNumber()).toBe(7);
+      expect(treeService.getMinGeneticScaleUnit(leaf).toNumber()).toBe(7);
     });
 
     it('returns the sole positive leaf value when only one leaf has a positive branchLength', () => {
       const root = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 0), makeLeaf('c', 6)]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(6);
+      expect(treeService.getMinGeneticScaleUnit(root).toNumber()).toBe(6);
     });
   });
 
@@ -1140,7 +1143,7 @@ describe('TreeUtil', () => {
     // Uses global devicePixelRatio which is 1 in jsdom env
 
     it('returns 0 when both scrollPosition and eventOffset are 0', () => {
-      expect(TreeUtil.getNewScrollPositionForZoomLevel({
+      expect(treeService.getNewScrollPositionForZoomLevel({
         currentZoomLevel: 1,
         dimensionSize: 1000,
         eventOffset: 0,
@@ -1151,7 +1154,7 @@ describe('TreeUtil', () => {
 
     it('returns a negative adjustment when zooming in with cursor to the right of origin', () => {
       // devicePixelRatio=1; fullSizePos=(100+0)*1=100; curr=100/1=100; new=100/2=50; result=0-(100-50)=-50
-      expect(TreeUtil.getNewScrollPositionForZoomLevel({
+      expect(treeService.getNewScrollPositionForZoomLevel({
         currentZoomLevel: 1,
         dimensionSize: 1000,
         eventOffset: 100,
@@ -1162,7 +1165,7 @@ describe('TreeUtil', () => {
 
     it('returns 0 when scrollPosition offsets the eventOffset exactly after zoom', () => {
       // fullSizePos=(100+100)*1=200; curr=200/1=200; new=200/2=100; result=100-(200-100)=0
-      expect(TreeUtil.getNewScrollPositionForZoomLevel({
+      expect(treeService.getNewScrollPositionForZoomLevel({
         currentZoomLevel: 1,
         dimensionSize: 1000,
         eventOffset: 100,
@@ -1173,7 +1176,7 @@ describe('TreeUtil', () => {
 
     it('halves the scroll when zooming from 1 to 2 with cursor at the left edge', () => {
       // fullSizePos=(0+200)*1=200; curr=200; new=100; result=200-(200-100)=100
-      expect(TreeUtil.getNewScrollPositionForZoomLevel({
+      expect(treeService.getNewScrollPositionForZoomLevel({
         currentZoomLevel: 1,
         dimensionSize: 1000,
         eventOffset: 0,
@@ -1184,7 +1187,7 @@ describe('TreeUtil', () => {
 
     it('increases scroll when zooming out from 2 to 1', () => {
       // fullSizePos=(0+200)*2=400; curr=400/2=200; new=400/1=400; result=200-(200-400)=400
-      expect(TreeUtil.getNewScrollPositionForZoomLevel({
+      expect(treeService.getNewScrollPositionForZoomLevel({
         currentZoomLevel: 2,
         dimensionSize: 1000,
         eventOffset: 0,
@@ -1199,7 +1202,7 @@ describe('TreeUtil', () => {
     const HEADER_HEIGHT = 40;
 
     it('clamps positionY to 0 when linked at zoom=1 and treeHeight < treeCanvasHeight', () => {
-      const result = TreeUtil.getSanitizedScrollPosition({
+      const result = treeService.getSanitizedScrollPosition({
         devicePixelRatio: 1,
         headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
@@ -1216,7 +1219,7 @@ describe('TreeUtil', () => {
 
     it('clamps positionY to [0, treeHeight - treeCanvasHeight] when linked at zoom=1', () => {
       // treeHeight=600, treeCanvasHeight=300, devicePixelRatio=1 -> max=300
-      const clamped = TreeUtil.getSanitizedScrollPosition({
+      const clamped = treeService.getSanitizedScrollPosition({
         devicePixelRatio: 1,
         headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
@@ -1230,7 +1233,7 @@ describe('TreeUtil', () => {
       });
       expect(clamped.newPositionY).toBe(300);
 
-      const atMin = TreeUtil.getSanitizedScrollPosition({
+      const atMin = treeService.getSanitizedScrollPosition({
         devicePixelRatio: 1,
         headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
@@ -1246,7 +1249,7 @@ describe('TreeUtil', () => {
     });
 
     it('passes positionY through unchanged when within linked bounds', () => {
-      const result = TreeUtil.getSanitizedScrollPosition({
+      const result = treeService.getSanitizedScrollPosition({
         devicePixelRatio: 1,
         headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
@@ -1263,7 +1266,7 @@ describe('TreeUtil', () => {
 
     it('applies wider Y bounds when not linked (allows negative Y)', () => {
       // positionYMin = -300 + 10 + 40 = -250; positionYMax = 600 - 10 - 40 = 550
-      const clampedMax = TreeUtil.getSanitizedScrollPosition({
+      const clampedMax = treeService.getSanitizedScrollPosition({
         devicePixelRatio: 1,
         headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
@@ -1277,7 +1280,7 @@ describe('TreeUtil', () => {
       });
       expect(clampedMax.newPositionY).toBe(550);
 
-      const clampedMin = TreeUtil.getSanitizedScrollPosition({
+      const clampedMin = treeService.getSanitizedScrollPosition({
         devicePixelRatio: 1,
         headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
@@ -1294,7 +1297,7 @@ describe('TreeUtil', () => {
 
     it('clamps positionX to [positionXMin, positionXMax]', () => {
       // positionXMin = -400 + 2*10 = -380; positionXMax = 400 - 2*10 = 380
-      const maxClamped = TreeUtil.getSanitizedScrollPosition({
+      const maxClamped = treeService.getSanitizedScrollPosition({
         devicePixelRatio: 1,
         headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
@@ -1308,7 +1311,7 @@ describe('TreeUtil', () => {
       });
       expect(maxClamped.newPositionX).toBe(380);
 
-      const minClamped = TreeUtil.getSanitizedScrollPosition({
+      const minClamped = treeService.getSanitizedScrollPosition({
         devicePixelRatio: 1,
         headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
@@ -1324,7 +1327,7 @@ describe('TreeUtil', () => {
     });
 
     it('passes positionX through unchanged when within bounds', () => {
-      const result = TreeUtil.getSanitizedScrollPosition({
+      const result = treeService.getSanitizedScrollPosition({
         devicePixelRatio: 1,
         headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
@@ -1342,7 +1345,7 @@ describe('TreeUtil', () => {
     it('uses divePixelRatioOffset=0 via the ?? fallback when devicePixelRatio exceeds all thresholds', () => {
       // With dpr=4 > 3 (max threshold), thresholds.find returns undefined -> ?? 0 fires
       // positionYMax = (600*4) - (300*4) - 0 = 1200; positionY=999 < 1200 -> no clamping
-      const result = TreeUtil.getSanitizedScrollPosition({
+      const result = treeService.getSanitizedScrollPosition({
         devicePixelRatio: 4,
         headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
@@ -1383,7 +1386,7 @@ describe('TreeUtil', () => {
         width: 600,
       } as unknown as HTMLCanvasElement;
 
-      TreeUtil.drawDivider({ canvas, devicePixelRatio: 1, y: 20 });
+      treeService.drawDivider({ canvas, devicePixelRatio: 1, y: 20 });
 
       expect(ctx.moveTo).toHaveBeenCalledWith(0, 20);
       expect(ctx.lineTo).toHaveBeenCalledWith(600, 20);
@@ -1398,7 +1401,7 @@ describe('TreeUtil', () => {
         width: 600,
       } as unknown as HTMLCanvasElement;
 
-      TreeUtil.drawDivider({ canvas, devicePixelRatio: 1, y: 5 });
+      treeService.drawDivider({ canvas, devicePixelRatio: 1, y: 5 });
 
       expect(ctx.stroke).toHaveBeenCalledTimes(1);
       expect(ctx.beginPath).toHaveBeenCalledTimes(1);
@@ -1411,7 +1414,7 @@ describe('TreeUtil', () => {
         width: 600,
       } as unknown as HTMLCanvasElement;
 
-      expect(() => TreeUtil.drawDivider({ canvas, devicePixelRatio: 1, y: 20 })).toThrowError('Failed to acquire 2D canvas context.');
+      expect(() => treeService.drawDivider({ canvas, devicePixelRatio: 1, y: 20 })).toThrowError('Failed to acquire 2D canvas context.');
     });
   });
 
@@ -1439,7 +1442,7 @@ describe('TreeUtil', () => {
         width: 800,
       } as unknown as HTMLCanvasElement;
 
-      TreeUtil.drawGuides({
+      treeService.drawGuides({
         canvas,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(0),
@@ -1464,7 +1467,7 @@ describe('TreeUtil', () => {
       } as unknown as HTMLCanvasElement;
 
       // tickerMarkScale={numberOfLines:3,...} -> 3 iterations -> 3 beginPath/moveTo/lineTo/stroke/closePath calls
-      TreeUtil.drawGuides({
+      treeService.drawGuides({
         canvas,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(10),
@@ -1492,7 +1495,7 @@ describe('TreeUtil', () => {
       // tickerMarkScale={numberOfLines:3,geneticDistanceOfSingleLine:5,minGeneticScaleUnit:1}, genetic=10, ratio=100, zoom=1, scroll=0
       // offset = totalTicker - geneticPx = (500*2) - 1000 = 0
       // i=0: x = 0*500 + (10/1) - 0 - 0 = 10
-      TreeUtil.drawGuides({
+      treeService.drawGuides({
         canvas,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(10),
@@ -1516,7 +1519,7 @@ describe('TreeUtil', () => {
         width: 800,
       } as unknown as HTMLCanvasElement;
 
-      TreeUtil.drawGuides({
+      treeService.drawGuides({
         canvas,
         devicePixelRatio: 1,
         endY: 140,
@@ -1559,7 +1562,7 @@ describe('TreeUtil', () => {
       } as unknown as HTMLCanvasElement;
 
       // tickerMarkScale={numberOfLines:3,geneticDistanceOfSingleLine:5,minGeneticScaleUnit:1} -> 3 fillText calls
-      TreeUtil.drawScale({
+      treeService.drawScale({
         canvas,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(10),
@@ -1588,7 +1591,7 @@ describe('TreeUtil', () => {
       // tickerMarkScale={numberOfLines:3,geneticDistanceOfSingleLine:5,minGeneticScaleUnit:1}, labels: i=0->10, i=1->5, i=2->0
       // x positions: i=0->10, i=1->510, i=2->1010
       // y = HEADER_HEIGHT * 0.61 = 40 * 0.61 = 24.4
-      TreeUtil.drawScale({
+      treeService.drawScale({
         canvas,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(10),
@@ -1615,7 +1618,7 @@ describe('TreeUtil', () => {
         width: 800,
       } as unknown as HTMLCanvasElement;
 
-      TreeUtil.drawScale({
+      treeService.drawScale({
         canvas,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(5),
@@ -1684,7 +1687,7 @@ describe('TreeUtil', () => {
         width: 0,
       } as unknown as HTMLCanvasElement;
 
-      TreeUtil.drawTreeCanvas({
+      treeService.drawTreeCanvas({
         backgroundColor: '#ffffff',
         canvas,
         devicePixelRatio: 1,
@@ -1728,7 +1731,7 @@ describe('TreeUtil', () => {
         width: 0,
       } as unknown as HTMLCanvasElement;
 
-      TreeUtil.drawTreeCanvas({
+      treeService.drawTreeCanvas({
         backgroundColor: '#ffffff',
         canvas,
         devicePixelRatio: 2,
@@ -1773,7 +1776,7 @@ describe('TreeUtil', () => {
         width: 0,
       } as unknown as HTMLCanvasElement;
 
-      TreeUtil.drawTreeCanvas({
+      treeService.drawTreeCanvas({
         backgroundColor: '#ffffff',
         canvas,
         devicePixelRatio: 1,
@@ -1817,7 +1820,7 @@ describe('TreeUtil', () => {
         width: 0,
       } as unknown as HTMLCanvasElement;
 
-      TreeUtil.drawTreeCanvas({
+      treeService.drawTreeCanvas({
         backgroundColor: '#ffffff',
         canvas,
         devicePixelRatio: 1,
@@ -1893,7 +1896,7 @@ describe('TreeUtil', () => {
         getContext: vi.fn().mockReturnValue(ctx),
       } as unknown as HTMLCanvasElement;
 
-      const result = TreeUtil.getPathPropertiesFromCanvas({
+      const result = treeService.getPathPropertiesFromCanvas({
         canvas,
         devicePixelRatio: 1,
         event: makeMouseEvent(150, 200),
@@ -1924,7 +1927,7 @@ describe('TreeUtil', () => {
         getContext: vi.fn().mockReturnValue(ctx),
       } as unknown as HTMLCanvasElement;
 
-      const result = TreeUtil.getPathPropertiesFromCanvas({
+      const result = treeService.getPathPropertiesFromCanvas({
         canvas,
         devicePixelRatio: 1,
         event: makeMouseEvent(150, 200),
@@ -1956,7 +1959,7 @@ describe('TreeUtil', () => {
         getContext: vi.fn().mockReturnValue(ctx),
       } as unknown as HTMLCanvasElement;
 
-      const result = TreeUtil.getPathPropertiesFromCanvas({
+      const result = treeService.getPathPropertiesFromCanvas({
         canvas,
         devicePixelRatio: 1,
         event: makeMouseEvent(150, 200),
@@ -1985,7 +1988,7 @@ describe('TreeUtil', () => {
         getContext: vi.fn().mockReturnValue(ctx),
       } as unknown as HTMLCanvasElement;
 
-      const result = TreeUtil.getPathPropertiesFromCanvas({
+      const result = treeService.getPathPropertiesFromCanvas({
         canvas,
         devicePixelRatio: 1,
         event: makeMouseEvent(150, 200),
@@ -2015,7 +2018,7 @@ describe('TreeUtil', () => {
         getContext: vi.fn().mockReturnValue(ctx),
       } as unknown as HTMLCanvasElement;
 
-      const result = TreeUtil.getPathPropertiesFromCanvas({
+      const result = treeService.getPathPropertiesFromCanvas({
         canvas,
         devicePixelRatio: 1,
         event: makeMouseEvent(150, 200),
@@ -2046,7 +2049,7 @@ describe('TreeUtil', () => {
         getContext: vi.fn().mockReturnValue(ctx),
       } as unknown as HTMLCanvasElement;
 
-      const result = TreeUtil.getPathPropertiesFromCanvas({
+      const result = treeService.getPathPropertiesFromCanvas({
         canvas,
         devicePixelRatio: 1,
         event: makeMouseEvent(150, 200),
@@ -2135,7 +2138,7 @@ describe('TreeUtil', () => {
 
     it('calls setTransform with correct scale and offset parameters', () => {
       const { ctx } = makeTrackedCtx();
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 2,
         dimFn: makeDimFn(),
@@ -2160,7 +2163,7 @@ describe('TreeUtil', () => {
 
     it('offsets the vertical transform by the header height when provided', () => {
       const { ctx } = makeTrackedCtx();
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 2,
         dimFn: makeDimFn(),
@@ -2193,7 +2196,7 @@ describe('TreeUtil', () => {
         width: 400,
       } as unknown as HTMLCanvasElement;
 
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas,
         devicePixelRatio: 2,
         dimFn: makeDimFn(),
@@ -2223,7 +2226,7 @@ describe('TreeUtil', () => {
 
     it('sets initial canvas context properties after drawing', () => {
       const { ctx } = makeTrackedCtx();
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2257,7 +2260,7 @@ describe('TreeUtil', () => {
         { nodeNames: ['root', 'a'], shape: shape1 },
         { nodeNames: ['root', 'b'], shape: shape2 },
       ];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2288,7 +2291,7 @@ describe('TreeUtil', () => {
       assembly.horizontalAncestorTreeLines = [
         { nodeNames: ['root', 'a', 'b'], shape: shape1 },
       ];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2320,7 +2323,7 @@ describe('TreeUtil', () => {
         { nodeName: 'a', shape: shapeA },
         { nodeName: 'b', shape: shapeB },
       ];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2351,7 +2354,7 @@ describe('TreeUtil', () => {
       assembly.ancestorNodes = [
         { nodeNames: ['root', 'a', 'b'], shape: shape1 },
       ];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2379,7 +2382,7 @@ describe('TreeUtil', () => {
       const shapeA = p2d();
       const assembly = makeAssembly();
       assembly.leafNodes = [{ nodeName: 'a', shape: shapeA }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2406,7 +2409,7 @@ describe('TreeUtil', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
       assembly.supportLines = [{ fromX: 100, fromY: 15, nodeName: 'a', toX: 800, toY: 15 }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2434,7 +2437,7 @@ describe('TreeUtil', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
       assembly.supportLines = [{ fromX: 100, fromY: 15, nodeName: 'a', toX: 800, toY: 15 }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2463,7 +2466,7 @@ describe('TreeUtil', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
       assembly.supportLines = [{ fromX: 100, fromY: 15, nodeName: 'a', toX: 800, toY: 15 }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2491,7 +2494,7 @@ describe('TreeUtil', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
       assembly.supportLines = [{ fromX: 100, fromY: 15, nodeName: 'a', toX: 800, toY: 15 }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2523,7 +2526,7 @@ describe('TreeUtil', () => {
         { fromX: 100, fromY: 15, nodeName: 'a', toX: 800, toY: 15 },
         { fromX: 200, fromY: 45, nodeName: 'b', toX: 800, toY: 45 },
       ];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2555,7 +2558,7 @@ describe('TreeUtil', () => {
       const assembly = makeAssembly();
       // toX=800, horizontalScrollPosition=40, devicePixelRatio=2 -> lineTo(820, 15)
       assembly.supportLines = [{ fromX: 100, fromY: 15, nodeName: 'a', toX: 800, toY: 15 }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 2,
         dimFn: makeDimFn(),
@@ -2583,7 +2586,7 @@ describe('TreeUtil', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
       assembly.supportLines = [{ fromX: 100, fromY: 15, nodeName: 'a', toX: 800, toY: 45 }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 2,
         dimFn: makeDimFn(),
@@ -2614,7 +2617,7 @@ describe('TreeUtil', () => {
       // fromY=1500 is far below the canvas body (height 300), so not visible
       // toY=1500 -> externalSortingIndex=50 (itemHeight=30), outside range [0,9]
       assembly.supportLines = [{ fromX: 100, fromY: 1500, nodeName: 'a', toX: 800, toY: 1500 }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2643,7 +2646,7 @@ describe('TreeUtil', () => {
       const assembly = makeAssembly();
       // fromY=15 is visible (canvas height 300), toY=1500 -> externalSortingIndex=50 outside range [0,9]
       assembly.supportLines = [{ fromX: 100, fromY: 15, nodeName: 'a', toX: 800, toY: 1500 }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2671,7 +2674,7 @@ describe('TreeUtil', () => {
       const assembly = makeAssembly();
       // fromY=1500 is outside viewport (canvas height 300), toY=45 -> externalSortingIndex=1 (itemHeight=30), inside range [0,9]
       assembly.supportLines = [{ fromX: 100, fromY: 1500, nodeName: 'a', toX: 800, toY: 45 }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2699,7 +2702,7 @@ describe('TreeUtil', () => {
       const assembly = makeAssembly();
       assembly.supportLines = [{ fromX: 100, fromY: 1500, nodeName: 'a', toX: 800, toY: 0 }];
 
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2727,7 +2730,7 @@ describe('TreeUtil', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
       assembly.distanceTexts = [{ nodeNames: ['a'], text: '0.5', x: 100, y: 20 }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2757,7 +2760,7 @@ describe('TreeUtil', () => {
         { nodeNames: ['a'], text: 'label-a', x: 100, y: 20 },
         { nodeNames: ['b'], text: 'label-b', x: 200, y: 50 }, // not highlighted
       ];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2785,7 +2788,7 @@ describe('TreeUtil', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
       assembly.nodeLabels = [{ nodeName: 'a', x: 100, y: 20 }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2813,7 +2816,7 @@ describe('TreeUtil', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
       assembly.nodeLabels = [{ nodeName: 'a', x: 100, y: 20 }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2853,7 +2856,7 @@ describe('TreeUtil', () => {
         treeCanvasWidth: 400,
       });
 
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2883,7 +2886,7 @@ describe('TreeUtil', () => {
       const assembly = makeAssembly();
       assembly.nodeLabels = [{ nodeName: 'a', x: 100, y: 20 }];
       const getLeafLabel = vi.fn((nodeName: string) => `custom-${nodeName}`);
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -2915,7 +2918,7 @@ describe('TreeUtil', () => {
       assembly.leafTreeLines = [{ nodeName: 'a', shape: p2d() }];
       assembly.leafNodes = [{ nodeName: 'a', shape: p2d() }];
       const dimFn = makeDimFn();
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn,
@@ -2952,7 +2955,7 @@ describe('TreeUtil', () => {
         { nodeName: 'b', shape: p2d() },
       ];
       const dimFn = makeDimFn();
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn,
@@ -2984,7 +2987,7 @@ describe('TreeUtil', () => {
       const assembly = makeAssembly();
       assembly.leafNodes = [{ nodeName: 'case-1', shape: leafShape }];
       const nodeNameColors: { [key: string]: string } = { 'case-1': '#ff0000' };
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -3014,7 +3017,7 @@ describe('TreeUtil', () => {
       const leafShape = p2d();
       const assembly = makeAssembly();
       assembly.leafNodes = [{ nodeName: 'case-1', shape: leafShape }];
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn: makeDimFn(),
@@ -3048,7 +3051,7 @@ describe('TreeUtil', () => {
         { nodeNames: ['b', 'c'], shape: p2d() },
       ];
       const dimFn = makeDimFn();
-      TreeUtil.drawTree({
+      treeService.drawTree({
         canvas: makeCanvas(ctx),
         devicePixelRatio: 1,
         dimFn,

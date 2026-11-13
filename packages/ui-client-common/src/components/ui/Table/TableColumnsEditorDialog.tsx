@@ -1,6 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
-import type { ReactElement } from 'react';
+import type {
+  ReactElement,
+  ReactNode,
+} from 'react';
 import {
   useCallback,
   useEffect,
@@ -9,7 +12,6 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import type { UniqueIdentifier } from '@dnd-kit/core';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import type {
@@ -22,26 +24,31 @@ import type {
   TableColumn,
   TableColumnVisualSettings,
 } from '../../../models/table.models';
+import type { SortableListBaseItem } from '../SortableList/SortableList';
 import { SortableList } from '../SortableList/SortableList';
 import { useTableStoreContext } from '../../../stores/tableStore';
 import { TableUtil } from '../../../utils/TableUtil';
 
+
+export interface TableColumnsEditorDialogItem<TRowData, TDataContext> extends SortableListBaseItem {
+  column: TableColumn<TRowData, TDataContext>;
+}
 
 export interface TableColumnsEditorDialogOpenProps<TRowData, TDataContext> {
   readonly hasCellData: HasCellDataFn<TRowData, TDataContext>;
 }
 
 export interface TableColumnsEditorDialogProps<TRowData, TDataContext> extends WithDialogRenderProps<TableColumnsEditorDialogOpenProps<TRowData, TDataContext>> {
-  //
+  renderHeaderContent?: () => ReactNode;
+  renderItemContent?: (item: TableColumnsEditorDialogItem<TRowData, TDataContext>) => ReactNode;
 }
 
 export type TableColumnsEditorDialogRefMethods<TRowData, TDataContext> = WithDialogRefMethods<TableColumnsEditorDialogProps<TRowData, TDataContext>, TableColumnsEditorDialogOpenProps<TRowData, TDataContext>>;
 
-
-type Item = {
-  id: UniqueIdentifier;
-  isSelected: boolean;
-  label: string;
+type TableColumnsEditorDialogComponent = {
+  new <TRowData, TDataContext>(
+    props: TableColumnsEditorDialogProps<TRowData, TDataContext>,
+  ): TableColumnsEditorDialogRefMethods<TRowData, TDataContext>;
 };
 
 export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps<unknown, unknown>, TableColumnsEditorDialogOpenProps<unknown, unknown>>((
@@ -50,10 +57,12 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
     onClose,
     onTitleChange,
     openProps: { hasCellData },
+    renderHeaderContent,
+    renderItemContent,
   }: TableColumnsEditorDialogProps<unknown, unknown>,
 ): ReactElement => {
   const { t } = useTranslation();
-  const [items, setItems] = useState<Item[]>([]);
+  const [items, setItems] = useState<TableColumnsEditorDialogItem<unknown, unknown>[]>([]);
 
   const tableStore = useTableStoreContext<unknown, unknown>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
@@ -71,13 +80,15 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
   }, [tableColumns]);
 
   const updateItems = useCallback((columnVisualSettings: TableColumnVisualSettings[]) => {
-    const newItems: Item[] = [];
+    const newItems: TableColumnsEditorDialogItem<unknown, unknown>[] = [];
     columnVisualSettings.forEach(columnSetting => {
       const column = columnsMap.get(columnSetting.id);
       if (column && !column.frozen) {
         newItems.push({
+          column,
           id: column.id,
           isSelected: columnSetting.isVisible,
+          itemContent: column.headerName,
           label: column.headerName,
         });
       }
@@ -109,7 +120,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
     onClose();
   }, [tableColumns, emitTableEvent, items, onClose]);
 
-  const filterColumnsWithPredicate = useCallback((predicate: (item: Item) => boolean) => {
+  const filterColumnsWithPredicate = useCallback((predicate: (item: TableColumnsEditorDialogItem<unknown, unknown>) => boolean) => {
     const newVisibleColumnIds = TableUtil.getColumnIdsWithData({
       dataContext,
       hasCellData,
@@ -159,7 +170,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-enable-all'),
           autoFocus: true,
           color: 'secondary',
-          label: t`Enable all`,
+          label: t`Show all`,
           onClick: onEnableAllButtonClick,
           variant: 'outlined',
         },
@@ -167,7 +178,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-enable-all-with-data'),
           autoFocus: true,
           color: 'secondary',
-          label: t`Enable all with data`,
+          label: t`Show all with data`,
           onClick: onEnableOnlyColumnsWithDataClick,
           variant: 'outlined',
         },
@@ -175,7 +186,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-disable-all'),
           autoFocus: true,
           color: 'secondary',
-          label: t`Disable all`,
+          label: t`Hide all`,
           onClick: onDisableAllButtonClick,
           variant: 'outlined',
         },
@@ -183,7 +194,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-disable-all-without-data'),
           autoFocus: true,
           color: 'secondary',
-          label: t`Disable all without data`,
+          label: t`Hide all without data`,
           onClick: onDisableColumnsWithoutDataClick,
           variant: 'outlined',
         },
@@ -215,21 +226,26 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
     );
   }, [onActionsChange, onClose, onDisableAllButtonClick, onEnableOnlyColumnsWithDataClick, onResetButtonClick, onSaveButtonClick, onEnableAllButtonClick, t, onDisableColumnsWithoutDataClick]);
 
-  const onSortableListChange = useCallback((newItems: Item[]) => {
+  const onSortableListChange = useCallback((newItems: TableColumnsEditorDialogItem<unknown, unknown>[]) => {
     setItems(newItems);
   }, []);
 
-  const renderItemContent = useCallback((item: Item) => item.label, []);
+  const defaultRenderItemContent = useCallback((item: TableColumnsEditorDialogItem<unknown, unknown>) => (
+    <Box role={'cell'}>
+      {item.label}
+    </Box>
+  ), []);
 
   return (
     <Box
       sx={{
       }}
     >
-      <SortableList<Item>
+      <SortableList<TableColumnsEditorDialogItem<unknown, unknown>>
         items={items}
         onChange={onSortableListChange}
-        renderItemContent={renderItemContent}
+        renderHeaderContent={renderHeaderContent}
+        renderItemContent={renderItemContent ?? defaultRenderItemContent}
       />
     </Box>
   );
@@ -237,7 +253,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
   defaultTitle: '',
   disableBackdropClick: false,
   fullWidth: true,
-  maxWidth: 'md',
+  maxWidth: 'lg',
   noCloseButton: false,
   testId: 'TableColumnOrderDialog',
-});
+}) as unknown as TableColumnsEditorDialogComponent;

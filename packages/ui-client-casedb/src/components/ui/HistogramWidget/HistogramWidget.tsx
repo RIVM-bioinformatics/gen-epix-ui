@@ -34,13 +34,13 @@ import type {
   CaseDbColType,
 } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
+import { NestedDropdown } from '@gen-epix/ui-core-components/components/NestedMenu';
 import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { useStore } from 'zustand';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useTranslation } from 'react-i18next';
 import round from 'lodash/round';
-import intersection from 'lodash/intersection';
 
 import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import type { ContextMenuConfigWithPosition } from '../ContextMenu';
@@ -57,7 +57,6 @@ import {
   HistogramUtil,
 } from '../../../utils/HistogramUtil';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
-import { CaseUtil } from '../../../utils/CaseUtil';
 
 registerECharts([TooltipComponent, BarChart, LegendComponent, CanvasRenderer]);
 
@@ -151,6 +150,24 @@ export const HistogramWidget = () => {
     return HistogramUtil.getSeries(aCol, bCol, completeCaseType, sortedData, conceptsA, conceptsB);
   }, [aCol, bCol, completeCaseType, sortedData, conceptsA, conceptsB]);
 
+  const caseIdTargets = useMemo(() => {
+    const targetsByCaseId = new Map<string, Array<{ dataIndex: number; seriesIndex: number }>>();
+    series?.forEach((serie, seriesIndex) => {
+      serie.xCaseIds.forEach((caseIds, dataIndex) => {
+        caseIds.forEach((caseId) => {
+          const targets = targetsByCaseId.get(caseId);
+          const target = { dataIndex, seriesIndex };
+          if (targets) {
+            targets.push(target);
+          } else {
+            targetsByCaseId.set(caseId, [target]);
+          }
+        });
+      });
+    });
+    return targetsByCaseId;
+  }, [series]);
+
   const histogramCaseCount = useMemo(() => {
     return HistogramUtil.getCaseCount(series);
   }, [series]);
@@ -195,49 +212,68 @@ export const HistogramWidget = () => {
     });
   }, [shouldShowGraph, colors, theme, conceptsB, series, conceptsA, aCol, bCol, t]);
 
-  const titleMenu = useMemo<MenuItemData | string>(() => {
-    let label: string;
-    if (aCol && bCol) {
-      label = t('Histogram: {{aColLabel}} and {{bColLabel}}', { aColLabel: aCol.label, bColLabel: bCol.label });
-    } else {
-      label = t`Histogram`;
-    }
-
+  const axisMenus = useMemo<null | ReactElement>(() => {
     if (!defaultCols?.newColA || !defaultCols?.newColB) {
-      return label;
+      return null;
     }
 
-    const mainMenu: MenuItemData = {
-      disabled: !canShowWidget || allowedCols.length < 2,
-      items: [],
-      label,
+    const selectedACol = aCol ?? defaultCols.newColA;
+    const selectedBCol = bCol ?? defaultCols.newColB;
+    const isMenuDisabled = !canShowWidget || allowedCols.length < 2;
+    const xAxisMenu: MenuItemData = {
+      disabled: isMenuDisabled,
+      items: allowedCols.filter(col => col.id !== selectedACol.id).map(col => ({
+        active: selectedBCol.id === col.id || undefined,
+        callback: () => {
+          onMenuItemClick(selectedACol, col);
+        },
+        label: col.label,
+      })),
+      label: t('X-Axis: {{label}}', { label: selectedBCol.label }),
+    };
+    const yAxisMenu: MenuItemData = {
+      disabled: isMenuDisabled,
+      items: allowedCols.filter(col => col.id !== selectedBCol.id).map(col => ({
+        active: selectedACol.id === col.id || undefined,
+        callback: () => {
+          onMenuItemClick(col, selectedBCol);
+        },
+        label: col.label,
+      })),
+      label: t('Y-Axis: {{label}}', { label: selectedACol.label }),
     };
 
-
-    allowedCols.forEach(x => {
-      const subMenu: MenuItemData = {
-        active: aCol?.id === x.id || undefined,
-        items: [],
-        label: t('Grouping: {{label}}', { label: x.label }),
-      };
-      allowedCols.forEach(y => {
-        if (x.id === y.id) {
-          return;
-        }
-        subMenu.items.push({
-          active: (aCol?.id === x.id || undefined) && (bCol?.id === y.id || undefined),
-          callback: () => {
-            onMenuItemClick(x, y);
-          },
-          label: t('X-Axis: {{label}}', { label: y.label }),
-        });
-      });
-      mainMenu.items.push(subMenu);
-    });
-
-
-    return mainMenu;
-  }, [aCol, bCol, canShowWidget, allowedCols, defaultCols?.newColA, defaultCols?.newColB, t, onMenuItemClick]);
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 1,
+          maxWidth: '45vw',
+          width: 320,
+        }}
+      >
+        {[xAxisMenu, yAxisMenu].map(menu => (
+          <NestedDropdown
+            ButtonProps={{
+              color: 'primary',
+              disabled: menu.disabled,
+              size: 'small',
+              variant: 'text',
+            }}
+            ContainerProps={{
+              sx: {
+                flex: '1 1 160px',
+                minWidth: 0,
+              },
+            }}
+            key={menu.label}
+            menuItemsData={menu}
+            MenuProps={{ elevation: 3 }}
+          />
+        ))}
+      </Box>
+    );
+  }, [aCol, bCol, canShowWidget, allowedCols, defaultCols, t, onMenuItemClick]);
 
   const onChartReady = useCallback((chart: EChartsType) => {
     chartInstanceRef.current = chart;
@@ -293,16 +329,24 @@ export const HistogramWidget = () => {
   const onEvents = useMemo<EChartsReactProps['onEvents']>(() => {
 
     const getCaseIdsFromPayload = (payload: unknown): string[] => {
+      const eventData = payload as { dataIndex?: number; seriesIndex?: number } | null;
+      if (
+        typeof eventData?.seriesIndex === 'number' &&
+        Number.isInteger(eventData.seriesIndex) &&
+        typeof eventData.dataIndex === 'number' &&
+        Number.isInteger(eventData.dataIndex)
+      ) {
+        return series[eventData.seriesIndex]?.xCaseIds[eventData.dataIndex] ?? [];
+      }
+
       const colValues = HistogramUtil.getColValuesFromPayload(payload, conceptsA, conceptsB);
       if (!colValues) {
         return [];
       }
-      const caseIds = sortedData.filter(caseDbCase => {
-        const aValue = CaseUtil.getRowValue(caseDbCase.content, aCol, completeCaseType);
-        const bValue = CaseUtil.getRowValue(caseDbCase.content, bCol, completeCaseType);
-        return colValues.a === aValue.raw && colValues.b === bValue.raw;
-      }).map(caseDbCase => caseDbCase.id);
-      return caseIds;
+
+      const seriesIndex = conceptsA.findIndex(concept => concept.id === colValues.a);
+      const dataIndex = conceptsB.findIndex(concept => concept.id === colValues.b);
+      return series[seriesIndex]?.xCaseIds[dataIndex] ?? [];
     };
 
     return {
@@ -328,7 +372,7 @@ export const HistogramWidget = () => {
         });
       },
     };
-  }, [aCol, bCol, completeCaseType, conceptsA, conceptsB, highlight, sortedData]);
+  }, [conceptsA, conceptsB, highlight, series]);
 
   const onShowOnlyFocussedColValuesMenuItemClick = useCallback(async (onMenuClose: () => void) => {
     if (!focussedColValues || !aCol || !bCol) {
@@ -385,14 +429,11 @@ export const HistogramWidget = () => {
       }
 
       const highlightTargetsByDataIndex = new Map<number, Set<number>>();
-      series?.forEach((serie, serieIndex) => {
-        const castedSerie = serie as { data: unknown[]; xCaseIds: string[][] };
-        castedSerie.xCaseIds?.forEach((caseIds: string[], dataIndex: number) => {
-          if (intersection(caseIds, highlighting.caseIds).length) {
-            const seriesIndices = highlightTargetsByDataIndex.get(dataIndex) ?? new Set<number>();
-            seriesIndices.add(serieIndex);
-            highlightTargetsByDataIndex.set(dataIndex, seriesIndices);
-          }
+      highlighting.caseIds.forEach((caseId) => {
+        caseIdTargets.get(caseId)?.forEach(({ dataIndex, seriesIndex }) => {
+          const seriesIndices = highlightTargetsByDataIndex.get(dataIndex) ?? new Set<number>();
+          seriesIndices.add(seriesIndex);
+          highlightTargetsByDataIndex.set(dataIndex, seriesIndices);
         });
       });
 
@@ -432,12 +473,13 @@ export const HistogramWidget = () => {
     return () => {
       unsubscribe();
     };
-  }, [dashboardContext, series]);
+  }, [caseIdTargets, dashboardContext, series]);
 
   return (
     <DashboardWidget
       expandDisabled={!canShowWidget}
-      title={titleMenu}
+      primaryMenu={axisMenus ?? undefined}
+      title={t`Histogram`}
       warningMessage={canShowWidget && histogramCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
       widgetName={DASHBOARD_COMPONENT_NAME.HISTOGRAM}
     >

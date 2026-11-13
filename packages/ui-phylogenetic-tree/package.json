@@ -14,6 +14,10 @@
       "types": "./src/@types/ui-phylogenetic-tree.d.ts",
       "import": "./src/@types/ui-phylogenetic-tree.d.ts"
     },
+    "./classes/services/TreeService": {
+      "types": "./src/classes/services/TreeService/index.ts",
+      "import": "./src/classes/services/TreeService/index.ts"
+    },
     "./components/PhylogeneticTree": {
       "types": "./src/components/PhylogeneticTree/index.ts",
       "import": "./src/components/PhylogeneticTree/index.ts"
@@ -29,10 +33,6 @@
     "./utils/NewickUtil": {
       "types": "./src/utils/NewickUtil/index.ts",
       "import": "./src/utils/NewickUtil/index.ts"
-    },
-    "./utils/TreeUtil": {
-      "types": "./src/utils/TreeUtil/index.ts",
-      "import": "./src/utils/TreeUtil/index.ts"
     }
   },
   "files": [
@@ -44,7 +44,7 @@
     "check-types": "tsc --noemit",
     "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",
     "lint-fix": "eslint ./src --report-unused-disable-directives --max-warnings 0 --fix",
-    "test": "vitest --coverage",
+    "test": "pnpm exec playwright install && vitest --coverage",
     "test-run": "vitest run --passWithNoTests --coverage",
     "update-exports": "node scripts/update-exports.js",
     "validate": "pnpm run lint && pnpm run check-types && pnpm run test-run"
@@ -58,26 +58,26 @@
     "use-debounce": "10.1.1"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.8.0",
+    "@gen-epix/eslint-config": "0.10.0",
     "@gen-epix/ui-core": "workspace:^",
     "@mui/material": "9.5.0",
     "@types/lodash": "4.17.27",
-    "@types/node": "26.6.5",
+    "@types/node": "26.6.6",
     "@types/react": "19.3.0",
-    "@vitejs/plugin-react": "6.1.2",
-    "@vitest/browser-playwright": "5.0.5",
-    "@vitest/coverage-v8": "5.0.5",
-    "eslint": "10.13.0",
-    "jsdom": "30.1.3",
-    "playwright": "1.64.1",
+    "@vitejs/plugin-react": "6.3.0",
+    "@vitest/browser-playwright": "5.1.0",
+    "@vitest/coverage-v8": "5.1.0",
+    "eslint": "10.14.0",
+    "jsdom": "31.0.0",
+    "playwright": "1.65.0",
     "reflect-metadata": "0.2.2",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "typescript": "6.0.3",
-    "vite": "8.3.5",
+    "vite": "8.3.8",
     "vite-plugin-dts": "5.1.2",
     "vite-plugin-static-copy": "4.1.1",
-    "vitest": "5.0.5",
+    "vitest": "5.1.0",
     "vitest-browser-react": "2.3.0",
     "tsyringe": "4.10.0"
   },
@@ -94,6 +94,10 @@
         "types": "./dist/@types/ui-phylogenetic-tree.d.ts",
         "import": "./dist/@types/ui-phylogenetic-tree.d.ts"
       },
+      "./classes/services/TreeService": {
+        "types": "./dist/classes/services/TreeService/index.d.ts",
+        "import": "./dist/classes/services/TreeService/index.js"
+      },
       "./components/PhylogeneticTree": {
         "types": "./dist/components/PhylogeneticTree/index.d.ts",
         "import": "./dist/components/PhylogeneticTree/index.js"
@@ -109,10 +113,6 @@
       "./utils/NewickUtil": {
         "types": "./dist/utils/NewickUtil/index.d.ts",
         "import": "./dist/utils/NewickUtil/index.js"
-      },
-      "./utils/TreeUtil": {
-        "types": "./dist/utils/TreeUtil/index.d.ts",
-        "import": "./dist/utils/TreeUtil/index.js"
       }
     },
     "files": [

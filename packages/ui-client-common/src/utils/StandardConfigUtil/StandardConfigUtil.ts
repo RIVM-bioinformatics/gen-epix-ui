@@ -95,8 +95,8 @@ export class StandardConfigUtil {
       },
       table: {
         CONDENSED_WIDTH_PX: 150,
-        DEFAULT_OVERSCAN_MAIN: 10,
-        DEFAULT_OVERSCAN_REVERSE: 10,
+        DEFAULT_OVERSCAN_MAIN: 30,
+        DEFAULT_OVERSCAN_REVERSE: 30,
       },
       userFeedback: {
         SHOW_USER_FEEDBACK_TOOLTIP_AFTER_MS: 2 * 60 * 1000, // 2 minutes

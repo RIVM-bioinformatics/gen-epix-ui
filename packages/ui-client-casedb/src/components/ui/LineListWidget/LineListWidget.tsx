@@ -36,7 +36,10 @@ import type {
   TableRowAndColumnParams,
   TableRowParams,
 } from '@gen-epix/ui-client-common/models/table.models';
-import type { TableRef } from '@gen-epix/ui-client-common/components/ui/Table';
+import type {
+  TableColumnsEditorDialogItem,
+  TableRef,
+} from '@gen-epix/ui-client-common/components/ui/Table';
 import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { FeatureFlagsService } from '@gen-epix/ui-client-common/classes/services/FeatureFlagsService';
 import { Table } from '@gen-epix/ui-client-common/components/ui/Table';
@@ -58,7 +61,10 @@ import type {
 } from '../../../models/stratification.models';
 import { STRATIFICATION_MODE } from '../../../models/stratification.models';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
+import {
+  CaseTypeUtil,
+  TREE_FILTER_GROUP,
+} from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import type { CaseDbConfig } from '../../../models/config.models';
 import { CaseDbTableUtil } from '../../../utils/CaseDbTableUtil';
@@ -92,6 +98,7 @@ export const LineListWidget = () => {
   const { caseSet } = use(DashboardContext);
   const dashboardContext = use(DashboardContext);
   const containerRef = useRef<HTMLDivElement>(null);
+  const rowHighlightClearFrameRef = useRef<null | number>(null);
   const { t } = useTranslation();
   const config = useConfig<CaseDbConfig>();
   const rowHighlightingSubject = useMemo(() => new Subject<string[]>([]), []);
@@ -100,6 +107,8 @@ export const LineListWidget = () => {
   const dashboardStore = use(DashboardStoreContext);
   const completeCaseType = useStore(dashboardStore, (state) => state.completeCaseType);
   const sortedData = useStore(dashboardStore, (state) => state.sortedData);
+  const findSimilarCasesResults = useStore(dashboardStore, (state) => state.findSimilarCasesResults);
+  const filteredCases = useStore(dashboardStore, (state) => state.filteredData[TREE_FILTER_GROUP]);
   const isCondensed = useStore(dashboardStore, (state) => state.isCondensed);
   const stratification = useStore(dashboardStore, (state) => state.stratification?.mode === STRATIFICATION_MODE.FIELD ? state.stratification : null);
   const updateWidgetData = useStore(dashboardStore, (state) => state.updateWidgetData);
@@ -107,8 +116,13 @@ export const LineListWidget = () => {
   const setTableColumns = useStore(dashboardStore, (state) => state.setColumns);
   const isDataLoading = useStore(dashboardStore, (state) => state.isDataLoading);
 
+  const similarCaseIdSet = useMemo(() => new Set(findSimilarCasesResults.flatMap(result => result.similarCaseIds)), [findSimilarCasesResults]);
+
   useEffect(() => {
     return () => {
+      if (rowHighlightClearFrameRef.current !== null) {
+        cancelAnimationFrame(rowHighlightClearFrameRef.current);
+      }
       dashboardContext.lineListRangeSubject.next(undefined);
     };
   }, [dashboardContext]);
@@ -132,6 +146,9 @@ export const LineListWidget = () => {
   const onIndexCellClick = useCallback((row: CaseDbCase) => {
     openCaseInfoDialog(row.id, CASE_INFO_DIALOG_TAB_NAME.INFO);
   }, [openCaseInfoDialog]);
+
+  const stratificationCaseIdColors = stratification?.caseIdColors;
+  const stratificationColumnId = stratification?.col?.id;
 
   const getColumnWidth = useCallback((col: CaseDbCol, label: string) => {
     let maxTextLength = label?.length * 0.8;
@@ -163,12 +180,6 @@ export const LineListWidget = () => {
     if (rowValue.isMissing) {
       return rowValue.short;
     }
-    const legendaItem: StratificationLegendaItem = {
-      caseIds: [row.id],
-      color: stratification?.caseIdColors[row.id],
-      columnType: completeCaseType.ref_cols[completeCaseType.cols[id].ref_col_id].col_type,
-      rowValue,
-    };
 
     const link = (
       <Link
@@ -185,7 +196,13 @@ export const LineListWidget = () => {
         {rowValue.short}
       </Link>
     );
-    if (id === stratification?.col?.id) {
+    if (id === stratificationColumnId) {
+      const legendaItem: StratificationLegendaItem = {
+        caseIds: [row.id],
+        color: stratificationCaseIdColors?.[row.id],
+        columnType: completeCaseType.ref_cols[completeCaseType.cols[id].ref_col_id].col_type,
+        rowValue,
+      };
       return (
         <LegendaItem
           item={legendaItem}
@@ -195,7 +212,7 @@ export const LineListWidget = () => {
       );
     }
     return link;
-  }, [completeCaseType, onOrganizationCellClick, stratification?.caseIdColors, stratification?.col?.id]);
+  }, [completeCaseType, onOrganizationCellClick, stratificationCaseIdColors, stratificationColumnId]);
 
   const onGeneticSequenceCellClick = useCallback((id: string, row: CaseDbCase) => {
     container.resolve(EventBusService).emit('openSequenceDownloadDialog', {
@@ -273,8 +290,7 @@ export const LineListWidget = () => {
   }, []);
 
   const renderSimilarCell = useCallback(({ row }: TableRowParams<CaseDbCase, CaseDbCompleteCaseType>) => {
-    const similarCaseIds = dashboardStore.getState().findSimilarCasesResults.reduce<string[]>((acc, result) => [...acc, ...result.similarCaseIds], []);
-    if (similarCaseIds.includes(row.id)) {
+    if (similarCaseIdSet.has(row.id)) {
       return (
         <TroubleshootIcon
           fontSize={'small'}
@@ -289,7 +305,7 @@ export const LineListWidget = () => {
       );
     }
     return null;
-  }, [dashboardStore, theme]);
+  }, [similarCaseIdSet, theme]);
 
 
   const renderSimilarHeader = useCallback(() => {
@@ -316,26 +332,21 @@ export const LineListWidget = () => {
 
   const renderCell = useCallback(({ id, row }: TableRowParams<CaseDbCase, CaseDbCompleteCaseType>) => {
     const rowValue = CaseUtil.getRowValue(row.content, completeCaseType.cols[id], completeCaseType);
-    const legendaItem: StratificationLegendaItem = {
-      caseIds: [row.id],
-      color: stratification?.caseIdColors[row.id],
-      columnType: completeCaseType.ref_cols[completeCaseType.cols[id].ref_col_id].col_type,
-      rowValue,
-    };
-    if (id === stratification?.col?.id) {
+    if (id === stratificationColumnId) {
+      const legendaItem: StratificationLegendaItem = {
+        caseIds: [row.id],
+        color: stratificationCaseIdColors?.[row.id],
+        columnType: completeCaseType.ref_cols[completeCaseType.cols[id].ref_col_id].col_type,
+        rowValue,
+      };
       return (
         <LegendaItem
           item={legendaItem}
         />
       );
     }
-
-    return (
-      <>
-        {rowValue.short}
-      </>
-    );
-  }, [completeCaseType, stratification?.caseIdColors, stratification?.col?.id]);
+    return rowValue.short;
+  }, [completeCaseType, stratificationCaseIdColors, stratificationColumnId]);
 
   const frozenTableColumnsLeft = useMemo<TableColumn<CaseDbCase, CaseDbCompleteCaseType>[]>(() => {
     return [
@@ -460,13 +471,13 @@ export const LineListWidget = () => {
         col,
         completeCaseType,
         mode: STRATIFICATION_MODE.FIELD,
-        sortedData,
+        sortedData: filteredCases,
         useExtraGradients: true,
       });
     });
 
     return cache;
-  }, [completeCaseType, isCondensed, sortedData]);
+  }, [completeCaseType, filteredCases, isCondensed]);
 
   const cellColorGetter = useCallback((params: TableRowAndColumnParams<CaseDbCase, CaseDbCompleteCaseType>): string | undefined => {
     const columnStratification = columnStratificationCache[params.column.id];
@@ -545,6 +556,10 @@ export const LineListWidget = () => {
   }, [completeCaseType, config.epi, frozenTableColumnsLeft, frozenTableColumnsRight, cellColorGetter, cellTitleGetter, treeAddresses, getColumnWidth, renderOrganizationCell, renderGeneticSequenceCell, renderCell]);
 
   const onRowMouseEnter = useCallback((row: CaseDbCase) => {
+    if (rowHighlightClearFrameRef.current !== null) {
+      cancelAnimationFrame(rowHighlightClearFrameRef.current);
+      rowHighlightClearFrameRef.current = null;
+    }
     dashboardContext.highlight({
       caseIds: [row.id],
       origin: DASHBOARD_COMPONENT_NAME.LINE_LIST,
@@ -553,9 +568,15 @@ export const LineListWidget = () => {
 
 
   const onRowMouseLeave = useCallback(() => {
-    dashboardContext.highlight({
-      caseIds: [],
-      origin: DASHBOARD_COMPONENT_NAME.LINE_LIST,
+    if (rowHighlightClearFrameRef.current !== null) {
+      cancelAnimationFrame(rowHighlightClearFrameRef.current);
+    }
+    rowHighlightClearFrameRef.current = requestAnimationFrame(() => {
+      rowHighlightClearFrameRef.current = null;
+      dashboardContext.highlight({
+        caseIds: [],
+        origin: DASHBOARD_COMPONENT_NAME.LINE_LIST,
+      });
     });
   }, [dashboardContext]);
 
@@ -628,21 +649,124 @@ export const LineListWidget = () => {
   }, [dashboardContext]);
 
   useEffect(() => {
+    let animationFrameId: null | number = null;
+    let pendingScrollPosition: null | number = null;
+
     const unsubscribe = dashboardContext.linkedScrollSubject.subscribe((data) => {
       if (data.origin === containerRef.current) {
         return;
       }
-      tableRef.current.setVerticalScrollPosition(data.position);
+
+      pendingScrollPosition = data.position;
+      if (animationFrameId !== null) {
+        return;
+      }
+
+      animationFrameId = requestAnimationFrame(() => {
+        animationFrameId = null;
+        const scrollPosition = pendingScrollPosition;
+        pendingScrollPosition = null;
+        if (scrollPosition !== null) {
+          tableRef.current?.setVerticalScrollPosition(scrollPosition);
+        }
+      });
     });
 
     return () => {
       unsubscribe();
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
     };
   }, [dashboardContext]);
 
   const getRowName = useCallback((row: CaseDbCase): string => {
     return row.id;
   }, []);
+
+  const renderColumnsEditorHeaderContent = useCallback(() => {
+    return (
+      <Box
+        role={'presentation'}
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+        }}
+      >
+        <Box
+          component={'div'}
+          role={'columnheader'}
+          sx={{ fontWeight: 'bold' }}
+        >
+          {t`Column`}
+        </Box>
+        <Box
+          component={'div'}
+          role={'columnheader'}
+          sx={{ fontWeight: 'bold' }}
+        >
+          {t`Dimension`}
+        </Box>
+        <Box
+          component={'div'}
+          role={'columnheader'}
+          sx={{ fontWeight: 'bold' }}
+        >
+          {t`Column type`}
+        </Box>
+      </Box>
+    );
+  }, [t]);
+
+  const renderColumnsEditorItemContent = useCallback((item: TableColumnsEditorDialogItem<CaseDbCase, unknown>) => {
+    const columnContext = item.column.columnContext as CaseDbCol;
+    const columnDim = completeCaseType.dims[columnContext.dim_id];
+    const refCol = completeCaseType.ref_cols[columnContext.ref_col_id];
+    return (
+      <Box
+        role={'presentation'}
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+        }}
+      >
+        <Box
+          component={'span'}
+          role={'cell'}
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {item.label}
+        </Box>
+        <Box
+          component={'span'}
+          role={'cell'}
+          sx={{
+
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {columnDim.label}
+        </Box>
+        <Box
+          component={'span'}
+          role={'cell'}
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {refCol.col_type}
+        </Box>
+      </Box>
+    );
+  }, [completeCaseType]);
 
   return (
     <DashboardWidget
@@ -671,6 +795,8 @@ export const LineListWidget = () => {
           onVerticalScrollPositionChange={onVerticalScrollPositionChange}
           onVisibleItemIndexChange={onTableVisibleItemIndexChange}
           ref={tableRef}
+          renderColumnsEditorHeaderContent={renderColumnsEditorHeaderContent}
+          renderColumnsEditorItemContent={renderColumnsEditorItemContent}
           rowHeight={3}
           rowHighlightingSubject={rowHighlightingSubject}
         />

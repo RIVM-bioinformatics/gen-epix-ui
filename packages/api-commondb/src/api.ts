@@ -22,41 +22,41 @@ export type CommonDbAuthProtocol = typeof CommonDbAuthProtocol[keyof typeof Comm
 
 
 export const CommonDbCommandName = {
-  RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-  RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-  GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-  RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-  OutageCrudCommand: 'OutageCrudCommand',
-  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-  RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-  IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
   AnonymizeUserCommand: 'AnonymizeUserCommand',
+  ContactCrudCommand: 'ContactCrudCommand',
+  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+  DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+  DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+  DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
+  DeleteAllRefDataCommand: 'DeleteAllRefDataCommand',
+  GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+  IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
   InviteUserCommand: 'InviteUserCommand',
-  RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+  OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+  OrganizationCrudCommand: 'OrganizationCrudCommand',
+  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+  OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
   OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
   OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-  OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-  RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
   OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-  DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
-  RetrieveOwnUserCommand: 'RetrieveOwnUserCommand',
-  UserCrudCommand: 'UserCrudCommand',
-  OrganizationCrudCommand: 'OrganizationCrudCommand',
-  DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-  ContactCrudCommand: 'ContactCrudCommand',
+  OutageCrudCommand: 'OutageCrudCommand',
+  RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+  RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+  RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
   RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-  UpdateUserCommand: 'UpdateUserCommand',
-  RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-  OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-  UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-  DeleteAllRefDataCommand: 'DeleteAllRefDataCommand',
+  RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
   RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-  DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+  RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+  RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+  RetrieveOwnUserCommand: 'RetrieveOwnUserCommand',
+  RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
   SiteCrudCommand: 'SiteCrudCommand',
+  UpdateUserCommand: 'UpdateUserCommand',
+  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+  UserCrudCommand: 'UserCrudCommand',
+  UserInvitationCrudCommand: 'UserInvitationCrudCommand',
 } as const;
 
 export type CommonDbCommandName = typeof CommonDbCommandName[keyof typeof CommonDbCommandName];
@@ -255,7 +255,7 @@ export interface CommonDbFilter {
 export type CommonDbFilter1 = CommonDbCompositeFilter | CommonDbContainsStringFilter | CommonDbDateRangeFilter | CommonDbDatetimeRangeFilter | CommonDbEqualsBooleanFilter | CommonDbEqualsNumberFilter | CommonDbEqualsStringFilter | CommonDbEqualsUuidFilter | CommonDbExistsFilter | CommonDbNoFilter | CommonDbNumberRangeFilter | CommonDbNumberSetFilter | CommonDbPartialDateRangeFilter | CommonDbRegexFilter | CommonDbStringSetFilter | CommonDbUuidSetFilter;
 
 
-export type CommonDbFiltersInner = CommonDbContainsStringFilter | CommonDbDateRangeFilter | CommonDbDatetimeRangeFilter | CommonDbEqualsBooleanFilter | CommonDbEqualsNumberFilter | CommonDbEqualsStringFilter | CommonDbEqualsUuidFilter | CommonDbExistsFilter | CommonDbFilter | CommonDbNoFilter | CommonDbNumberRangeFilter | CommonDbNumberSetFilter | CommonDbPartialDateRangeFilter | CommonDbRegexFilter | CommonDbStringSetFilter | CommonDbUuidSetFilter;
+export type CommonDbFiltersInner = CommonDbCompositeFilter | CommonDbContainsStringFilter | CommonDbDateRangeFilter | CommonDbDatetimeRangeFilter | CommonDbEqualsBooleanFilter | CommonDbEqualsNumberFilter | CommonDbEqualsStringFilter | CommonDbEqualsUuidFilter | CommonDbExistsFilter | CommonDbFilter | CommonDbNoFilter | CommonDbNumberRangeFilter | CommonDbNumberSetFilter | CommonDbPartialDateRangeFilter | CommonDbRegexFilter | CommonDbStringSetFilter | CommonDbUuidSetFilter;
 
 
 export interface CommonDbHTTPValidationError {

@@ -36,7 +36,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 import type { TreeNode } from '@gen-epix/ui-phylogenetic-tree/models/tree.models';
 import { NewickUtil } from '@gen-epix/ui-phylogenetic-tree/utils/NewickUtil';
-import { TreeUtil } from '@gen-epix/ui-phylogenetic-tree/utils/TreeUtil';
+import { TreeService } from '@gen-epix/ui-phylogenetic-tree/classes/services/TreeService';
 
 import type { FindSimilarCasesResult } from '../../models/case-db.models';
 import type { TreeWidgetDataPersistable } from '../../models/dashboard.models';
@@ -348,13 +348,13 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             const { filters, getWidgetDataPersistable, treeResponse } = get();
             const treeConfiguration = getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE).treeConfiguration;
             const zoomedInTreeNodeName = filters.find(filter => filter instanceof TreeFilter)?.filterValue;
-            const tree = zoomedInTreeNodeName ? TreeUtil.findNewTreeRoot(treeResponse, zoomedInTreeNodeName, 'node') : treeResponse;
+            const tree = zoomedInTreeNodeName ? container.resolve(TreeService).findNewTreeRoot(treeResponse, zoomedInTreeNodeName, 'node') : treeResponse;
             if (tree) {
               set({
                 treeAddresses: {
                   ...get().treeAddresses,
                   [treeConfiguration.col.id]: {
-                    addresses: TreeUtil.createTreeAddresses(tree),
+                    addresses: container.resolve(TreeService).createTreeAddresses(tree),
                     algorithmCode: treeConfiguration.treeAlgorithm.code,
                   },
                 },
@@ -434,7 +434,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             if (phylogeneticTree.newick_repr && phylogeneticTree.newick_repr.trim().length > 0 && phylogeneticTree.newick_repr !== '();') {
               // parse the newick into a tree
               const parsedTree = NewickUtil.parse(phylogeneticTree.newick_repr);
-              const sanitizedTree = TreeUtil.sanitizeTree(parsedTree, completeCaseType.genetic_distance_protocols[phylogeneticTree.protocol_id].seqdb_max_stored_distance);
+              const sanitizedTree = container.resolve(TreeService).sanitizeTree(parsedTree, completeCaseType.genetic_distance_protocols[phylogeneticTree.protocol_id].seqdb_max_stored_distance);
 
               // the tree determines the order of the line list
               const sortedIds = NewickUtil.getSortedNames(sanitizedTree);
@@ -488,7 +488,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             const { filters, resetTreeAddresses, setFilterValue, treeResponse } = get();
             resetTreeAddresses();
             const treeFilter = filters.find(filter => filter instanceof TreeFilter);
-            const zoomedInTreeNodeName = TreeUtil.findNewTreeRoot(treeResponse, treeFilter?.filterValue, 'parent').name;
+            const zoomedInTreeNodeName = container.resolve(TreeService).findNewTreeRoot(treeResponse, treeFilter?.filterValue, 'parent').name;
             await setFilterValue(treeFilter.id, zoomedInTreeNodeName === treeResponse.name ? null : zoomedInTreeNodeName);
           },
           updateWidgetData: <T, TPartialData = Partial<T>>(widgetName: string, data: TPartialData) => {

@@ -26,9 +26,11 @@ import { Stepper } from '@gen-epix/ui-core-components/components/Stepper';
 import { STEPPER_DIRECTION } from '@gen-epix/ui-core-components/models/stepper.model';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { container } from 'tsyringe';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil';
+import { EventBusService } from '../../../classes/services/EventBusService';
 
 
 export interface RemoveFindSimilarCasesResultDialogOpenProps {
@@ -53,6 +55,7 @@ export const RemoveFindSimilarCasesResultDialog = withDialog<RemoveFindSimilarCa
   const formId = useId();
   const dashboardStore = use(DashboardStoreContext);
   const setFindSimilarCasesResults = useStore(dashboardStore, (state) => state.setFindSimilarCasesResults);
+  const setSorting = useStore(dashboardStore, (state) => state.setSorting);
   const treeConfigurations = useMemo(() => TreeWidgetUtil.getTreeConfigurations(openProps.completeCaseType), [openProps.completeCaseType]);
   const findSimilarCasesResults = useStore(dashboardStore, (state) => state.findSimilarCasesResults);
   const [intermediateFindSimilarCasesResults, setIntermediateFindSimilarCasesResults] = useState(findSimilarCasesResults);
@@ -61,11 +64,14 @@ export const RemoveFindSimilarCasesResultDialog = withDialog<RemoveFindSimilarCa
     onTitleChange(t`Remove similar cases from results`);
   }, [t, onTitleChange]);
 
-  const onApplyIntermediateResultsButtonClick = useCallback(() => {
-    void setFindSimilarCasesResults(intermediateFindSimilarCasesResults);
+  const onApplyIntermediateResultsButtonClick = useCallback(async () => {
+    await setFindSimilarCasesResults(intermediateFindSimilarCasesResults);
+    await setSorting(null, null);
+    container.resolve(EventBusService).emit('onLinkLineListAndTree');
+
     onClose();
 
-  }, [setFindSimilarCasesResults, intermediateFindSimilarCasesResults, onClose]);
+  }, [setFindSimilarCasesResults, intermediateFindSimilarCasesResults, setSorting, onClose]);
 
   const onUndoButtonClick = useCallback(() => {
     setIntermediateFindSimilarCasesResults(findSimilarCasesResults);
@@ -116,7 +122,7 @@ export const RemoveFindSimilarCasesResultDialog = withDialog<RemoveFindSimilarCa
   const steps = useMemo((): Step[] => {
     return [
       {
-        content: (
+        content: intermediateFindSimilarCasesResults.length > 0 ? (
           <Box
             sx={{
               marginBottom: 2,
@@ -131,7 +137,7 @@ export const RemoveFindSimilarCasesResultDialog = withDialog<RemoveFindSimilarCa
               {t('Remove all similar cases from result')}
             </Button>
           </Box>
-        ),
+        ) : null,
         index: '',
         key: 'start',
         label: t('Result without similar cases ({{numberOfCases}} cases)', {
