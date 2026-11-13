@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v4.5.0...api-casedb-v4.6.0) (2026-11-13)
+
+
+### Features
+
+* update all dependencies to latest ([d31fdbd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d31fdbd4c7f13acf6c1794ba55f4c89e300c2b8a))
+* update dependencies ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+
+
+### Bug Fixes
+
+* fix osx scrollbar behavior ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+
 ## [4.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v4.4.1...api-casedb-v4.5.0) (2026-10-27)
 
 

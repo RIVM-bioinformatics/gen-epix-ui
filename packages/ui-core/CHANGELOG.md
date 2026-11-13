@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.11.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.10.0...ui-core-v3.11.0) (2026-11-13)
+
+
+### Features
+
+* update all dependencies to latest ([d31fdbd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d31fdbd4c7f13acf6c1794ba55f4c89e300c2b8a))
+* update dependencies ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+
+
+### Bug Fixes
+
+* fix osx scrollbar behavior ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+
 ## [3.10.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.9.2...ui-core-v3.10.0) (2026-10-27)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-form-v4.5.1...ui-core-form-v4.6.0) (2026-11-13)
+
+
+### Features
+
+* change order of event creation and update fields ([4b4db48](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4b4db4892455007049776025ed2440abaf179d9d))
+* update all dependencies to latest ([d31fdbd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d31fdbd4c7f13acf6c1794ba55f4c89e300c2b8a))
+* update dependencies ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+
+
+### Bug Fixes
+
+* fix osx scrollbar behavior ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+
 ## [4.5.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-form-v4.5.0...ui-core-form-v4.5.1) (2026-10-29)
 
 
