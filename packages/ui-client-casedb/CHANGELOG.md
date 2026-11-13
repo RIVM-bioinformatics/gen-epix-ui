@@ -1,5 +1,26 @@
 # Changelog
 
+## [4.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.8.1...ui-client-casedb-v4.9.0) (2026-11-13)
+
+
+### Features
+
+* **casedb:** add tree-line link toggle ([0a9f777](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0a9f7772530b08fcce5d0ce5e3cc99fb391ab398))
+* change order of event creation and update fields ([4b4db48](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4b4db4892455007049776025ed2440abaf179d9d))
+* create separate x-axis and y-axis menu for the Historgram widget ([694ef6d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/694ef6d617ec22d0c9da8bd33c80d018869dbf91))
+* make table column editor more usable ([a108afe](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a108afe860f30bbc383cab10d980e6a2f3b47a52))
+* performance updates ([#210](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/210)) ([5ed1107](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5ed1107ef33ab4154595b4f72b193e94403022dc))
+* snap tree to linelist after adding or removing similar cases ([b462440](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b4624408b4cb5504990d374c4d8ae8f8de13923c))
+* update all dependencies to latest ([d31fdbd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d31fdbd4c7f13acf6c1794ba55f4c89e300c2b8a))
+* update dependencies ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+
+
+### Bug Fixes
+
+* fix osx scrollbar behavior ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+* fix translations ([1cda996](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1cda99683e7c7b48b53096578504078e9f5a7734))
+* language labels should be shown in native language ([a754f17](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a754f17f2fe5f2be7745c10881f0bc8b52d7bee4))
+
 ## [4.8.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.8.0...ui-client-casedb-v4.8.1) (2026-10-30)
 
 

@@ -1,6 +1,6 @@
 # @gen-epix/ui-client-seqdb [beta]
 
-![gen-epix-logo](https://github.com/RIVM-bioinformatics/gen-epix/raw/main/docs/assets/gen-epix_logo_full.svg)
+![gen-epix-logo](https://github.com/RIVM-bioinformatics/gen-epix-api/raw/main/docs/assets/gen-epix_logo_full.svg)
 
 Genomic Epidemiology platform for disease X
 
@@ -94,6 +94,6 @@ init().catch((error) => {
 
 This work was funded by the European Union under the EU4Health Programme (EU4H), project ID 101113520 (NLWGSHERA2).
 
-![cofunded-EU-logo](https://github.com/RIVM-bioinformatics/gen-epix/raw/main/docs/assets/cofunded_EU_logo.png)
+![cofunded-EU-logo](https://github.com/RIVM-bioinformatics/gen-epix-api/raw/main/docs/assets/cofunded_EU_logo.png)
 
 *Disclaimer: Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or Health and Digital Executive Agency. Neither the European Union nor the granting authority can be held responsible for them.*

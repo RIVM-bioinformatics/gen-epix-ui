@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-omopdb-v4.5.1...ui-client-omopdb-v4.6.0) (2026-11-13)
+
+
+### Features
+
+* performance updates ([#210](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/210)) ([5ed1107](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5ed1107ef33ab4154595b4f72b193e94403022dc))
+* update all dependencies to latest ([d31fdbd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d31fdbd4c7f13acf6c1794ba55f4c89e300c2b8a))
+* update dependencies ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+
+
+### Bug Fixes
+
+* fix osx scrollbar behavior ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+* fix translations ([1cda996](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1cda99683e7c7b48b53096578504078e9f5a7734))
+* language labels should be shown in native language ([a754f17](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a754f17f2fe5f2be7745c10881f0bc8b52d7bee4))
+
 ## [4.5.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-omopdb-v4.5.0...ui-client-omopdb-v4.5.1) (2026-10-30)
 
 

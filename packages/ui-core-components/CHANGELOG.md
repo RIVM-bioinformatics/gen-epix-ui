@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-components-v4.6.1...ui-core-components-v4.7.0) (2026-11-13)
+
+
+### Features
+
+* update all dependencies to latest ([d31fdbd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d31fdbd4c7f13acf6c1794ba55f4c89e300c2b8a))
+* update dependencies ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+
+
+### Bug Fixes
+
+* don't close the dialog when the user is closing a popper. ([9d366d6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9d366d6ac080f72e9f6512c71860c0c136c1785c))
+* fix osx scrollbar behavior ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+
 ## [4.6.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-components-v4.6.0...ui-core-components-v4.6.1) (2026-10-30)
 
 

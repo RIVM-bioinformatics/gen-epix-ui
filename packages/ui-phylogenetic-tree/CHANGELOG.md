@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.7.1...ui-phylogenetic-tree-v3.8.0) (2026-11-13)
+
+
+### Features
+
+* **casedb:** add tree-line link toggle ([0a9f777](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0a9f7772530b08fcce5d0ce5e3cc99fb391ab398))
+* performance updates ([#210](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/210)) ([5ed1107](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5ed1107ef33ab4154595b4f72b193e94403022dc))
+* update all dependencies to latest ([d31fdbd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d31fdbd4c7f13acf6c1794ba55f4c89e300c2b8a))
+* update dependencies ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+
+
+### Bug Fixes
+
+* fix osx scrollbar behavior ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+
 ## [3.7.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.7.0...ui-phylogenetic-tree-v3.7.1) (2026-10-30)
 
 
