@@ -13,13 +13,13 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
 import { container } from 'tsyringe';
 import { DevicePixelRatioService } from '@gen-epix/ui-core/classes/services/DevicePixelRatioService';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { useScrollbarSize } from '@gen-epix/ui-core/hooks/useScrollbarSize';
 import { useDimensions } from '@gen-epix/ui-core/hooks/useDimensions';
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
+import { useDebouncedCallback } from 'use-debounce';
 
 import { TreeService } from '../../classes/services/TreeService';
 import type {
@@ -289,6 +289,17 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
       position: position / devicePixelRatio,
     });
   }, linkedScrollDebounceDelayMs, { leading: true, trailing: true });
+
+  // const updateScrollSubjectDebounced = useCallback((position: number) => {
+  //   if (!scrollSubject || !scrollContainerRef.current) {
+  //     return;
+  //   }
+
+  //   scrollSubject.next({
+  //     origin: scrollContainerRef.current,
+  //     position: position / devicePixelRatio,
+  //   });
+  // }, [scrollSubject, scrollContainerRef, devicePixelRatio]);
 
   const updateScrollPosition = useCallback((params: { internalZoomLevel: number; positionX: number; positionY: number }) => {
     const { internalZoomLevel, positionX, positionY } = params;

@@ -133,6 +133,8 @@ export const Table = <TRowData, TDataContext = null>({
   sx,
 }: TableProps<TRowData, TDataContext>) => {
   const theme = useTheme();
+  const rowHeightCss = theme.spacing(rowHeight);
+  const rowHeightPx = +rowHeightCss.replace('px', '');
   const { t } = useTranslation();
   const config = useConfig();
   const windowService = container.resolve(WindowService);
@@ -539,7 +541,7 @@ export const Table = <TRowData, TDataContext = null>({
               onColumnDividerKeyDown={onColumnDividerKeyDown}
               onColumnDividerMouseDown={onColumnDividerMouseDown}
               onCustomDrag={onTableHeaderCellDrag}
-              order={tableColumnVisualSettingsRef.current.findIndex(c => c.id === tableSettingsColumn.id)}
+              order={tableSettingsColumnIndex}
               role={'columnheader'}
               width={tableSettingsColumn.calculatedWidth}
               xOffset={tableSettingsColumn.offsetX}
@@ -551,6 +553,8 @@ export const Table = <TRowData, TDataContext = null>({
   }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumnsById, renderSelectableHeaderContent, onColumnDividerMouseDown, onColumnDividerKeyDown, onTableHeaderCellDrag]);
 
   const renderItemContent = useCallback((index: number, row: TRowData) => {
+    const isRowEnabled = isRowEnabledCallback ? isRowEnabledCallback(row, dataContext) : true;
+
     return (
       <>
         {getVisibleTableSettingsColumns().map((tableSettingsColumn, columnIndex) => {
@@ -577,10 +581,10 @@ export const Table = <TRowData, TDataContext = null>({
           const baseProps: Partial<TableCellProps<TRowData, TDataContext>> = {
             backgroundColor: isCondensed && tableColumn.cellColorGetter ? tableColumn.cellColorGetter({ column: tableColumn, dataContext, id: tableSettingsColumn.id, row, rowIndex: index }) : undefined,
             columnIndex,
-            enabled: isRowEnabledCallback ? isRowEnabledCallback(row, dataContext) : true,
-            height: theme.spacing(rowHeight),
+            enabled: isRowEnabled,
+            height: rowHeightCss,
             onClick: onTableRowClick,
-            order: tableColumnVisualSettingsRef.current.findIndex(c => c.id === tableSettingsColumn.id),
+            order: columnIndex,
             row,
             rowIndex: index,
             sx: tableColumn.sx,
@@ -627,7 +631,7 @@ export const Table = <TRowData, TDataContext = null>({
         })}
       </>
     );
-  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderSelectableCell, renderReadableIndexCell, rowHeight, t, tableColumnsById, theme, dataContext, isCondensed]);
+  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderSelectableCell, renderReadableIndexCell, rowHeightCss, t, tableColumnsById, dataContext, isCondensed]);
 
   const onRowMouseEnterCallback = useCallback((row: TRowData) => {
     onRowMouseEnter(row);
@@ -719,15 +723,14 @@ export const Table = <TRowData, TDataContext = null>({
     }
     if (tableRef.current && onVisibleItemIndexChange) {
       const scrollTop = scrollerElement.scrollTop;
-      const rowHeightPx = +theme.spacing(rowHeight).replace('px', '');
       const topItemIndex = Math.floor(scrollTop / rowHeightPx);
       onVisibleItemIndexChange(topItemIndex);
     }
-  }, [getScrollerElement, onVerticalScrollPositionChange, onVisibleItemIndexChange, theme, rowHeight]);
+  }, [getScrollerElement, onVerticalScrollPositionChange, onVisibleItemIndexChange, rowHeightPx]);
 
   const handleItemSize = useCallback(() => {
-    return +theme.spacing(rowHeight).replace('px', '');
-  }, [rowHeight, theme]);
+    return rowHeightPx;
+  }, [rowHeightPx]);
 
   const setVerticalScrollPosition = useCallback((position: number) => {
     const scrollerElement = getScrollerElement();
@@ -892,7 +895,7 @@ export const Table = <TRowData, TDataContext = null>({
           }}
           data={sortedData}
           fixedHeaderContent={renderFixedHeaderContent}
-          fixedItemHeight={+theme.spacing(rowHeight).replace('px', '')}
+          fixedItemHeight={rowHeightPx}
           initialTopMostItemIndex={initialVisibleItemIndex ?? 0}
           isScrolling={onVirtuosoIsScrolling}
           itemContent={renderItemContent}

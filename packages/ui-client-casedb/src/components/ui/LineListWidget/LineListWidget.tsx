@@ -107,6 +107,7 @@ export const LineListWidget = () => {
   const dashboardStore = use(DashboardStoreContext);
   const completeCaseType = useStore(dashboardStore, (state) => state.completeCaseType);
   const sortedData = useStore(dashboardStore, (state) => state.sortedData);
+  const findSimilarCasesResults = useStore(dashboardStore, (state) => state.findSimilarCasesResults);
   const filteredCases = useStore(dashboardStore, (state) => state.filteredData[TREE_FILTER_GROUP]);
   const isCondensed = useStore(dashboardStore, (state) => state.isCondensed);
   const stratification = useStore(dashboardStore, (state) => state.stratification?.mode === STRATIFICATION_MODE.FIELD ? state.stratification : null);
@@ -114,6 +115,8 @@ export const LineListWidget = () => {
   const treeAddresses = useStore(dashboardStore, (state) => state.treeAddresses);
   const setTableColumns = useStore(dashboardStore, (state) => state.setColumns);
   const isDataLoading = useStore(dashboardStore, (state) => state.isDataLoading);
+
+  const similarCaseIdSet = useMemo(() => new Set(findSimilarCasesResults.flatMap(result => result.similarCaseIds)), [findSimilarCasesResults]);
 
   useEffect(() => {
     return () => {
@@ -143,6 +146,9 @@ export const LineListWidget = () => {
   const onIndexCellClick = useCallback((row: CaseDbCase) => {
     openCaseInfoDialog(row.id, CASE_INFO_DIALOG_TAB_NAME.INFO);
   }, [openCaseInfoDialog]);
+
+  const stratificationCaseIdColors = stratification?.caseIdColors;
+  const stratificationColumnId = stratification?.col?.id;
 
   const getColumnWidth = useCallback((col: CaseDbCol, label: string) => {
     let maxTextLength = label?.length * 0.8;
@@ -174,12 +180,6 @@ export const LineListWidget = () => {
     if (rowValue.isMissing) {
       return rowValue.short;
     }
-    const legendaItem: StratificationLegendaItem = {
-      caseIds: [row.id],
-      color: stratification?.caseIdColors[row.id],
-      columnType: completeCaseType.ref_cols[completeCaseType.cols[id].ref_col_id].col_type,
-      rowValue,
-    };
 
     const link = (
       <Link
@@ -196,7 +196,13 @@ export const LineListWidget = () => {
         {rowValue.short}
       </Link>
     );
-    if (id === stratification?.col?.id) {
+    if (id === stratificationColumnId) {
+      const legendaItem: StratificationLegendaItem = {
+        caseIds: [row.id],
+        color: stratificationCaseIdColors?.[row.id],
+        columnType: completeCaseType.ref_cols[completeCaseType.cols[id].ref_col_id].col_type,
+        rowValue,
+      };
       return (
         <LegendaItem
           item={legendaItem}
@@ -206,7 +212,7 @@ export const LineListWidget = () => {
       );
     }
     return link;
-  }, [completeCaseType, onOrganizationCellClick, stratification?.caseIdColors, stratification?.col?.id]);
+  }, [completeCaseType, onOrganizationCellClick, stratificationCaseIdColors, stratificationColumnId]);
 
   const onGeneticSequenceCellClick = useCallback((id: string, row: CaseDbCase) => {
     container.resolve(EventBusService).emit('openSequenceDownloadDialog', {
@@ -284,8 +290,7 @@ export const LineListWidget = () => {
   }, []);
 
   const renderSimilarCell = useCallback(({ row }: TableRowParams<CaseDbCase, CaseDbCompleteCaseType>) => {
-    const similarCaseIds = dashboardStore.getState().findSimilarCasesResults.reduce<string[]>((acc, result) => [...acc, ...result.similarCaseIds], []);
-    if (similarCaseIds.includes(row.id)) {
+    if (similarCaseIdSet.has(row.id)) {
       return (
         <TroubleshootIcon
           fontSize={'small'}
@@ -300,7 +305,7 @@ export const LineListWidget = () => {
       );
     }
     return null;
-  }, [dashboardStore, theme]);
+  }, [similarCaseIdSet, theme]);
 
 
   const renderSimilarHeader = useCallback(() => {
@@ -327,26 +332,21 @@ export const LineListWidget = () => {
 
   const renderCell = useCallback(({ id, row }: TableRowParams<CaseDbCase, CaseDbCompleteCaseType>) => {
     const rowValue = CaseUtil.getRowValue(row.content, completeCaseType.cols[id], completeCaseType);
-    const legendaItem: StratificationLegendaItem = {
-      caseIds: [row.id],
-      color: stratification?.caseIdColors[row.id],
-      columnType: completeCaseType.ref_cols[completeCaseType.cols[id].ref_col_id].col_type,
-      rowValue,
-    };
-    if (id === stratification?.col?.id) {
+    if (id === stratificationColumnId) {
+      const legendaItem: StratificationLegendaItem = {
+        caseIds: [row.id],
+        color: stratificationCaseIdColors?.[row.id],
+        columnType: completeCaseType.ref_cols[completeCaseType.cols[id].ref_col_id].col_type,
+        rowValue,
+      };
       return (
         <LegendaItem
           item={legendaItem}
         />
       );
     }
-
-    return (
-      <>
-        {rowValue.short}
-      </>
-    );
-  }, [completeCaseType, stratification?.caseIdColors, stratification?.col?.id]);
+    return rowValue.short;
+  }, [completeCaseType, stratificationCaseIdColors, stratificationColumnId]);
 
   const frozenTableColumnsLeft = useMemo<TableColumn<CaseDbCase, CaseDbCompleteCaseType>[]>(() => {
     return [
@@ -649,15 +649,34 @@ export const LineListWidget = () => {
   }, [dashboardContext]);
 
   useEffect(() => {
+    let animationFrameId: null | number = null;
+    let pendingScrollPosition: null | number = null;
+
     const unsubscribe = dashboardContext.linkedScrollSubject.subscribe((data) => {
       if (data.origin === containerRef.current) {
         return;
       }
-      tableRef.current.setVerticalScrollPosition(data.position);
+
+      pendingScrollPosition = data.position;
+      if (animationFrameId !== null) {
+        return;
+      }
+
+      animationFrameId = requestAnimationFrame(() => {
+        animationFrameId = null;
+        const scrollPosition = pendingScrollPosition;
+        pendingScrollPosition = null;
+        if (scrollPosition !== null) {
+          tableRef.current?.setVerticalScrollPosition(scrollPosition);
+        }
+      });
     });
 
     return () => {
       unsubscribe();
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
     };
   }, [dashboardContext]);
 
