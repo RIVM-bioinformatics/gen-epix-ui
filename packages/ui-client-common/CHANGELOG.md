@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v4.6.1...ui-client-common-v4.7.0) (2026-11-13)
+
+
+### Features
+
+* make table column editor more usable ([a108afe](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a108afe860f30bbc383cab10d980e6a2f3b47a52))
+* performance updates ([#210](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/210)) ([5ed1107](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5ed1107ef33ab4154595b4f72b193e94403022dc))
+* update all dependencies to latest ([d31fdbd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d31fdbd4c7f13acf6c1794ba55f4c89e300c2b8a))
+* update dependencies ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+
+
+### Bug Fixes
+
+* fix osx scrollbar behavior ([7915c42](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7915c42d08fed9e82964c154d47443896a9e27bd))
+* make colum editor drag handle aligned to the right ([f4b34df](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f4b34dfd2d3f5a0fc912758120f73df340756887))
+
 ## [4.6.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v4.6.0...ui-client-common-v4.6.1) (2026-10-30)
 
 

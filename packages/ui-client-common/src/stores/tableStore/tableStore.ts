@@ -342,12 +342,15 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
 
       // Sort according to the sortedIds
       if (sortedIds) {
+        const sortedIdIndexById = new Map<string, number>();
+        sortedIds.forEach((id, index) => {
+          if (!sortedIdIndexById.has(id)) {
+            sortedIdIndexById.set(id, index);
+          }
+        });
         const sortedData = preSortedData.toSorted((a, b) => {
-          const aId = idSelectorCallback(a);
-          const bId = idSelectorCallback(b);
-
-          const aIndex = sortedIds.includes(aId) ? sortedIds.indexOf(aId) : Infinity;
-          const bIndex = sortedIds.includes(bId) ? sortedIds.indexOf(bId) : Infinity;
+          const aIndex = sortedIdIndexById.get(idSelectorCallback(a)) ?? Infinity;
+          const bIndex = sortedIdIndexById.get(idSelectorCallback(b)) ?? Infinity;
           return aIndex - bIndex;
         });
         set({ sortedData });
@@ -563,7 +566,10 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
       set({ sortedIds });
     },
     setSorting: async (sortByField: string, sortDirection: TableSortDirection) => {
-      const { reloadSortedData, updateUrl } = get();
+      const { reloadSortedData, sortByField: currentSortByField, sortDirection: currentSortDirection, updateUrl } = get();
+      if (currentSortByField === sortByField && currentSortDirection === sortDirection) {
+        return;
+      }
       await updateUrl(updateSearchParams('sortByField', sortByField));
       await updateUrl(updateSearchParams('sortDirection', sortDirection));
       set({ sortByField, sortDirection });

@@ -1,6 +1,6 @@
 # Gen-EpiX: Genomic Epidemiology platform for disease X - Frontend UI Library [beta]
 
-![gen-epix-logo](https://github.com/RIVM-bioinformatics/gen-epix/raw/main/docs/assets/gen-epix_logo_full.svg)
+![gen-epix-logo](https://github.com/RIVM-bioinformatics/gen-epix-api/raw/main/docs/assets/gen-epix_logo_full.svg)
 
 Genomic Epidemiology platform for disease X
 
@@ -26,7 +26,7 @@ This repository is a pnpm monorepo managed with [Lerna](https://lerna.js.org/). 
 | [`@gen-epix/ui-core`](packages/ui-core) | Low-level, framework-agnostic primitives shared by all Gen-EpiX packages: event bus abstractions, `WindowService`, `KeyboardShortcutService`, generic hooks, and utility classes. No dependency on MUI or any application-level library. |
 | [`@gen-epix/ui-core-components`](packages/ui-core-components) | Reusable React and MUI components shared by Gen-EpiX applications, including dialogs, loading indicators, nested menus, spinners, steppers, and confirmation controls. |
 | [`@gen-epix/ui-client-common`](packages/ui-client-common) | The core React component library shared across all Gen-EpiX applications. Contains UI components, data hooks, routing, forms, services, and state management. Built with [Vite](https://vitejs.dev/), [MUI](https://mui.com/), [TanStack Query](https://tanstack.com/query), [React Hook Form](https://react-hook-form.com/), [TipTap](https://tiptap.dev/), and [Zustand](https://zustand-demo.pmnd.rs/). Depends on `@gen-epix/ui-core`. |
-| [`@gen-epix/ui-phylogenetic-tree`](packages/ui-phylogenetic-tree) | Standalone phylogenetic tree visualization component (`PhylogeneticTree`), Newick parser (`NewickUtil`), and tree utilities (`TreeUtil`). Depends only on `@gen-epix/ui-core`, MUI, and React. |
+| [`@gen-epix/ui-phylogenetic-tree`](packages/ui-phylogenetic-tree) | Standalone phylogenetic tree visualization component (`PhylogeneticTree`), Newick parser (`NewickUtil`), and tree service (`TreeService`). Depends only on `@gen-epix/ui-core`, MUI, and React. |
 | [`@gen-epix/ui-client-casedb`](packages/ui-client-casedb) | Disease case management UI built on top of `@gen-epix/ui-client-common`. Provides the epidemiology dashboard, line list, phylogenetic tree, curve, and map widgets, as well as case/case-set/case-type admin pages. |
 | [`@gen-epix/ui-client-omopdb`](packages/ui-client-omopdb) | OMOP DB-specific UI components and pages built on top of `@gen-epix/ui-client-common`. |
 | [`@gen-epix/ui-client-seqdb`](packages/ui-client-seqdb) | Sequence DB-specific UI components and pages built on top of `@gen-epix/ui-client-common`. |
@@ -109,6 +109,6 @@ pnpm run add-missing-translations
 
 This work was funded by the European Union under the EU4Health Programme (EU4H), project ID 101113520 (NLWGSHERA2).
 
-![cofunded-EU-logo](https://github.com/RIVM-bioinformatics/gen-epix/raw/main/docs/assets/cofunded_EU_logo.png)
+![cofunded-EU-logo](https://github.com/RIVM-bioinformatics/gen-epix-api/raw/main/docs/assets/cofunded_EU_logo.png)
 
 *Disclaimer: Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or Health and Digital Executive Agency. Neither the European Union nor the granting authority can be held responsible for them.*

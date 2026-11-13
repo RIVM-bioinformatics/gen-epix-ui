@@ -1,6 +1,6 @@
 # @gen-epix/ui-phylogenetic-tree [beta]
 
-![gen-epix-logo](https://github.com/RIVM-bioinformatics/gen-epix/raw/main/docs/assets/gen-epix_logo_full.svg)
+![gen-epix-logo](https://github.com/RIVM-bioinformatics/gen-epix-api/raw/main/docs/assets/gen-epix_logo_full.svg)
 
 Genomic Epidemiology platform for disease X
 
@@ -16,7 +16,7 @@ The platform is currently in beta and is not yet intended for production use. Fe
 
 - **Components** — `PhylogeneticTree` — an interactive, canvas-rendered phylogenetic tree viewer
 - **Models** — tree data types and interfaces (`tree`)
-- **Utilities** — `NewickUtil` for parsing and serializing [Newick format](https://en.wikipedia.org/wiki/Newick_format), `TreeUtil` for tree traversal and manipulation
+- **Utilities and services** — `NewickUtil` for parsing and serializing [Newick format](https://en.wikipedia.org/wiki/Newick_format), `TreeService` for tree traversal, manipulation, and rendering
 
 Peer dependencies are kept minimal: `@gen-epix/ui-core`, `@mui/material`, and `react`.
 
@@ -46,6 +46,6 @@ function MyPage() {
 
 This work was funded by the European Union under the EU4Health Programme (EU4H), project ID 101113520 (NLWGSHERA2).
 
-![cofunded-EU-logo](https://github.com/RIVM-bioinformatics/gen-epix/raw/main/docs/assets/cofunded_EU_logo.png)
+![cofunded-EU-logo](https://github.com/RIVM-bioinformatics/gen-epix-api/raw/main/docs/assets/cofunded_EU_logo.png)
 
 *Disclaimer: Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or Health and Digital Executive Agency. Neither the European Union nor the granting authority can be held responsible for them.*

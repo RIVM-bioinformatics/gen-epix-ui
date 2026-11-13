@@ -545,6 +545,9 @@ export const TreeWidget = () => {
 
   useEffect(() => {
     const unsubscribe = phylogeneticTreeHighlightedNodeNamesSubject.subscribe((data) => {
+      if (data.highlightedNodeNames === dashboardContext.highlightSubject.data.caseIds) {
+        return;
+      }
       dashboardContext.highlight({
         caseIds: data.highlightedNodeNames,
         origin: DASHBOARD_COMPONENT_NAME.TREE,

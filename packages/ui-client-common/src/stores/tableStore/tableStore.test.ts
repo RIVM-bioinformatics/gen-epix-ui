@@ -884,6 +884,35 @@ describe('table store sorting actions', () => {
     expect(store.getState().sortedData.map(row => row.id)).toEqual(['row-3', 'row-1', 'row-2']);
   });
 
+  it('uses the first position for duplicate IDs in the selected order', () => {
+    const store = createTestStore();
+    const rows = createRows();
+    store.setState({
+      filteredData: { [DEFAULT_FILTER_GROUP]: rows },
+      sortedIds: ['row-1', 'row-2', 'row-1', 'row-3'],
+    });
+
+    store.getState().reloadSortedData();
+
+    expect(store.getState().sortedData.map(row => row.id)).toEqual(['row-1', 'row-2', 'row-3']);
+  });
+
+  it('skips sorting and navigation when the requested sort is unchanged', async () => {
+    const navigatorFunction = createNavigateFunction();
+    const store = createTestStore();
+    store.getState().setNavigateFunction(navigatorFunction);
+    store.setState({
+      sortByField: null,
+      sortDirection: null,
+    });
+    const reloadSortedData = vi.spyOn(store.getState(), 'reloadSortedData');
+
+    await store.getState().setSorting(null, null);
+
+    expect(navigatorFunction).not.toHaveBeenCalled();
+    expect(reloadSortedData).not.toHaveBeenCalled();
+  });
+
   it('updates sort state and invokes navigation when a sort is selected', async () => {
     const navigatorFunction = createNavigateFunction();
     const store = createTestStore();

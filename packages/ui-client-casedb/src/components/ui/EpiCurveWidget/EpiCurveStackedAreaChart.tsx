@@ -16,7 +16,6 @@ import type {
   SetStateAction,
 } from 'react';
 import isString from 'lodash/isString';
-import intersection from 'lodash/intersection';
 import { useTheme } from '@mui/material';
 
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
@@ -61,6 +60,31 @@ export const EpiCurveStackedAreaChart = ({
     EpiCurveUtil.getAreaChartSeriesData(items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification),
   [items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification]);
 
+  const caseIdsByPoint = useMemo(() => {
+    const series = seriesData.series as Array<{ data?: Array<[unknown, unknown, string]> }> | null;
+    return series?.map(serie => serie.data?.map(dataArray => (
+      isString(dataArray[2]) ? JSON.parse(dataArray[2]) as string[] : []
+    )) ?? []) ?? [];
+  }, [seriesData.series]);
+
+  const caseIdTargets = useMemo(() => {
+    const targetsByCaseId = new Map<string, Array<{ dataIndex: number; seriesIndex: number }>>();
+    caseIdsByPoint.forEach((seriesCaseIds, seriesIndex) => {
+      seriesCaseIds.forEach((caseIds, dataIndex) => {
+        caseIds.forEach((caseId) => {
+          const targets = targetsByCaseId.get(caseId);
+          const target = { dataIndex, seriesIndex };
+          if (targets) {
+            targets.push(target);
+          } else {
+            targetsByCaseId.set(caseId, [target]);
+          }
+        });
+      });
+    });
+    return targetsByCaseId;
+  }, [caseIdsByPoint]);
+
   // Fast lookup table: color -> all caseIds having that stratification color.
   const caseIdsByColor = useMemo(() => {
     const buckets: { [color: string]: string[] } = {};
@@ -89,16 +113,11 @@ export const EpiCurveStackedAreaChart = ({
   }, [caseIdsByColor, seriesData]);
 
   const getCaseIdsForPoint = useCallback((seriesIndex: number, dataIndex: number): string[] => {
-    if (!seriesData.series || seriesIndex < 0 || dataIndex < 0) {
+    if (seriesIndex < 0 || dataIndex < 0) {
       return [];
     }
-    const series = (seriesData.series as Array<{ data?: unknown[] }>)?.[seriesIndex];
-    const point = (series?.data as Array<[unknown, unknown, string]>)?.[dataIndex];
-    if (point?.[2] && isString(point[2])) {
-      return JSON.parse(point[2]) as string[];
-    }
-    return [];
-  }, [seriesData]);
+    return caseIdsByPoint[seriesIndex]?.[dataIndex] ?? [];
+  }, [caseIdsByPoint]);
 
   const expandToStratificationColorCaseIds = useCallback((candidateCaseIds: string[]): string[] => {
     if (!candidateCaseIds.length) {
@@ -206,37 +225,39 @@ export const EpiCurveStackedAreaChart = ({
         return;
       }
 
-      const highlightTargets: Array<{ dataIndex: number; seriesIndex: number }> = [];
-      seriesData.series?.forEach((serie, serieIndex) => {
-        const serieData = (serie as { data: unknown[] }).data;
-        serieData?.forEach((dataArray: unknown, dataIndex: number) => {
-          const caseIds = JSON.parse((dataArray as [unknown, unknown, string])[2]) as string[];
-          if (intersection(caseIds, highlighting.caseIds).length) {
-            highlightTargets.push({
-              dataIndex,
-              seriesIndex: serieIndex,
-            });
-          }
+      const highlightTargetsBySeries = new Map<number, Set<number>>();
+      highlighting.caseIds.forEach((caseId) => {
+        caseIdTargets.get(caseId)?.forEach(({ dataIndex, seriesIndex }) => {
+          const dataIndexes = highlightTargetsBySeries.get(seriesIndex) ?? new Set<number>();
+          dataIndexes.add(dataIndex);
+          highlightTargetsBySeries.set(seriesIndex, dataIndexes);
         });
       });
+      const highlightTargets: Array<{ dataIndex: number; seriesIndex: number }> = [];
+      highlightTargetsBySeries.forEach((dataIndexes, seriesIndex) => {
+        dataIndexes.forEach((dataIndex) => {
+          highlightTargets.push({ dataIndex, seriesIndex });
+        });
+      });
+      highlightTargets.sort((firstTarget, secondTarget) => (
+        firstTarget.seriesIndex - secondTarget.seriesIndex
+        || firstTarget.dataIndex - secondTarget.dataIndex
+      ));
 
       instance.dispatchAction({
         type: 'downplay',
       });
 
-      highlightTargets.forEach((target) => {
-        instance.dispatchAction({
-          dataIndex: target.dataIndex,
-          seriesIndex: target.seriesIndex,
-          type: 'highlight',
-        });
+      instance.dispatchAction({
+        batch: highlightTargets,
+        type: 'highlight',
       });
     });
 
     return () => {
       unsubscribe();
     };
-  }, [dashboardContext, seriesData]);
+  }, [caseIdTargets, dashboardContext]);
 
   const onInternalChartReady = useCallback((chart: EChartsType) => {
     chartInstanceRef.current = chart;
@@ -255,16 +276,16 @@ export const EpiCurveStackedAreaChart = ({
         return caseIdsBySeriesIndex[eventData.seriesIndex] ?? [];
       }
 
-      const caseIdsFromData = eventData?.data?.[2];
-      if (isString(caseIdsFromData)) {
-        return expandToStratificationColorCaseIds(JSON.parse(caseIdsFromData) as string[]);
-      }
-
       if (typeof eventData.seriesIndex === 'number'
         && typeof eventData.dataIndex === 'number'
         && eventData.seriesIndex >= 0
         && eventData.dataIndex >= 0) {
         return expandToStratificationColorCaseIds(getCaseIdsForPoint(eventData.seriesIndex, eventData.dataIndex));
+      }
+
+      const caseIdsFromData = eventData?.data?.[2];
+      if (isString(caseIdsFromData)) {
+        return expandToStratificationColorCaseIds(JSON.parse(caseIdsFromData) as string[]);
       }
 
       return [];

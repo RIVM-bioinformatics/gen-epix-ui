@@ -1,6 +1,6 @@
 {
   "name": "@gen-epix/ui-client-casedb",
-  "version": "4.8.1",
+  "version": "4.9.0",
   "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
   "repository": {
     "type": "git",
@@ -157,6 +157,10 @@
     "./components/ui/TreeDescription": {
       "types": "./src/components/ui/TreeDescription/index.ts",
       "import": "./src/components/ui/TreeDescription/index.ts"
+    },
+    "./components/ui/TreeLineListLinkToggle": {
+      "types": "./src/components/ui/TreeLineListLinkToggle/index.ts",
+      "import": "./src/components/ui/TreeLineListLinkToggle/index.ts"
     },
     "./components/ui/TreeWidget": {
       "types": "./src/components/ui/TreeWidget/index.ts",
@@ -933,6 +937,10 @@
       "./components/ui/TreeDescription": {
         "types": "./dist/components/ui/TreeDescription/index.d.ts",
         "import": "./dist/components/ui/TreeDescription/index.js"
+      },
+      "./components/ui/TreeLineListLinkToggle": {
+        "types": "./dist/components/ui/TreeLineListLinkToggle/index.d.ts",
+        "import": "./dist/components/ui/TreeLineListLinkToggle/index.js"
       },
       "./components/ui/TreeWidget": {
         "types": "./dist/components/ui/TreeWidget/index.d.ts",
