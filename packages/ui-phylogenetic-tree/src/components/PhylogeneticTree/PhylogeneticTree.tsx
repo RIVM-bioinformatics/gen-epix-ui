@@ -644,7 +644,7 @@ export const PhylogeneticTree = (inProps: PhylogeneticTreeProps) => {
 
         const deltaX = event.clientX - pos.x;
         const deltaY = event.clientY - pos.y;
-        const scrollPositionX = pos.currentX - deltaX;
+        const scrollPositionX = hasLink && isLinked ? pos.currentX : pos.currentX - deltaX;
         const scrollPositionY = pos.currentY - deltaY;
 
         let sanitizedScrollPositionX = scrollPositionX;

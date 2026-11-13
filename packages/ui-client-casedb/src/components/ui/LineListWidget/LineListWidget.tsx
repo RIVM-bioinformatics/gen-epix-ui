@@ -98,6 +98,7 @@ export const LineListWidget = () => {
   const { caseSet } = use(DashboardContext);
   const dashboardContext = use(DashboardContext);
   const containerRef = useRef<HTMLDivElement>(null);
+  const rowHighlightClearFrameRef = useRef<null | number>(null);
   const { t } = useTranslation();
   const config = useConfig<CaseDbConfig>();
   const rowHighlightingSubject = useMemo(() => new Subject<string[]>([]), []);
@@ -116,6 +117,9 @@ export const LineListWidget = () => {
 
   useEffect(() => {
     return () => {
+      if (rowHighlightClearFrameRef.current !== null) {
+        cancelAnimationFrame(rowHighlightClearFrameRef.current);
+      }
       dashboardContext.lineListRangeSubject.next(undefined);
     };
   }, [dashboardContext]);
@@ -552,6 +556,10 @@ export const LineListWidget = () => {
   }, [completeCaseType, config.epi, frozenTableColumnsLeft, frozenTableColumnsRight, cellColorGetter, cellTitleGetter, treeAddresses, getColumnWidth, renderOrganizationCell, renderGeneticSequenceCell, renderCell]);
 
   const onRowMouseEnter = useCallback((row: CaseDbCase) => {
+    if (rowHighlightClearFrameRef.current !== null) {
+      cancelAnimationFrame(rowHighlightClearFrameRef.current);
+      rowHighlightClearFrameRef.current = null;
+    }
     dashboardContext.highlight({
       caseIds: [row.id],
       origin: DASHBOARD_COMPONENT_NAME.LINE_LIST,
@@ -560,9 +568,15 @@ export const LineListWidget = () => {
 
 
   const onRowMouseLeave = useCallback(() => {
-    dashboardContext.highlight({
-      caseIds: [],
-      origin: DASHBOARD_COMPONENT_NAME.LINE_LIST,
+    if (rowHighlightClearFrameRef.current !== null) {
+      cancelAnimationFrame(rowHighlightClearFrameRef.current);
+    }
+    rowHighlightClearFrameRef.current = requestAnimationFrame(() => {
+      rowHighlightClearFrameRef.current = null;
+      dashboardContext.highlight({
+        caseIds: [],
+        origin: DASHBOARD_COMPONENT_NAME.LINE_LIST,
+      });
     });
   }, [dashboardContext]);
 

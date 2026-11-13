@@ -198,6 +198,25 @@ export const MapWidget = () => {
     [col, getPieChartRadius, sortedData, regions, stratification],
   );
 
+  const caseIdTargets = useMemo(() => {
+    const targetsByCaseId = new Map<string, Array<{ dataIndex: number; seriesIndex: number }>>();
+    series.forEach((serie, seriesIndex) => {
+      serie.data.forEach((dataArray, dataIndex) => {
+        const caseIds = (dataArray as GenEpixPieSeriesOptionEventData).genEpixData.caseIds;
+        caseIds.forEach((caseId) => {
+          const targets = targetsByCaseId.get(caseId);
+          const target = { dataIndex, seriesIndex };
+          if (targets) {
+            targets.push(target);
+          } else {
+            targetsByCaseId.set(caseId, [target]);
+          }
+        });
+      });
+    });
+    return targetsByCaseId;
+  }, [series]);
+
   const options = useMemo(() => {
     if (!regionSetShape) {
       return;
@@ -285,37 +304,34 @@ export const MapWidget = () => {
         return;
       }
 
-      const foundSerieIndexes = new Set<number>();
-      const foundDataIndexes: number[] = [];
-      const highlightedCaseIds = new Set(highlighting.caseIds);
-      series.forEach((serie, serieIndex) => {
-        serie.data.forEach((dataArray, dataIndex) => {
-          const caseIds = (dataArray as GenEpixPieSeriesOptionEventData).genEpixData.caseIds;
-          if (caseIds.some(caseId => highlightedCaseIds.has(caseId))) {
-            foundSerieIndexes.add(serieIndex);
-            foundDataIndexes.push(dataIndex);
-          }
-        });
-      });
-
-      if (highlighting.caseIds.length) {
-        instance.dispatchAction({
-          dataIndex: foundDataIndexes,
-          seriesIndex: [...foundSerieIndexes],
-          type: 'highlight',
-        });
-      } else {
+      if (!highlighting.caseIds.length) {
         instance.dispatchAction({
           type: 'downplay',
         });
+        return;
       }
+
+      const foundSerieIndexes = new Set<number>();
+      const foundDataIndexes = new Set<number>();
+      highlighting.caseIds.forEach((caseId) => {
+        caseIdTargets.get(caseId)?.forEach(({ dataIndex, seriesIndex }) => {
+          foundSerieIndexes.add(seriesIndex);
+          foundDataIndexes.add(dataIndex);
+        });
+      });
+
+      instance.dispatchAction({
+        dataIndex: [...foundDataIndexes],
+        seriesIndex: [...foundSerieIndexes],
+        type: 'highlight',
+      });
     });
 
     // use highlighting imperatively
     return () => {
       unsubscribe();
     };
-  }, [chartRef, dashboardContext.highlightSubject, series]);
+  }, [caseIdTargets, chartRef, dashboardContext.highlightSubject]);
 
   const titleMenu = useMemo<MenuItemData>(() => {
     const menu: MenuItemData = {

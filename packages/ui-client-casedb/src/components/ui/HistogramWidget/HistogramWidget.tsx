@@ -150,6 +150,24 @@ export const HistogramWidget = () => {
     return HistogramUtil.getSeries(aCol, bCol, completeCaseType, sortedData, conceptsA, conceptsB);
   }, [aCol, bCol, completeCaseType, sortedData, conceptsA, conceptsB]);
 
+  const caseIdTargets = useMemo(() => {
+    const targetsByCaseId = new Map<string, Array<{ dataIndex: number; seriesIndex: number }>>();
+    series?.forEach((serie, seriesIndex) => {
+      serie.xCaseIds.forEach((caseIds, dataIndex) => {
+        caseIds.forEach((caseId) => {
+          const targets = targetsByCaseId.get(caseId);
+          const target = { dataIndex, seriesIndex };
+          if (targets) {
+            targets.push(target);
+          } else {
+            targetsByCaseId.set(caseId, [target]);
+          }
+        });
+      });
+    });
+    return targetsByCaseId;
+  }, [series]);
+
   const histogramCaseCount = useMemo(() => {
     return HistogramUtil.getCaseCount(series);
   }, [series]);
@@ -411,14 +429,11 @@ export const HistogramWidget = () => {
       }
 
       const highlightTargetsByDataIndex = new Map<number, Set<number>>();
-      const highlightedCaseIds = new Set(highlighting.caseIds);
-      series?.forEach((serie, serieIndex) => {
-        serie.xCaseIds.forEach((caseIds, dataIndex) => {
-          if (caseIds.some(caseId => highlightedCaseIds.has(caseId))) {
-            const seriesIndices = highlightTargetsByDataIndex.get(dataIndex) ?? new Set<number>();
-            seriesIndices.add(serieIndex);
-            highlightTargetsByDataIndex.set(dataIndex, seriesIndices);
-          }
+      highlighting.caseIds.forEach((caseId) => {
+        caseIdTargets.get(caseId)?.forEach(({ dataIndex, seriesIndex }) => {
+          const seriesIndices = highlightTargetsByDataIndex.get(dataIndex) ?? new Set<number>();
+          seriesIndices.add(seriesIndex);
+          highlightTargetsByDataIndex.set(dataIndex, seriesIndices);
         });
       });
 
@@ -458,7 +473,7 @@ export const HistogramWidget = () => {
     return () => {
       unsubscribe();
     };
-  }, [dashboardContext, series]);
+  }, [caseIdTargets, dashboardContext, series]);
 
   return (
     <DashboardWidget

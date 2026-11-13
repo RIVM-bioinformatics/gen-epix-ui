@@ -61,6 +61,24 @@ export const EpiCurveBarChart = ({
     )) ?? []) ?? [];
   }, [seriesData.series]);
 
+  const caseIdTargets = useMemo(() => {
+    const targetsByCaseId = new Map<string, Array<{ dataIndex: number; seriesIndex: number }>>();
+    caseIdsByPoint.forEach((seriesCaseIds, seriesIndex) => {
+      seriesCaseIds.forEach((caseIds, dataIndex) => {
+        caseIds.forEach((caseId) => {
+          const targets = targetsByCaseId.get(caseId);
+          const target = { dataIndex, seriesIndex };
+          if (targets) {
+            targets.push(target);
+          } else {
+            targetsByCaseId.set(caseId, [target]);
+          }
+        });
+      });
+    });
+    return targetsByCaseId;
+  }, [caseIdsByPoint]);
+
   useEffect(() => {
     const unsubscribe = dashboardContext.highlightSubject.subscribe((highlighting) => {
       if (highlighting.origin === DASHBOARD_COMPONENT_NAME.EPI_CURVE) {
@@ -79,33 +97,39 @@ export const EpiCurveBarChart = ({
         return;
       }
 
-      const highlightTargets: Array<{ dataIndex: number; seriesIndex: number }> = [];
-      const highlightedCaseIds = new Set(highlighting.caseIds);
-      caseIdsByPoint.forEach((seriesCaseIds, seriesIndex) => {
-        seriesCaseIds.forEach((caseIds, dataIndex) => {
-          if (caseIds.some(caseId => highlightedCaseIds.has(caseId))) {
-            highlightTargets.push({ dataIndex, seriesIndex });
-          }
+      const highlightTargetsBySeries = new Map<number, Set<number>>();
+      highlighting.caseIds.forEach((caseId) => {
+        caseIdTargets.get(caseId)?.forEach(({ dataIndex, seriesIndex }) => {
+          const dataIndexes = highlightTargetsBySeries.get(seriesIndex) ?? new Set<number>();
+          dataIndexes.add(dataIndex);
+          highlightTargetsBySeries.set(seriesIndex, dataIndexes);
         });
       });
+      const highlightTargets: Array<{ dataIndex: number; seriesIndex: number }> = [];
+      highlightTargetsBySeries.forEach((dataIndexes, seriesIndex) => {
+        dataIndexes.forEach((dataIndex) => {
+          highlightTargets.push({ dataIndex, seriesIndex });
+        });
+      });
+      highlightTargets.sort((firstTarget, secondTarget) => (
+        firstTarget.seriesIndex - secondTarget.seriesIndex
+        || firstTarget.dataIndex - secondTarget.dataIndex
+      ));
 
       instance.dispatchAction({
         type: 'downplay',
       });
 
-      highlightTargets.forEach((target) => {
-        instance.dispatchAction({
-          dataIndex: target.dataIndex,
-          seriesIndex: target.seriesIndex,
-          type: 'highlight',
-        });
+      instance.dispatchAction({
+        batch: highlightTargets,
+        type: 'highlight',
       });
     });
 
     return () => {
       unsubscribe();
     };
-  }, [caseIdsByPoint, dashboardContext]);
+  }, [caseIdTargets, dashboardContext]);
 
   const onInternalChartReady = useCallback((chart: EChartsType) => {
     chartInstanceRef.current = chart;
