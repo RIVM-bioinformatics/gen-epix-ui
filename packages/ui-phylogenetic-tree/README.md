@@ -16,7 +16,7 @@ The platform is currently in beta and is not yet intended for production use. Fe
 
 - **Components** — `PhylogeneticTree` — an interactive, canvas-rendered phylogenetic tree viewer
 - **Models** — tree data types and interfaces (`tree`)
-- **Utilities** — `NewickUtil` for parsing and serializing [Newick format](https://en.wikipedia.org/wiki/Newick_format), `TreeUtil` for tree traversal and manipulation
+- **Utilities and services** — `NewickUtil` for parsing and serializing [Newick format](https://en.wikipedia.org/wiki/Newick_format), `TreeService` for tree traversal, manipulation, and rendering
 
 Peer dependencies are kept minimal: `@gen-epix/ui-core`, `@mui/material`, and `react`.
 

@@ -10,11 +10,12 @@ import {
   ThemeProvider,
 } from '@mui/material/styles';
 import { render } from 'vitest-browser-react';
+import { container } from 'tsyringe';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { DevicePixelRatioService } from '@gen-epix/ui-core/classes/services/DevicePixelRatioService';
 
+import { TreeService } from '../../classes/services/TreeService';
 import type { TreeNode } from '../../models/tree.models';
-import { TreeUtil } from '../../utils/TreeUtil';
 import { NewickUtil } from '../../utils/NewickUtil';
 
 import type {
@@ -76,6 +77,7 @@ let ariaLabelCounter = 0;
 type RenderTreeOptions = {
   externalScrollSubject?: Subject<PhylogeneticTreeScrollSubjectValue>;
   externalVisibleRangeSubject?: Subject<PhylogeneticTreeVisibleRangeSubjectValue>;
+  hasLink?: boolean;
   height?: number;
   highlightedNodeNamesSubject?: Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>;
   itemHeight?: number;
@@ -218,7 +220,7 @@ const waitForCanvasPaint = async (canvas: HTMLCanvasElement, assertion: () => bo
 };
 
 const parseTree = (newick: string) => {
-  return TreeUtil.sanitizeTree(NewickUtil.parse(newick), 20);
+  return container.resolve(TreeService).sanitizeTree(NewickUtil.parse(newick), 20);
 };
 
 const getLayoutNode = (layout: TreeLayout, nodeName: string) => {
@@ -330,6 +332,7 @@ const createTreeElement = (options: ResolvedRenderTreeOptions) => {
           ancestorDotRadius={ANCESTOR_DOT_RADIUS}
           ariaLabel={options.ariaLabel}
           dimFn={DIM_FN}
+          hasLink={options.hasLink}
           headerHeight={HEADER_HEIGHT}
           highlightedNodeNamesSubject={options.highlightedNodeNamesSubject}
           itemHeight={options.itemHeight}
@@ -744,6 +747,62 @@ describe('PhylogeneticTree', () => {
       expect(getLast(viewStates)?.horizontalScrollPosition).toBe(0);
       expect(getLast(viewStates)?.verticalScrollPosition).toBeGreaterThan(0);
       expect(canvas.style.cursor).toBe('move');
+    });
+
+    dispatchCanvasMouseEvent(canvas, 'mouseup', startX - 10, startY - 70);
+  });
+
+  test('keeps vertical scrolling while linked and allows horizontal panning when unlinked', async () => {
+    const externalOrigin = document.createElement('div');
+    const externalScrollSubject = new Subject<PhylogeneticTreeScrollSubjectValue>({ origin: externalOrigin, position: 0 });
+    const onLinkStateChange = vi.fn();
+    const ref = createComponentRef();
+    const viewStates: PhylogeneticTreeViewState[] = [];
+    const { canvas } = await renderTree({
+      externalScrollSubject,
+      hasLink: true,
+      height: 240,
+      newick: LARGE_TREE_NEWICK,
+      onLinkStateChange,
+      onViewStateChange: (viewState) => {
+        viewStates.push(viewState);
+      },
+      ref,
+    });
+
+    expect(canvas).toBeInstanceOf(HTMLCanvasElement);
+
+    if (!(canvas instanceof HTMLCanvasElement)) {
+      throw new Error('Expected a rendered tree canvas.');
+    }
+
+    const startX = 320;
+    const startY = HEADER_HEIGHT + 160;
+    const linkedViewState = getLast(viewStates);
+
+    dispatchCanvasMouseEvent(canvas, 'mousedown', startX, startY);
+    dispatchCanvasMouseEvent(canvas, 'mousemove', startX - 10, startY - 70);
+
+    await waitForAssertion(() => {
+      expect(getLast(viewStates)?.horizontalScrollPosition).toBe(linkedViewState?.horizontalScrollPosition);
+      expect(getLast(viewStates)?.verticalScrollPosition).toBeGreaterThan(linkedViewState?.verticalScrollPosition ?? 0);
+    });
+
+    dispatchCanvasMouseEvent(canvas, 'mouseup', startX - 10, startY - 70);
+
+    ref.current?.unlink({ positionX: 0, positionY: 40, zoomLevel: 2 });
+
+    await waitForAssertion(() => {
+      expect(getLast(viewStates)?.zoomLevel).toBe(2);
+      expect(getLast(onLinkStateChange.mock.calls)?.[0]).toBe(false);
+    });
+
+    dispatchCanvasMouseEvent(canvas, 'mousedown', startX, startY);
+    dispatchCanvasMouseEvent(canvas, 'mousemove', startX - 10, startY - 70);
+
+    await waitForAssertion(() => {
+      expect(getLast(viewStates)?.verticalScrollPosition).toBeGreaterThan(40);
+      expect(getLast(viewStates)?.horizontalScrollPosition).toBeGreaterThan(0);
     });
 
     dispatchCanvasMouseEvent(canvas, 'mouseup', startX - 10, startY - 70);

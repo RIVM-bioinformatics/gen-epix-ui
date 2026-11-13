@@ -41,7 +41,6 @@ import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useTranslation } from 'react-i18next';
 import round from 'lodash/round';
-import intersection from 'lodash/intersection';
 
 import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import type { ContextMenuConfigWithPosition } from '../ContextMenu';
@@ -58,7 +57,6 @@ import {
   HistogramUtil,
 } from '../../../utils/HistogramUtil';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
-import { CaseUtil } from '../../../utils/CaseUtil';
 
 registerECharts([TooltipComponent, BarChart, LegendComponent, CanvasRenderer]);
 
@@ -151,6 +149,24 @@ export const HistogramWidget = () => {
   const series = useMemo(() => {
     return HistogramUtil.getSeries(aCol, bCol, completeCaseType, sortedData, conceptsA, conceptsB);
   }, [aCol, bCol, completeCaseType, sortedData, conceptsA, conceptsB]);
+
+  const caseIdTargets = useMemo(() => {
+    const targetsByCaseId = new Map<string, Array<{ dataIndex: number; seriesIndex: number }>>();
+    series?.forEach((serie, seriesIndex) => {
+      serie.xCaseIds.forEach((caseIds, dataIndex) => {
+        caseIds.forEach((caseId) => {
+          const targets = targetsByCaseId.get(caseId);
+          const target = { dataIndex, seriesIndex };
+          if (targets) {
+            targets.push(target);
+          } else {
+            targetsByCaseId.set(caseId, [target]);
+          }
+        });
+      });
+    });
+    return targetsByCaseId;
+  }, [series]);
 
   const histogramCaseCount = useMemo(() => {
     return HistogramUtil.getCaseCount(series);
@@ -313,16 +329,24 @@ export const HistogramWidget = () => {
   const onEvents = useMemo<EChartsReactProps['onEvents']>(() => {
 
     const getCaseIdsFromPayload = (payload: unknown): string[] => {
+      const eventData = payload as { dataIndex?: number; seriesIndex?: number } | null;
+      if (
+        typeof eventData?.seriesIndex === 'number' &&
+        Number.isInteger(eventData.seriesIndex) &&
+        typeof eventData.dataIndex === 'number' &&
+        Number.isInteger(eventData.dataIndex)
+      ) {
+        return series[eventData.seriesIndex]?.xCaseIds[eventData.dataIndex] ?? [];
+      }
+
       const colValues = HistogramUtil.getColValuesFromPayload(payload, conceptsA, conceptsB);
       if (!colValues) {
         return [];
       }
-      const caseIds = sortedData.filter(caseDbCase => {
-        const aValue = CaseUtil.getRowValue(caseDbCase.content, aCol, completeCaseType);
-        const bValue = CaseUtil.getRowValue(caseDbCase.content, bCol, completeCaseType);
-        return colValues.a === aValue.raw && colValues.b === bValue.raw;
-      }).map(caseDbCase => caseDbCase.id);
-      return caseIds;
+
+      const seriesIndex = conceptsA.findIndex(concept => concept.id === colValues.a);
+      const dataIndex = conceptsB.findIndex(concept => concept.id === colValues.b);
+      return series[seriesIndex]?.xCaseIds[dataIndex] ?? [];
     };
 
     return {
@@ -348,7 +372,7 @@ export const HistogramWidget = () => {
         });
       },
     };
-  }, [aCol, bCol, completeCaseType, conceptsA, conceptsB, highlight, sortedData]);
+  }, [conceptsA, conceptsB, highlight, series]);
 
   const onShowOnlyFocussedColValuesMenuItemClick = useCallback(async (onMenuClose: () => void) => {
     if (!focussedColValues || !aCol || !bCol) {
@@ -405,14 +429,11 @@ export const HistogramWidget = () => {
       }
 
       const highlightTargetsByDataIndex = new Map<number, Set<number>>();
-      series?.forEach((serie, serieIndex) => {
-        const castedSerie = serie as { data: unknown[]; xCaseIds: string[][] };
-        castedSerie.xCaseIds?.forEach((caseIds: string[], dataIndex: number) => {
-          if (intersection(caseIds, highlighting.caseIds).length) {
-            const seriesIndices = highlightTargetsByDataIndex.get(dataIndex) ?? new Set<number>();
-            seriesIndices.add(serieIndex);
-            highlightTargetsByDataIndex.set(dataIndex, seriesIndices);
-          }
+      highlighting.caseIds.forEach((caseId) => {
+        caseIdTargets.get(caseId)?.forEach(({ dataIndex, seriesIndex }) => {
+          const seriesIndices = highlightTargetsByDataIndex.get(dataIndex) ?? new Set<number>();
+          seriesIndices.add(seriesIndex);
+          highlightTargetsByDataIndex.set(dataIndex, seriesIndices);
         });
       });
 
@@ -452,7 +473,7 @@ export const HistogramWidget = () => {
     return () => {
       unsubscribe();
     };
-  }, [dashboardContext, series]);
+  }, [caseIdTargets, dashboardContext, series]);
 
   return (
     <DashboardWidget

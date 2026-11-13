@@ -37,7 +37,6 @@ import type {
   EChartsType,
 } from 'echarts';
 import { useTranslation } from 'react-i18next';
-import intersection from 'lodash/intersection';
 import round from 'lodash/round';
 import { useStore } from 'zustand';
 import type {
@@ -199,6 +198,25 @@ export const MapWidget = () => {
     [col, getPieChartRadius, sortedData, regions, stratification],
   );
 
+  const caseIdTargets = useMemo(() => {
+    const targetsByCaseId = new Map<string, Array<{ dataIndex: number; seriesIndex: number }>>();
+    series.forEach((serie, seriesIndex) => {
+      serie.data.forEach((dataArray, dataIndex) => {
+        const caseIds = (dataArray as GenEpixPieSeriesOptionEventData).genEpixData.caseIds;
+        caseIds.forEach((caseId) => {
+          const targets = targetsByCaseId.get(caseId);
+          const target = { dataIndex, seriesIndex };
+          if (targets) {
+            targets.push(target);
+          } else {
+            targetsByCaseId.set(caseId, [target]);
+          }
+        });
+      });
+    });
+    return targetsByCaseId;
+  }, [series]);
+
   const options = useMemo(() => {
     if (!regionSetShape) {
       return;
@@ -281,41 +299,39 @@ export const MapWidget = () => {
 
   useEffect(() => {
     const unsubscribe = dashboardContext.highlightSubject.subscribe((highlighting) => {
-      const foundSerieIndexes: number[] = [];
-      const foundDataIndexes: number[] = [];
-      series.forEach((serie, serieIndex) => {
-        serie.data.forEach((dataArray, dataIndex) => {
-          const caseIds = (dataArray as GenEpixPieSeriesOptionEventData).genEpixData.caseIds;
-          if (intersection(caseIds, highlighting.caseIds).length) {
-            if (!foundSerieIndexes.includes(serieIndex)) {
-              foundSerieIndexes.push(serieIndex);
-            }
-            foundDataIndexes.push(dataIndex);
-          }
-        });
-      });
-      if (!chartRef) {
+      const instance = chartRef?.getEchartsInstance();
+      if (!instance || highlighting.origin === DASHBOARD_COMPONENT_NAME.MAP) {
         return;
       }
 
-      if (highlighting.caseIds.length) {
-        chartRef.getEchartsInstance()?.dispatchAction({
-          dataIndex: foundDataIndexes,
-          seriesIndex: foundSerieIndexes,
-          type: 'highlight',
-        });
-      } else {
-        chartRef.getEchartsInstance()?.dispatchAction({
+      if (!highlighting.caseIds.length) {
+        instance.dispatchAction({
           type: 'downplay',
         });
+        return;
       }
+
+      const foundSerieIndexes = new Set<number>();
+      const foundDataIndexes = new Set<number>();
+      highlighting.caseIds.forEach((caseId) => {
+        caseIdTargets.get(caseId)?.forEach(({ dataIndex, seriesIndex }) => {
+          foundSerieIndexes.add(seriesIndex);
+          foundDataIndexes.add(dataIndex);
+        });
+      });
+
+      instance.dispatchAction({
+        dataIndex: [...foundDataIndexes],
+        seriesIndex: [...foundSerieIndexes],
+        type: 'highlight',
+      });
     });
 
     // use highlighting imperatively
     return () => {
       unsubscribe();
     };
-  }, [chartRef, dashboardContext.highlightSubject, series]);
+  }, [caseIdTargets, chartRef, dashboardContext.highlightSubject]);
 
   const titleMenu = useMemo<MenuItemData>(() => {
     const menu: MenuItemData = {
