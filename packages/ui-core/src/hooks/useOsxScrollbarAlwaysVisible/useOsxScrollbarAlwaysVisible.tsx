@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 
-export const useOsxScrollbarAlwaysVisible = () => {
+export const useOsxScrollbarAlwaysVisible = (nonce?: string) => {
   useLayoutEffect(() => {
     const css = `
       [data-scrollbar-setting="overlay"] ::-webkit-scrollbar {
@@ -20,6 +20,9 @@ export const useOsxScrollbarAlwaysVisible = () => {
       }
     `;
     const style = document.createElement('style');
+    if (nonce) {
+      style.nonce = nonce;
+    }
     style.textContent = css;
     document.head.appendChild(style);
     const outer = document.createElement('div');
@@ -34,6 +37,8 @@ export const useOsxScrollbarAlwaysVisible = () => {
 
     const detectedSetting = isAlwaysVisible ? 'always' : 'overlay';
     document.documentElement.setAttribute('data-scrollbar-setting', detectedSetting);
-  }, []); // Empty dependency array ensures this runs exactly once on mount
-
+    return () => {
+      style.remove();
+    };
+  }, [nonce]);
 };

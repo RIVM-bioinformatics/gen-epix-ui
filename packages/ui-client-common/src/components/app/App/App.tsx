@@ -25,8 +25,8 @@ export type AppProps = {
 };
 
 export const App = () => {
-  useOsxScrollbarAlwaysVisible();
   const config = useConfig();
+  useOsxScrollbarAlwaysVisible(config.nonce);
 
   const authenticationService = container.resolve(AuthenticationService);
   const logService = container.resolve(LogService);
