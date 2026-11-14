@@ -6,6 +6,7 @@ import { FilterAbstract } from '../abstracts/FilterAbstract';
 export class TextFilter extends FilterAbstract<string> implements Filter<string, string> {
   public filterValue: string = '';
   public initialFilterValue: string = '';
+  public override supportsMissingValuesFilter = true;
 
   public getPresentationValue(value?: unknown): string {
     const usedValue = value as string ?? this.filterValue;

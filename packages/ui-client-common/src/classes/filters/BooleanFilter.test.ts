@@ -54,6 +54,7 @@ describe('BooleanFilter', () => {
 
     expect(filter.filterValue).toBeNull();
     expect(filter.initialFilterValue).toBeNull();
+    expect(filter.supportsMissingValuesFilter).toBe(true);
   });
 
   it('uses the current value when the presentation value is omitted, undefined, or null', () => {

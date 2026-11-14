@@ -6,7 +6,7 @@ import { DashboardStoreLoader } from './DashboardStoreLoader';
 export type WithEpiDashboardStoreProps = DashboardStoreLoaderProps;
 
 export const withEpiDashboardStore = <P extends WithEpiDashboardStoreProps>(WrappedComponent: ComponentType<P>): ComponentType<P> => {
-  return (props: WithEpiDashboardStoreProps) => {
+  const WithEpiDashboardStore = (props: WithEpiDashboardStoreProps) => {
     return (
       <DashboardStoreLoader
         caseSet={props.caseSet}
@@ -18,4 +18,6 @@ export const withEpiDashboardStore = <P extends WithEpiDashboardStoreProps>(Wrap
       </DashboardStoreLoader>
     );
   };
+
+  return WithEpiDashboardStore;
 };

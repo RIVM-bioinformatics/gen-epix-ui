@@ -51,6 +51,7 @@ import {
 } from '../../../dataHooks/useDataCollectionsQuery';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
+import { CASE_INFO_DIALOG_TAB_NAME } from '../../../models/case-db.models';
 
 import { CaseCaseSetInfo } from './CaseCaseSetInfo';
 import { CaseInfoForm } from './CaseInfoForm';
@@ -59,12 +60,6 @@ import { CaseContent } from './CaseContent';
 import { CaseSharingInfo } from './CaseSharingInfo';
 import { CaseSharingForm } from './CaseSharingForm';
 
-
-export enum CASE_INFO_DIALOG_TAB_NAME {
-  EDIT = 'EDIT',
-  INFO = 'INFO',
-  SHARING = 'SHARING',
-}
 
 export interface CaseInfoDialogOpenProps {
   caseId: string;

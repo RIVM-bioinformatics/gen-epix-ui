@@ -92,7 +92,7 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
   const dashboardStore = use(DashboardStoreContext);
   const fetchData = useStore(dashboardStore, useShallow((state) => state.fetchData));
   const completeCaseType = useStore(dashboardStore, (state) => state.completeCaseType);
-  const activeFiltersCount = useStore(dashboardStore, (state) => state.filters.filter(f => !f.isInitialFilterValue()).length);
+  const activeFiltersCount = useStore(dashboardStore, (state) => state.filters.filter(filter => filter.isFilterActive()).length);
   const isMaxResultsExceeded = useStore(dashboardStore, (state) => state.isMaxResultsExceeded);
   const isMaxResultsExceededDismissed = useStore(dashboardStore, (state) => state.isMaxResultsExceededDismissed);
 

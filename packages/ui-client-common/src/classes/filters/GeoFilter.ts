@@ -14,6 +14,7 @@ export class GeoFilter extends FilterAbstract<string[]> implements Filter<string
   public filterValue: string[] = [];
   public initialFilterValue: string[] = [];
   public options: AutoCompleteOption[];
+  public override supportsMissingValuesFilter = true;
   private readonly optionsMap: Map<string, string> = new Map<string, string>();
 
   public constructor(kwArgs: GeoFilterKwArgs) {
