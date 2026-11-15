@@ -31,6 +31,7 @@ describe('GeoFilter', () => {
     expect(firstFilter.initialFilterValue).toEqual([]);
     expect(firstFilter.filterValue).not.toBe(firstFilter.initialFilterValue);
     expect(firstFilter.options).toBe(OPTIONS);
+    expect(firstFilter.supportsMissingValuesFilter).toBe(true);
 
     firstFilter.filterValue.push('alpha');
     expect(secondFilter.filterValue).toEqual([]);

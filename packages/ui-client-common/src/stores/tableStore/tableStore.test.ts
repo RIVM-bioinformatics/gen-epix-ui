@@ -43,7 +43,7 @@ type TestNavigateFunction = (destination: number | To, options?: NavigateOptions
 interface TestRow {
   age: number;
   id: string;
-  name: string;
+  name: null | string;
 }
 
 const INITIAL_LOCATION = `${window.location.pathname}${window.location.search}${window.location.hash}`;
@@ -132,12 +132,18 @@ describe('createTableStoreInitialState', () => {
       frontendFilterPriorities: [DEFAULT_FILTER_GROUP],
       frontendFilters: { [DEFAULT_FILTER_GROUP]: [] },
       selectedIds: [],
+      showMissingValuesFilter: false,
       sortByField: 'name',
       sortDirection: 'desc',
       sortedData: [],
       sortedIds: null,
     });
     expect(initialState.idSelectorCallback).toBe(idSelectorCallback);
+
+    expect(createTableStoreInitialState<TestRow>({
+      idSelectorCallback,
+      showMissingValuesFilter: true,
+    }).showMissingValuesFilter).toBe(true);
   });
 
   it.each(['asc', 'desc'] as const)('reads a valid %s sort direction from the URL', (sortDirection) => {
@@ -451,6 +457,35 @@ describe('table store filtering and data actions', () => {
     expect(store.getState().sortedData).toEqual(rows.slice(0, 2));
   });
 
+  it('filters only missing rows or missing rows alongside selected values', async () => {
+    const store = createTestStore({ showMissingValuesFilter: true });
+    const filter = createTextFilter('name');
+    const rows: TestRow[] = [
+      ...createRows(),
+      { age: 4, id: 'row-4', name: null },
+    ];
+
+    store.getState().setColumns([createTextColumn('name')]);
+    store.getState().setFilters([filter], [], [DEFAULT_FILTER_GROUP]);
+    store.getState().setBaseData(rows);
+
+    await store.getState().setFilterValues({
+      [filter.id]: filter.initialFilterValue,
+      [filter.includeMissingValuesFormFieldName]: true,
+    });
+    expect(store.getState().filteredData[DEFAULT_FILTER_GROUP]).toEqual([rows[3]]);
+
+    await store.getState().setFilterValues({
+      [filter.id]: 'Alice',
+      [filter.includeMissingValuesFormFieldName]: true,
+    });
+    expect(store.getState().filteredData[DEFAULT_FILTER_GROUP]).toEqual([rows[0], rows[3]]);
+
+    await store.getState().resetFilters();
+    expect(filter.includeMissingValues).toBe(false);
+    expect(store.getState().filteredData[DEFAULT_FILTER_GROUP]).toEqual(rows);
+  });
+
   it('uses a column value getter with its row context and index', () => {
     const store = createTestStore();
     const filter = createTextFilter('name');
@@ -553,6 +588,58 @@ describe('table store filtering and data actions', () => {
     expect(idFilter.filterValue).toBe('');
   });
 
+  it('serializes and restores missing-value selections in the filter URL state', async () => {
+    setLocation('/cases');
+    const navigatorFunction = createNavigateFunction();
+    const store = createTestStore({
+      navigatorFunction,
+      showMissingValuesFilter: true,
+    });
+    const filter = createTextFilter('name');
+    store.getState().setFilters([filter], [], [DEFAULT_FILTER_GROUP]);
+
+    await store.getState().setFilterValues({
+      [filter.id]: filter.initialFilterValue,
+      [filter.includeMissingValuesFormFieldName]: true,
+    });
+
+    const navigatedTo = navigatorFunction.mock.calls[0]?.[0];
+    if (typeof navigatedTo !== 'string') {
+      throw new TypeError('Expected navigation to receive a URL string.');
+    }
+    const serializedFilterValue = new URL(navigatedTo, window.location.origin).searchParams.get(filter.id);
+    if (!serializedFilterValue) {
+      throw new TypeError('Expected the missing-value selection in the URL.');
+    }
+
+    setLocation(`/cases?${filter.id}=${encodeURIComponent(serializedFilterValue)}`);
+    const restoredFilter = createTextFilter('name');
+    const restoredStore = createTestStore({
+      navigatorFunction: createNavigateFunction(),
+      showMissingValuesFilter: true,
+    });
+    restoredStore.getState().setFilters([restoredFilter], [], [DEFAULT_FILTER_GROUP]);
+
+    expect(restoredFilter.filterValue).toBe('');
+    expect(restoredFilter.includeMissingValues).toBe(true);
+  });
+
+  it('fetches backend data when only the missing-value selection changes', async () => {
+    const store = createTestStore({ showMissingValuesFilter: true });
+    const filter = createTextFilter('name', DEFAULT_FILTER_GROUP, FILTER_MODE.BACKEND);
+    const fetchData = vi.fn();
+    store.getState().setFilters([filter], [], [DEFAULT_FILTER_GROUP]);
+    store.setState({ fetchData });
+
+    await store.getState().setFilterValues({
+      [filter.id]: filter.initialFilterValue,
+      [filter.includeMissingValuesFormFieldName]: true,
+    });
+
+    expect(fetchData).toHaveBeenCalledOnce();
+    expect(filter.includeMissingValues).toBe(true);
+  });
+
   it('updates multiple filter URL values together and removes filters restored to their initial value', async () => {
     setLocation('/?keep=1&name=%22old%22&age=');
     const navigatorFunction = createNavigateFunction();
@@ -616,6 +703,52 @@ describe('table store filtering and data actions', () => {
     expect(firstFilter.filterValue).toBe('selected');
     expect(secondFilter.filterValue).toBe('');
     expect(store.getState().visibleFilterWithinDimensions).toEqual({ person: 'name' });
+  });
+
+  it('preserves Missing when updating a filter without an explicit Missing value', async () => {
+    const store = createTestStore({ showMissingValuesFilter: true });
+    const filter = createTextFilter('name');
+    store.getState().setFilters([filter], [], [DEFAULT_FILTER_GROUP]);
+    filter.setIncludeMissingValues(true);
+
+    await store.getState().setFilterValue('name', 'selected');
+
+    expect(filter.filterValue).toBe('selected');
+    expect(filter.includeMissingValues).toBe(true);
+  });
+
+  it('sets Missing on a filter and clears it from sibling filters in its dimension', async () => {
+    const store = createTestStore({ showMissingValuesFilter: true });
+    const firstFilter = createTextFilter('name', DEFAULT_FILTER_GROUP, FILTER_MODE.FRONTEND, 'person');
+    const secondFilter = createTextFilter('age', DEFAULT_FILTER_GROUP, FILTER_MODE.FRONTEND, 'person');
+    const dimension: FilterDimension = {
+      allowMultipleVisibleFilters: false,
+      allowOnlyPreferredFilter: false,
+      description: 'Person filters',
+      filterIds: ['name', 'age'],
+      id: 'person',
+      label: 'Person',
+      preferredFilterId: 'name',
+    };
+    store.getState().setFilters([firstFilter, secondFilter], [dimension], [DEFAULT_FILTER_GROUP]);
+    secondFilter.setIncludeMissingValues(true);
+
+    await store.getState().setFilterValue('name', 'selected', true);
+
+    expect(firstFilter.filterValue).toBe('selected');
+    expect(firstFilter.includeMissingValues).toBe(true);
+    expect(secondFilter.filterValue).toBe('');
+    expect(secondFilter.includeMissingValues).toBe(false);
+  });
+
+  it('rejects non-boolean Missing form values', async () => {
+    const store = createTestStore({ showMissingValuesFilter: true });
+    const filter = createTextFilter('name');
+    store.getState().setFilters([filter], [], [DEFAULT_FILTER_GROUP]);
+
+    await expect(store.getState().setFilterValues({
+      [filter.includeMissingValuesFormFieldName]: 'true',
+    })).rejects.toThrowError(new TypeError('Missing-value filter setting must be a boolean.'));
   });
 
   it('leaves existing filter values unchanged when an unknown filter ID is set', async () => {

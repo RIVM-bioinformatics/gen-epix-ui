@@ -21,6 +21,7 @@ describe('TextFilter', () => {
 
     expect(filter.filterValue).toBe('');
     expect(filter.initialFilterValue).toBe('');
+    expect(filter.supportsMissingValuesFilter).toBe(true);
   });
 
   it('presents the current value when input is omitted, undefined, or null', () => {

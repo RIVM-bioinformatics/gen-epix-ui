@@ -16,6 +16,7 @@ export class NumberRangeFilter extends FilterAbstract<[number, number]> implemen
   public initialFilterValue: [number, number] = [null, null];
   public max: number;
   public min: number;
+  public override supportsMissingValuesFilter = true;
 
   public constructor(kwArgs: NumberRangeFilterKwArgs) {
     super({

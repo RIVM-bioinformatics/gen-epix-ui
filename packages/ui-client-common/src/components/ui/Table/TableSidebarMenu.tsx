@@ -24,7 +24,7 @@ export type TableSidebarMenuProps = {
 export const TableSidebarMenu = <TRowData, TDataContext = null>({ extraSidebarMenuItems }: TableSidebarMenuProps) => {
   const tableStore = useTableStoreContext<TRowData, TDataContext>();
 
-  const activeFiltersCount = useStore(tableStore, (state) => state.filters.filter(f => !f.isInitialFilterValue()).length);
+  const activeFiltersCount = useStore(tableStore, (state) => state.filters.filter(filter => filter.isFilterActive()).length);
 
   const [isTableFiltersSidebarItemOpen, setIsTableFiltersSidebarItemOpen] = useState(false);
 

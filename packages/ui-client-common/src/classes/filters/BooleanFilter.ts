@@ -7,6 +7,7 @@ import type { Filter } from '../../models/filter.models';
 export class BooleanFilter extends FilterAbstract<boolean> implements Filter<boolean, boolean> {
   public filterValue: boolean = null;
   public initialFilterValue: boolean = null;
+  public override supportsMissingValuesFilter = true;
 
   public getPresentationValue(value?: unknown, t?: TFunction<'translation', undefined>): string {
     const usedValue = value as string ?? this.filterValue;
