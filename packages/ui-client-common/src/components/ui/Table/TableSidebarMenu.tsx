@@ -13,27 +13,42 @@ import {
 import { useTableStoreContext } from '../../../stores/tableStore';
 
 import {
+  TableDownloadSidebarItem,
+  TableDownloadSidebarItemIcon,
+} from './TableDownloadSidebarItem';
+import {
   TableFiltersSidebarItem,
   TableFiltersSidebarItemIcon,
 } from './TableFiltersSidebarItem';
 
+
 export type TableSidebarMenuProps = {
+  readonly downloadAsFileName?: string;
   readonly extraSidebarMenuItems?: ReactNode;
 };
 
-export const TableSidebarMenu = <TRowData, TDataContext = null>({ extraSidebarMenuItems }: TableSidebarMenuProps) => {
+export const TableSidebarMenu = <TRowData, TDataContext = null>({ downloadAsFileName, extraSidebarMenuItems }: TableSidebarMenuProps) => {
   const tableStore = useTableStoreContext<TRowData, TDataContext>();
 
   const activeFiltersCount = useStore(tableStore, (state) => state.filters.filter(filter => filter.isFilterActive()).length);
 
   const [isTableFiltersSidebarItemOpen, setIsTableFiltersSidebarItemOpen] = useState(false);
+  const [isTableDownloadSidebarItemOpen, setIsTableDownloadSidebarItemOpen] = useState(false);
 
-  const onEpiDashboardFilterSidebarClose = useCallback(() => {
+  const onFilterSidebarClose = useCallback(() => {
     setIsTableFiltersSidebarItemOpen(false);
   }, []);
 
-  const onEpiDashboardOpenFilterSidebarButtonClick = useCallback(() => {
+  const onDownloadSidebarClose = useCallback(() => {
+    setIsTableDownloadSidebarItemOpen(false);
+  }, []);
+
+  const onOpenFilterSidebarButtonClick = useCallback(() => {
     setIsTableFiltersSidebarItemOpen(true);
+  }, []);
+
+  const onOpenDownloadSidebarButtonClick = useCallback(() => {
+    setIsTableDownloadSidebarItemOpen(true);
   }, []);
 
   return (
@@ -44,15 +59,27 @@ export const TableSidebarMenu = <TRowData, TDataContext = null>({ extraSidebarMe
           badgeContent={activeFiltersCount}
           first
           icon={<TableFiltersSidebarItemIcon />}
-          onClick={onEpiDashboardOpenFilterSidebarButtonClick}
+          onClick={onOpenFilterSidebarButtonClick}
           testIdAttributes={{ name: 'filters' }}
           title={t`Open filters`}
+        />
+        <SidebarMenuItem
+          badgeColor={'secondary'}
+          icon={<TableDownloadSidebarItemIcon />}
+          onClick={onOpenDownloadSidebarButtonClick}
+          testIdAttributes={{ name: 'download' }}
+          title={t`Open download`}
         />
         {extraSidebarMenuItems}
       </SidebarMenu>
       <TableFiltersSidebarItem
-        onClose={onEpiDashboardFilterSidebarClose}
+        onClose={onFilterSidebarClose}
         open={isTableFiltersSidebarItemOpen}
+      />
+      <TableDownloadSidebarItem
+        downloadAsFileName={downloadAsFileName}
+        onClose={onDownloadSidebarClose}
+        open={isTableDownloadSidebarItemOpen}
       />
     </>
   );

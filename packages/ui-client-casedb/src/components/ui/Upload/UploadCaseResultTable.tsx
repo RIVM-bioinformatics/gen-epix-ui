@@ -316,6 +316,7 @@ export const UploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, com
       disableEllipsis: true,
       frozen: TABLE_COLUMN_FROZEN.LEFT,
       headerName: '',
+      hideInDownload: true,
       hideInFilter: true,
       id: 'gen-epix-ui-issue',
       isInitiallyVisible: true,
@@ -330,6 +331,7 @@ export const UploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, com
       disableEllipsis: true,
       frozen: TABLE_COLUMN_FROZEN.LEFT,
       headerName: '',
+      hideInDownload: true,
       hideInFilter: true,
       id: 'gen-epix-ui-id',
       isInitiallyVisible: true,
@@ -378,6 +380,7 @@ export const UploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, com
             onClick: onTableCustomHeaderIconClick,
           } : undefined,
           headerName: col.code,
+          hideInDownload: true,
           hideInFilter: true,
           id: col.id,
           isInitiallyVisible,
@@ -392,6 +395,7 @@ export const UploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, com
     if (caseUploadResults.some(vc => vc.id)) {
       tableCols.push({
         headerName: t('case_id'),
+        hideInDownload: true,
         hideInFilter: true,
         id: 'case_id',
         isInitiallyVisible: true,

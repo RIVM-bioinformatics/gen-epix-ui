@@ -46,6 +46,7 @@ import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import CollectionIcon from '../../assets/icons/CollectionIcon.svg?react';
 import type { CaseSetInfoDialogRefMethods } from '../../components/ui/CaseSetInfoDialog';
@@ -264,7 +265,9 @@ export const EventsPage = () => {
                     onRowClick={onRowClick}
                   />
                 </Box>
-                <TableSidebarMenu />
+                <TableSidebarMenu
+                  downloadAsFileName={`${StringUtil.createSlug(config.applicationName)}-${t`events`}`}
+                />
               </>
             )}
 

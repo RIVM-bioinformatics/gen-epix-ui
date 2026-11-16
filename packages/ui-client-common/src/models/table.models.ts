@@ -167,6 +167,7 @@ interface TableColumnBase<TRowData, TValue, TDataContext = null, TColumnContext 
   frozen?: TABLE_COLUMN_FROZEN;
   headerName?: string;
   headerTooltipContent?: string;
+  hideInDownload?: boolean;
   hideInFilter?: boolean;
   id?: string;
   isInitiallyVisible: boolean;

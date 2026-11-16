@@ -246,6 +246,7 @@ export const UploadMapSequences = () => {
     if (sampleIdCol && caseHasColumnContent(selectedValidatedCases, sampleIdCol)) {
       tableCols.push({
         headerName: sampleIdCol.label,
+        hideInDownload: true,
         hideInFilter: true,
         id: sampleIdCol.id,
         isInitiallyVisible: true,
@@ -260,6 +261,7 @@ export const UploadMapSequences = () => {
       tableCols.push({
         cellTitleGetter: () => null,
         headerName: col.label,
+        hideInDownload: true,
         hideInFilter: true,
         id: col.id,
         isInitiallyVisible: true,
@@ -275,6 +277,7 @@ export const UploadMapSequences = () => {
       tableCols.push({
         cellTitleGetter: () => null,
         headerName: col.label,
+        hideInDownload: true,
         hideInFilter: true,
         id: col.id,
         isInitiallyVisible: true,

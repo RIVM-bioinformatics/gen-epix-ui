@@ -14,16 +14,16 @@ import {
 import { useTranslation } from 'react-i18next';
 import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 
-import type { HasCellDataFn } from '../../models/table.models';
-import { useTableStoreContext } from '../../stores/tableStore';
-import { TableUtil } from '../../utils/TableUtil';
+import type { HasCellDataFn } from '../../../models/table.models';
+import { useTableStoreContext } from '../../../stores/tableStore';
+import { TableUtil } from '../../../utils/TableUtil';
 
 
-export type UseColumnsMenuProps<TRowData, TDataContext = null> = {
+export type UseTableColumnsMenuProps<TRowData, TDataContext = null> = {
   readonly hasCellData?: HasCellDataFn<TRowData, TDataContext>;
 };
 
-export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: UseColumnsMenuProps<TRowData, TDataContext>): MenuItemData => {
+export const useTableColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: UseTableColumnsMenuProps<TRowData, TDataContext>): MenuItemData => {
   const tableStore = useTableStoreContext<TRowData, TDataContext>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));

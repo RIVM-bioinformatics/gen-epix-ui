@@ -21,7 +21,7 @@ import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-me
 import type { TableColumn } from '@gen-epix/ui-client-common/models/table.models';
 import { AuthorizationService } from '@gen-epix/ui-client-common/classes/services/AuthorizationService';
 import { FeatureFlagsService } from '@gen-epix/ui-client-common/classes/services/FeatureFlagsService';
-import { useColumnsMenu } from '@gen-epix/ui-client-common/hooks/useColumnsMenu';
+import { useTableColumnsMenu } from '@gen-epix/ui-client-common/components/ui/Table';
 import last from 'lodash/last';
 
 import { EventBusService } from '../../../classes/services/EventBusService';
@@ -68,7 +68,7 @@ export const LineListWidgetPrimaryMenu = ({
   }, [setFilterValue, selectedIds, setSelectedIds]);
 
   const hasSelectionFilter = filters.some((filter) => filter instanceof SelectionFilter && filter.filterValue.length > 0);
-  const columnsMenuItem = useColumnsMenu({ hasCellData });
+  const columnsMenuItem = useTableColumnsMenu({ hasCellData });
 
   const similarCaseIds = useMemo(() => findSimilarCasesResults?.flatMap((result) => result.similarCaseIds) || [], [findSimilarCasesResults]);
 

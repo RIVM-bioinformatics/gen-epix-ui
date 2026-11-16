@@ -51,6 +51,7 @@ import { DataUtil } from '@gen-epix/ui-core/utils/DataUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 import type { OptionBase } from '@gen-epix/ui-core-form/models/form.models';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import type { CaseTypeInfoDialogWithLoaderRefMethods } from '../../components/ui/CaseTypeInfoDialog';
 import { CaseTypeInfoDialogWithLoader } from '../../components/ui/CaseTypeInfoDialog';
@@ -335,7 +336,9 @@ export const CasesPage = () => {
             )}
             {caseTypes?.length > 0 && (
               <>
-                <TableSidebarMenu />
+                <TableSidebarMenu
+                  downloadAsFileName={`${StringUtil.createSlug(config.applicationName)}-${t`cases`}`}
+                />
                 <Box
                   sx={{
                     height: '100%',

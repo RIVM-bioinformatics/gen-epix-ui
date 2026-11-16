@@ -10,6 +10,7 @@ import {
 import type { ReactElement } from 'react';
 import { t } from 'i18next';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
+import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
 import type { OptionBase } from '@gen-epix/ui-core-form/models/form.models';
 
 import { DateFilter } from '../../classes/filters/DateFilter';
@@ -35,6 +36,14 @@ import type { ConfigBase } from '../../models/config.models';
 import { DependencyContainerUtil } from '../DependencyContainerUtil';
 
 import { TableUtil } from './TableUtil';
+
+const { writeXlsxFileMock } = vi.hoisted(() => ({
+  writeXlsxFileMock: vi.fn(),
+}));
+
+vi.mock('write-excel-file/browser', () => ({
+  default: writeXlsxFileMock,
+}));
 
 interface TestRow {
   active: boolean;
@@ -87,6 +96,11 @@ const createDimension = (id: string, columnIds: string[]): TableColumnDimension 
   label: id,
 });
 
+const decodeCsvDataUrl = (url: string): string => {
+  const encodedCsv = url.split(',')[1] ?? '';
+  return new TextDecoder().decode(Uint8Array.from(atob(encodedCsv), character => character.charCodeAt(0)));
+};
+
 const setLocation = (url: string) => {
   window.history.replaceState({}, '', url);
 };
@@ -109,6 +123,7 @@ beforeAll(() => {
 
 afterEach(() => {
   vi.restoreAllMocks();
+  writeXlsxFileMock.mockReset();
   window.history.replaceState({}, '', INITIAL_LOCATION);
 });
 
@@ -602,6 +617,129 @@ describe('TableUtil filters and cell values', () => {
       dataContext: null,
       direction: 'asc',
     })(falseRow, trueRow)).toBe(0);
+  });
+});
+
+describe('TableUtil downloads', () => {
+  it('exports visible downloadable columns using display, value, then raw values', () => {
+    const dataContext = { prefix: 'display:' };
+    const displayColumn: TableColumnText<TestRow, typeof dataContext> = {
+      ...TableUtil.createTextColumn<TestRow, typeof dataContext>({ id: 'name', name: 'Display name' }),
+      displayValueGetter: ({ dataContext: context, row }) => `${context.prefix}${row.name}`,
+      valueGetter: ({ row }) => `value:${row.name}`,
+    };
+    const valueColumn: TableColumnNumber<TestRow, typeof dataContext> = {
+      ...TableUtil.createNumberColumn<TestRow, typeof dataContext>({ id: 'score', name: 'Computed score' }),
+      valueGetter: ({ row }) => row.score * 2,
+    };
+    const hiddenColumn: TableColumnText<TestRow, typeof dataContext> = {
+      ...TableUtil.createTextColumn<TestRow, typeof dataContext>({ id: 'id', name: 'Hidden' }),
+      hideInDownload: true,
+    };
+    const columns: TableColumn<TestRow, typeof dataContext>[] = [
+      TableUtil.createActionsColumn<TestRow, typeof dataContext>({ getActions: () => [], t }),
+      TableUtil.createTextColumn<TestRow, typeof dataContext>({ id: 'tags', name: 'Tags' }),
+      hiddenColumn,
+      displayColumn,
+      valueColumn,
+      TableUtil.createReadableIndexColumn<TestRow, typeof dataContext>(),
+      TableUtil.createSelectableColumn<TestRow, typeof dataContext>(),
+    ];
+    const createDownloadUrl = vi.spyOn(DownloadUtil, 'createDownloadUrl').mockImplementation(() => undefined);
+
+    TableUtil.downloadAsCSV(
+      [createRow({ name: 'Alpha', score: 2, tags: 'tag one,tag two' })],
+      [
+        FIXED_COLUMN_ID.ACTIONS,
+        'tags',
+        'id',
+        'name',
+        'score',
+        FIXED_COLUMN_ID.READABLE_INDEX,
+        FIXED_COLUMN_ID.ROW_SELECT,
+      ],
+      columns,
+      'rows.csv',
+      dataContext,
+    );
+
+    const [dataUrl, fileName] = createDownloadUrl.mock.calls[0] ?? [];
+    expect(fileName).toBe('rows.csv');
+    expect(dataUrl).toMatch(/^data:text\/csv;base64,/);
+    expect(decodeCsvDataUrl(dataUrl)).toBe('Tags,Display name,Computed score\n"tag one,tag two",display:Alpha,4\n');
+  });
+
+  it('exports option labels unless a display value getter is set', () => {
+    const optionsColumn = TableUtil.createOptionsColumn<TestRow>({
+      id: 'options',
+      name: 'Options',
+      options: OPTION_VALUES,
+    });
+    const optionsGetterColumn: TableColumnOptions<TestRow> = {
+      ...TableUtil.createOptionsColumn<TestRow>({
+        id: 'allTags',
+        name: 'Computed options',
+        options: OPTION_VALUES,
+      }),
+      valueGetter: () => 'b',
+    };
+    const displayOptionsColumn: TableColumnOptions<TestRow> = {
+      ...TableUtil.createOptionsColumn<TestRow>({
+        id: 'tags',
+        name: 'Display options',
+        options: OPTION_VALUES,
+      }),
+      displayValueGetter: () => 'b',
+    };
+    const createDownloadUrl = vi.spyOn(DownloadUtil, 'createDownloadUrl').mockImplementation(() => undefined);
+
+    TableUtil.downloadAsCSV(
+      [createRow({ options: ['a', 'c'] })],
+      ['options', 'allTags', 'tags'],
+      [optionsColumn, optionsGetterColumn, displayOptionsColumn],
+      'options.csv',
+    );
+
+    const [dataUrl] = createDownloadUrl.mock.calls[0] ?? [];
+    expect(decodeCsvDataUrl(dataUrl)).toBe('Options,Computed options,Display options\n"Alpha, Gamma",Beta,b\n');
+  });
+
+  it('writes typed values to an Excel workbook and downloads it', async () => {
+    writeXlsxFileMock.mockReturnValue({
+      toBlob: async () => Promise.resolve(new Blob(['workbook'])),
+    });
+    const arrayBufferToBase64 = vi.spyOn(DownloadUtil, 'arrayBufferToBase64').mockReturnValue('excel-base64');
+    const createDownloadUrl = vi.spyOn(DownloadUtil, 'createDownloadUrl').mockImplementation(() => undefined);
+    const scoreColumn: TableColumnNumber<TestRow> = {
+      ...TableUtil.createNumberColumn<TestRow>({ id: 'score', name: 'Score' }),
+      valueGetter: ({ row }) => row.score + 0.5,
+    };
+    const dateColumn = TableUtil.createDateColumn<TestRow>({
+      dateFormat: DATE_FORMAT.DATE,
+      id: 'date',
+      name: 'Date',
+    });
+
+    await TableUtil.downloadAsExcel([createRow()], ['score', 'date'], [scoreColumn, dateColumn], 'rows.xlsx');
+
+    expect(writeXlsxFileMock).toHaveBeenCalledWith(
+      [
+        [{ type: String, value: 'Score' }, { type: String, value: 'Date' }],
+        [
+          { type: Number, value: 1.5 },
+          { format: DATE_FORMAT.DATE, type: Date, value: new Date('2020-06-01T10:00:00.000Z') },
+        ],
+      ],
+      {
+        columns: [{ width: 20 }, { width: 20 }],
+        stickyRowsCount: 1,
+      },
+    );
+    expect(arrayBufferToBase64).toHaveBeenCalledOnce();
+    expect(createDownloadUrl).toHaveBeenCalledWith(
+      'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,excel-base64',
+      'rows.xlsx',
+    );
   });
 });
 

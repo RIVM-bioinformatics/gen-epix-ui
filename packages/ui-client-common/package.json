@@ -254,10 +254,6 @@
       "types": "./src/hoc/withPermissions/index.ts",
       "import": "./src/hoc/withPermissions/index.ts"
     },
-    "./hooks/useColumnsMenu": {
-      "types": "./src/hooks/useColumnsMenu/index.ts",
-      "import": "./src/hooks/useColumnsMenu/index.ts"
-    },
     "./hooks/useConfig": {
       "types": "./src/hooks/useConfig/index.ts",
       "import": "./src/hooks/useConfig/index.ts"
@@ -499,6 +495,7 @@
     "@tanstack/react-query": "5.107.1",
     "classnames": "2.5.1",
     "clsx": "2.1.1",
+    "csv": "6.6.4",
     "date-fns": "4.4.0",
     "immer": "11.2.10",
     "lodash": "4.18.1",
@@ -506,6 +503,7 @@
     "reflect-metadata": "0.2.2",
     "use-debounce": "10.1.1",
     "uuid": "14.0.3",
+    "write-excel-file": "4.1.1",
     "zustand": "5.1.0"
   },
   "devDependencies": {
@@ -835,10 +833,6 @@
       "./hoc/withPermissions": {
         "types": "./dist/hoc/withPermissions/index.d.ts",
         "import": "./dist/hoc/withPermissions/index.js"
-      },
-      "./hooks/useColumnsMenu": {
-        "types": "./dist/hooks/useColumnsMenu/index.d.ts",
-        "import": "./dist/hooks/useColumnsMenu/index.js"
       },
       "./hooks/useConfig": {
         "types": "./dist/hooks/useConfig/index.d.ts",

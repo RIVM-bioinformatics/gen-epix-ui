@@ -1,7 +1,7 @@
 import type { BoxProps } from '@mui/material';
 import { NestedDropdown } from '@gen-epix/ui-core-components/components/NestedMenu';
 
-import { useColumnsMenu } from '../../../hooks/useColumnsMenu';
+import { useTableColumnsMenu } from './useTableColumnsMenu';
 
 export type TableMenuProps = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -9,7 +9,7 @@ export type TableMenuProps = {
 };
 
 export const TableMenu = ({ ContainerProps }: TableMenuProps) => {
-  const columnsMenu = useColumnsMenu({});
+  const columnsMenu = useTableColumnsMenu({});
 
   return (
     <NestedDropdown

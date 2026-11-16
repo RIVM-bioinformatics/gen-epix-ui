@@ -11,3 +11,4 @@ export * from './TableHeaderCell';
 export * from './TableHeaderFilter';
 export * from './TableMenu';
 export * from './TableSidebarMenu';
+export * from './useTableColumnsMenu';

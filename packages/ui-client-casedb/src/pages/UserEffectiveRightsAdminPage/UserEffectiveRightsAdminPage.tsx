@@ -39,6 +39,7 @@ import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { UserUtil } from '@gen-epix/ui-client-common/utils/UserUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import type {
   UsersEffectiveRightsDetailsDialogOpenProps,
@@ -227,6 +228,7 @@ export const UserEffectiveRightsAdminPage = () => {
       TableUtil.createOptionsColumn({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
       {
         headerName: t`Case type sets`,
+        hideInDownload: true,
         hideInFilter: true,
         id: 'case_type_set_ids',
         isInitiallyVisible: true,
@@ -236,6 +238,7 @@ export const UserEffectiveRightsAdminPage = () => {
       },
       {
         headerName: t`Read column sets`,
+        hideInDownload: true,
         hideInFilter: true,
         id: 'read_col_set_ids',
         isInitiallyVisible: true,
@@ -245,6 +248,7 @@ export const UserEffectiveRightsAdminPage = () => {
       },
       {
         headerName: t`Write column sets`,
+        hideInDownload: true,
         hideInFilter: true,
         id: 'write_col_set_ids',
         isInitiallyVisible: true,
@@ -312,7 +316,9 @@ export const UserEffectiveRightsAdminPage = () => {
             isLoading={isUserLoading}
             loadables={loadables}
           >
-            <TableSidebarMenu />
+            <TableSidebarMenu
+              downloadAsFileName={`${StringUtil.createSlug(config.applicationName)}-${t`user-effective-rights`}`}
+            />
             <Box
               sx={{
                 height: '100%',

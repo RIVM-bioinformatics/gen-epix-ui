@@ -30,6 +30,7 @@ import { CommonDbPermissionType } from '@gen-epix/api-commondb';
 import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/test-id.models';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { RouterService } from '../../classes/services/RouterService';
@@ -655,7 +656,9 @@ export const CrudPage = <
             error={error}
             isLoading={isLoading}
           >
-            <TableSidebarMenu />
+            <TableSidebarMenu
+              downloadAsFileName={`${StringUtil.createSlug(config.applicationName)}-${StringUtil.createSlug(Array.isArray(title) ? title.join('-') : title)}`}
+            />
             <Box
               sx={{
                 height: '100%',

@@ -9,8 +9,11 @@ import type { TFunction } from 'i18next';
 import difference from 'lodash/difference';
 import sumBy from 'lodash/sumBy';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
 import type { OptionBase } from '@gen-epix/ui-core-form/models/form.models';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
+import { stringify } from 'csv/browser/esm/sync';
+import writeXlsxFile from 'write-excel-file/browser';
 
 import {
   DEFAULT_FILTER_GROUP,
@@ -404,6 +407,47 @@ export class TableUtil {
     };
   }
 
+  public static downloadAsCSV<TRowData, TDataContext = null>(sortedData: TRowData[], visibleColumnIds: string[], columns: TableColumn<TRowData, TDataContext>[], fileName: string, dataContext: TDataContext = null): void {
+    const data = TableUtil.getExportData(sortedData, visibleColumnIds, columns, dataContext);
+    const csv = stringify(data, {
+      defaultEncoding: 'utf-8',
+    });
+    const base64 = DownloadUtil.arrayBufferToBase64(new TextEncoder().encode(csv).buffer);
+    DownloadUtil.createDownloadUrl(`data:text/csv;base64,${base64}`, fileName);
+  }
+
+  public static async downloadAsExcel<TRowData, TDataContext = null>(sortedData: TRowData[], visibleColumnIds: string[], columns: TableColumn<TRowData, TDataContext>[], fileName: string, dataContext: TDataContext = null): Promise<void> {
+    const data = TableUtil.getExportData(sortedData, visibleColumnIds, columns, dataContext);
+    const exportColumns = TableUtil.getExportColumns(visibleColumnIds, columns);
+    const excelData = data.map((row, rowIndex) => row.map((value, columnIndex) => {
+      const column = rowIndex > 0 ? exportColumns[columnIndex] : undefined;
+      if (column?.type === 'date' && typeof value === 'string' && value) {
+        const dateValue = parseISO(value);
+        if (!Number.isNaN(dateValue.getTime())) {
+          return {
+            format: column.dateFormat,
+            type: Date,
+            value: dateValue,
+          };
+        }
+      }
+      if (typeof value === 'number') {
+        return { type: Number, value };
+      }
+      if (typeof value === 'boolean') {
+        return { type: Boolean, value };
+      }
+      return { type: String, value };
+    }));
+
+    const blob = await writeXlsxFile(excelData, {
+      columns: (data[0] ?? []).map(() => ({ width: 20 })),
+      stickyRowsCount: 1,
+    }).toBlob();
+    const base64 = DownloadUtil.arrayBufferToBase64(await blob.arrayBuffer());
+    DownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
+  }
+
   public static getColumnIdsWithData<TRowData, TDataContext = null>(params: { dataContext: TDataContext; hasCellData: HasCellDataFn<TRowData, TDataContext>; sortedData: TRowData[]; tableColumns: TableColumn<TRowData, TDataContext>[]; visibleColumnIds: string[] }): string[] {
     const { dataContext, hasCellData, sortedData, tableColumns, visibleColumnIds } = params;
     const columns = visibleColumnIds.map(id => tableColumns.find(c => c.id === id));
@@ -614,6 +658,47 @@ export class TableUtil {
     return new Map(allColumnVisualSettings.map(c => [c.id, c]));
   }
 
+  private static getExportColumns<TRowData, TDataContext>(visibleColumnIds: string[], columns: TableColumn<TRowData, TDataContext>[]): TableColumn<TRowData, TDataContext>[] {
+    const fixedColumnIds: string[] = Object.values(FIXED_COLUMN_ID);
+    return visibleColumnIds
+      .map(id => columns.find(column => column.id === id))
+      .filter((column): column is TableColumn<TRowData, TDataContext> => {
+        return !!column && !column.hideInDownload && !fixedColumnIds.includes(column.id ?? '');
+      });
+  }
+
+  private static getExportData<TRowData, TDataContext>(sortedData: TRowData[], visibleColumnIds: string[], columns: TableColumn<TRowData, TDataContext>[], dataContext: TDataContext): Array<Array<boolean | number | string>> {
+    const exportColumns = TableUtil.getExportColumns(visibleColumnIds, columns);
+    const headers = exportColumns.map(column => column.headerName ?? column.id ?? '');
+    const rows = sortedData.map((row, rowIndex) => {
+      return exportColumns.map((column) => {
+        const params = {
+          column,
+          dataContext,
+          id: column.id ?? '',
+          row,
+          rowIndex,
+        };
+        let value: unknown = undefined;
+        if (column.displayValueGetter) {
+          value = column.displayValueGetter(params);
+        } else if (column.valueGetter) {
+          value = column.valueGetter(params);
+        } else if (column.id !== undefined) {
+          value = row[column.id as keyof TRowData];
+        }
+        if (!column.displayValueGetter && column.type === 'options') {
+          const getOptionLabel = (optionValue: unknown): string => {
+            return column.options.find(option => option.value === optionValue)?.label ?? '';
+          };
+          value = Array.isArray(value) ? value.map(getOptionLabel) : getOptionLabel(value);
+        }
+        return TableUtil.toExportValue(value);
+      });
+    });
+    return [headers, ...rows];
+  }
+
   private static handleMoveColumnAcrossDimensions(
     columnDimensions: TableColumnDimension[],
     tableColumnVisualSettings: TableColumnVisualSettings[], // Will be mutated
@@ -706,5 +791,21 @@ export class TableUtil {
 
   private static swapTwoTableColumns(tableColumnVisualSettings: TableColumnVisualSettings[], elementIndex: number, swappingElementIndex: number): void {
     tableColumnVisualSettings[elementIndex] = tableColumnVisualSettings.splice(swappingElementIndex, 1, tableColumnVisualSettings[elementIndex])[0];
+  }
+
+  private static toExportValue(value: unknown): boolean | number | string {
+    if (value === null || value === undefined) {
+      return '';
+    }
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+      return value;
+    }
+    if (value instanceof Date) {
+      return value.toISOString();
+    }
+    if (Array.isArray(value)) {
+      return value.join(', ');
+    }
+    return JSON.stringify(value) ?? '';
   }
 }
