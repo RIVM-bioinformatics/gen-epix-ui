@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-commondb-v4.6.0...api-commondb-v4.7.0) (2026-11-17)
+
+
+### Features
+
+* update depencies and use nodejs 26.x ([ce650d3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ce650d33ad178a20b417f051dc36cef25bf7549e))
+
 ## [4.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-commondb-v4.5.0...api-commondb-v4.6.0) (2026-11-13)
 
 

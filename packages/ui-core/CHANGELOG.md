@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.12.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.11.0...ui-core-v3.12.0) (2026-11-17)
+
+
+### Features
+
+* update depencies and use nodejs 26.x ([ce650d3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ce650d33ad178a20b417f051dc36cef25bf7549e))
+
+
+### Bug Fixes
+
+* fix nonce support in useOsxScrollbarAlwaysVisible ([f7c00fd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f7c00fd89539fa21ecf1477339ddddc3e2062cc5))
+
 ## [3.11.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.10.0...ui-core-v3.11.0) (2026-11-13)
 
 
