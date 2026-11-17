@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v4.7.0...ui-client-common-v4.8.0) (2026-11-17)
+
+
+### Features
+
+* add download as xls and csv feature to every table ([604062f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/604062fc61c41d293eb6ad28bc1334f78ad224dc))
+* include missing data filter support ([#212](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/212)) ([b78b54e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b78b54e05f85045c2a2458abf240d0faed687a50))
+* update depencies and use nodejs 26.x ([ce650d3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ce650d33ad178a20b417f051dc36cef25bf7549e))
+
+
+### Bug Fixes
+
+* fix nonce support in useOsxScrollbarAlwaysVisible ([f7c00fd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f7c00fd89539fa21ecf1477339ddddc3e2062cc5))
+
 ## [4.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v4.6.1...ui-client-common-v4.7.0) (2026-11-13)
 
 
