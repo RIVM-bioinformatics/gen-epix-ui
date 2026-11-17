@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-form-v4.6.0...ui-core-form-v4.7.0) (2026-11-17)
+
+
+### Features
+
+* include missing data filter support ([#212](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/212)) ([b78b54e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b78b54e05f85045c2a2458abf240d0faed687a50))
+* update depencies and use nodejs 26.x ([ce650d3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ce650d33ad178a20b417f051dc36cef25bf7549e))
+
 ## [4.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-form-v4.5.1...ui-core-form-v4.6.0) (2026-11-13)
 
 

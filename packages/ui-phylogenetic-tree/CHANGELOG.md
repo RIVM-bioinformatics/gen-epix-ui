@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.8.0...ui-phylogenetic-tree-v3.9.0) (2026-11-17)
+
+
+### Features
+
+* update depencies and use nodejs 26.x ([ce650d3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ce650d33ad178a20b417f051dc36cef25bf7549e))
+
 ## [3.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.7.1...ui-phylogenetic-tree-v3.8.0) (2026-11-13)
 
 

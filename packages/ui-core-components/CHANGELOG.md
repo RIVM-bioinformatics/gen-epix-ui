@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-components-v4.7.0...ui-core-components-v4.8.0) (2026-11-17)
+
+
+### Features
+
+* update depencies and use nodejs 26.x ([ce650d3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ce650d33ad178a20b417f051dc36cef25bf7549e))
+
 ## [4.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-components-v4.6.1...ui-core-components-v4.7.0) (2026-11-13)
 
 
