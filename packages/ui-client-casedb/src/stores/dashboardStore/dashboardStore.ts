@@ -507,6 +507,8 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
       createTableStorePersistConfiguration<CaseDbCase, CaseDbCompleteCaseType, DashboardStore>(kwArgs.storageNamePostFix, kwArgs.storageVersion, (state) => {
         return {
           numVisibleAttributesInSummary: state.numVisibleAttributesInSummary,
+          sortByField: undefined,
+          sortDirection: undefined,
           widgetDataPersistable: state.widgetDataPersistable,
         };
       }),
