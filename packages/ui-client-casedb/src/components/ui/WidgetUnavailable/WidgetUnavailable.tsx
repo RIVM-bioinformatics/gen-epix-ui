@@ -1,6 +1,7 @@
 import {
   Alert,
   AlertTitle,
+  Box,
 } from '@mui/material';
 import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,17 +15,32 @@ export const WidgetUnavailable = ({ reason, widgetLabel }: WidgetUnavailableProp
   const { t } = useTranslation();
 
   return (
-    <Alert
-      severity={'info'}
+    <Box
+      sx={{
+        height: '100%',
+        position: 'relative',
+        width: '100%',
+      }}
     >
-      <AlertTitle
+      <Alert
+        severity={'info'}
         sx={{
-          width: '100%',
+          left: '50%',
+          minWidth: '75%',
+          position: 'absolute',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
         }}
       >
-        {t('The {{widgetLabel}} cannot be shown.', { widgetLabel })}
-      </AlertTitle>
-      {reason}
-    </Alert>
+        <AlertTitle
+          sx={{
+            width: '100%',
+          }}
+        >
+          {t('The {{widgetLabel}} cannot be shown.', { widgetLabel })}
+        </AlertTitle>
+        {reason}
+      </Alert>
+    </Box>
   );
 };
