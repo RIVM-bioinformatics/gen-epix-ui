@@ -50,6 +50,24 @@ describe('hasOpenDialogPopper', () => {
     popper.remove();
   });
 
+  it('returns true for a focused dialog autocomplete with no ARIA popup linkage', () => {
+    const dialogContent = document.createElement('div');
+    const trigger = document.createElement('input');
+    trigger.setAttribute('role', 'combobox');
+    dialogContent.append(trigger);
+    document.body.append(dialogContent);
+
+    const popper = document.createElement('div');
+    popper.className = 'MuiPopper-root MuiAutocomplete-popper';
+    document.body.append(popper);
+    trigger.focus();
+
+    expect(hasOpenDialogPopper(dialogContent)).toBe(true);
+
+    dialogContent.remove();
+    popper.remove();
+  });
+
   it('remembers an open Popper when it is removed before the click event', () => {
     const dialogContent = document.createElement('div');
     const trigger = document.createElement('input');
@@ -74,5 +92,29 @@ describe('hasOpenDialogPopper', () => {
 
     expect(clickGuard.shouldIgnoreBackdropClick(clickEvent)).toBe(true);
     expect(clickGuard.shouldIgnoreBackdropClick(clickEvent)).toBe(false);
+  });
+
+  it('ignores a backdrop click when the close event is a different object', () => {
+    const dialogContent = document.createElement('div');
+    const trigger = document.createElement('input');
+    trigger.setAttribute('aria-expanded', 'true');
+    trigger.setAttribute('aria-controls', 'dropdown-options');
+    dialogContent.append(trigger);
+
+    const popper = document.createElement('div');
+    popper.className = 'MuiPopper-root';
+    const listbox = document.createElement('ul');
+    listbox.id = 'dropdown-options';
+    popper.append(listbox);
+    document.body.append(popper);
+
+    const clickGuard = createDialogPopperClickGuard();
+    clickGuard.onPointerDownCapture(dialogContent);
+    trigger.setAttribute('aria-expanded', 'false');
+    popper.remove();
+    clickGuard.onClickCapture({ detail: 1 }, 1, dialogContent);
+
+    expect(clickGuard.shouldIgnoreBackdropClick({})).toBe(true);
+    expect(clickGuard.shouldIgnoreBackdropClick({})).toBe(false);
   });
 });
