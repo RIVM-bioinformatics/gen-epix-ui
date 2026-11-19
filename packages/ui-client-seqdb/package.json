@@ -22,13 +22,117 @@
       "types": "./src/constants/query.constants.ts",
       "import": "./src/constants/query.constants.ts"
     },
+    "./dataHooks/useDataCollectionsQuery": {
+      "types": "./src/dataHooks/useDataCollectionsQuery/index.ts",
+      "import": "./src/dataHooks/useDataCollectionsQuery/index.ts"
+    },
+    "./dataHooks/useFileCompressionOptionsQuery": {
+      "types": "./src/dataHooks/useFileCompressionOptionsQuery/index.ts",
+      "import": "./src/dataHooks/useFileCompressionOptionsQuery/index.ts"
+    },
+    "./dataHooks/useFilesQuery": {
+      "types": "./src/dataHooks/useFilesQuery/index.ts",
+      "import": "./src/dataHooks/useFilesQuery/index.ts"
+    },
     "./dataHooks/useLociQuery": {
       "types": "./src/dataHooks/useLociQuery/index.ts",
       "import": "./src/dataHooks/useLociQuery/index.ts"
     },
+    "./dataHooks/useLocusSetsQuery": {
+      "types": "./src/dataHooks/useLocusSetsQuery/index.ts",
+      "import": "./src/dataHooks/useLocusSetsQuery/index.ts"
+    },
+    "./dataHooks/useLocusTypesQuery": {
+      "types": "./src/dataHooks/useLocusTypesQuery/index.ts",
+      "import": "./src/dataHooks/useLocusTypesQuery/index.ts"
+    },
+    "./dataHooks/useProtocolSetsQuery": {
+      "types": "./src/dataHooks/useProtocolSetsQuery/index.ts",
+      "import": "./src/dataHooks/useProtocolSetsQuery/index.ts"
+    },
+    "./dataHooks/useProtocolTypeOptionsQuery": {
+      "types": "./src/dataHooks/useProtocolTypeOptionsQuery/index.ts",
+      "import": "./src/dataHooks/useProtocolTypeOptionsQuery/index.ts"
+    },
+    "./dataHooks/useProtocolsQuery": {
+      "types": "./src/dataHooks/useProtocolsQuery/index.ts",
+      "import": "./src/dataHooks/useProtocolsQuery/index.ts"
+    },
+    "./dataHooks/useQualityControlResultOptionsQuery": {
+      "types": "./src/dataHooks/useQualityControlResultOptionsQuery/index.ts",
+      "import": "./src/dataHooks/useQualityControlResultOptionsQuery/index.ts"
+    },
+    "./dataHooks/useReadSetsQuery": {
+      "types": "./src/dataHooks/useReadSetsQuery/index.ts",
+      "import": "./src/dataHooks/useReadSetsQuery/index.ts"
+    },
+    "./dataHooks/useReadsFileFormatOptionsQuery": {
+      "types": "./src/dataHooks/useReadsFileFormatOptionsQuery/index.ts",
+      "import": "./src/dataHooks/useReadsFileFormatOptionsQuery/index.ts"
+    },
+    "./dataHooks/useRefSeqsQuery": {
+      "types": "./src/dataHooks/useRefSeqsQuery/index.ts",
+      "import": "./src/dataHooks/useRefSeqsQuery/index.ts"
+    },
+    "./dataHooks/useSamplesQuery": {
+      "types": "./src/dataHooks/useSamplesQuery/index.ts",
+      "import": "./src/dataHooks/useSamplesQuery/index.ts"
+    },
+    "./dataHooks/useSeqCategoriesQuery": {
+      "types": "./src/dataHooks/useSeqCategoriesQuery/index.ts",
+      "import": "./src/dataHooks/useSeqCategoriesQuery/index.ts"
+    },
+    "./dataHooks/useSeqCategorySetsQuery": {
+      "types": "./src/dataHooks/useSeqCategorySetsQuery/index.ts",
+      "import": "./src/dataHooks/useSeqCategorySetsQuery/index.ts"
+    },
+    "./dataHooks/useSeqDistanceTypeOptionsQuery": {
+      "types": "./src/dataHooks/useSeqDistanceTypeOptionsQuery/index.ts",
+      "import": "./src/dataHooks/useSeqDistanceTypeOptionsQuery/index.ts"
+    },
+    "./dataHooks/useSeqFileFormatOptionsQuery": {
+      "types": "./src/dataHooks/useSeqFileFormatOptionsQuery/index.ts",
+      "import": "./src/dataHooks/useSeqFileFormatOptionsQuery/index.ts"
+    },
     "./dataHooks/useSeqFormatsQuery": {
       "types": "./src/dataHooks/useSeqFormatsQuery/index.ts",
       "import": "./src/dataHooks/useSeqFormatsQuery/index.ts"
+    },
+    "./dataHooks/useSeqProfileTypeOptionsQuery": {
+      "types": "./src/dataHooks/useSeqProfileTypeOptionsQuery/index.ts",
+      "import": "./src/dataHooks/useSeqProfileTypeOptionsQuery/index.ts"
+    },
+    "./dataHooks/useSeqProfilesQuery": {
+      "types": "./src/dataHooks/useSeqProfilesQuery/index.ts",
+      "import": "./src/dataHooks/useSeqProfilesQuery/index.ts"
+    },
+    "./dataHooks/useSeqTaxonomyFormatOptionsQuery": {
+      "types": "./src/dataHooks/useSeqTaxonomyFormatOptionsQuery/index.ts",
+      "import": "./src/dataHooks/useSeqTaxonomyFormatOptionsQuery/index.ts"
+    },
+    "./dataHooks/useSeqsQuery": {
+      "types": "./src/dataHooks/useSeqsQuery/index.ts",
+      "import": "./src/dataHooks/useSeqsQuery/index.ts"
+    },
+    "./dataHooks/useTaxaQuery": {
+      "types": "./src/dataHooks/useTaxaQuery/index.ts",
+      "import": "./src/dataHooks/useTaxaQuery/index.ts"
+    },
+    "./dataHooks/useTaxonRankOptionsQuery": {
+      "types": "./src/dataHooks/useTaxonRankOptionsQuery/index.ts",
+      "import": "./src/dataHooks/useTaxonRankOptionsQuery/index.ts"
+    },
+    "./dataHooks/useTaxonSetsQuery": {
+      "types": "./src/dataHooks/useTaxonSetsQuery/index.ts",
+      "import": "./src/dataHooks/useTaxonSetsQuery/index.ts"
+    },
+    "./dataHooks/useTreeAlgorithmClassesQuery": {
+      "types": "./src/dataHooks/useTreeAlgorithmClassesQuery/index.ts",
+      "import": "./src/dataHooks/useTreeAlgorithmClassesQuery/index.ts"
+    },
+    "./dataHooks/useTreeAlgorithmCodeOptionsQuery": {
+      "types": "./src/dataHooks/useTreeAlgorithmCodeOptionsQuery/index.ts",
+      "import": "./src/dataHooks/useTreeAlgorithmCodeOptionsQuery/index.ts"
     },
     "./models/config.models": {
       "types": "./src/models/config.models.ts",
@@ -38,9 +142,133 @@
       "types": "./src/pages/AllelesAdminPage/index.ts",
       "import": "./src/pages/AllelesAdminPage/index.ts"
     },
+    "./pages/AstMeasurementsAdminPage": {
+      "types": "./src/pages/AstMeasurementsAdminPage/index.ts",
+      "import": "./src/pages/AstMeasurementsAdminPage/index.ts"
+    },
+    "./pages/AstPredictionsAdminPage": {
+      "types": "./src/pages/AstPredictionsAdminPage/index.ts",
+      "import": "./src/pages/AstPredictionsAdminPage/index.ts"
+    },
+    "./pages/FilesAdminPage": {
+      "types": "./src/pages/FilesAdminPage/index.ts",
+      "import": "./src/pages/FilesAdminPage/index.ts"
+    },
     "./pages/HomePage": {
       "types": "./src/pages/HomePage/index.ts",
       "import": "./src/pages/HomePage/index.ts"
+    },
+    "./pages/LociAdminPage": {
+      "types": "./src/pages/LociAdminPage/index.ts",
+      "import": "./src/pages/LociAdminPage/index.ts"
+    },
+    "./pages/LocusCodeMapsAdminPage": {
+      "types": "./src/pages/LocusCodeMapsAdminPage/index.ts",
+      "import": "./src/pages/LocusCodeMapsAdminPage/index.ts"
+    },
+    "./pages/LocusSetsAdminPage": {
+      "types": "./src/pages/LocusSetsAdminPage/index.ts",
+      "import": "./src/pages/LocusSetsAdminPage/index.ts"
+    },
+    "./pages/PcrMeasurementsAdminPage": {
+      "types": "./src/pages/PcrMeasurementsAdminPage/index.ts",
+      "import": "./src/pages/PcrMeasurementsAdminPage/index.ts"
+    },
+    "./pages/ProtocolSetMembersAdminPage": {
+      "types": "./src/pages/ProtocolSetMembersAdminPage/index.ts",
+      "import": "./src/pages/ProtocolSetMembersAdminPage/index.ts"
+    },
+    "./pages/ProtocolSetsAdminPage": {
+      "types": "./src/pages/ProtocolSetsAdminPage/index.ts",
+      "import": "./src/pages/ProtocolSetsAdminPage/index.ts"
+    },
+    "./pages/ProtocolsAdminPage": {
+      "types": "./src/pages/ProtocolsAdminPage/index.ts",
+      "import": "./src/pages/ProtocolsAdminPage/index.ts"
+    },
+    "./pages/ReadSetIdentifiersAdminPage": {
+      "types": "./src/pages/ReadSetIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/ReadSetIdentifiersAdminPage/index.ts"
+    },
+    "./pages/ReadSetsAdminPage": {
+      "types": "./src/pages/ReadSetsAdminPage/index.ts",
+      "import": "./src/pages/ReadSetsAdminPage/index.ts"
+    },
+    "./pages/RefAllelesAdminPage": {
+      "types": "./src/pages/RefAllelesAdminPage/index.ts",
+      "import": "./src/pages/RefAllelesAdminPage/index.ts"
+    },
+    "./pages/RefSeqsAdminPage": {
+      "types": "./src/pages/RefSeqsAdminPage/index.ts",
+      "import": "./src/pages/RefSeqsAdminPage/index.ts"
+    },
+    "./pages/SampleDataCollectionLinksAdminPage": {
+      "types": "./src/pages/SampleDataCollectionLinksAdminPage/index.ts",
+      "import": "./src/pages/SampleDataCollectionLinksAdminPage/index.ts"
+    },
+    "./pages/SampleIdentifiersAdminPage": {
+      "types": "./src/pages/SampleIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/SampleIdentifiersAdminPage/index.ts"
+    },
+    "./pages/SamplesAdminPage": {
+      "types": "./src/pages/SamplesAdminPage/index.ts",
+      "import": "./src/pages/SamplesAdminPage/index.ts"
+    },
+    "./pages/SeqCategoriesAdminPage": {
+      "types": "./src/pages/SeqCategoriesAdminPage/index.ts",
+      "import": "./src/pages/SeqCategoriesAdminPage/index.ts"
+    },
+    "./pages/SeqCategorySetsAdminPage": {
+      "types": "./src/pages/SeqCategorySetsAdminPage/index.ts",
+      "import": "./src/pages/SeqCategorySetsAdminPage/index.ts"
+    },
+    "./pages/SeqClassificationsAdminPage": {
+      "types": "./src/pages/SeqClassificationsAdminPage/index.ts",
+      "import": "./src/pages/SeqClassificationsAdminPage/index.ts"
+    },
+    "./pages/SeqDistancesAdminPage": {
+      "types": "./src/pages/SeqDistancesAdminPage/index.ts",
+      "import": "./src/pages/SeqDistancesAdminPage/index.ts"
+    },
+    "./pages/SeqIdentifiersAdminPage": {
+      "types": "./src/pages/SeqIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/SeqIdentifiersAdminPage/index.ts"
+    },
+    "./pages/SeqProfileIdentifiersAdminPage": {
+      "types": "./src/pages/SeqProfileIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/SeqProfileIdentifiersAdminPage/index.ts"
+    },
+    "./pages/SeqProfilesAdminPage": {
+      "types": "./src/pages/SeqProfilesAdminPage/index.ts",
+      "import": "./src/pages/SeqProfilesAdminPage/index.ts"
+    },
+    "./pages/SeqTaxonomiesAdminPage": {
+      "types": "./src/pages/SeqTaxonomiesAdminPage/index.ts",
+      "import": "./src/pages/SeqTaxonomiesAdminPage/index.ts"
+    },
+    "./pages/SeqsAdminPage": {
+      "types": "./src/pages/SeqsAdminPage/index.ts",
+      "import": "./src/pages/SeqsAdminPage/index.ts"
+    },
+    "./pages/TaxaAdminPage": {
+      "types": "./src/pages/TaxaAdminPage/index.ts",
+      "import": "./src/pages/TaxaAdminPage/index.ts"
+    },
+    "./pages/TaxonSetMembersAdminPage": {
+      "types": "./src/pages/TaxonSetMembersAdminPage/index.ts",
+      "import": "./src/pages/TaxonSetMembersAdminPage/index.ts"
+    },
+    "./pages/TaxonSetsAdminPage": {
+      "types": "./src/pages/TaxonSetsAdminPage/index.ts",
+      "import": "./src/pages/TaxonSetsAdminPage/index.ts"
+    },
+    "./pages/TreeAlgorithmClassesAdminPage": {
+      "types": "./src/pages/TreeAlgorithmClassesAdminPage/index.ts",
+      "import": "./src/pages/TreeAlgorithmClassesAdminPage/index.ts"
+    },
+    "./pages/TreeAlgorithmsAdminPage": {
+      "types": "./src/pages/TreeAlgorithmsAdminPage/index.ts",
+      "import": "./src/pages/TreeAlgorithmsAdminPage/index.ts"
     },
     "./routes": {
       "types": "./src/routes/index.ts",
@@ -166,13 +394,117 @@
         "types": "./dist/constants/query.constants.d.ts",
         "import": "./dist/constants/query.constants.js"
       },
+      "./dataHooks/useDataCollectionsQuery": {
+        "types": "./dist/dataHooks/useDataCollectionsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useDataCollectionsQuery/index.js"
+      },
+      "./dataHooks/useFileCompressionOptionsQuery": {
+        "types": "./dist/dataHooks/useFileCompressionOptionsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useFileCompressionOptionsQuery/index.js"
+      },
+      "./dataHooks/useFilesQuery": {
+        "types": "./dist/dataHooks/useFilesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useFilesQuery/index.js"
+      },
       "./dataHooks/useLociQuery": {
         "types": "./dist/dataHooks/useLociQuery/index.d.ts",
         "import": "./dist/dataHooks/useLociQuery/index.js"
       },
+      "./dataHooks/useLocusSetsQuery": {
+        "types": "./dist/dataHooks/useLocusSetsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useLocusSetsQuery/index.js"
+      },
+      "./dataHooks/useLocusTypesQuery": {
+        "types": "./dist/dataHooks/useLocusTypesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useLocusTypesQuery/index.js"
+      },
+      "./dataHooks/useProtocolSetsQuery": {
+        "types": "./dist/dataHooks/useProtocolSetsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useProtocolSetsQuery/index.js"
+      },
+      "./dataHooks/useProtocolTypeOptionsQuery": {
+        "types": "./dist/dataHooks/useProtocolTypeOptionsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useProtocolTypeOptionsQuery/index.js"
+      },
+      "./dataHooks/useProtocolsQuery": {
+        "types": "./dist/dataHooks/useProtocolsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useProtocolsQuery/index.js"
+      },
+      "./dataHooks/useQualityControlResultOptionsQuery": {
+        "types": "./dist/dataHooks/useQualityControlResultOptionsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useQualityControlResultOptionsQuery/index.js"
+      },
+      "./dataHooks/useReadSetsQuery": {
+        "types": "./dist/dataHooks/useReadSetsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useReadSetsQuery/index.js"
+      },
+      "./dataHooks/useReadsFileFormatOptionsQuery": {
+        "types": "./dist/dataHooks/useReadsFileFormatOptionsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useReadsFileFormatOptionsQuery/index.js"
+      },
+      "./dataHooks/useRefSeqsQuery": {
+        "types": "./dist/dataHooks/useRefSeqsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useRefSeqsQuery/index.js"
+      },
+      "./dataHooks/useSamplesQuery": {
+        "types": "./dist/dataHooks/useSamplesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useSamplesQuery/index.js"
+      },
+      "./dataHooks/useSeqCategoriesQuery": {
+        "types": "./dist/dataHooks/useSeqCategoriesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useSeqCategoriesQuery/index.js"
+      },
+      "./dataHooks/useSeqCategorySetsQuery": {
+        "types": "./dist/dataHooks/useSeqCategorySetsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useSeqCategorySetsQuery/index.js"
+      },
+      "./dataHooks/useSeqDistanceTypeOptionsQuery": {
+        "types": "./dist/dataHooks/useSeqDistanceTypeOptionsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useSeqDistanceTypeOptionsQuery/index.js"
+      },
+      "./dataHooks/useSeqFileFormatOptionsQuery": {
+        "types": "./dist/dataHooks/useSeqFileFormatOptionsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useSeqFileFormatOptionsQuery/index.js"
+      },
       "./dataHooks/useSeqFormatsQuery": {
         "types": "./dist/dataHooks/useSeqFormatsQuery/index.d.ts",
         "import": "./dist/dataHooks/useSeqFormatsQuery/index.js"
+      },
+      "./dataHooks/useSeqProfileTypeOptionsQuery": {
+        "types": "./dist/dataHooks/useSeqProfileTypeOptionsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useSeqProfileTypeOptionsQuery/index.js"
+      },
+      "./dataHooks/useSeqProfilesQuery": {
+        "types": "./dist/dataHooks/useSeqProfilesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useSeqProfilesQuery/index.js"
+      },
+      "./dataHooks/useSeqTaxonomyFormatOptionsQuery": {
+        "types": "./dist/dataHooks/useSeqTaxonomyFormatOptionsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useSeqTaxonomyFormatOptionsQuery/index.js"
+      },
+      "./dataHooks/useSeqsQuery": {
+        "types": "./dist/dataHooks/useSeqsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useSeqsQuery/index.js"
+      },
+      "./dataHooks/useTaxaQuery": {
+        "types": "./dist/dataHooks/useTaxaQuery/index.d.ts",
+        "import": "./dist/dataHooks/useTaxaQuery/index.js"
+      },
+      "./dataHooks/useTaxonRankOptionsQuery": {
+        "types": "./dist/dataHooks/useTaxonRankOptionsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useTaxonRankOptionsQuery/index.js"
+      },
+      "./dataHooks/useTaxonSetsQuery": {
+        "types": "./dist/dataHooks/useTaxonSetsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useTaxonSetsQuery/index.js"
+      },
+      "./dataHooks/useTreeAlgorithmClassesQuery": {
+        "types": "./dist/dataHooks/useTreeAlgorithmClassesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useTreeAlgorithmClassesQuery/index.js"
+      },
+      "./dataHooks/useTreeAlgorithmCodeOptionsQuery": {
+        "types": "./dist/dataHooks/useTreeAlgorithmCodeOptionsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useTreeAlgorithmCodeOptionsQuery/index.js"
       },
       "./models/config.models": {
         "types": "./dist/models/config.models.d.ts",
@@ -182,9 +514,133 @@
         "types": "./dist/pages/AllelesAdminPage/index.d.ts",
         "import": "./dist/pages/AllelesAdminPage/index.js"
       },
+      "./pages/AstMeasurementsAdminPage": {
+        "types": "./dist/pages/AstMeasurementsAdminPage/index.d.ts",
+        "import": "./dist/pages/AstMeasurementsAdminPage/index.js"
+      },
+      "./pages/AstPredictionsAdminPage": {
+        "types": "./dist/pages/AstPredictionsAdminPage/index.d.ts",
+        "import": "./dist/pages/AstPredictionsAdminPage/index.js"
+      },
+      "./pages/FilesAdminPage": {
+        "types": "./dist/pages/FilesAdminPage/index.d.ts",
+        "import": "./dist/pages/FilesAdminPage/index.js"
+      },
       "./pages/HomePage": {
         "types": "./dist/pages/HomePage/index.d.ts",
         "import": "./dist/pages/HomePage/index.js"
+      },
+      "./pages/LociAdminPage": {
+        "types": "./dist/pages/LociAdminPage/index.d.ts",
+        "import": "./dist/pages/LociAdminPage/index.js"
+      },
+      "./pages/LocusCodeMapsAdminPage": {
+        "types": "./dist/pages/LocusCodeMapsAdminPage/index.d.ts",
+        "import": "./dist/pages/LocusCodeMapsAdminPage/index.js"
+      },
+      "./pages/LocusSetsAdminPage": {
+        "types": "./dist/pages/LocusSetsAdminPage/index.d.ts",
+        "import": "./dist/pages/LocusSetsAdminPage/index.js"
+      },
+      "./pages/PcrMeasurementsAdminPage": {
+        "types": "./dist/pages/PcrMeasurementsAdminPage/index.d.ts",
+        "import": "./dist/pages/PcrMeasurementsAdminPage/index.js"
+      },
+      "./pages/ProtocolSetMembersAdminPage": {
+        "types": "./dist/pages/ProtocolSetMembersAdminPage/index.d.ts",
+        "import": "./dist/pages/ProtocolSetMembersAdminPage/index.js"
+      },
+      "./pages/ProtocolSetsAdminPage": {
+        "types": "./dist/pages/ProtocolSetsAdminPage/index.d.ts",
+        "import": "./dist/pages/ProtocolSetsAdminPage/index.js"
+      },
+      "./pages/ProtocolsAdminPage": {
+        "types": "./dist/pages/ProtocolsAdminPage/index.d.ts",
+        "import": "./dist/pages/ProtocolsAdminPage/index.js"
+      },
+      "./pages/ReadSetIdentifiersAdminPage": {
+        "types": "./dist/pages/ReadSetIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/ReadSetIdentifiersAdminPage/index.js"
+      },
+      "./pages/ReadSetsAdminPage": {
+        "types": "./dist/pages/ReadSetsAdminPage/index.d.ts",
+        "import": "./dist/pages/ReadSetsAdminPage/index.js"
+      },
+      "./pages/RefAllelesAdminPage": {
+        "types": "./dist/pages/RefAllelesAdminPage/index.d.ts",
+        "import": "./dist/pages/RefAllelesAdminPage/index.js"
+      },
+      "./pages/RefSeqsAdminPage": {
+        "types": "./dist/pages/RefSeqsAdminPage/index.d.ts",
+        "import": "./dist/pages/RefSeqsAdminPage/index.js"
+      },
+      "./pages/SampleDataCollectionLinksAdminPage": {
+        "types": "./dist/pages/SampleDataCollectionLinksAdminPage/index.d.ts",
+        "import": "./dist/pages/SampleDataCollectionLinksAdminPage/index.js"
+      },
+      "./pages/SampleIdentifiersAdminPage": {
+        "types": "./dist/pages/SampleIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/SampleIdentifiersAdminPage/index.js"
+      },
+      "./pages/SamplesAdminPage": {
+        "types": "./dist/pages/SamplesAdminPage/index.d.ts",
+        "import": "./dist/pages/SamplesAdminPage/index.js"
+      },
+      "./pages/SeqCategoriesAdminPage": {
+        "types": "./dist/pages/SeqCategoriesAdminPage/index.d.ts",
+        "import": "./dist/pages/SeqCategoriesAdminPage/index.js"
+      },
+      "./pages/SeqCategorySetsAdminPage": {
+        "types": "./dist/pages/SeqCategorySetsAdminPage/index.d.ts",
+        "import": "./dist/pages/SeqCategorySetsAdminPage/index.js"
+      },
+      "./pages/SeqClassificationsAdminPage": {
+        "types": "./dist/pages/SeqClassificationsAdminPage/index.d.ts",
+        "import": "./dist/pages/SeqClassificationsAdminPage/index.js"
+      },
+      "./pages/SeqDistancesAdminPage": {
+        "types": "./dist/pages/SeqDistancesAdminPage/index.d.ts",
+        "import": "./dist/pages/SeqDistancesAdminPage/index.js"
+      },
+      "./pages/SeqIdentifiersAdminPage": {
+        "types": "./dist/pages/SeqIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/SeqIdentifiersAdminPage/index.js"
+      },
+      "./pages/SeqProfileIdentifiersAdminPage": {
+        "types": "./dist/pages/SeqProfileIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/SeqProfileIdentifiersAdminPage/index.js"
+      },
+      "./pages/SeqProfilesAdminPage": {
+        "types": "./dist/pages/SeqProfilesAdminPage/index.d.ts",
+        "import": "./dist/pages/SeqProfilesAdminPage/index.js"
+      },
+      "./pages/SeqTaxonomiesAdminPage": {
+        "types": "./dist/pages/SeqTaxonomiesAdminPage/index.d.ts",
+        "import": "./dist/pages/SeqTaxonomiesAdminPage/index.js"
+      },
+      "./pages/SeqsAdminPage": {
+        "types": "./dist/pages/SeqsAdminPage/index.d.ts",
+        "import": "./dist/pages/SeqsAdminPage/index.js"
+      },
+      "./pages/TaxaAdminPage": {
+        "types": "./dist/pages/TaxaAdminPage/index.d.ts",
+        "import": "./dist/pages/TaxaAdminPage/index.js"
+      },
+      "./pages/TaxonSetMembersAdminPage": {
+        "types": "./dist/pages/TaxonSetMembersAdminPage/index.d.ts",
+        "import": "./dist/pages/TaxonSetMembersAdminPage/index.js"
+      },
+      "./pages/TaxonSetsAdminPage": {
+        "types": "./dist/pages/TaxonSetsAdminPage/index.d.ts",
+        "import": "./dist/pages/TaxonSetsAdminPage/index.js"
+      },
+      "./pages/TreeAlgorithmClassesAdminPage": {
+        "types": "./dist/pages/TreeAlgorithmClassesAdminPage/index.d.ts",
+        "import": "./dist/pages/TreeAlgorithmClassesAdminPage/index.js"
+      },
+      "./pages/TreeAlgorithmsAdminPage": {
+        "types": "./dist/pages/TreeAlgorithmsAdminPage/index.d.ts",
+        "import": "./dist/pages/TreeAlgorithmsAdminPage/index.js"
       },
       "./routes": {
         "types": "./dist/routes/index.d.ts",

@@ -576,6 +576,9 @@ export const CrudPage = <
   }, [normalizedExtraActions, onEditIconClick, onShowItem, showIdColumn, t, tableColumns, userCanDelete]);
 
   const tableRows = useMemo(() => {
+    if (!rows) {
+      return [];
+    }
     if (!convertToTableData) {
       return rows as TTableData[];
     }

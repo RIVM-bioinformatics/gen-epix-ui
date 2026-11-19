@@ -246,6 +246,10 @@
       "types": "./src/dataHooks/useOrganizationsQuery/index.ts",
       "import": "./src/dataHooks/useOrganizationsQuery/index.ts"
     },
+    "./dataHooks/useSitesQuery": {
+      "types": "./src/dataHooks/useSitesQuery/index.ts",
+      "import": "./src/dataHooks/useSitesQuery/index.ts"
+    },
     "./dataHooks/useUsersQuery": {
       "types": "./src/dataHooks/useUsersQuery/index.ts",
       "import": "./src/dataHooks/useUsersQuery/index.ts"
@@ -825,6 +829,10 @@
       "./dataHooks/useOrganizationsQuery": {
         "types": "./dist/dataHooks/useOrganizationsQuery/index.d.ts",
         "import": "./dist/dataHooks/useOrganizationsQuery/index.js"
+      },
+      "./dataHooks/useSitesQuery": {
+        "types": "./dist/dataHooks/useSitesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useSitesQuery/index.js"
       },
       "./dataHooks/useUsersQuery": {
         "types": "./dist/dataHooks/useUsersQuery/index.d.ts",

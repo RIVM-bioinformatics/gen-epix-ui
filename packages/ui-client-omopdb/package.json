@@ -22,13 +22,337 @@
       "types": "./src/constants/query.constants.ts",
       "import": "./src/constants/query.constants.ts"
     },
+    "./dataHooks/useCareSiteQuery": {
+      "types": "./src/dataHooks/useCareSiteQuery/index.ts",
+      "import": "./src/dataHooks/useCareSiteQuery/index.ts"
+    },
+    "./dataHooks/useCohortDefinitionQuery": {
+      "types": "./src/dataHooks/useCohortDefinitionQuery/index.ts",
+      "import": "./src/dataHooks/useCohortDefinitionQuery/index.ts"
+    },
+    "./dataHooks/useConceptClassQuery": {
+      "types": "./src/dataHooks/useConceptClassQuery/index.ts",
+      "import": "./src/dataHooks/useConceptClassQuery/index.ts"
+    },
+    "./dataHooks/useConceptQuery": {
+      "types": "./src/dataHooks/useConceptQuery/index.ts",
+      "import": "./src/dataHooks/useConceptQuery/index.ts"
+    },
+    "./dataHooks/useConditionOccurrenceQuery": {
+      "types": "./src/dataHooks/useConditionOccurrenceQuery/index.ts",
+      "import": "./src/dataHooks/useConditionOccurrenceQuery/index.ts"
+    },
+    "./dataHooks/useDeathQuery": {
+      "types": "./src/dataHooks/useDeathQuery/index.ts",
+      "import": "./src/dataHooks/useDeathQuery/index.ts"
+    },
+    "./dataHooks/useDeviceExposureQuery": {
+      "types": "./src/dataHooks/useDeviceExposureQuery/index.ts",
+      "import": "./src/dataHooks/useDeviceExposureQuery/index.ts"
+    },
+    "./dataHooks/useDomainQuery": {
+      "types": "./src/dataHooks/useDomainQuery/index.ts",
+      "import": "./src/dataHooks/useDomainQuery/index.ts"
+    },
+    "./dataHooks/useDrugExposureQuery": {
+      "types": "./src/dataHooks/useDrugExposureQuery/index.ts",
+      "import": "./src/dataHooks/useDrugExposureQuery/index.ts"
+    },
+    "./dataHooks/useEpisodeQuery": {
+      "types": "./src/dataHooks/useEpisodeQuery/index.ts",
+      "import": "./src/dataHooks/useEpisodeQuery/index.ts"
+    },
+    "./dataHooks/useLocationQuery": {
+      "types": "./src/dataHooks/useLocationQuery/index.ts",
+      "import": "./src/dataHooks/useLocationQuery/index.ts"
+    },
+    "./dataHooks/useMeasurementQuery": {
+      "types": "./src/dataHooks/useMeasurementQuery/index.ts",
+      "import": "./src/dataHooks/useMeasurementQuery/index.ts"
+    },
+    "./dataHooks/useMeasurementRelationQuery": {
+      "types": "./src/dataHooks/useMeasurementRelationQuery/index.ts",
+      "import": "./src/dataHooks/useMeasurementRelationQuery/index.ts"
+    },
+    "./dataHooks/useNoteNlpQuery": {
+      "types": "./src/dataHooks/useNoteNlpQuery/index.ts",
+      "import": "./src/dataHooks/useNoteNlpQuery/index.ts"
+    },
+    "./dataHooks/useNoteQuery": {
+      "types": "./src/dataHooks/useNoteQuery/index.ts",
+      "import": "./src/dataHooks/useNoteQuery/index.ts"
+    },
+    "./dataHooks/useObservationPeriodQuery": {
+      "types": "./src/dataHooks/useObservationPeriodQuery/index.ts",
+      "import": "./src/dataHooks/useObservationPeriodQuery/index.ts"
+    },
+    "./dataHooks/useObservationQuery": {
+      "types": "./src/dataHooks/useObservationQuery/index.ts",
+      "import": "./src/dataHooks/useObservationQuery/index.ts"
+    },
+    "./dataHooks/usePayerPlanPeriodQuery": {
+      "types": "./src/dataHooks/usePayerPlanPeriodQuery/index.ts",
+      "import": "./src/dataHooks/usePayerPlanPeriodQuery/index.ts"
+    },
+    "./dataHooks/usePersonQuery": {
+      "types": "./src/dataHooks/usePersonQuery/index.ts",
+      "import": "./src/dataHooks/usePersonQuery/index.ts"
+    },
+    "./dataHooks/useProcedureOccurrenceQuery": {
+      "types": "./src/dataHooks/useProcedureOccurrenceQuery/index.ts",
+      "import": "./src/dataHooks/useProcedureOccurrenceQuery/index.ts"
+    },
+    "./dataHooks/useProviderQuery": {
+      "types": "./src/dataHooks/useProviderQuery/index.ts",
+      "import": "./src/dataHooks/useProviderQuery/index.ts"
+    },
+    "./dataHooks/useRelationshipQuery": {
+      "types": "./src/dataHooks/useRelationshipQuery/index.ts",
+      "import": "./src/dataHooks/useRelationshipQuery/index.ts"
+    },
+    "./dataHooks/useSpecimenQuery": {
+      "types": "./src/dataHooks/useSpecimenQuery/index.ts",
+      "import": "./src/dataHooks/useSpecimenQuery/index.ts"
+    },
+    "./dataHooks/useVisitDetailQuery": {
+      "types": "./src/dataHooks/useVisitDetailQuery/index.ts",
+      "import": "./src/dataHooks/useVisitDetailQuery/index.ts"
+    },
+    "./dataHooks/useVisitOccurrenceQuery": {
+      "types": "./src/dataHooks/useVisitOccurrenceQuery/index.ts",
+      "import": "./src/dataHooks/useVisitOccurrenceQuery/index.ts"
+    },
+    "./dataHooks/useVocabularyQuery": {
+      "types": "./src/dataHooks/useVocabularyQuery/index.ts",
+      "import": "./src/dataHooks/useVocabularyQuery/index.ts"
+    },
     "./models/config.models": {
       "types": "./src/models/config.models.ts",
       "import": "./src/models/config.models.ts"
     },
+    "./pages/CareSitesAdminPage": {
+      "types": "./src/pages/CareSitesAdminPage/index.ts",
+      "import": "./src/pages/CareSitesAdminPage/index.ts"
+    },
+    "./pages/CdmSourcesAdminPage": {
+      "types": "./src/pages/CdmSourcesAdminPage/index.ts",
+      "import": "./src/pages/CdmSourcesAdminPage/index.ts"
+    },
+    "./pages/CohortDefinitionsAdminPage": {
+      "types": "./src/pages/CohortDefinitionsAdminPage/index.ts",
+      "import": "./src/pages/CohortDefinitionsAdminPage/index.ts"
+    },
+    "./pages/CohortsAdminPage": {
+      "types": "./src/pages/CohortsAdminPage/index.ts",
+      "import": "./src/pages/CohortsAdminPage/index.ts"
+    },
+    "./pages/ConceptAncestorsAdminPage": {
+      "types": "./src/pages/ConceptAncestorsAdminPage/index.ts",
+      "import": "./src/pages/ConceptAncestorsAdminPage/index.ts"
+    },
+    "./pages/ConceptClassesAdminPage": {
+      "types": "./src/pages/ConceptClassesAdminPage/index.ts",
+      "import": "./src/pages/ConceptClassesAdminPage/index.ts"
+    },
+    "./pages/ConceptRelationshipsAdminPage": {
+      "types": "./src/pages/ConceptRelationshipsAdminPage/index.ts",
+      "import": "./src/pages/ConceptRelationshipsAdminPage/index.ts"
+    },
+    "./pages/ConceptSynonymsAdminPage": {
+      "types": "./src/pages/ConceptSynonymsAdminPage/index.ts",
+      "import": "./src/pages/ConceptSynonymsAdminPage/index.ts"
+    },
+    "./pages/ConceptsAdminPage": {
+      "types": "./src/pages/ConceptsAdminPage/index.ts",
+      "import": "./src/pages/ConceptsAdminPage/index.ts"
+    },
+    "./pages/ConditionErasAdminPage": {
+      "types": "./src/pages/ConditionErasAdminPage/index.ts",
+      "import": "./src/pages/ConditionErasAdminPage/index.ts"
+    },
+    "./pages/ConditionOccurrenceIdentifiersAdminPage": {
+      "types": "./src/pages/ConditionOccurrenceIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/ConditionOccurrenceIdentifiersAdminPage/index.ts"
+    },
+    "./pages/ConditionOccurrencesAdminPage": {
+      "types": "./src/pages/ConditionOccurrencesAdminPage/index.ts",
+      "import": "./src/pages/ConditionOccurrencesAdminPage/index.ts"
+    },
+    "./pages/CostsAdminPage": {
+      "types": "./src/pages/CostsAdminPage/index.ts",
+      "import": "./src/pages/CostsAdminPage/index.ts"
+    },
+    "./pages/DeathIdentifiersAdminPage": {
+      "types": "./src/pages/DeathIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/DeathIdentifiersAdminPage/index.ts"
+    },
+    "./pages/DeathsAdminPage": {
+      "types": "./src/pages/DeathsAdminPage/index.ts",
+      "import": "./src/pages/DeathsAdminPage/index.ts"
+    },
+    "./pages/DeviceExposureIdentifiersAdminPage": {
+      "types": "./src/pages/DeviceExposureIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/DeviceExposureIdentifiersAdminPage/index.ts"
+    },
+    "./pages/DeviceExposuresAdminPage": {
+      "types": "./src/pages/DeviceExposuresAdminPage/index.ts",
+      "import": "./src/pages/DeviceExposuresAdminPage/index.ts"
+    },
+    "./pages/DomainsAdminPage": {
+      "types": "./src/pages/DomainsAdminPage/index.ts",
+      "import": "./src/pages/DomainsAdminPage/index.ts"
+    },
+    "./pages/DoseErasAdminPage": {
+      "types": "./src/pages/DoseErasAdminPage/index.ts",
+      "import": "./src/pages/DoseErasAdminPage/index.ts"
+    },
+    "./pages/DrugErasAdminPage": {
+      "types": "./src/pages/DrugErasAdminPage/index.ts",
+      "import": "./src/pages/DrugErasAdminPage/index.ts"
+    },
+    "./pages/DrugExposureIdentifiersAdminPage": {
+      "types": "./src/pages/DrugExposureIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/DrugExposureIdentifiersAdminPage/index.ts"
+    },
+    "./pages/DrugExposuresAdminPage": {
+      "types": "./src/pages/DrugExposuresAdminPage/index.ts",
+      "import": "./src/pages/DrugExposuresAdminPage/index.ts"
+    },
+    "./pages/DrugStrengthsAdminPage": {
+      "types": "./src/pages/DrugStrengthsAdminPage/index.ts",
+      "import": "./src/pages/DrugStrengthsAdminPage/index.ts"
+    },
+    "./pages/EpisodeEventsAdminPage": {
+      "types": "./src/pages/EpisodeEventsAdminPage/index.ts",
+      "import": "./src/pages/EpisodeEventsAdminPage/index.ts"
+    },
+    "./pages/EpisodesAdminPage": {
+      "types": "./src/pages/EpisodesAdminPage/index.ts",
+      "import": "./src/pages/EpisodesAdminPage/index.ts"
+    },
+    "./pages/FactRelationshipsAdminPage": {
+      "types": "./src/pages/FactRelationshipsAdminPage/index.ts",
+      "import": "./src/pages/FactRelationshipsAdminPage/index.ts"
+    },
     "./pages/HomePage": {
       "types": "./src/pages/HomePage/index.ts",
       "import": "./src/pages/HomePage/index.ts"
+    },
+    "./pages/LocationsAdminPage": {
+      "types": "./src/pages/LocationsAdminPage/index.ts",
+      "import": "./src/pages/LocationsAdminPage/index.ts"
+    },
+    "./pages/MeasurementIdentifiersAdminPage": {
+      "types": "./src/pages/MeasurementIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/MeasurementIdentifiersAdminPage/index.ts"
+    },
+    "./pages/MeasurementRelationIdentifiersAdminPage": {
+      "types": "./src/pages/MeasurementRelationIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/MeasurementRelationIdentifiersAdminPage/index.ts"
+    },
+    "./pages/MeasurementRelationsAdminPage": {
+      "types": "./src/pages/MeasurementRelationsAdminPage/index.ts",
+      "import": "./src/pages/MeasurementRelationsAdminPage/index.ts"
+    },
+    "./pages/MeasurementsAdminPage": {
+      "types": "./src/pages/MeasurementsAdminPage/index.ts",
+      "import": "./src/pages/MeasurementsAdminPage/index.ts"
+    },
+    "./pages/MetadatasAdminPage": {
+      "types": "./src/pages/MetadatasAdminPage/index.ts",
+      "import": "./src/pages/MetadatasAdminPage/index.ts"
+    },
+    "./pages/NoteIdentifiersAdminPage": {
+      "types": "./src/pages/NoteIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/NoteIdentifiersAdminPage/index.ts"
+    },
+    "./pages/NoteNlpIdentifiersAdminPage": {
+      "types": "./src/pages/NoteNlpIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/NoteNlpIdentifiersAdminPage/index.ts"
+    },
+    "./pages/NoteNlpsAdminPage": {
+      "types": "./src/pages/NoteNlpsAdminPage/index.ts",
+      "import": "./src/pages/NoteNlpsAdminPage/index.ts"
+    },
+    "./pages/NotesAdminPage": {
+      "types": "./src/pages/NotesAdminPage/index.ts",
+      "import": "./src/pages/NotesAdminPage/index.ts"
+    },
+    "./pages/ObservationIdentifiersAdminPage": {
+      "types": "./src/pages/ObservationIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/ObservationIdentifiersAdminPage/index.ts"
+    },
+    "./pages/ObservationPeriodIdentifiersAdminPage": {
+      "types": "./src/pages/ObservationPeriodIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/ObservationPeriodIdentifiersAdminPage/index.ts"
+    },
+    "./pages/ObservationPeriodsAdminPage": {
+      "types": "./src/pages/ObservationPeriodsAdminPage/index.ts",
+      "import": "./src/pages/ObservationPeriodsAdminPage/index.ts"
+    },
+    "./pages/ObservationsAdminPage": {
+      "types": "./src/pages/ObservationsAdminPage/index.ts",
+      "import": "./src/pages/ObservationsAdminPage/index.ts"
+    },
+    "./pages/PayerPlanPeriodsAdminPage": {
+      "types": "./src/pages/PayerPlanPeriodsAdminPage/index.ts",
+      "import": "./src/pages/PayerPlanPeriodsAdminPage/index.ts"
+    },
+    "./pages/PersonIdentifiersAdminPage": {
+      "types": "./src/pages/PersonIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/PersonIdentifiersAdminPage/index.ts"
+    },
+    "./pages/PersonsAdminPage": {
+      "types": "./src/pages/PersonsAdminPage/index.ts",
+      "import": "./src/pages/PersonsAdminPage/index.ts"
+    },
+    "./pages/ProcedureOccurrenceIdentifiersAdminPage": {
+      "types": "./src/pages/ProcedureOccurrenceIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/ProcedureOccurrenceIdentifiersAdminPage/index.ts"
+    },
+    "./pages/ProcedureOccurrencesAdminPage": {
+      "types": "./src/pages/ProcedureOccurrencesAdminPage/index.ts",
+      "import": "./src/pages/ProcedureOccurrencesAdminPage/index.ts"
+    },
+    "./pages/ProvidersAdminPage": {
+      "types": "./src/pages/ProvidersAdminPage/index.ts",
+      "import": "./src/pages/ProvidersAdminPage/index.ts"
+    },
+    "./pages/RelationshipsAdminPage": {
+      "types": "./src/pages/RelationshipsAdminPage/index.ts",
+      "import": "./src/pages/RelationshipsAdminPage/index.ts"
+    },
+    "./pages/SourceToConceptMapsAdminPage": {
+      "types": "./src/pages/SourceToConceptMapsAdminPage/index.ts",
+      "import": "./src/pages/SourceToConceptMapsAdminPage/index.ts"
+    },
+    "./pages/SpecimenIdentifiersAdminPage": {
+      "types": "./src/pages/SpecimenIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/SpecimenIdentifiersAdminPage/index.ts"
+    },
+    "./pages/SpecimensAdminPage": {
+      "types": "./src/pages/SpecimensAdminPage/index.ts",
+      "import": "./src/pages/SpecimensAdminPage/index.ts"
+    },
+    "./pages/VisitDetailIdentifiersAdminPage": {
+      "types": "./src/pages/VisitDetailIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/VisitDetailIdentifiersAdminPage/index.ts"
+    },
+    "./pages/VisitDetailsAdminPage": {
+      "types": "./src/pages/VisitDetailsAdminPage/index.ts",
+      "import": "./src/pages/VisitDetailsAdminPage/index.ts"
+    },
+    "./pages/VisitOccurrenceIdentifiersAdminPage": {
+      "types": "./src/pages/VisitOccurrenceIdentifiersAdminPage/index.ts",
+      "import": "./src/pages/VisitOccurrenceIdentifiersAdminPage/index.ts"
+    },
+    "./pages/VisitOccurrencesAdminPage": {
+      "types": "./src/pages/VisitOccurrencesAdminPage/index.ts",
+      "import": "./src/pages/VisitOccurrencesAdminPage/index.ts"
+    },
+    "./pages/VocabulariesAdminPage": {
+      "types": "./src/pages/VocabulariesAdminPage/index.ts",
+      "import": "./src/pages/VocabulariesAdminPage/index.ts"
     },
     "./routes": {
       "types": "./src/routes/index.ts",
@@ -41,6 +365,10 @@
     "./theme/demoTheme": {
       "types": "./src/theme/demoTheme/index.ts",
       "import": "./src/theme/demoTheme/index.ts"
+    },
+    "./utils/OmopDbAdminUtil": {
+      "types": "./src/utils/OmopDbAdminUtil/index.ts",
+      "import": "./src/utils/OmopDbAdminUtil/index.ts"
     },
     "./utils/OmopDbStandardConfigUtil": {
       "types": "./src/utils/OmopDbStandardConfigUtil/index.ts",
@@ -154,13 +482,337 @@
         "types": "./dist/constants/query.constants.d.ts",
         "import": "./dist/constants/query.constants.js"
       },
+      "./dataHooks/useCareSiteQuery": {
+        "types": "./dist/dataHooks/useCareSiteQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCareSiteQuery/index.js"
+      },
+      "./dataHooks/useCohortDefinitionQuery": {
+        "types": "./dist/dataHooks/useCohortDefinitionQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCohortDefinitionQuery/index.js"
+      },
+      "./dataHooks/useConceptClassQuery": {
+        "types": "./dist/dataHooks/useConceptClassQuery/index.d.ts",
+        "import": "./dist/dataHooks/useConceptClassQuery/index.js"
+      },
+      "./dataHooks/useConceptQuery": {
+        "types": "./dist/dataHooks/useConceptQuery/index.d.ts",
+        "import": "./dist/dataHooks/useConceptQuery/index.js"
+      },
+      "./dataHooks/useConditionOccurrenceQuery": {
+        "types": "./dist/dataHooks/useConditionOccurrenceQuery/index.d.ts",
+        "import": "./dist/dataHooks/useConditionOccurrenceQuery/index.js"
+      },
+      "./dataHooks/useDeathQuery": {
+        "types": "./dist/dataHooks/useDeathQuery/index.d.ts",
+        "import": "./dist/dataHooks/useDeathQuery/index.js"
+      },
+      "./dataHooks/useDeviceExposureQuery": {
+        "types": "./dist/dataHooks/useDeviceExposureQuery/index.d.ts",
+        "import": "./dist/dataHooks/useDeviceExposureQuery/index.js"
+      },
+      "./dataHooks/useDomainQuery": {
+        "types": "./dist/dataHooks/useDomainQuery/index.d.ts",
+        "import": "./dist/dataHooks/useDomainQuery/index.js"
+      },
+      "./dataHooks/useDrugExposureQuery": {
+        "types": "./dist/dataHooks/useDrugExposureQuery/index.d.ts",
+        "import": "./dist/dataHooks/useDrugExposureQuery/index.js"
+      },
+      "./dataHooks/useEpisodeQuery": {
+        "types": "./dist/dataHooks/useEpisodeQuery/index.d.ts",
+        "import": "./dist/dataHooks/useEpisodeQuery/index.js"
+      },
+      "./dataHooks/useLocationQuery": {
+        "types": "./dist/dataHooks/useLocationQuery/index.d.ts",
+        "import": "./dist/dataHooks/useLocationQuery/index.js"
+      },
+      "./dataHooks/useMeasurementQuery": {
+        "types": "./dist/dataHooks/useMeasurementQuery/index.d.ts",
+        "import": "./dist/dataHooks/useMeasurementQuery/index.js"
+      },
+      "./dataHooks/useMeasurementRelationQuery": {
+        "types": "./dist/dataHooks/useMeasurementRelationQuery/index.d.ts",
+        "import": "./dist/dataHooks/useMeasurementRelationQuery/index.js"
+      },
+      "./dataHooks/useNoteNlpQuery": {
+        "types": "./dist/dataHooks/useNoteNlpQuery/index.d.ts",
+        "import": "./dist/dataHooks/useNoteNlpQuery/index.js"
+      },
+      "./dataHooks/useNoteQuery": {
+        "types": "./dist/dataHooks/useNoteQuery/index.d.ts",
+        "import": "./dist/dataHooks/useNoteQuery/index.js"
+      },
+      "./dataHooks/useObservationPeriodQuery": {
+        "types": "./dist/dataHooks/useObservationPeriodQuery/index.d.ts",
+        "import": "./dist/dataHooks/useObservationPeriodQuery/index.js"
+      },
+      "./dataHooks/useObservationQuery": {
+        "types": "./dist/dataHooks/useObservationQuery/index.d.ts",
+        "import": "./dist/dataHooks/useObservationQuery/index.js"
+      },
+      "./dataHooks/usePayerPlanPeriodQuery": {
+        "types": "./dist/dataHooks/usePayerPlanPeriodQuery/index.d.ts",
+        "import": "./dist/dataHooks/usePayerPlanPeriodQuery/index.js"
+      },
+      "./dataHooks/usePersonQuery": {
+        "types": "./dist/dataHooks/usePersonQuery/index.d.ts",
+        "import": "./dist/dataHooks/usePersonQuery/index.js"
+      },
+      "./dataHooks/useProcedureOccurrenceQuery": {
+        "types": "./dist/dataHooks/useProcedureOccurrenceQuery/index.d.ts",
+        "import": "./dist/dataHooks/useProcedureOccurrenceQuery/index.js"
+      },
+      "./dataHooks/useProviderQuery": {
+        "types": "./dist/dataHooks/useProviderQuery/index.d.ts",
+        "import": "./dist/dataHooks/useProviderQuery/index.js"
+      },
+      "./dataHooks/useRelationshipQuery": {
+        "types": "./dist/dataHooks/useRelationshipQuery/index.d.ts",
+        "import": "./dist/dataHooks/useRelationshipQuery/index.js"
+      },
+      "./dataHooks/useSpecimenQuery": {
+        "types": "./dist/dataHooks/useSpecimenQuery/index.d.ts",
+        "import": "./dist/dataHooks/useSpecimenQuery/index.js"
+      },
+      "./dataHooks/useVisitDetailQuery": {
+        "types": "./dist/dataHooks/useVisitDetailQuery/index.d.ts",
+        "import": "./dist/dataHooks/useVisitDetailQuery/index.js"
+      },
+      "./dataHooks/useVisitOccurrenceQuery": {
+        "types": "./dist/dataHooks/useVisitOccurrenceQuery/index.d.ts",
+        "import": "./dist/dataHooks/useVisitOccurrenceQuery/index.js"
+      },
+      "./dataHooks/useVocabularyQuery": {
+        "types": "./dist/dataHooks/useVocabularyQuery/index.d.ts",
+        "import": "./dist/dataHooks/useVocabularyQuery/index.js"
+      },
       "./models/config.models": {
         "types": "./dist/models/config.models.d.ts",
         "import": "./dist/models/config.models.js"
       },
+      "./pages/CareSitesAdminPage": {
+        "types": "./dist/pages/CareSitesAdminPage/index.d.ts",
+        "import": "./dist/pages/CareSitesAdminPage/index.js"
+      },
+      "./pages/CdmSourcesAdminPage": {
+        "types": "./dist/pages/CdmSourcesAdminPage/index.d.ts",
+        "import": "./dist/pages/CdmSourcesAdminPage/index.js"
+      },
+      "./pages/CohortDefinitionsAdminPage": {
+        "types": "./dist/pages/CohortDefinitionsAdminPage/index.d.ts",
+        "import": "./dist/pages/CohortDefinitionsAdminPage/index.js"
+      },
+      "./pages/CohortsAdminPage": {
+        "types": "./dist/pages/CohortsAdminPage/index.d.ts",
+        "import": "./dist/pages/CohortsAdminPage/index.js"
+      },
+      "./pages/ConceptAncestorsAdminPage": {
+        "types": "./dist/pages/ConceptAncestorsAdminPage/index.d.ts",
+        "import": "./dist/pages/ConceptAncestorsAdminPage/index.js"
+      },
+      "./pages/ConceptClassesAdminPage": {
+        "types": "./dist/pages/ConceptClassesAdminPage/index.d.ts",
+        "import": "./dist/pages/ConceptClassesAdminPage/index.js"
+      },
+      "./pages/ConceptRelationshipsAdminPage": {
+        "types": "./dist/pages/ConceptRelationshipsAdminPage/index.d.ts",
+        "import": "./dist/pages/ConceptRelationshipsAdminPage/index.js"
+      },
+      "./pages/ConceptSynonymsAdminPage": {
+        "types": "./dist/pages/ConceptSynonymsAdminPage/index.d.ts",
+        "import": "./dist/pages/ConceptSynonymsAdminPage/index.js"
+      },
+      "./pages/ConceptsAdminPage": {
+        "types": "./dist/pages/ConceptsAdminPage/index.d.ts",
+        "import": "./dist/pages/ConceptsAdminPage/index.js"
+      },
+      "./pages/ConditionErasAdminPage": {
+        "types": "./dist/pages/ConditionErasAdminPage/index.d.ts",
+        "import": "./dist/pages/ConditionErasAdminPage/index.js"
+      },
+      "./pages/ConditionOccurrenceIdentifiersAdminPage": {
+        "types": "./dist/pages/ConditionOccurrenceIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/ConditionOccurrenceIdentifiersAdminPage/index.js"
+      },
+      "./pages/ConditionOccurrencesAdminPage": {
+        "types": "./dist/pages/ConditionOccurrencesAdminPage/index.d.ts",
+        "import": "./dist/pages/ConditionOccurrencesAdminPage/index.js"
+      },
+      "./pages/CostsAdminPage": {
+        "types": "./dist/pages/CostsAdminPage/index.d.ts",
+        "import": "./dist/pages/CostsAdminPage/index.js"
+      },
+      "./pages/DeathIdentifiersAdminPage": {
+        "types": "./dist/pages/DeathIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/DeathIdentifiersAdminPage/index.js"
+      },
+      "./pages/DeathsAdminPage": {
+        "types": "./dist/pages/DeathsAdminPage/index.d.ts",
+        "import": "./dist/pages/DeathsAdminPage/index.js"
+      },
+      "./pages/DeviceExposureIdentifiersAdminPage": {
+        "types": "./dist/pages/DeviceExposureIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/DeviceExposureIdentifiersAdminPage/index.js"
+      },
+      "./pages/DeviceExposuresAdminPage": {
+        "types": "./dist/pages/DeviceExposuresAdminPage/index.d.ts",
+        "import": "./dist/pages/DeviceExposuresAdminPage/index.js"
+      },
+      "./pages/DomainsAdminPage": {
+        "types": "./dist/pages/DomainsAdminPage/index.d.ts",
+        "import": "./dist/pages/DomainsAdminPage/index.js"
+      },
+      "./pages/DoseErasAdminPage": {
+        "types": "./dist/pages/DoseErasAdminPage/index.d.ts",
+        "import": "./dist/pages/DoseErasAdminPage/index.js"
+      },
+      "./pages/DrugErasAdminPage": {
+        "types": "./dist/pages/DrugErasAdminPage/index.d.ts",
+        "import": "./dist/pages/DrugErasAdminPage/index.js"
+      },
+      "./pages/DrugExposureIdentifiersAdminPage": {
+        "types": "./dist/pages/DrugExposureIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/DrugExposureIdentifiersAdminPage/index.js"
+      },
+      "./pages/DrugExposuresAdminPage": {
+        "types": "./dist/pages/DrugExposuresAdminPage/index.d.ts",
+        "import": "./dist/pages/DrugExposuresAdminPage/index.js"
+      },
+      "./pages/DrugStrengthsAdminPage": {
+        "types": "./dist/pages/DrugStrengthsAdminPage/index.d.ts",
+        "import": "./dist/pages/DrugStrengthsAdminPage/index.js"
+      },
+      "./pages/EpisodeEventsAdminPage": {
+        "types": "./dist/pages/EpisodeEventsAdminPage/index.d.ts",
+        "import": "./dist/pages/EpisodeEventsAdminPage/index.js"
+      },
+      "./pages/EpisodesAdminPage": {
+        "types": "./dist/pages/EpisodesAdminPage/index.d.ts",
+        "import": "./dist/pages/EpisodesAdminPage/index.js"
+      },
+      "./pages/FactRelationshipsAdminPage": {
+        "types": "./dist/pages/FactRelationshipsAdminPage/index.d.ts",
+        "import": "./dist/pages/FactRelationshipsAdminPage/index.js"
+      },
       "./pages/HomePage": {
         "types": "./dist/pages/HomePage/index.d.ts",
         "import": "./dist/pages/HomePage/index.js"
+      },
+      "./pages/LocationsAdminPage": {
+        "types": "./dist/pages/LocationsAdminPage/index.d.ts",
+        "import": "./dist/pages/LocationsAdminPage/index.js"
+      },
+      "./pages/MeasurementIdentifiersAdminPage": {
+        "types": "./dist/pages/MeasurementIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/MeasurementIdentifiersAdminPage/index.js"
+      },
+      "./pages/MeasurementRelationIdentifiersAdminPage": {
+        "types": "./dist/pages/MeasurementRelationIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/MeasurementRelationIdentifiersAdminPage/index.js"
+      },
+      "./pages/MeasurementRelationsAdminPage": {
+        "types": "./dist/pages/MeasurementRelationsAdminPage/index.d.ts",
+        "import": "./dist/pages/MeasurementRelationsAdminPage/index.js"
+      },
+      "./pages/MeasurementsAdminPage": {
+        "types": "./dist/pages/MeasurementsAdminPage/index.d.ts",
+        "import": "./dist/pages/MeasurementsAdminPage/index.js"
+      },
+      "./pages/MetadatasAdminPage": {
+        "types": "./dist/pages/MetadatasAdminPage/index.d.ts",
+        "import": "./dist/pages/MetadatasAdminPage/index.js"
+      },
+      "./pages/NoteIdentifiersAdminPage": {
+        "types": "./dist/pages/NoteIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/NoteIdentifiersAdminPage/index.js"
+      },
+      "./pages/NoteNlpIdentifiersAdminPage": {
+        "types": "./dist/pages/NoteNlpIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/NoteNlpIdentifiersAdminPage/index.js"
+      },
+      "./pages/NoteNlpsAdminPage": {
+        "types": "./dist/pages/NoteNlpsAdminPage/index.d.ts",
+        "import": "./dist/pages/NoteNlpsAdminPage/index.js"
+      },
+      "./pages/NotesAdminPage": {
+        "types": "./dist/pages/NotesAdminPage/index.d.ts",
+        "import": "./dist/pages/NotesAdminPage/index.js"
+      },
+      "./pages/ObservationIdentifiersAdminPage": {
+        "types": "./dist/pages/ObservationIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/ObservationIdentifiersAdminPage/index.js"
+      },
+      "./pages/ObservationPeriodIdentifiersAdminPage": {
+        "types": "./dist/pages/ObservationPeriodIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/ObservationPeriodIdentifiersAdminPage/index.js"
+      },
+      "./pages/ObservationPeriodsAdminPage": {
+        "types": "./dist/pages/ObservationPeriodsAdminPage/index.d.ts",
+        "import": "./dist/pages/ObservationPeriodsAdminPage/index.js"
+      },
+      "./pages/ObservationsAdminPage": {
+        "types": "./dist/pages/ObservationsAdminPage/index.d.ts",
+        "import": "./dist/pages/ObservationsAdminPage/index.js"
+      },
+      "./pages/PayerPlanPeriodsAdminPage": {
+        "types": "./dist/pages/PayerPlanPeriodsAdminPage/index.d.ts",
+        "import": "./dist/pages/PayerPlanPeriodsAdminPage/index.js"
+      },
+      "./pages/PersonIdentifiersAdminPage": {
+        "types": "./dist/pages/PersonIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/PersonIdentifiersAdminPage/index.js"
+      },
+      "./pages/PersonsAdminPage": {
+        "types": "./dist/pages/PersonsAdminPage/index.d.ts",
+        "import": "./dist/pages/PersonsAdminPage/index.js"
+      },
+      "./pages/ProcedureOccurrenceIdentifiersAdminPage": {
+        "types": "./dist/pages/ProcedureOccurrenceIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/ProcedureOccurrenceIdentifiersAdminPage/index.js"
+      },
+      "./pages/ProcedureOccurrencesAdminPage": {
+        "types": "./dist/pages/ProcedureOccurrencesAdminPage/index.d.ts",
+        "import": "./dist/pages/ProcedureOccurrencesAdminPage/index.js"
+      },
+      "./pages/ProvidersAdminPage": {
+        "types": "./dist/pages/ProvidersAdminPage/index.d.ts",
+        "import": "./dist/pages/ProvidersAdminPage/index.js"
+      },
+      "./pages/RelationshipsAdminPage": {
+        "types": "./dist/pages/RelationshipsAdminPage/index.d.ts",
+        "import": "./dist/pages/RelationshipsAdminPage/index.js"
+      },
+      "./pages/SourceToConceptMapsAdminPage": {
+        "types": "./dist/pages/SourceToConceptMapsAdminPage/index.d.ts",
+        "import": "./dist/pages/SourceToConceptMapsAdminPage/index.js"
+      },
+      "./pages/SpecimenIdentifiersAdminPage": {
+        "types": "./dist/pages/SpecimenIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/SpecimenIdentifiersAdminPage/index.js"
+      },
+      "./pages/SpecimensAdminPage": {
+        "types": "./dist/pages/SpecimensAdminPage/index.d.ts",
+        "import": "./dist/pages/SpecimensAdminPage/index.js"
+      },
+      "./pages/VisitDetailIdentifiersAdminPage": {
+        "types": "./dist/pages/VisitDetailIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/VisitDetailIdentifiersAdminPage/index.js"
+      },
+      "./pages/VisitDetailsAdminPage": {
+        "types": "./dist/pages/VisitDetailsAdminPage/index.d.ts",
+        "import": "./dist/pages/VisitDetailsAdminPage/index.js"
+      },
+      "./pages/VisitOccurrenceIdentifiersAdminPage": {
+        "types": "./dist/pages/VisitOccurrenceIdentifiersAdminPage/index.d.ts",
+        "import": "./dist/pages/VisitOccurrenceIdentifiersAdminPage/index.js"
+      },
+      "./pages/VisitOccurrencesAdminPage": {
+        "types": "./dist/pages/VisitOccurrencesAdminPage/index.d.ts",
+        "import": "./dist/pages/VisitOccurrencesAdminPage/index.js"
+      },
+      "./pages/VocabulariesAdminPage": {
+        "types": "./dist/pages/VocabulariesAdminPage/index.d.ts",
+        "import": "./dist/pages/VocabulariesAdminPage/index.js"
       },
       "./routes": {
         "types": "./dist/routes/index.d.ts",
@@ -173,6 +825,10 @@
       "./theme/demoTheme": {
         "types": "./dist/theme/demoTheme/index.d.ts",
         "import": "./dist/theme/demoTheme/index.js"
+      },
+      "./utils/OmopDbAdminUtil": {
+        "types": "./dist/utils/OmopDbAdminUtil/index.d.ts",
+        "import": "./dist/utils/OmopDbAdminUtil/index.js"
       },
       "./utils/OmopDbStandardConfigUtil": {
         "types": "./dist/utils/OmopDbStandardConfigUtil/index.d.ts",
