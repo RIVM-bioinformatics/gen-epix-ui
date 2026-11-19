@@ -36,6 +36,9 @@ clients.
  validation.
 - Do not rewrite generated files, package metadata, lockfiles, or release config
  unless the task requires it.
+- Immediately after creating, renaming, moving, or otherwise changing files in a
+ way that affects package exports, run `pnpm update-exports`, before linting,
+ type checking, or testing, so the package.json files stay synchronized.
 - Do not revert user changes. Work with the current worktree and ignore unrelated
  dirty files.
 - Prefer existing local patterns and helpers over new abstractions.
