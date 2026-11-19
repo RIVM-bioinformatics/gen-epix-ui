@@ -7,7 +7,7 @@ description: Use a named or selected xxxGetAll endpoint, page component, file, o
 
 ## Infer the action from the target
 
-Use the target from the request or, if none is named, the IDE selection and its file. For example, `/create-admin-page #sym:allelesGetAll` and `/create-admin-page` with `allelesGetAll` selected mean the same thing. Never ask the user to choose a mode. Ask which resource or client they mean only if the target is still ambiguous.
+Use the target from the request or, if none is named, the IDE selection and its file. A target may be a `*GetAll` endpoint or a `*CrudCommand` enum member. For example, `/create-admin-page #sym:allelesGetAll` and `/create-admin-page` with `allelesGetAll` selected mean the same thing. Never ask the user to choose a mode. Ask which resource or client they mean only if the target is still ambiguous.
 
 Search the owning client's pages and admin routes (including inherited routes). Match the resource and scope of the page's main `fetchAll`, not a related lookup. **If no page exists, create and register it. If one exists, check the whole page and fix confirmed deviations in place**, even for a bare endpoint or a request about just one field. If the user asks only for findings or an explanation, report what you find without editing, scaffolding, or running fixers.
 
@@ -21,6 +21,8 @@ Use steps 1-4 below as the checklist for an existing page:
 Preserve intentional behavior such as read-only actions, custom validation, and parent-scoped routes. Report fixes and remaining exceptions with file locations and reasons. If the page already conforms and no other change was requested, leave it unchanged.
 
 ## 1. Identify the resource
+
+- For a `*CrudCommand` target, resolve the enum member to its owning API resource before following the steps below. The command name is not itself an endpoint: use it only as a resource clue, then match the SDK's `GetAll` row model with the corresponding single-item write model and inspect the method signatures and route paths to identify the endpoint. Do not assume the command name singularizes directly to an endpoint. If more than one resource or client is a plausible match, ask which one the user means.
 
 - Start with the requested symbol (strip `#sym:` if present), its definition, and any explicit target client. Use the [create-datahook ownership and cache rules](../create-datahook/SKILL.md#resolve-the-owner-and-cache-key). `@gen-epix/api-<db>` normally maps to `@gen-epix/ui-client-<db>`, not to the app containing the closest example. If a bare method exists in multiple SDKs, use its declaring package or ask which client; don't default to CaseDB.
 - Read the public API class method in `packages/api-<db>/src/api.ts`, the typed `AxiosPromise` signature, the returned array element type, and the actual single-item write signatures. Record the row ID, write model, editable fields, foreign keys, command names, and main list key. Don't infer these by singularizing the method name or edit the generated SDK.

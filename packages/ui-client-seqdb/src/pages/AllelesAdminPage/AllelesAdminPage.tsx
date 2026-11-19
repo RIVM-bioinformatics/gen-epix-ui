@@ -33,6 +33,19 @@ import { SEQDB_QUERY_KEY } from '../../constants/query.constants';
 
 
 type FormFields = OmitWithMetaData<SeqDbAllele, 'length' | 'locus'>;
+type SeqDbAlleleWithId = { id: string } & SeqDbAllele;
+
+const isAlleleWithId = (allele: SeqDbAllele): allele is SeqDbAlleleWithId => {
+  return typeof allele.id === 'string' && allele.id.length > 0;
+};
+
+const requireAlleleId = (allele: SeqDbAllele): SeqDbAlleleWithId => {
+  if (!isAlleleWithId(allele)) {
+    throw new Error('SeqDB returned an allele without an ID.');
+  }
+
+  return allele;
+};
 
 export const AllelesAdminPage = () => {
   const { t } = useTranslation();
@@ -41,11 +54,12 @@ export const AllelesAdminPage = () => {
   const loadables = useArray([locusOptionsQuery, seqFormatOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await container.resolve(SeqDbSeqApi).allelesGetAll(null, null, { signal })).data;
+    const response = await container.resolve(SeqDbSeqApi).allelesGetAll(null, null, { signal });
+    return response.data.map(requireAlleleId);
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await container.resolve(SeqDbSeqApi).allelesPostOne(variables)).data;
+    return requireAlleleId((await container.resolve(SeqDbSeqApi).allelesPostOne(variables)).data);
   }, []);
 
   const getName = useCallback((item: FormFields | SeqDbAllele) => {
@@ -87,17 +101,17 @@ export const AllelesAdminPage = () => {
     ] as const;
   }, [locusOptionsQuery.isLoading, locusOptionsQuery.options, seqFormatOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<SeqDbAllele>[] => {
+  const tableColumns = useMemo((): TableColumn<SeqDbAlleleWithId>[] => {
     return [
-      TableUtil.createTextColumn<SeqDbAllele>({ flex: 2, id: 'seq', name: t`Sequence` }),
-      TableUtil.createOptionsColumn<SeqDbAllele>({ id: 'seq_format', name: t`Sequence format`, options: seqFormatOptionsQuery.options }),
-      TableUtil.createNumberColumn<SeqDbAllele>({ id: 'length', name: t`Length` }),
-      TableUtil.createOptionsColumn<SeqDbAllele>({ id: 'locus_id', name: t`Locus`, options: locusOptionsQuery.options }),
+      TableUtil.createTextColumn<SeqDbAlleleWithId>({ flex: 2, id: 'seq', name: t`Sequence` }),
+      TableUtil.createOptionsColumn<SeqDbAlleleWithId>({ id: 'seq_format', name: t`Sequence format`, options: seqFormatOptionsQuery.options }),
+      TableUtil.createNumberColumn<SeqDbAlleleWithId>({ id: 'length', name: t`Length` }),
+      TableUtil.createOptionsColumn<SeqDbAlleleWithId>({ id: 'locus_id', name: t`Locus`, options: locusOptionsQuery.options }),
     ];
   }, [locusOptionsQuery.options, seqFormatOptionsQuery.options, t]);
 
   return (
-    <CrudPage<FormFields, SeqDbAllele, SeqDbAllele, SEQDB_QUERY_KEY, SeqDbApiPermission>
+    <CrudPage<FormFields, SeqDbAlleleWithId, SeqDbAlleleWithId, SEQDB_QUERY_KEY, SeqDbApiPermission>
       createItemDialogTitle={t`Create new allele`}
       createOne={createOne}
       crudCommandType={SeqDbCommandName.AlleleCrudCommand}
