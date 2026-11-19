@@ -9,8 +9,10 @@ import {
   join,
 } from 'path';
 
+import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts';
 import { defineConfig } from 'vitest/config';
+import { playwright } from '@vitest/browser-playwright';
 import type { Target } from 'vite-plugin-static-copy';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { esmExternalRequirePlugin } from 'vite';
@@ -31,6 +33,7 @@ const createPeerDependencyExternalPatterns = () => {
 };
 
 const peerDependencyExternalPatterns = createPeerDependencyExternalPatterns();
+const isHeadlessTestRun = process.argv.includes('run') || !!process.env.CI;
 
 const discoverEntries = (): { entries: Record<string, string>; flatKeys: Set<string> } => {
   const entries: Record<string, string> = {};
@@ -164,14 +167,32 @@ export default defineConfig({
       },
       {
         plugins: [
-          // react(),
+          react(),
         ],
         test: {
+          browser: {
+            enabled: true,
+            headless: isHeadlessTestRun,
+            instances: [
+              { browser: 'chromium' },
+            ],
+            provider: playwright(),
+            screenshotDirectory: join(import.meta.dirname, '__screenshots__'),
+            viewport: {
+              height: 1080,
+              width: 1920,
+            },
+          },
           globals: true,
           include: [
             'src/**/*.test.tsx',
           ],
           name: 'browser',
+          server: {
+            deps: {
+              inline: ['@gen-epix/ui-core', 'vitest-browser-react'],
+            },
+          },
           setupFiles: ['./src/test/setup/setup-browser.ts'],
           testTimeout: 30000,
         },

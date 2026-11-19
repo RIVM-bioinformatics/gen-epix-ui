@@ -429,14 +429,15 @@
     "react-i18next": "18.0.2",
     "react-router": "8.5.1",
     "react-router-dom": "7.18.5",
-    "typescript": "6.0.3",
     "tsyringe": "4.10.0",
+    "typescript": "6.0.3",
     "vite": "8.3.8",
     "vite-plugin-dts": "5.1.2",
     "vite-plugin-lib-inject-css": "2.2.2",
     "vite-plugin-static-copy": "4.1.1",
     "vite-plugin-svgr": "5.2.0",
     "vitest": "5.1.0",
+    "vitest-browser-react": "2.3.0",
     "yup": "1.7.1"
   },
   "peerDependencies": {
