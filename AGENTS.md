@@ -276,9 +276,13 @@ cached stats stale.
 Each domain client registers its map alongside the common map.
 [`QueryClientService.getQueryKeyDependencies`](packages/ui-client-common/src/classes/services/QueryClientService/QueryClientService.ts)
 starts from the changed key and finds its direct and transitive dependents.
-When adding a key, list the sources that affect its **cached result**, then
-check which existing entries need the new key as a source. Rendering two
-independently cached queries on the same page does not create a dependency.
+When adding a key or changing a backing model, use
+[update-query-dependencies](.agents/skills/update-query-dependencies/SKILL.md)
+to recheck **every entry** in the owning map. For a `GetAll` list, a foreign
+key on its row model makes the referenced resource's list a source, even if
+the API returns only the ID. Rendering two unrelated queries on one page
+does not create a dependency. Keep existing dependencies unless the user
+explicitly approves their removal.
 
 ## API Client Conventions
 

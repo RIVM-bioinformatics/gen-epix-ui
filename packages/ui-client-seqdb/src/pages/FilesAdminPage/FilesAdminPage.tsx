@@ -29,6 +29,7 @@ import { SEQDB_QUERY_KEY } from '../../constants/query.constants';
 type FormFields = OmitWithMetaData<SeqDbModelFile>;
 type SeqDbModelFileWithId = { id: string } & SeqDbModelFile;
 
+// !FIXME Backend is typed with an any type, so we need to manually check for the ID and content fields
 const isSeqDbModelFileWithId = (item: unknown): item is SeqDbModelFileWithId => {
   return typeof item === 'object'
     && item !== null
@@ -98,6 +99,7 @@ export const FilesAdminPage = () => {
   ], [t]);
 
   const tableColumns = useMemo((): TableColumn<SeqDbModelFileWithId>[] => [
+    TableUtil.createTextColumn<SeqDbModelFileWithId>({ id: 'id', name: t`ID` }),
     TableUtil.createTextColumn<SeqDbModelFileWithId>({ flex: 2, id: 'content', name: t`Content` }),
   ], [t]);
 
