@@ -102,6 +102,30 @@ describe('MultiSelectFilter', () => {
     expect(filter.matchRowValue(rowValue)).toBe(expectedResult);
   });
 
+  it('preserves numeric option values for labels, matching, and backend filters', () => {
+    const filter = createFilter([
+      { label: 'DNA sequence', value: 2 },
+      { label: 'Nextclade', value: 4 },
+    ]);
+    filter.filterValue = [2];
+
+    expect(filter.getPresentationValue()).toBe('DNA sequence');
+    expect(filter.matchRowValue(2)).toBe(true);
+    expect(filter.matchRowValue(4)).toBe(false);
+    expect(filter.toBackendFilter()).toEqual({
+      key: 'multi-select-filter',
+      members: [2],
+      type: 'NUMBER_SET',
+    });
+  });
+
+  it('rejects mixed string and numeric values for backend filters', () => {
+    const filter = createFilter();
+    filter.filterValue = ['alpha', 2];
+
+    expect(() => filter.toBackendFilter()).toThrow('A multi-select filter cannot mix string and number values.');
+  });
+
   it('serializes only changed selections as a backend string-set filter', () => {
     const filter = createFilter();
 

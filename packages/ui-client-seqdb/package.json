@@ -22,9 +22,21 @@
       "types": "./src/constants/query.constants.ts",
       "import": "./src/constants/query.constants.ts"
     },
+    "./dataHooks/useLociQuery": {
+      "types": "./src/dataHooks/useLociQuery/index.ts",
+      "import": "./src/dataHooks/useLociQuery/index.ts"
+    },
+    "./dataHooks/useSeqFormatsQuery": {
+      "types": "./src/dataHooks/useSeqFormatsQuery/index.ts",
+      "import": "./src/dataHooks/useSeqFormatsQuery/index.ts"
+    },
     "./models/config.models": {
       "types": "./src/models/config.models.ts",
       "import": "./src/models/config.models.ts"
+    },
+    "./pages/AllelesAdminPage": {
+      "types": "./src/pages/AllelesAdminPage/index.ts",
+      "import": "./src/pages/AllelesAdminPage/index.ts"
     },
     "./pages/HomePage": {
       "types": "./src/pages/HomePage/index.ts",
@@ -85,6 +97,7 @@
     "@mui/system": "9.5.0",
     "@mui/utils": "9.5.0",
     "@mui/x-date-pickers": "9.18.0",
+    "@testing-library/react": "^16.3.3",
     "@types/node": "26.6.6",
     "@types/react": "19.3.0",
     "@vitejs/plugin-react": "6.3.0",
@@ -153,9 +166,21 @@
         "types": "./dist/constants/query.constants.d.ts",
         "import": "./dist/constants/query.constants.js"
       },
+      "./dataHooks/useLociQuery": {
+        "types": "./dist/dataHooks/useLociQuery/index.d.ts",
+        "import": "./dist/dataHooks/useLociQuery/index.js"
+      },
+      "./dataHooks/useSeqFormatsQuery": {
+        "types": "./dist/dataHooks/useSeqFormatsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useSeqFormatsQuery/index.js"
+      },
       "./models/config.models": {
         "types": "./dist/models/config.models.d.ts",
         "import": "./dist/models/config.models.js"
+      },
+      "./pages/AllelesAdminPage": {
+        "types": "./dist/pages/AllelesAdminPage/index.d.ts",
+        "import": "./dist/pages/AllelesAdminPage/index.js"
       },
       "./pages/HomePage": {
         "types": "./dist/pages/HomePage/index.d.ts",

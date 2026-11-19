@@ -229,17 +229,14 @@ export class TableUtil {
           min: min(values),
         }));
       } else if (column.type === 'options') {
-        let options: OptionBase<string>[];
+        let options: OptionBase<number | string>[];
 
         if (column.shouldFilterOptions) {
-          const possibleOptions = baseRows.map((row, index) => {
+          const possibleOptions: unknown[] = baseRows.map((row, index) => {
             const rowValue = column.valueGetter ? column.valueGetter({ column, dataContext, id: column.id, row, rowIndex: index }) : row[column.id as keyof TData];
-            if (!Array.isArray(rowValue)) {
-              return [rowValue] as string[];
-            }
             return rowValue;
-          }).flat();
-          options = column.options.filter(o => possibleOptions.includes(o.value));
+          }).flatMap(rowValue => Array.isArray(rowValue) ? rowValue : [rowValue]);
+          options = column.options.filter(option => option.value !== undefined && possibleOptions.includes(option.value));
         } else {
           options = column.options;
         }
@@ -328,7 +325,7 @@ export class TableUtil {
     };
   }
 
-  public static createOptionsColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; filterLabel?: string; flex?: number; id?: keyof TData; maxNumOptionsExpanded?: number; name: string; options: OptionBase<string>[]; shouldFilterOptions?: boolean }): TableColumnOptions<TData, TDataContext, TColumnContext> {
+  public static createOptionsColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; filterLabel?: string; flex?: number; id?: keyof TData; maxNumOptionsExpanded?: number; name: string; options: OptionBase<number | string>[]; shouldFilterOptions?: boolean }): TableColumnOptions<TData, TDataContext, TColumnContext> {
     return {
       columnContext: kwArgs.columnContext,
       comparatorFactory: TableUtil.createOptionsCellRowComperator,
@@ -520,7 +517,7 @@ export class TableUtil {
     if (column.valueGetter) {
       return column.valueGetter({ column: column as TableColumn<TRowData, TDataContext>, dataContext, id: column.id, row, rowIndex });
     }
-    const values = row[column.id as keyof TRowData] as string | string[];
+    const values = row[column.id as keyof TRowData] as (number | string)[] | number | string;
     if (Array.isArray(values)) {
       return values.map(value => column.options.find(o => o.value === value)?.label ?? '');
     }

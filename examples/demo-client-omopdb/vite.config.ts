@@ -126,7 +126,7 @@ export default defineConfig({
         },
         changeOrigin: true,
         secure: false,
-        target: 'https://0.0.0.0:8000',
+        target: 'https://0.0.0.0:8002',
       },
     },
   },

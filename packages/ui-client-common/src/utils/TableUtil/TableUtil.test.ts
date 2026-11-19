@@ -45,6 +45,10 @@ vi.mock('write-excel-file/browser', () => ({
   default: writeXlsxFileMock,
 }));
 
+interface NumericOptionRow {
+  seq_format: number;
+}
+
 interface TestRow {
   active: boolean;
   allTags: string | string[];
@@ -451,6 +455,36 @@ describe('TableUtil filters and cell values', () => {
 
     expect(TableUtil.createFiltersFromColumns([], rows, null)).toEqual([]);
     expect(TableUtil.createFiltersFromColumns(columns, [], null)).toEqual([]);
+  });
+
+  it('displays and filters numeric option values without converting row values', () => {
+    const options: OptionBase<number>[] = [
+      { label: 'DNA sequence', value: 2 },
+      { label: 'Nextclade', value: 4 },
+    ];
+    const column = TableUtil.createOptionsColumn<NumericOptionRow>({
+      id: 'seq_format',
+      name: 'Sequence format',
+      options,
+      shouldFilterOptions: true,
+    });
+    const rows: NumericOptionRow[] = [
+      { seq_format: 2 },
+      { seq_format: 4 },
+    ];
+    const filters = TableUtil.createFiltersFromColumns([column], rows, null);
+    const filter = filters[0] as MultiSelectFilter;
+
+    expect(TableUtil.getTableOptionsCellValue({
+      column,
+      dataContext: null,
+      row: rows[0],
+      rowIndex: 0,
+    })).toBe('DNA sequence');
+    expect(filter.options).toEqual(options);
+    filter.filterValue = [2];
+    expect(filter.matchRowValue(rows[0].seq_format)).toBe(true);
+    expect(filter.matchRowValue(rows[1].seq_format)).toBe(false);
   });
 
   it('gets table cell values from row fields or value getters', () => {

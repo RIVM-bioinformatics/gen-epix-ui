@@ -63,6 +63,11 @@ export const CASEDB_QUERY_KEY = {
 // eslint-disable-next-line no-redeclare, @typescript-eslint/naming-convention
 export type CASEDB_QUERY_KEY = typeof CASEDB_QUERY_KEY[keyof typeof CASEDB_QUERY_KEY];
 
+/**
+ * Every CASEDB_QUERY_KEY needs an entry. List the keys whose changes invalidate
+ * the entry; use `[]` if it has no upstream dependencies. For example, changing
+ * CASE_SET_MEMBERS, CASE_SETS, or CASES invalidates CASE_SET_STATS.
+ */
 export const CASEDB_QUERY_DEPENDENCIES: Record<CASEDB_QUERY_KEY, (CASEDB_QUERY_KEY | COMMON_QUERY_KEY)[]> = {
   [CASEDB_QUERY_KEY.ALLELE_PROFILES]: [],
   [CASEDB_QUERY_KEY.ASSEMBLY_PROTOCOLS]: [],

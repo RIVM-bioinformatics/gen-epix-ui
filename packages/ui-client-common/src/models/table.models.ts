@@ -84,7 +84,7 @@ export interface TableColumnNumber<TRowData, TDataContext = null, TColumnContext
 export interface TableColumnOptions<TRowData, TDataContext = null, TColumnContext = null> extends TableColumnBase<TRowData, string | string[], TDataContext, TColumnContext> {
   comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnOptions<TRowData, TDataContext, TColumnContext>, TDataContext>) => (a: TRowData, b: TRowData) => number;
   maxNumOptionsExpanded?: number;
-  options: OptionBase<string>[];
+  options: OptionBase<number | string>[];
   shouldFilterOptions?: boolean;
   type: 'options';
 }

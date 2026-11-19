@@ -2,12 +2,26 @@
   "translation": {
     "About": "Over",
     "Accessibility": "Toegankelijkheid",
+    "Allele": "Allel",
+    "Alleles": "Allelen",
+    "Compressed DNA sequence": "Gecomprimeerde DNA-sequentie",
+    "Compressed DNA sequence including gaps": "Gecomprimeerde DNA-sequentie inclusief gaps",
     "Contact": "Contact",
     "Copyright": "Auteursrecht",
+    "Create new allele": "Nieuw allel aanmaken",
+    "DNA sequence": "DNA-sequentie",
+    "DNA sequence including gaps": "DNA-sequentie inclusief gaps",
     "English": "Engels",
+    "Hash only": "Alleen hash",
     "Home": "Home",
     "Information for the press": "Informatie voor de pers",
     "Languages": "Talen",
-    "Nederlands": "Nederlands"
+    "Length": "Lengte",
+    "Locus": "Locus",
+    "Manage alleles": "Allelen beheren",
+    "Nederlands": "Nederlands",
+    "Nextclade": "Nextclade",
+    "Sequence": "Sequentie",
+    "Sequence format": "Sequentieformaat"
   }
 }

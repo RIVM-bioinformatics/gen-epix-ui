@@ -2,12 +2,26 @@
   "translation": {
     "About": "About",
     "Accessibility": "Accessibility",
+    "Allele": "Allele",
+    "Alleles": "Alleles",
+    "Compressed DNA sequence": "Compressed DNA sequence",
+    "Compressed DNA sequence including gaps": "Compressed DNA sequence including gaps",
     "Contact": "Contact",
     "Copyright": "Copyright",
+    "Create new allele": "Create new allele",
+    "DNA sequence": "DNA sequence",
+    "DNA sequence including gaps": "DNA sequence including gaps",
     "English": "English",
+    "Hash only": "Hash only",
     "Home": "Home",
     "Information for the press": "Information for the press",
     "Languages": "Languages",
-    "Nederlands": "Nederlands"
+    "Length": "Length",
+    "Locus": "Locus",
+    "Manage alleles": "Manage alleles",
+    "Nederlands": "Nederlands",
+    "Nextclade": "Nextclade",
+    "Sequence": "Sequence",
+    "Sequence format": "Sequence format"
   }
 }
