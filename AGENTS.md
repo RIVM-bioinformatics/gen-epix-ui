@@ -168,9 +168,7 @@ The UI packages (`ui-client-common`, `ui-client-casedb`, and the thinner
 `ui-client-omopdb`/`ui-client-seqdb`) share one top-level `src/` taxonomy:
 `components/`, `hooks/`, `dataHooks/`, `classes/`, `constants/`, `models/`,
 `context/`, `stores/`, `pages/`, `routes/`, `utils/`, `test/`, `theme/`,
-`setup/`. The domain packages omit folders they don't need (e.g. omopdb/seqdb
-have no `classes`, `hooks`, `dataHooks`, `context`, or `stores`, and collapse
-constants/query-keys into a single `data/` folder).
+`setup/`. The domain packages omit folders they don't need.
 
 **Universal rule:** almost every unit (component, hook, class, store, service)
 gets its own PascalCase-or-camelCase folder matching the unit name, containing
@@ -261,6 +259,26 @@ public units need the same folder+barrel shape to be consumable.
  browser test modes both continue to resolve.
 - Avoid render-time mutations and unstable refs in hooks and components.
 - Keep MUI theme augmentation types compatible with optional custom theme keys.
+
+## Query Key Dependencies
+
+In each client's `src/constants/query.constants.ts`, every value in
+`XXX_QUERY_KEY` must have an entry in `XXX_QUERY_DEPENDENCIES`. Read
+`[A]: [B, C]` as **invalidate A when either B or C changes**. It does not mean
+that changing A invalidates B or C. Use `[A]: []` when A has no upstream
+dependencies; other queries can still depend on A.
+
+For example, in the [CaseDB dependency map](packages/ui-client-casedb/src/constants/query.constants.ts),
+`CASE_SET_STATS` lists `CASE_SET_MEMBERS`, `CASE_SETS`, and `CASES`. Changes
+to membership, the sets themselves, or the underlying cases can each make the
+cached stats stale.
+
+Each domain client registers its map alongside the common map.
+[`QueryClientService.getQueryKeyDependencies`](packages/ui-client-common/src/classes/services/QueryClientService/QueryClientService.ts)
+starts from the changed key and finds its direct and transitive dependents.
+When adding a key, list the sources that affect its **cached result**, then
+check which existing entries need the new key as a source. Rendering two
+independently cached queries on the same page does not create a dependency.
 
 ## API Client Conventions
 
