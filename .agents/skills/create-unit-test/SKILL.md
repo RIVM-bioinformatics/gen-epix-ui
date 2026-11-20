@@ -171,6 +171,10 @@ remaining gaps.
    `await expect.element(screen.getByRole('alert')).toBeVisible()` for DOM updates.
    Cover loading, empty, success and error states where they exist.
    Use `await screen.rerender(...)` to test transitions without remounting.
+   When a necessary element cannot be targeted reliably through accessible
+   roles, labels or text, add a test id to the component for testability. Always
+   create test-id attributes with `TestIdUtil.createAttributes(...)` from
+   `@gen-epix/ui-core/utils/TestIdUtil`; do not hardcode `data-testid`.
 3. **Mock HTTP, not the SDK or Axios.** Register responses inside the test or
    its `beforeEach`, before rendering. Client browser setup intercepts both
    XHR and fetch for the test API; an unhandled API request fails the test.
