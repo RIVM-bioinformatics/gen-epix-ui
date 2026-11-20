@@ -1,10 +1,3 @@
-global.TextEncoder = TextEncoder;
-global.TextDecoder = TextDecoder;
+import { setupCoreTestI18n } from '../lib/i18n';
 
-export const setupTestEnvironment = () => {
-  vi.setConfig({
-    testTimeout: 30000,
-  });
-};
-
-setupTestEnvironment();
+setupCoreTestI18n();

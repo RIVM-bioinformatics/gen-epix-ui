@@ -473,6 +473,10 @@
     "./utils/UserUtil": {
       "types": "./src/utils/UserUtil/index.ts",
       "import": "./src/utils/UserUtil/index.ts"
+    },
+    "./test/lib": {
+      "types": "./src/test/lib/index.ts",
+      "import": "./src/test/lib/index.ts"
     }
   },
   "files": [
@@ -511,6 +515,7 @@
     "zustand": "5.1.0"
   },
   "devDependencies": {
+    "@gen-epix/api-casedb": "workspace:^",
     "@dnd-kit/core": "6.3.1",
     "@dnd-kit/sortable": "10.0.0",
     "@dnd-kit/utilities": "3.2.2",
@@ -518,6 +523,7 @@
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
     "@gen-epix/api-commondb": "workspace:^",
+    "@mswjs/interceptors": "0.45.12",
     "@gen-epix/eslint-config": "0.10.0",
     "@gen-epix/translation-util": "0.7.0",
     "@gen-epix/ui-core": "workspace:^",

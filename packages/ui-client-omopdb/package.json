@@ -373,6 +373,10 @@
     "./utils/OmopDbStandardConfigUtil": {
       "types": "./src/utils/OmopDbStandardConfigUtil/index.ts",
       "import": "./src/utils/OmopDbStandardConfigUtil/index.ts"
+    },
+    "./test/lib": {
+      "types": "./src/test/lib/index.ts",
+      "import": "./src/test/lib/index.ts"
     }
   },
   "files": [

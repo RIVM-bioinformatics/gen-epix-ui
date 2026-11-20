@@ -1,10 +1,8 @@
-global.TextEncoder = TextEncoder;
-global.TextDecoder = TextDecoder;
+import { setupCoreTestI18n } from '@gen-epix/ui-core-components/test/lib';
+import { beforeEach } from 'vitest';
 
-export const setupTestEnvironment = () => {
-  vi.setConfig({
-    testTimeout: 30000,
-  });
-};
+import { setupUiCoreForm } from '../../setup/setup';
+import { formTestLocales } from '../lib/locales';
 
-setupTestEnvironment();
+setupCoreTestI18n(formTestLocales);
+beforeEach(setupUiCoreForm);

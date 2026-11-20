@@ -1,17 +1,13 @@
 ---
 name: create-unit-test
 description: >-
-  Create or update colocated Vitest unit tests for one eligible TypeScript
-  source file or every eligible source file under a requested folder in this
-  monorepo. Use when asked to create, add, extend, refresh, or update unit
-  tests, including after implementation changes. Skip model, constant, index,
-  setup, theme, declaration, configuration, test, generated, and api-* folder
-  files, as well as files containing only types, enums, and constants; use the
-  owning package's test configuration and require 100 percent coverage for
-  every target module.
+  Create or update colocated Vitest tests for one TypeScript file or a folder
+  in this monorepo. Use for .ts unit tests and .tsx React component/browser
+  tests, including after implementation changes. Use the owning package's
+  unit or browser project and require 100 percent coverage per target.
 ---
 
-# Create or Update a Unit Test
+# Create or Update a Unit or Browser Test
 
 ## Scope and Eligibility
 
@@ -22,16 +18,16 @@ description: >-
   sequentially. Complete the full workflow and validation for one target
   before starting the next; do not combine unrelated modules into one test.
 - If a folder contains no eligible targets, report that and make no edits.
-- Target implementation files ending in `.ts` only. Do not create unit tests
-  for `.tsx` files, declaration files, existing test/spec files, or generated
-  output.
+- Target `.ts` and `.tsx` implementations. The **source extension**, not
+  whether the first test happens to need JSX, determines the project.
 - Skip every file under `**/models/**`, `**/constants/**`, and `**/theme/**`,
-  plus every `index.ts`, `setup.ts`, `*.d.ts`, `*.config.ts`, test/spec file,
+  plus `**/src/test/**` (helpers, wrappers, fixtures and setup), every
+  `index.ts(x)`, `setup.ts(x)`, `*.d.ts`, `*.config.ts(x)`, test/spec file,
   generated-output directory, dependency directory, and any directory matching
   `**/api-*`. Never test or create tests for a file inside an `api-*` folder,
   even when the file otherwise looks like an eligible implementation module.
   These exclusions apply even when the file contains executable code.
-- Also skip any `.ts` file whose contents consist only of type declarations
+- Also skip any `.ts` or `.tsx` file whose contents consist only of type declarations
   (`type` aliases and `interface` declarations), enum declarations, and
   constant data declarations, along with imports, exports, and comments. This
   includes files combining any of those declaration kinds. A `const` that
@@ -87,15 +83,16 @@ until the user authorizes the resolution.
 ## 2. Determine the Colocated Test
 
 - Place each test in the same directory as its source module.
-- Derive the filename from the source stem: `Widget.ts` becomes
-  `Widget.test.ts`. Never add scenario names, alternate suffixes, or a second
+- Keep the source extension: `Widget.ts` becomes `Widget.test.ts` (Vitest
+  `unit`, jsdom); `Widget.tsx` becomes `Widget.test.tsx` (Vitest `browser`,
+  Playwright Chromium). Never add scenario names, alternate suffixes, or a second
   test file for the same source module. If the colocated test already exists,
   update it rather than creating a duplicate.
 - Import the target directly from its local module when practical. Do not move
   tests into a package-level or feature-level test directory.
-- Package Vitest configuration already discovers `src/**/*.test.ts` as unit
-  tests. Do not add a launch configuration, package script, or coverage
-  configuration solely for a colocated test.
+- Package Vite configs already discover both patterns. Do not add a launch
+  configuration, runner, package script or coverage exemption for a target.
+  If the browser binary is missing, run `pnpm --filter <package> exec playwright install chromium`.
 
 ## 3. Design the Coverage Matrix
 
@@ -130,12 +127,12 @@ remaining gaps.
   the nearest existing test style.
 - Keep tests deterministic and focused on observable behavior. Use existing
   setup files and helpers; do not replace the package's test environment.
-- For React hooks, use React Testing Library's `renderHook` and `act` from
+- For `.ts` React hooks, use React Testing Library's `renderHook` and `act` from
   `@testing-library/react` so tests exercise the hook through React's real
   render and cleanup lifecycle. Do not mock React hook primitives to invoke a
   hook directly. If the owning package does not have React Testing Library as a
   test dependency, add it through `pnpm` before writing hook tests.
-- Mock dependencies only at their boundary and where needed to isolate the
+- In `.test.ts` unit tests, mock dependencies only at their boundary and where needed to isolate the
   target. Patch the symbol where the target looks it up, not where the symbol
   was originally declared. Restore spies, mocks, timers, and global state.
 - Prefer parametrized cases for inputs that differ only in data. Use focused
@@ -144,12 +141,60 @@ remaining gaps.
 - Assert both successful and failure paths. Avoid assertions that merely copy
   the implementation's calculation or verify private call order when the
   resulting behavior can be checked directly.
-- Keep the test file itself free of JSX so it remains a `.test.ts` unit test.
+- Keep `.test.ts` files free of JSX. For `.test.tsx`, use the browser workflow below.
+
+### Browser components (`.test.tsx`)
+
+1. **Use the owning package's renderer.** In `ui-client-common`, `ui-client-casedb`,
+   `ui-client-seqdb`, `ui-client-omopdb`, `ui-core-components` and `ui-core-form`,
+   import `renderComponent` from that package's `src/test/lib` (a relative import
+   from the test, or `@gen-epix/<own-package>/test/lib`). Use
+   `const screen = await renderComponent(<Widget {...props} />)`.
+   Do not import a different client's renderer or run setup manually.
+   - Clients already get their standard config, demo theme, initialized English
+     and Dutch translations, Emotion and the app's DI-backed React Query client.
+     Use `{ language: 'nl', configure: config => { ... } }` for case-specific
+     inputs. The app shell, login flow and router are not mounted. For a `Link`
+     or `useLocation`, pass `{ wrapper: MemoryRouter }` from `react-router-dom`;
+     use a memory **data** router for `useMatches`. Additional providers passed
+     via `wrapper` compose with, rather than replace, the package providers.
+   - Core components get MUI and i18n; core form also gets a real `FormProvider`.
+     Pass `{ form: { defaultValues: ... } }` for field inputs. `ui-core` and
+     `ui-phylogenetic-tree` have no client wrapper: use `render` from
+     `vitest-browser-react` with just the target's required providers; see
+     `packages/ui-phylogenetic-tree/src/components/PhylogeneticTree/PhylogeneticTree.test.tsx`.
+2. **Do not mock or spy on utilities**, including their module exports, or
+   replace data hooks just to manufacture component states. Vary props,
+   callback presence, config, initial state, request data/status and user
+   actions to reach branches. Drive the real component with browser locators
+   and awaited user actions; use assertions such as
+   `await expect.element(screen.getByRole('alert')).toBeVisible()` for DOM updates.
+   Cover loading, empty, success and error states where they exist.
+   Use `await screen.rerender(...)` to test transitions without remounting.
+3. **Mock HTTP, not the SDK or Axios.** Register responses inside the test or
+   its `beforeEach`, before rendering. Client browser setup intercepts both
+   XHR and fetch for the test API; an unhandled API request fails the test.
+   Cases must not run concurrently in the same file (DI and transport are per test).
+   For example, import `createOrganization`, `mockOrganizations` and
+   `mockApiRequest` from `@gen-epix/ui-client-common/test/lib`:
+   - Success: `mockOrganizations([createOrganization({ name: 'North' })])`.
+   - Empty: `mockOrganizations([])`.
+   - Error: `mockApiRequest('GET', '/v1/organizations', () => Response.json({ detail: 'Unavailable' }, { status: 503 }))`.
+   - Match the actual SDK method and pathname (no host or query string). The
+     responder gets the real `Request`; inspect its URL/body or return a
+     promise to hold a request pending for a loading-state assertion.
+4. Look in the owning package's `src/test/` **before** inventing fixtures.
+   Keep reusable builders, HTTP handlers and provider helpers there, not
+   alongside production code. Share cross-client fixtures through
+   `ui-client-common/src/test/lib`; keep domain-specific records in the domain
+   package. Return fresh typed SDK data per case. Never import browser-only
+   helpers into jsdom unit tests or production modules.
 
 ## 5. Validate 100 Percent Target Coverage
 
 Run commands from the repository root and replace `<package>` and
-`<test-path>` with the owning package name and colocated test path. For a
+`<test-path>` and `<source-path>` with paths relative to that package
+(`src/...`, not `packages/...`). Select `unit` for `.ts` or `browser` for `.tsx`. For a
 folder request, use the owning package for each target and run these commands
 after each test edit, keeping validation scoped to the current target:
 
@@ -157,10 +202,11 @@ after each test edit, keeping validation scoped to the current target:
 pnpm --filter <package> run lint-fix
 pnpm --filter <package> run lint
 pnpm --filter <package> run check-types
-pnpm --filter <package> run test-run -- <test-path>
+pnpm --filter <package> exec vitest run --project <unit-or-browser> --coverage --coverage.include=<source-path> <test-path>
 ```
 
-The package's `test-run` script runs Vitest with V8 coverage. The focused test
+Use the configured V8 coverage provider and **verify the intended file actually
+ran** (do not use `--passWithNoTests` for this check). The focused test
 path should be the complete target test module, not an individual test case.
 Inspect the coverage report for the target source file and require 100 percent
 for statements, branches, functions, and lines. A passing test command alone
@@ -179,10 +225,12 @@ focused change affects shared test infrastructure.
 
 ## Final Checklist
 
-- The request was one eligible `.ts` implementation file or one folder.
+- The request was one eligible `.ts` or `.tsx` implementation file or one folder.
 - For a folder request, every discovered eligible target was processed in
   sorted order, or the batch stopped at an authorized blocker.
-- Every test is in the same folder as its target and ends in `.test.ts`.
+- Every test is colocated and ran in the project matching its extension.
+- Browser components used the package's renderer where available, real utils,
+  and HTTP fixtures for requests; shared test support stayed under `src/test/`.
 - Excluded paths and files, including every `**/api-*` folder, were not tested
   and did not receive generated tests; this includes files containing only
   types, enums, and constants.

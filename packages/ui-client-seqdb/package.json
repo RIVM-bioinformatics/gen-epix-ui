@@ -285,6 +285,10 @@
     "./utils/SeqDbStandardConfigUtil": {
       "types": "./src/utils/SeqDbStandardConfigUtil/index.ts",
       "import": "./src/utils/SeqDbStandardConfigUtil/index.ts"
+    },
+    "./test/lib": {
+      "types": "./src/test/lib/index.ts",
+      "import": "./src/test/lib/index.ts"
     }
   },
   "files": [
