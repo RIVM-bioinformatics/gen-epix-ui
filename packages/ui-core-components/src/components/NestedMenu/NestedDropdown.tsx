@@ -45,7 +45,7 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const { ButtonProps, ContainerProps, menuItemsData: data, MenuProps, onClick, showTopLevelTooltip, ...rest } = props;
+  const { ButtonProps = {}, ContainerProps, menuItemsData: data, MenuProps, onClick, showTopLevelTooltip, ...rest } = props;
 
   const onButtonClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

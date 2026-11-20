@@ -6,7 +6,7 @@ export const hasOpenDialogPopper = (dialogContent: HTMLElement | null | undefine
   const document = dialogContent.ownerDocument;
   const expandedElements = dialogContent.querySelectorAll<HTMLElement>('[aria-expanded="true"][aria-controls]');
   const hasExpandedPopper = Array.from(expandedElements).some((expandedElement) => {
-    const controlledElementIds = expandedElement.getAttribute('aria-controls')?.trim().split(/\s+/) ?? [];
+    const controlledElementIds = expandedElement.getAttribute('aria-controls').trim().split(/\s+/);
     return controlledElementIds.some((controlledElementId) => {
       const controlledElement = document.getElementById(controlledElementId);
       return Boolean(controlledElement?.closest('.MuiPopper-root'));

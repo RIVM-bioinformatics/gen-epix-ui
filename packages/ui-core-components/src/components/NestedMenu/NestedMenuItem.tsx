@@ -151,39 +151,39 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
     }
   }, [ContainerProps]);
 
-  const onBlur = useCallback(() => {
+  const onBlur = useCallback((e: FocusEvent<HTMLElement>) => {
     setTimeout(() => {
       if (!isSubmenuFocused()) {
         setIsSubMenuOpen(false);
       }
     });
-  }, [isSubmenuFocused]);
+    ContainerProps.onBlur?.(e);
+  }, [ContainerProps, isSubmenuFocused]);
 
-  const onKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      return;
+  const onKeyDown = useCallback((e: KeyboardEvent<HTMLElement>) => {
+    if (e.key !== 'Escape') {
+      if (isSubmenuFocused()) {
+        e.stopPropagation();
+      }
+
+      const isActive = containerRef.current?.ownerDocument.activeElement;
+
+      // if pressing enter key, run callback
+      if (e.key === 'Enter' && e.target === containerRef.current && callback) {
+        callback();
+      }
+
+      if (e.key === 'ArrowLeft' && isSubmenuFocused()) {
+        containerRef.current?.focus();
+      }
+
+      if (e.key === 'ArrowRight' && e.target === containerRef.current && e.target === isActive) {
+        const firstChild = menuContainerRef.current?.children[0] as HTMLDivElement;
+        firstChild?.focus();
+      }
     }
-
-    if (isSubmenuFocused()) {
-      e.stopPropagation();
-    }
-
-    const isActive = containerRef.current?.ownerDocument.activeElement;
-
-    // if pressing enter key, run callback
-    if (e.key === 'Enter' && e.target === containerRef.current && callback) {
-      callback();
-    }
-
-    if (e.key === 'ArrowLeft' && isSubmenuFocused()) {
-      containerRef.current?.focus();
-    }
-
-    if (e.key === 'ArrowRight' && e.target === containerRef.current && e.target === isActive) {
-      const firstChild = menuContainerRef.current?.children[0] as HTMLDivElement;
-      firstChild?.focus();
-    }
-  }, [callback, isSubmenuFocused]);
+    ContainerProps.onKeyDown?.(e);
+  }, [callback, ContainerProps, isSubmenuFocused]);
 
   const open = isSubMenuOpen && parentMenuOpen;
 
