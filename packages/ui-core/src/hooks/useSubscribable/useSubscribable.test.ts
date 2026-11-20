@@ -62,6 +62,22 @@ describe('useSubscribable', () => {
     expect(callback).toHaveBeenCalledWith(5, 4);
   });
 
+  it('selects previous values before passing them to the callback', () => {
+    const subscribable = new TestSubscribable(new Subject(2));
+    const callback = vi.fn();
+    const { result } = renderHook(() => useSubscribable(subscribable, {
+      callback,
+      select: (value) => value * 10,
+    }));
+
+    act(() => {
+      subscribable.next(3);
+    });
+
+    expect(result.current).toBe(30);
+    expect(callback).toHaveBeenCalledWith(30, 20);
+  });
+
   it('unsubscribes on unmount', () => {
     const subscribable = new TestSubscribable(new Subject(1));
     const callback = vi.fn();

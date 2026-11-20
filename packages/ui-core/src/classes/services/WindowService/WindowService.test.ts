@@ -13,6 +13,7 @@ describe('WindowService', () => {
     windowService = WindowService.getInstance();
   });
   afterEach(() => {
+    vi.unstubAllGlobals();
     vi.restoreAllMocks();
   });
 
@@ -28,11 +29,8 @@ describe('WindowService', () => {
     expect(WindowService.getInstance()).toBe(windowService);
   });
 
-  it('returns null for the document and body when no window is available', () => {
-    Object.defineProperty(windowService, 'window', {
-      configurable: true,
-      get: () => undefined,
-    });
+  it('returns null for the document and body when no document is available', () => {
+    vi.stubGlobal('document', undefined);
 
     expect(windowService.document).toBeNull();
     expect(windowService.body).toBeNull();

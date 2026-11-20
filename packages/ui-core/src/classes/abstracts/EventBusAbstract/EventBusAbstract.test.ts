@@ -10,6 +10,7 @@ import { EventBusAbstract } from './EventBusAbstract';
 type TestEvents = {
   message: string;
   reset: void;
+  toString: string;
 };
 
 class TestEventBus extends EventBusAbstract<TestEvents> { }
@@ -28,6 +29,16 @@ describe('EventBusAbstract', () => {
     eventBus.emit('message', 'ignored');
 
     expect(callback).toHaveBeenCalledTimes(1);
+  });
+
+  it('supports event names inherited from object prototypes', () => {
+    const eventBus = new TestEventBus();
+    const callback = vi.fn<(payload: string) => void>();
+
+    eventBus.addEventListener('toString', callback);
+    eventBus.emit('toString', 'hello');
+
+    expect(callback).toHaveBeenCalledWith('hello');
   });
 
   it('removes only the matching callback and ignores missing listeners', () => {
