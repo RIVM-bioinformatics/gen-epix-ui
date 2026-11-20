@@ -19,15 +19,12 @@ import { AutocompleteSelectAllContext } from './AutocompleteSelectAllContext';
 export const AutocompleteSelectAllPaper = ({ children, ...props }: PaperProps) => {
   const ctx = use(AutocompleteSelectAllContext);
 
-  const onClickSelectAll = useCallback(() => {
-    if (!ctx) {
-      return;
-    }
+  const onClickSelectAll = ctx ? () => {
     const { currentValues, enabledOptionValues, handleSelectAll } = ctx;
     const selCount = currentValues.filter(v => enabledOptionValues.includes(v)).length;
     const curIsAll = enabledOptionValues.length > 0 && selCount === enabledOptionValues.length;
     handleSelectAll(curIsAll, currentValues);
-  }, [ctx]);
+  } : undefined;
 
   const onMouseDownSelectAll = useCallback((e: MouseEvent<HTMLElement>) => {
     e.preventDefault();

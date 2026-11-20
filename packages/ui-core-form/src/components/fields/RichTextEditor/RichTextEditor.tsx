@@ -7,6 +7,7 @@ import {
 import {
   Alert,
   AlertTitle,
+  Box,
   FormControl,
   FormGroup,
   FormHelperText,
@@ -17,7 +18,6 @@ import {
 import ClearIcon from '@mui/icons-material/Clear';
 import type { RichTextEditorRef } from 'mui-tiptap';
 import {
-  isTouchDevice,
   LinkBubbleMenu,
   MenuButtonAddTable,
   MenuButtonBlockquote,
@@ -99,17 +99,6 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
   const rteRef = useRef<RichTextEditorRef>(null);
 
   const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
-    rteRef.current?.editor.on('blur', () => onBlur());
-    rteRef.current?.editor.on('update', () => {
-      const newValue = rteRef.current?.editor.getHTML();
-      if (newValue === value) {
-        return;
-      }
-      if (onChangeProp) {
-        onChangeProp(newValue);
-      }
-      onChange(newValue);
-    });
     ref({
       focus: () => {
         rteRef.current?.editor.commands.focus();
@@ -117,6 +106,10 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
     });
 
     const onResetButtonClick = () => {
+      rteRef.current?.editor?.commands.clearContent(false);
+      if (onChangeProp) {
+        onChangeProp('');
+      }
       onChange('');
     };
 
@@ -154,7 +147,7 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
 
         >
           {label}
-          {!disabled && (
+          {!disabled && !loading && (
             <IconButton
               {...TestIdUtil.createAttributes('RichTextEditor-reset')}
               aria-label={t`Clear rich text editor content`}
@@ -182,6 +175,19 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
               content={value}
               editable={!disabled}
               extensions={extensions}
+              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+              onBlur={() => onBlur()}
+              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+              onUpdate={({ editor }) => {
+                const newValue = editor.getHTML();
+                if (newValue === value) {
+                  return;
+                }
+                if (onChangeProp) {
+                  onChangeProp(newValue);
+                }
+                onChange(newValue);
+              }}
               ref={rteRef}
               // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
               renderControls={() => (
@@ -236,12 +242,10 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
                   <MenuButtonOrderedList />
                   <MenuButtonBulletedList />
                   <MenuButtonTaskList />
-                  {isTouchDevice() && (
-                    <>
-                      <MenuButtonIndent />
-                      <MenuButtonUnindent />
-                    </>
-                  )}
+                  <Box sx={{ '@media (any-pointer: coarse)': { display: 'contents' }, display: 'none' }}>
+                    <MenuButtonIndent />
+                    <MenuButtonUnindent />
+                  </Box>
                   <MenuDivider />
                   <MenuButtonBlockquote />
                   <MenuDivider />

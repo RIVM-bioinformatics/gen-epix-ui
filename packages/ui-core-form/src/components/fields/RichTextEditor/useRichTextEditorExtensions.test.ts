@@ -28,6 +28,11 @@ describe('useRichTextEditorExtensions', () => {
     expect(getExtension('highlight').options).toMatchObject({ multicolor: true });
     expect(getExtension('taskItem').options).toMatchObject({ nested: true });
     expect(getExtension('placeholder').options).toMatchObject({ placeholder: undefined });
+    expect(getExtension('link').options).toMatchObject({
+      autolink: true,
+      linkOnPaste: true,
+      openOnClick: false,
+    });
   });
 
   it('memoizes extensions until the placeholder changes', () => {

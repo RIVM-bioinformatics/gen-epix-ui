@@ -49,7 +49,9 @@ export type BaseFormFieldDefinition = {
   order?: number;
 };
 
-export type CheckboxOption = OptionBase<number | string>;
+export type CheckboxOption = {
+  value: number | string;
+} & Omit<OptionBase<number | string>, 'value'>;
 
 export type FormFieldDefinition<TFormFields extends FieldValues> =
   FormFieldDefinitionAutocompleteForName<TFormFields> |

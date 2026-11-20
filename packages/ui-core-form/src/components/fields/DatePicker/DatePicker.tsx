@@ -12,7 +12,6 @@ import type {
   ControllerRenderProps,
   FieldValues,
   Path,
-  PathValue,
   UseControllerReturn,
 } from 'react-hook-form';
 import {
@@ -46,13 +45,13 @@ import { DatePickerInputAdornment } from './DatePickerInputAdornment';
 
 
 export type DatePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
-  readonly dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
+  readonly dateFormat?: typeof DATE_FORMAT.DATE | typeof DATE_FORMAT.DATE_TIME | typeof DATE_FORMAT.YEAR | typeof DATE_FORMAT.YEAR_MONTH;
   readonly disabled?: boolean;
   readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly name: TName;
-  readonly onChange?: (value: Date) => void;
+  readonly onChange?: (value: Date | null) => void;
   readonly required?: boolean;
   readonly warningMessage?: string;
 };
@@ -73,10 +72,9 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
   const hasError = !!errorMessage;
   const hasWarning = !!warningMessage && !hasError;
   const inputRef = useRef<HTMLInputElement>(null);
-  const onResetButtonClickRef = useRef<() => void>(() => undefined);
 
   const onMuiDatePickerChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
-    (newValue: Date) => {
+    (newValue: Date | null) => {
       if (onChangeProp) {
         onChangeProp(newValue);
       }
@@ -104,7 +102,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
       case DATE_FORMAT.YEAR_MONTH:
         return ['year', 'month'];
       default:
-        throw new Error(`Unsupported date format: ${dateFormat}`);
+        throw new Error(`Unsupported date format: ${String(dateFormat)}`);
     }
   }, [dateFormat]);
 
@@ -117,7 +115,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
       },
     });
 
-    onResetButtonClickRef.current = () => {
+    const onResetButtonClick = () => {
       onChange(null);
     };
 
@@ -164,7 +162,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
                   {...props}
                   disabled={disabled}
                   loading={loading}
-                  onResetButtonClickRef={onResetButtonClickRef}
+                  onResetButtonClick={onResetButtonClick}
                 />
               ),
             }}
@@ -188,7 +186,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
   return (
     <Controller
       control={control}
-      defaultValue={'' as PathValue<TFieldValues, TName>}
+      defaultValue={null}
       name={name}
       render={renderController}
     />

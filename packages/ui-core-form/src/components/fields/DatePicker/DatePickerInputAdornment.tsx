@@ -1,4 +1,3 @@
-import type { RefObject } from 'react';
 import type { InputAdornmentProps } from '@mui/material';
 import {
   IconButton,
@@ -11,14 +10,14 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 export type DatePickerInputAdornmentProps = {
   readonly disabled: boolean;
   readonly loading: boolean;
-  readonly onResetButtonClickRef: RefObject<() => void>;
+  readonly onResetButtonClick: () => void;
 } & InputAdornmentProps;
 
 export const DatePickerInputAdornment = ({
   children,
   disabled,
   loading,
-  onResetButtonClickRef,
+  onResetButtonClick,
   ...props
 }: DatePickerInputAdornmentProps) => {
   const { t } = useTranslation();
@@ -29,8 +28,8 @@ export const DatePickerInputAdornment = ({
           {...TestIdUtil.createAttributes('DatePicker-reset')}
           aria-label={t`Clear date field`}
           className={'DatePicker-resetButton'}
-          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
-          onClick={() => onResetButtonClickRef.current()}
+
+          onClick={onResetButtonClick}
           sx={{
             '& svg': {
               fontSize: '16px',

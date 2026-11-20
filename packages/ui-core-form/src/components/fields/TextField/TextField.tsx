@@ -89,6 +89,9 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
     });
 
     const onResetButtonClick = () => {
+      if (onChangeProp) {
+        onChangeProp('');
+      }
       onChange('');
     };
 
@@ -116,7 +119,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
           },
           input: {
             className: classnames({ 'Mui-warning': hasWarning }),
-            endAdornment: disabled ? undefined : (
+            endAdornment: disabled || loading ? undefined : (
               <InputAdornment position={'end'}>
                 <IconButton
                   {...TestIdUtil.createAttributes('TextField-reset')}
@@ -148,7 +151,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
         variant={'outlined'}
       />
     );
-  }, [disabled, loading, infoMessage, hasError, errorMessage, warningMessage, label, multiline, placeholder, rows, hasWarning, autocomplete, name, type, t, required, onMuiTextFieldChange]);
+  }, [disabled, loading, infoMessage, hasError, errorMessage, warningMessage, label, multiline, placeholder, rows, hasWarning, autocomplete, name, type, t, required, onChangeProp, onMuiTextFieldChange]);
 
   return (
     <FormControl

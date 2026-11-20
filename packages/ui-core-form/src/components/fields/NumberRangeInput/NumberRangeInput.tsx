@@ -100,8 +100,8 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
       },
     });
 
-    const leftValue = (value as [number, number])?.[0];
-    const rightValue = (value as [number, number])?.[1];
+    const leftValue = (value as [null | number, null | number] | null)?.[0] ?? null;
+    const rightValue = (value as [null | number, null | number] | null)?.[1] ?? null;
 
     const onLeftValueChange = (event: ChangeEvent<HTMLInputElement>) => {
       if (event.target.value === '') {
@@ -176,20 +176,22 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
               }}
             >
               <Input
+                disabled={disabled || loading}
                 fullWidth
                 inputProps={{
                   ...TestIdUtil.createAttributes('RangeSlider-from-input'),
                   'aria-labelledby': id,
-                  name: `${name}-from}`,
+                  name: `${name}-from`,
                   variant: 'outlined',
                 }}
+                inputRef={inputRef}
                 // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onBlur={onLeftValueBlur}
                 // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onChange={onLeftValueChange}
                 placeholder={t`From`}
                 size={'small'}
-                value={leftValue ?? ''}
+                value={isFinite(leftValue) ? leftValue : ''}
               />
             </Box>
             <FormControl
@@ -210,7 +212,7 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                 }}
               >
                 {label}
-                {!disabled && (
+                {!disabled && !loading && (
                   <IconButton
                     {...TestIdUtil.createAttributes('RangeSlider-reset')}
                     aria-label={t`Clear number range`}
@@ -238,6 +240,7 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                 {shouldShowSlider && (
                   <Slider
                     color={'primary'}
+                    disabled={disabled || loading}
                     max={max}
                     min={min}
                     onBlur={onBlur}
@@ -260,11 +263,12 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
               }}
             >
               <Input
+                disabled={disabled || loading}
                 fullWidth
                 inputProps={{
                   ...TestIdUtil.createAttributes('RangeSlider-to-input'),
                   'aria-labelledby': id,
-                  name: `${name}-to}`,
+                  name: `${name}-to`,
                   variant: 'outlined',
                 }}
                 // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
@@ -273,7 +277,7 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                 onChange={onRightValueChange}
                 placeholder={t`To`}
                 size={'small'}
-                value={rightValue ?? ''}
+                value={isFinite(rightValue) ? rightValue : ''}
               />
             </Box>
           </Box>

@@ -112,7 +112,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
     if (!shouldSortOptions) {
       return options;
     }
-    return structuredClone(options).sort((a, b) => a.label.localeCompare(b.label));
+    return structuredClone(options).sort((a, b) => (a.label ?? '').localeCompare(b.label ?? ''));
   }, [options, shouldSortOptions]);
 
   const { mappedOptions, optionValues }: { mappedOptions: Map<Value, AutoCompleteOption>; optionValues: Array<Value> } = useMemo(() => {
@@ -128,7 +128,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
     };
   }, [sortedOptions]);
 
-  const getOptionLabel = useCallback((value: AutoCompleteOption['value']) => loading ? t`Loading...` : mappedOptions.get(value)?.label, [loading, mappedOptions, t]);
+  const getOptionLabel = useCallback((value: AutoCompleteOption['value']) => loading ? t`Loading...` : mappedOptions.get(value)?.label ?? '', [loading, mappedOptions, t]);
   const getIsOptionEqualToValue = useCallback((optionValue: AutoCompleteOption['value'], value: AutoCompleteOption['value']) => optionValue === value, []);
   const getIsOptionDisabled = useCallback((value: AutoCompleteOption['value']): boolean => mappedOptions.get(value)?.disabled, [mappedOptions]);
   const groupBy = useCallback((value: AutoCompleteOption['value']): string => mappedOptions.get(value)?.groupByValue, [mappedOptions]);
@@ -250,7 +250,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
 
   const filterOptions = useCallback((_filterableOptions: TFieldValues[TName][], filterState: FilterOptionsState<TFieldValues[TName]>): TFieldValues[TName][] => {
     if (filterState.inputValue) {
-      return sortedOptions.filter(option => option.label.toLowerCase().includes(filterState.inputValue.toLowerCase())).map((option) => option.value) as TFieldValues[TName][];
+      return sortedOptions.filter(option => option.label?.toLowerCase().includes(filterState.inputValue.toLowerCase())).map((option) => option.value) as TFieldValues[TName][];
     }
     return sortedOptions.map((option) => option.value) as TFieldValues[TName][];
   }, [sortedOptions]);

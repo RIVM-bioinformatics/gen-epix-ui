@@ -59,7 +59,7 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 
 export type DateRangePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
-  readonly dateFormat: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
+  readonly dateFormat: typeof DATE_FORMAT.DATE | typeof DATE_FORMAT.DATE_TIME | typeof DATE_FORMAT.YEAR | typeof DATE_FORMAT.YEAR_MONTH;
   readonly disabled?: boolean;
   readonly infoMessage?: string;
   readonly label: string;
@@ -67,10 +67,12 @@ export type DateRangePickerProps<TFieldValues extends FieldValues, TName extends
   readonly maxDate?: Date;
   readonly minDate?: Date;
   readonly name: TName;
-  readonly onChange?: (value: [Date, Date]) => void;
+  readonly onChange?: (value: [Date | null, Date | null]) => void;
   readonly required?: boolean;
   readonly warningMessage?: string;
 };
+
+type DateRangeValue = [Date | null, Date | null];
 
 export const DateRangePicker = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   dateFormat = DATE_FORMAT.DATE,
@@ -110,12 +112,14 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
       case DATE_FORMAT.YEAR_MONTH:
         return ['year', 'month'];
       default:
-        throw new Error(`Unsupported date format: ${dateFormat}`);
+        throw new Error(`Unsupported date format: ${String(dateFormat)}`);
     }
   }, [dateFormat]);
 
-  const sanitizeValue = useCallback((value: [Date, Date]): [Date, Date] => {
-    const sanitizedValue: [Date, Date] = [null, null];
+  const sanitizeValue = useCallback((value: DateRangeValue): DateRangeValue => {
+    const sanitizedValue: DateRangeValue = [null, null];
+    // The views switch rejects runtime-invalid formats before this callback can run.
+    // eslint-disable-next-line default-case
     switch (dateFormat) {
       case DATE_FORMAT.DATE:
         sanitizedValue[0] = value[0] ? set(value[0], { hours: 0, milliseconds: 0, minutes: 0, seconds: 0 }) : null;
@@ -133,8 +137,6 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
         sanitizedValue[0] = value[0] ? set(value[0], { date: 1, hours: 0, milliseconds: 0, minutes: 0, seconds: 0 }) : null;
         sanitizedValue[1] = value[1] ? set(lastDayOfMonth(value[1]), { hours: 23, milliseconds: 999, minutes: 59, seconds: 59 }) : null;
         break;
-      default:
-        throw new Error(`Unsupported date format: ${dateFormat}`);
     }
     return sanitizedValue;
   }, [dateFormat]);
@@ -158,9 +160,9 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
     };
   }, []);
 
-  const outerValue = useWatch({ control, name }) as [Date, Date];
+  const outerValue = useWatch({ control, name }) as DateRangeValue;
 
-  const handleChange = useCallback((onChange: (value: [Date, Date]) => void, value: [Date, Date]) => {
+  const handleChange = useCallback((onChange: (value: DateRangeValue) => void, value: DateRangeValue) => {
     const sanitizedValue = sanitizeValue(value);
     if (isEqual(sanitizedValue, outerValue)) {
       return;
@@ -178,14 +180,13 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
       },
     });
 
-    const fromValue = (value as [Date, Date])[0];
-    const toValue = (value as [Date, Date])[1];
+    const [fromValue, toValue] = value as DateRangeValue;
 
-    const onFromValueChange = (newFromValue: Date) => {
+    const onFromValueChange = (newFromValue: Date | null) => {
       handleChange(onChange, [newFromValue, toValue]);
     };
 
-    const onToValueChange = (newToValue: Date) => {
+    const onToValueChange = (newToValue: Date | null) => {
       handleChange(onChange, [fromValue, newToValue]);
     };
 
@@ -288,7 +289,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               inputRef={fromInputRef}
               label={t`From`}
               loading={loading}
-              maxDate={toValue ? new Date(Math.min.apply(null, [maxDate, toValue] as unknown as number[])) : maxDate}
+              maxDate={toValue && maxDate ? new Date(Math.min(maxDate.getTime(), toValue.getTime())) : toValue ?? maxDate}
               minDate={minDate}
               // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
               onChange={onFromValueChange}
@@ -317,7 +318,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               label={t`To`}
               loading={loading}
               maxDate={maxDate}
-              minDate={fromValue ? new Date(Math.max.apply(null, [minDate, fromValue] as unknown as number[])) : minDate}
+              minDate={fromValue && minDate ? new Date(Math.max(minDate.getTime(), fromValue.getTime())) : fromValue ?? minDate}
               // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
               onChange={onToValueChange}
               referenceDate={maxDate}
@@ -356,7 +357,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
   return (
     <Controller
       control={control}
-      defaultValue={'' as PathValue<TFieldValues, TName>}
+      defaultValue={[null, null] as PathValue<TFieldValues, TName>}
       name={name}
       render={renderController}
     />
