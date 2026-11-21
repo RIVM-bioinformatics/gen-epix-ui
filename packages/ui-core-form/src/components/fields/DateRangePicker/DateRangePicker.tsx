@@ -59,7 +59,7 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 
 export type DateRangePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
-  readonly dateFormat: typeof DATE_FORMAT.DATE | typeof DATE_FORMAT.DATE_TIME | typeof DATE_FORMAT.YEAR | typeof DATE_FORMAT.YEAR_MONTH;
+  readonly dateFormat: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
   readonly disabled?: boolean;
   readonly infoMessage?: string;
   readonly label: string;
@@ -67,7 +67,7 @@ export type DateRangePickerProps<TFieldValues extends FieldValues, TName extends
   readonly maxDate?: Date;
   readonly minDate?: Date;
   readonly name: TName;
-  readonly onChange?: (value: [Date | null, Date | null]) => void;
+  readonly onChange?: ((value: [Date, Date]) => void) | ((value: [Date | null, Date | null]) => void);
   readonly required?: boolean;
   readonly warningMessage?: string;
 };
@@ -169,7 +169,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
     }
     onChange(sanitizedValue);
     if (onChangeProp) {
-      onChangeProp(sanitizedValue);
+      (onChangeProp)(sanitizedValue);
     }
   }, [onChangeProp, outerValue, sanitizeValue]);
 
@@ -357,7 +357,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
   return (
     <Controller
       control={control}
-      defaultValue={[null, null] as PathValue<TFieldValues, TName>}
+      defaultValue={'' as PathValue<TFieldValues, TName>}
       name={name}
       render={renderController}
     />

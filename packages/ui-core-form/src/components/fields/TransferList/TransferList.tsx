@@ -50,8 +50,8 @@ export type TransferListProps<TFieldValues extends FieldValues, TName extends Pa
   readonly label: string;
   readonly loading?: boolean;
   readonly name: TName;
-  readonly onChange?: (value: string[]) => void;
-  readonly options: Array<{ readonly value: string } & TransferListOption>;
+  readonly onChange?: ((value: string) => void) | ((value: string[]) => void);
+  readonly options: TransferListOption[];
   readonly required?: boolean;
   readonly warningMessage?: string;
 };
@@ -89,7 +89,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
       return;
     }
     if (onChangeProp) {
-      onChangeProp(value);
+      (onChangeProp as (value: string[]) => void)(value);
     }
     onChange(value);
   }, [onChangeProp, required]);

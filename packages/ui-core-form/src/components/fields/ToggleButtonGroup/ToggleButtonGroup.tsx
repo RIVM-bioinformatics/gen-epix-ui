@@ -32,8 +32,8 @@ export type ToggleButtonProps<TFieldValues extends FieldValues, TName extends Pa
   readonly disabled?: boolean;
   readonly infoMessage?: string;
   readonly name: TName;
-  readonly onChange?: (value: boolean | null | number | string) => void;
-  readonly options: Array<{ readonly value: boolean | number | string } & ToggleButtonOption>;
+  readonly onChange?: ((value: boolean | null | number | string) => void) | ((value: string) => void);
+  readonly options: ToggleButtonOption[];
   readonly required?: boolean;
   readonly row?: boolean;
   readonly warningMessage?: string;
@@ -61,7 +61,7 @@ export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extend
         return;
       }
       if (onChangeProp) {
-        onChangeProp(value);
+        (onChangeProp as (value: boolean | null | number | string) => void)(value);
       }
       onChange(value);
     }

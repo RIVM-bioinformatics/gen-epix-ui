@@ -43,6 +43,14 @@ description: >-
 - Preserve unrelated user changes and existing public APIs. Use the owning
   package's existing Vitest, TypeScript, and ESLint configuration rather than
   introducing new test infrastructure.
+- This is a test-writing skill, not an implementation-fixing workflow. Do not
+  change production code, exported types or signatures, default values,
+  runtime behavior, rendered output, package exports, or dependencies to make a
+  test pass or reach coverage. If a likely production defect is found, stop at
+  the approval gate below. Only make a production change after the user
+  explicitly authorizes it, and keep that change backward-compatible; if the
+  requested fix cannot preserve the public API and existing behavior, ask for
+  explicit approval of the specific breaking change before proceeding.
 
 ## 1. Review the Logic Before Editing Tests
 
@@ -247,6 +255,8 @@ focused change affects shared test infrastructure.
   target.
 - No unrelated files, generated reports, package metadata, or configuration
   were changed.
+- Production implementation and public contracts were not changed unless the
+  user explicitly authorized a backward-compatible fix.
 
 Report the requested path, discovered eligible targets, skipped categories,
 each source module and test path, behavior categories covered, validation

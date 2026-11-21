@@ -45,8 +45,8 @@ export type SelectProps<TFieldValues extends FieldValues, TName extends Path<TFi
   readonly loading?: boolean;
   readonly multiple?: TMultiple;
   readonly name: TName;
-  readonly onChange?: (value: Array<boolean | number | string> | boolean | number | string) => void;
-  readonly options: Array<{ readonly value: boolean | number | string } & SelectOption>;
+  readonly onChange?: ((value: Array<boolean | number | string> | boolean | number | string) => void) | ((value: string) => void);
+  readonly options: SelectOption[];
   readonly required?: boolean;
   readonly warningMessage?: string;
 };
@@ -94,7 +94,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
   const onMuiSelectChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
     (event: SelectChangeEvent<Value | Value[]>) => {
       if (onChangeProp) {
-        onChangeProp(event.target.value);
+        (onChangeProp as (value: Value | Value[]) => void)(event.target.value);
       }
       onChange(event.target.value);
     }

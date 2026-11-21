@@ -12,6 +12,7 @@ import type {
   ControllerRenderProps,
   FieldValues,
   Path,
+  PathValue,
   UseControllerReturn,
 } from 'react-hook-form';
 import {
@@ -45,13 +46,13 @@ import { DatePickerInputAdornment } from './DatePickerInputAdornment';
 
 
 export type DatePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
-  readonly dateFormat?: typeof DATE_FORMAT.DATE | typeof DATE_FORMAT.DATE_TIME | typeof DATE_FORMAT.YEAR | typeof DATE_FORMAT.YEAR_MONTH;
+  readonly dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
   readonly disabled?: boolean;
   readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly name: TName;
-  readonly onChange?: (value: Date | null) => void;
+  readonly onChange?: ((value: Date) => void) | ((value: Date | null) => void);
   readonly required?: boolean;
   readonly warningMessage?: string;
 };
@@ -76,7 +77,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
   const onMuiDatePickerChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
     (newValue: Date | null) => {
       if (onChangeProp) {
-        onChangeProp(newValue);
+        (onChangeProp)(newValue);
       }
       onChange(newValue);
     }
@@ -186,7 +187,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
   return (
     <Controller
       control={control}
-      defaultValue={null}
+      defaultValue={'' as PathValue<TFieldValues, TName>}
       name={name}
       render={renderController}
     />
