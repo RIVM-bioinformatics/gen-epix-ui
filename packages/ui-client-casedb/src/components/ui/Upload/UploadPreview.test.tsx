@@ -16,9 +16,9 @@ import { AuthorizationService } from '@gen-epix/ui-client-common/classes/service
 import { mockApiRequest } from '@gen-epix/ui-client-common/test/lib';
 
 import {
+  createUploadStore,
   STEP_ORDER_UPLOAD,
   UploadStoreContext,
-  createUploadStore,
 } from '../../../stores/uploadStore';
 import type { UploadStore } from '../../../stores/uploadStore/uploadStore';
 import { UPLOAD_STEP } from '../../../models/upload.models';
@@ -33,19 +33,20 @@ import { renderComponent } from '../../../test/lib';
 
 import { UploadPreview } from './UploadPreview';
 
+type MockOptions = {
+  failRevalidation?: boolean;
+  maxCases?: number;
+  revalidationGate?: Promise<void>;
+  validationGate?: Promise<void>;
+};
+
 type Screen = Awaited<ReturnType<typeof renderComponent>>;
 
 type UploadCasesRequestBody = {
   case_batch: {
     cases: Array<CaseDbCaseForUpload>;
   };
-};
-
-type MockOptions = {
-  failRevalidation?: boolean;
-  maxCases?: number;
-  revalidationGate?: Promise<void>;
-  validationGate?: Promise<void>;
+  default_created_in_data_collection_id?: string;
 };
 
 const INVALID_VALUE = 'invalid';
@@ -98,7 +99,7 @@ const createCaseWithoutDataCollection = (id: string, value: string): CaseDbCaseF
   case: {
     case_type_id: COMPLETE_CASE_TYPE_ID,
     content: { [COMPLETE_CASE_TYPE_TEXT_COL_ID]: value },
-    created_in_data_collection_id: null as unknown as string,
+    created_in_data_collection_id: null,
     id,
   },
   id,
@@ -107,7 +108,7 @@ const createCaseWithoutDataCollection = (id: string, value: string): CaseDbCaseF
 const createCaseWithUnknownColumn = (id: string, value: string): CaseDbCaseForUpload => ({
   case: {
     case_type_id: COMPLETE_CASE_TYPE_ID,
-    content: { [COMPLETE_CASE_TYPE_TEXT_COL_ID]: value, 'col-unknown': 'extra' },
+    content: { 'col-unknown': 'extra', [COMPLETE_CASE_TYPE_TEXT_COL_ID]: value },
     created_in_data_collection_id: COMPLETE_CASE_TYPE_DATA_COLLECTION_ID,
     id,
   },
@@ -142,11 +143,11 @@ const createValidationResult = (caseForUpload: CaseDbCaseForUpload) => {
   return {
     data_issues: issue
       ? [{
-          ...issue,
-          col_id: COMPLETE_CASE_TYPE_TEXT_COL_ID,
-          original_value: value,
-          updated_value: null,
-        }]
+        ...issue,
+        col_id: COMPLETE_CASE_TYPE_TEXT_COL_ID,
+        original_value: value,
+        updated_value: null as null | string,
+      }]
       : [],
     id: caseForUpload.id,
     is_new: false,
@@ -177,7 +178,7 @@ const renderUploadPreview = async ({
   cases = createDefaultCases(),
   createdInDataCollectionId = COMPLETE_CASE_TYPE_DATA_COLLECTION_ID,
   ...options
-}: MockOptions & { cases?: Array<CaseDbCaseForUpload>; createdInDataCollectionId?: string | null } = {}) => {
+}: { cases?: Array<CaseDbCaseForUpload>; createdInDataCollectionId?: null | string } & MockOptions = {}) => {
   const requests: Array<UploadCasesRequestBody> = [];
   mockUploadPreviewApi(requests, options);
   const completeCaseType = createWritableCompleteCaseType(options.maxCases ?? 10);
@@ -189,7 +190,7 @@ const renderUploadPreview = async ({
     activeStep: UPLOAD_STEP.PREVIEW,
     caseRightsColMap: { [COMPLETE_CASE_TYPE_TEXT_COL_ID]: cases.map(caseForUpload => caseForUpload.case?.id ?? '') },
     casesForVerificationFromSourceData: cases,
-    createdInDataCollectionId: createdInDataCollectionId as string,
+    createdInDataCollectionId,
   });
   const screen = await renderComponent(
     <UploadStoreContext value={store}>
@@ -203,9 +204,9 @@ const renderUploadPreview = async ({
 
 const editRowValue = async (screen: Screen, rowIndex: number, value: string) => {
   await screen.getByRole('button', { name: 'Row actions' }).nth(rowIndex).click();
-  await screen.getByRole('menuitem', { name: 'Edit', exact: true }).click();
+  await screen.getByRole('menuitem', { exact: true, name: 'Edit' }).click();
   await screen.getByRole('textbox', { name: 'Text' }).fill(value);
-  await screen.getByRole('button', { name: 'Save', exact: true }).click();
+  await screen.getByRole('button', { exact: true, name: 'Save' }).click();
 };
 
 const editColumnValues = async (screen: Screen, value: string) => {
@@ -228,13 +229,13 @@ describe('UploadPreview', () => {
     await expect.element(screen.getByText('Validating cases', { exact: true })).toBeVisible();
 
     releaseValidation();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
   });
 
   it('should validate the cases and select only the cases without invalid data issues', async () => {
     const { requests, screen } = await renderUploadPreview();
 
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
     await expect.element(screen.getByRole('checkbox', { name: 'Select row' }).nth(0)).toBeChecked();
     await expect.element(screen.getByRole('checkbox', { name: 'Select row' }).nth(1)).not.toBeChecked();
     await expect.element(screen.getByRole('checkbox', { name: 'Select row' }).nth(2)).toBeChecked();
@@ -245,7 +246,7 @@ describe('UploadPreview', () => {
   it('should not validate when there are no cases to verify', async () => {
     const { requests, screen } = await renderUploadPreview({ cases: [] });
 
-    await expect.element(screen.getByRole('button', { name: 'Proceed', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed' })).toBeVisible();
     expect(requests).toHaveLength(0);
   });
 
@@ -253,24 +254,24 @@ describe('UploadPreview', () => {
     const { screen } = await renderUploadPreview({ maxCases: 1 });
 
     await expect.element(screen.getByRole('alert')).toHaveTextContent('You have exceeded the maximum number of 1 cases for this case type. Please reduce the number of selected cases before proceeding.');
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeDisabled();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeDisabled();
   });
 
   it('should revalidate the selected cases after editing a column', async () => {
     const { requests, screen } = await renderUploadPreview();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
 
     await editColumnValues(screen, 'Changed');
 
     await expect.poll(() => requests.length).toBe(2);
     expect(requests[1].case_batch.cases.map(caseForUpload => caseForUpload.case?.id)).toEqual(['case-1', 'case-3']);
     expect(requests[1].case_batch.cases.map(caseForUpload => caseForUpload.case?.content[COMPLETE_CASE_TYPE_TEXT_COL_ID])).toEqual(['Changed', 'Changed']);
-    await expect.element(screen.getByRole('cell', { name: 'Changed', exact: true }).first()).toBeVisible();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'Changed' }).first()).toBeVisible();
   });
 
   it('should revalidate a single case after editing its row values', async () => {
     const { requests, screen } = await renderUploadPreview();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
 
     await editRowValue(screen, 0, 'Changed row');
 
@@ -278,16 +279,16 @@ describe('UploadPreview', () => {
     expect(requests[1].case_batch.cases).toHaveLength(1);
     expect(requests[1].case_batch.cases[0].case?.id).toBe('case-1');
     expect(requests[1].case_batch.cases[0].case?.content[COMPLETE_CASE_TYPE_TEXT_COL_ID]).toBe('Changed row');
-    await expect.element(screen.getByRole('cell', { name: 'Changed row', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'Changed row' })).toBeVisible();
   });
 
   it('should select a previously invalid case once its revalidation no longer reports issues', async () => {
     const { screen } = await renderUploadPreview();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
 
     await editRowValue(screen, 1, 'Fixed');
 
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 3 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 3 selected cases' })).toBeVisible();
     await expect.element(screen.getByRole('checkbox', { name: 'Select row' }).nth(1)).toBeChecked();
   });
 
@@ -297,31 +298,31 @@ describe('UploadPreview', () => {
       releaseRevalidation = resolve;
     });
     const { screen } = await renderUploadPreview({ revalidationGate });
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
 
     await editRowValue(screen, 0, 'Changed row');
 
     await expect.element(screen.getByText('Revalidating cases', { exact: true })).toBeVisible();
 
     releaseRevalidation();
-    await expect.element(screen.getByRole('cell', { name: 'Changed row', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'Changed row' })).toBeVisible();
   });
 
   it('should show the revalidation error when revalidating the cases fails', async () => {
     const { screen } = await renderUploadPreview({ failRevalidation: true });
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
 
     await editRowValue(screen, 0, 'Changed row');
 
     await expect.element(screen.getByRole('heading', { level: 1, name: 'Sorry, an unexpected error has occurred.' })).toBeVisible();
-    await expect.poll(() => screen.getByRole('cell', { name: 'Changed row', exact: true }).query()).toBeNull();
+    await expect.poll(() => screen.getByRole('cell', { exact: true, name: 'Changed row' }).query()).toBeNull();
   });
 
   it('should proceed directly to the next step when all unselected cases have invalid data issues', async () => {
     const { screen, store } = await renderUploadPreview();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
 
-    await screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true }).click();
+    await screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' }).click();
 
     await expect.poll(() => store.getState().activeStep).toBe(UPLOAD_STEP.SELECT_SEQUENCE_FILES);
     expect(getSelectedIds(store)).toEqual(['case-1', 'case-3']);
@@ -330,14 +331,14 @@ describe('UploadPreview', () => {
 
   it('should ask for confirmation before proceeding with selected cases that have issues and keep only the valid ones', async () => {
     const { screen, store } = await renderUploadPreview();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
     await screen.getByRole('checkbox', { name: 'Select row' }).nth(1).click();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 3 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 3 selected cases' })).toBeVisible();
 
-    await screen.getByRole('button', { name: 'Proceed with 3 selected cases', exact: true }).click();
+    await screen.getByRole('button', { exact: true, name: 'Proceed with 3 selected cases' }).click();
 
     await expect.element(screen.getByText('Issues found with selected cases', { exact: true })).toBeVisible();
-    await screen.getByRole('button', { name: 'Proceed', exact: true }).click();
+    await screen.getByRole('button', { exact: true, name: 'Proceed' }).click();
 
     await expect.poll(() => store.getState().activeStep).toBe(UPLOAD_STEP.SELECT_SEQUENCE_FILES);
     expect(getSelectedIds(store)).toEqual(['case-1', 'case-3']);
@@ -345,12 +346,12 @@ describe('UploadPreview', () => {
 
   it('should ask for confirmation before proceeding with selected cases that have a failed status', async () => {
     const { screen, store } = await renderUploadPreview({ cases: [createCaseForUpload('case-1', 'Valid one'), createCaseForUpload('case-2', FAILED_VALUE)] });
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
 
-    await screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true }).click();
+    await screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' }).click();
 
     await expect.element(screen.getByText('Issues found with selected cases', { exact: true })).toBeVisible();
-    await screen.getByRole('button', { name: 'Proceed', exact: true }).click();
+    await screen.getByRole('button', { exact: true, name: 'Proceed' }).click();
 
     await expect.poll(() => store.getState().activeStep).toBe(UPLOAD_STEP.SELECT_SEQUENCE_FILES);
     expect(getSelectedIds(store)).toEqual(['case-1', 'case-2']);
@@ -358,14 +359,14 @@ describe('UploadPreview', () => {
 
   it('should ask for confirmation before proceeding without unselected valid cases', async () => {
     const { screen, store } = await renderUploadPreview();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
     await screen.getByRole('checkbox', { name: 'Select row' }).nth(0).click();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 1 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 1 selected cases' })).toBeVisible();
 
-    await screen.getByRole('button', { name: 'Proceed with 1 selected cases', exact: true }).click();
+    await screen.getByRole('button', { exact: true, name: 'Proceed with 1 selected cases' }).click();
 
     await expect.element(screen.getByText('Not all cases are selected.', { exact: true })).toBeVisible();
-    await screen.getByRole('button', { name: 'Proceed', exact: true }).click();
+    await screen.getByRole('button', { exact: true, name: 'Proceed' }).click();
 
     await expect.poll(() => store.getState().activeStep).toBe(UPLOAD_STEP.SELECT_SEQUENCE_FILES);
     expect(getSelectedIds(store)).toEqual(['case-3']);
@@ -373,26 +374,26 @@ describe('UploadPreview', () => {
 
   it('should go back to the previous step', async () => {
     const { screen, store } = await renderUploadPreview();
-    await expect.element(screen.getByRole('button', { name: 'Go back', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Go back' })).toBeVisible();
 
-    await screen.getByRole('button', { name: 'Go back', exact: true }).click();
+    await screen.getByRole('button', { exact: true, name: 'Go back' }).click();
 
     await expect.poll(() => store.getState().activeStep).toBe(UPLOAD_STEP.MAP_COLUMNS);
   });
 
   it('should send unknown columns of a case along when revalidating its column values', async () => {
     const { requests, screen } = await renderUploadPreview({ cases: [createCaseWithUnknownColumn('case-1', 'Valid one'), createCaseForUpload('case-2', 'Valid two')] });
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
 
     await editColumnValues(screen, 'Changed');
 
     await expect.poll(() => requests.length).toBe(2);
-    expect(requests[1].case_batch.cases[0].case?.content).toEqual({ [COMPLETE_CASE_TYPE_TEXT_COL_ID]: 'Changed', 'col-unknown': 'extra' });
+    expect(requests[1].case_batch.cases[0].case?.content).toEqual({ 'col-unknown': 'extra', [COMPLETE_CASE_TYPE_TEXT_COL_ID]: 'Changed' });
   });
 
   it('should send a missing value as empty when revalidating a case', async () => {
     const { requests, screen } = await renderUploadPreview();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
 
     await editRowValue(screen, 0, '');
 
@@ -402,47 +403,47 @@ describe('UploadPreview', () => {
 
   it('should keep a case selected when its revalidation reports an updated status', async () => {
     const { requests, screen } = await renderUploadPreview();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
 
     await editRowValue(screen, 0, UPDATED_VALUE);
 
     await expect.poll(() => requests.length).toBe(2);
-    await expect.element(screen.getByRole('cell', { name: UPDATED_VALUE, exact: true })).toBeVisible();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('cell', { exact: true, name: UPDATED_VALUE })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
   });
 
   it('should select a case whose revalidation reports a failed status', async () => {
     const { screen } = await renderUploadPreview();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
     await expect.element(screen.getByRole('checkbox', { name: 'Select row' }).nth(1)).not.toBeChecked();
 
     await editRowValue(screen, 1, FAILED_VALUE);
 
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 3 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 3 selected cases' })).toBeVisible();
     await expect.element(screen.getByRole('checkbox', { name: 'Select row' }).nth(1)).toBeChecked();
   });
 
   it('should keep an already selected case selected when its revalidation reports a failed status', async () => {
     const { requests, screen } = await renderUploadPreview();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
 
     await editRowValue(screen, 0, FAILED_VALUE);
 
     await expect.poll(() => requests.length).toBe(2);
-    await expect.element(screen.getByRole('cell', { name: FAILED_VALUE, exact: true })).toBeVisible();
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('cell', { exact: true, name: FAILED_VALUE })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
     await expect.element(screen.getByRole('checkbox', { name: 'Select row' }).nth(0)).toBeChecked();
   });
 
   it('should not select cases with unauthorized data issues', async () => {
     const { screen, store } = await renderUploadPreview({ cases: [createCaseForUpload('case-1', 'Valid one'), createCaseForUpload('case-2', UNAUTHORIZED_VALUE), createCaseForUpload('case-3', 'Valid three')] });
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
     await expect.element(screen.getByRole('checkbox', { name: 'Select row' }).nth(1)).not.toBeChecked();
 
-    await screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true }).click();
+    await screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' }).click();
 
     await expect.element(screen.getByText('Not all cases are selected.', { exact: true })).toBeVisible();
-    await screen.getByRole('button', { name: 'Proceed', exact: true }).click();
+    await screen.getByRole('button', { exact: true, name: 'Proceed' }).click();
 
     await expect.poll(() => store.getState().activeStep).toBe(UPLOAD_STEP.SELECT_SEQUENCE_FILES);
     expect(getSelectedIds(store)).toEqual(['case-1', 'case-3']);
@@ -451,13 +452,13 @@ describe('UploadPreview', () => {
   it('should validate cases without a default data collection when none is set', async () => {
     const { requests, screen } = await renderUploadPreview({ createdInDataCollectionId: null });
 
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
     expect(requests).toHaveLength(1);
   });
 
   it('should use the default data collection when revalidating a case without a data collection', async () => {
     const { requests, screen } = await renderUploadPreview({ cases: [createCaseWithoutDataCollection('case-1', 'Valid one'), createCaseForUpload('case-2', 'Valid two')] });
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
 
     await editRowValue(screen, 0, 'Changed row');
 
@@ -470,7 +471,7 @@ describe('UploadPreview', () => {
       cases: [createCaseWithoutDataCollection('case-1', 'Valid one'), createCaseWithoutDataCollection('case-2', 'Valid two')],
       createdInDataCollectionId: null,
     });
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
 
     await editRowValue(screen, 0, 'Changed row');
 
@@ -490,6 +491,6 @@ describe('UploadPreview', () => {
     };
     const { screen } = await renderUploadPreview({ cases: [createCaseForUpload('case-1', 'Valid one'), caseWithoutValue] });
 
-    await expect.element(screen.getByRole('button', { name: 'Proceed with 2 selected cases', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed with 2 selected cases' })).toBeVisible();
   });
 });

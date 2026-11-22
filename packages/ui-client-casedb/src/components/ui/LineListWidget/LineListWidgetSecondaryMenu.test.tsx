@@ -78,14 +78,14 @@ describe('LineListWidgetSecondaryMenu', () => {
   it('shows the link action with the unlinked state when the tree is not linked', async () => {
     const { screen } = await renderSecondaryMenu(UNLINKED_ZOOM_LEVEL);
 
-    await expect.element(screen.getByRole('button', { name: LINK_LABEL, exact: true })).toBeInTheDocument();
+    await expect.element(screen.getByRole('button', { exact: true, name: LINK_LABEL })).toBeInTheDocument();
     await expect.element(screen.getByText('Unlinked', { exact: true })).toBeInTheDocument();
   });
 
   it('shows the unlink action with the linked state when the tree is linked', async () => {
     const { screen } = await renderSecondaryMenu(LINKED_ZOOM_LEVEL);
 
-    await expect.element(screen.getByRole('button', { name: UNLINK_LABEL, exact: true })).toBeInTheDocument();
+    await expect.element(screen.getByRole('button', { exact: true, name: UNLINK_LABEL })).toBeInTheDocument();
     await expect.element(screen.getByText('Linked', { exact: true })).toBeInTheDocument();
   });
 
@@ -95,7 +95,7 @@ describe('LineListWidgetSecondaryMenu', () => {
     const { dashboardStore, screen } = await renderSecondaryMenu(UNLINKED_ZOOM_LEVEL);
     await dashboardStore.getState().setSorting('name', 'asc');
 
-    await screen.getByRole('button', { name: LINK_LABEL, exact: true }).click();
+    await screen.getByRole('button', { exact: true, name: LINK_LABEL }).click();
 
     await vi.waitFor(() => {
       expect(linkListener).toHaveBeenCalledTimes(1);
@@ -111,7 +111,7 @@ describe('LineListWidgetSecondaryMenu', () => {
     const { dashboardStore, screen } = await renderSecondaryMenu(LINKED_ZOOM_LEVEL);
     await dashboardStore.getState().setSorting('name', 'asc');
 
-    await screen.getByRole('button', { name: UNLINK_LABEL, exact: true }).click();
+    await screen.getByRole('button', { exact: true, name: UNLINK_LABEL }).click();
 
     expect(unlinkListener).toHaveBeenCalledWith({ userInitiated: true });
     expect(linkListener).not.toHaveBeenCalled();
@@ -121,11 +121,11 @@ describe('LineListWidgetSecondaryMenu', () => {
 
   it('updates the action and state when the tree link state changes', async () => {
     const { screen } = await renderSecondaryMenu(UNLINKED_ZOOM_LEVEL);
-    await expect.element(screen.getByRole('button', { name: LINK_LABEL, exact: true })).toBeInTheDocument();
+    await expect.element(screen.getByRole('button', { exact: true, name: LINK_LABEL })).toBeInTheDocument();
 
     setTreeZoomLevel(LINKED_ZOOM_LEVEL);
 
-    await expect.element(screen.getByRole('button', { name: UNLINK_LABEL, exact: true })).toBeInTheDocument();
+    await expect.element(screen.getByRole('button', { exact: true, name: UNLINK_LABEL })).toBeInTheDocument();
     await expect.element(screen.getByText('Linked', { exact: true })).toBeInTheDocument();
   });
 });

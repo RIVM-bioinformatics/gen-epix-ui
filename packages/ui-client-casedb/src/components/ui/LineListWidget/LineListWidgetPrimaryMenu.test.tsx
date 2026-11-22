@@ -7,11 +7,11 @@ import {
   vi,
 } from 'vitest';
 import type {
-  CaseDbApiPermission,
   CaseDbCase,
   CaseDbCompleteCaseType,
   CaseDbOrganization,
 } from '@gen-epix/api-casedb';
+import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import {
   CaseDbCommandName,
   CaseDbPermissionType,
@@ -60,6 +60,8 @@ import {
 import { renderComponent } from '../../../test/lib';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import type { DashboardContextValue } from '../Dashboard/context/DashboardContext';
+import type { FindSimilarCasesDialogOpenProps } from '../FindSimilarCasesDialog';
+import type { RemoveFindSimilarCasesResultDialogOpenProps } from '../RemoveFindSimilarCasesResultDialog/RemoveFindSimilarCasesResultDialog';
 
 import { LineListWidget } from './LineListWidget';
 
@@ -220,65 +222,65 @@ describe('LineListWidgetPrimaryMenu', () => {
     await waitForRows();
     await openActionsMenu(screen);
 
-    await expect.element(screen.getByRole('menuitem', { name: 'Create filter from selected cases', exact: true })).toBeInTheDocument();
-    await expect.element(screen.getByRole('menuitem', { name: 'Find similar cases', exact: true })).toBeInTheDocument();
-    await expect.element(screen.getByRole('menuitem', { name: 'Edit selected cases', exact: true })).toBeInTheDocument();
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Create filter from selected cases' })).toBeInTheDocument();
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Find similar cases' })).toBeInTheDocument();
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Edit selected cases' })).toBeInTheDocument();
     expect(document.body.textContent).not.toContain('Create new event with selected cases');
     expect(document.body.textContent).not.toContain('Add selected cases to an existing event');
     expect(document.body.textContent).not.toContain('Remove selected cases from this event');
   });
 
   it('shows the event items when the user has the permissions and a case set is present', async () => {
-    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CaseDbApiPermission[];
+    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CommonDbApiPermission[];
     const { screen } = await renderPrimaryMenu({ caseSet: createCaseSet() });
     await waitForRows();
     await openActionsMenu(screen);
 
-    await expect.element(screen.getByRole('menuitem', { name: 'Create new event with selected cases', exact: true })).toBeInTheDocument();
-    await expect.element(screen.getByRole('menuitem', { name: 'Add selected cases to an existing event', exact: true })).toBeInTheDocument();
-    await expect.element(screen.getByRole('menuitem', { name: 'Remove selected cases from this event', exact: true })).toBeInTheDocument();
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Create new event with selected cases' })).toBeInTheDocument();
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Add selected cases to an existing event' })).toBeInTheDocument();
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Remove selected cases from this event' })).toBeInTheDocument();
   });
 
   it('shows the create and add event items without a case set when the user lacks the delete permission', async () => {
-    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS.slice(0, 2) as unknown as CaseDbApiPermission[];
+    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS.slice(0, 2) as unknown as CommonDbApiPermission[];
     const { screen } = await renderPrimaryMenu();
     await waitForRows();
     await openActionsMenu(screen);
 
-    await expect.element(screen.getByRole('menuitem', { name: 'Create new event with selected cases', exact: true })).toBeInTheDocument();
-    await expect.element(screen.getByRole('menuitem', { name: 'Add selected cases to an existing event', exact: true })).toBeInTheDocument();
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Create new event with selected cases' })).toBeInTheDocument();
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Add selected cases to an existing event' })).toBeInTheDocument();
     expect(document.body.textContent).not.toContain('Remove selected cases from this event');
   });
 
   it('disables the selection based items when no case is selected', async () => {
-    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CaseDbApiPermission[];
+    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CommonDbApiPermission[];
     const { screen } = await renderPrimaryMenu({ caseSet: createCaseSet() });
     await waitForRows();
     await openActionsMenu(screen);
 
-    await expect.element(screen.getByRole('menuitem', { name: 'Create filter from selected cases', exact: true })).toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Find similar cases (based on selected cases)', exact: true })).toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Create new event with selected cases', exact: true })).toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Add selected cases to an existing event', exact: true })).toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Remove selected cases from this event', exact: true })).toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Edit selected cases', exact: true })).toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Find similar cases', exact: true })).not.toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Remove similar cases from results', exact: true })).toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Create filter from selected cases' })).toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Find similar cases (based on selected cases)' })).toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Create new event with selected cases' })).toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Add selected cases to an existing event' })).toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Remove selected cases from this event' })).toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Edit selected cases' })).toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Find similar cases' })).not.toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Remove similar cases from results' })).toHaveAttribute('aria-disabled', 'true');
   });
 
   it('enables the selection based items when cases are selected', async () => {
-    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CaseDbApiPermission[];
+    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CommonDbApiPermission[];
     const { dashboardStore, screen } = await renderPrimaryMenu({ caseSet: createCaseSet() });
     await waitForRows();
     dashboardStore.getState().setSelectedIds(['case-1']);
     await openActionsMenu(screen);
 
-    await expect.element(screen.getByRole('menuitem', { name: 'Create filter from selected cases', exact: true })).not.toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Find similar cases (based on selected cases)', exact: true })).not.toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Create new event with selected cases', exact: true })).not.toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Add selected cases to an existing event', exact: true })).not.toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Remove selected cases from this event', exact: true })).not.toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Edit selected cases', exact: true })).not.toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Create filter from selected cases' })).not.toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Find similar cases (based on selected cases)' })).not.toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Create new event with selected cases' })).not.toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Add selected cases to an existing event' })).not.toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Remove selected cases from this event' })).not.toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Edit selected cases' })).not.toHaveAttribute('aria-disabled', 'true');
   });
 
   it('creates a selection filter from the selected cases and clears the selection', async () => {
@@ -286,12 +288,12 @@ describe('LineListWidgetPrimaryMenu', () => {
     await waitForRows();
     dashboardStore.getState().setSelectedIds(['case-1']);
     await openActionsMenu(screen);
-    await screen.getByRole('menuitem', { name: 'Create filter from selected cases', exact: true }).click();
+    await screen.getByRole('menuitem', { exact: true, name: 'Create filter from selected cases' }).click();
 
     await vi.waitFor(() => {
       const selectionFilter = dashboardStore.getState().filters.find((filter) => filter instanceof SelectionFilter);
       expect(selectionFilter).toBeDefined();
-      expect((selectionFilter as SelectionFilter).filterValue).toEqual(['case-1']);
+      expect((selectionFilter).filterValue).toEqual(['case-1']);
     });
     await vi.waitFor(() => {
       expect(dashboardStore.getState().selectedIds).toEqual([]);
@@ -299,7 +301,7 @@ describe('LineListWidgetPrimaryMenu', () => {
   });
 
   it('disables the similar case actions and enables the removal of similar cases when similar cases exist', async () => {
-    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CaseDbApiPermission[];
+    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CommonDbApiPermission[];
     const { dashboardStore, screen } = await renderPrimaryMenu({ caseSet: createCaseSet() });
     await waitForRows();
     dashboardStore.getState().setSelectedIds(['case-1']);
@@ -313,8 +315,8 @@ describe('LineListWidgetPrimaryMenu', () => {
     await dashboardStore.getState().setFindSimilarCasesResults(similarResults);
     await openActionsMenu(screen);
 
-    await expect.element(screen.getByRole('menuitem', { name: 'Create filter from selected cases', exact: true })).toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Remove similar cases from results', exact: true })).not.toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Create filter from selected cases' })).toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Remove similar cases from results' })).not.toHaveAttribute('aria-disabled', 'true');
   });
 
   it('disables the find similar cases action when a selection filter is active', async () => {
@@ -323,23 +325,22 @@ describe('LineListWidgetPrimaryMenu', () => {
     await dashboardStore.getState().setFilterValue('selected', ['case-1']);
     await openActionsMenu(screen);
 
-    await expect.element(screen.getByRole('menuitem', { name: 'Find similar cases', exact: true })).toHaveAttribute('aria-disabled', 'true');
-    await expect.element(screen.getByRole('menuitem', { name: 'Find similar cases (based on selected cases)', exact: true })).toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Find similar cases' })).toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Find similar cases (based on selected cases)' })).toHaveAttribute('aria-disabled', 'true');
   });
 
   it('emits the find similar cases dialog event for all rows', async () => {
     const eventBus = container.resolve(EventBusService);
-    const listener = vi.fn();
+    const listener = vi.fn<(payload: FindSimilarCasesDialogOpenProps) => void>();
     eventBus.addEventListener('openFindSimilarCasesDialog', listener);
     try {
       const { screen } = await renderPrimaryMenu();
       await waitForRows();
       await openActionsMenu(screen);
-      await screen.getByRole('menuitem', { name: 'Find similar cases', exact: true }).click();
+      await screen.getByRole('menuitem', { exact: true, name: 'Find similar cases' }).click();
 
-      expect(listener).toHaveBeenCalledWith(expect.objectContaining({
-        allRows: expect.arrayContaining([expect.objectContaining({ id: 'case-1' })]),
-      }));
+      expect(listener).toHaveBeenCalledOnce();
+      expect(listener.mock.lastCall?.[0].allRows.map((row) => row.id)).toContain('case-1');
     } finally {
       eventBus.removeEventListener('openFindSimilarCasesDialog', listener);
     }
@@ -354,7 +355,7 @@ describe('LineListWidgetPrimaryMenu', () => {
       await waitForRows();
       dashboardStore.getState().setSelectedIds(['case-2']);
       await openActionsMenu(screen);
-      await screen.getByRole('menuitem', { name: 'Find similar cases (based on selected cases)', exact: true }).click();
+      await screen.getByRole('menuitem', { exact: true, name: 'Find similar cases (based on selected cases)' }).click();
 
       expect(listener).toHaveBeenCalledWith(expect.objectContaining({
         selectedRows: [expect.objectContaining({ id: 'case-2' })],
@@ -366,7 +367,7 @@ describe('LineListWidgetPrimaryMenu', () => {
 
   it('emits the remove similar cases dialog event when similar case results exist', async () => {
     const eventBus = container.resolve(EventBusService);
-    const listener = vi.fn();
+    const listener = vi.fn<(payload: RemoveFindSimilarCasesResultDialogOpenProps) => void>();
     eventBus.addEventListener('openRemoveFindSimilarCasesResultDialog', listener);
     try {
       const { dashboardStore, screen } = await renderPrimaryMenu();
@@ -379,16 +380,17 @@ describe('LineListWidgetPrimaryMenu', () => {
         similarCaseIds: ['case-2'],
       }]);
       await openActionsMenu(screen);
-      await screen.getByRole('menuitem', { name: 'Remove similar cases from results', exact: true }).click();
+      await screen.getByRole('menuitem', { exact: true, name: 'Remove similar cases from results' }).click();
 
-      expect(listener).toHaveBeenCalledWith(expect.objectContaining({ completeCaseType: expect.any(Object) }));
+      expect(listener).toHaveBeenCalledOnce();
+      expect(listener.mock.lastCall?.[0].completeCaseType).toBeDefined();
     } finally {
       eventBus.removeEventListener('openRemoveFindSimilarCasesResultDialog', listener);
     }
   });
 
   it('emits the create event dialog event with the selected rows', async () => {
-    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CaseDbApiPermission[];
+    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CommonDbApiPermission[];
     const eventBus = container.resolve(EventBusService);
     const listener = vi.fn();
     eventBus.addEventListener('openCreateEventDialog', listener);
@@ -397,7 +399,7 @@ describe('LineListWidgetPrimaryMenu', () => {
       await waitForRows();
       dashboardStore.getState().setSelectedIds(['case-1']);
       await openActionsMenu(screen);
-      await screen.getByRole('menuitem', { name: 'Create new event with selected cases', exact: true }).click();
+      await screen.getByRole('menuitem', { exact: true, name: 'Create new event with selected cases' }).click();
 
       expect(listener).toHaveBeenCalledWith(expect.objectContaining({
         rows: [expect.objectContaining({ id: 'case-1' })],
@@ -408,7 +410,7 @@ describe('LineListWidgetPrimaryMenu', () => {
   });
 
   it('emits the add cases to event dialog event with the current case set', async () => {
-    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CaseDbApiPermission[];
+    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CommonDbApiPermission[];
     const eventBus = container.resolve(EventBusService);
     const listener = vi.fn();
     eventBus.addEventListener('openAddCasesToEventDialog', listener);
@@ -418,7 +420,7 @@ describe('LineListWidgetPrimaryMenu', () => {
       await waitForRows();
       dashboardStore.getState().setSelectedIds(['case-1']);
       await openActionsMenu(screen);
-      await screen.getByRole('menuitem', { name: 'Add selected cases to an existing event', exact: true }).click();
+      await screen.getByRole('menuitem', { exact: true, name: 'Add selected cases to an existing event' }).click();
 
       expect(listener).toHaveBeenCalledWith(expect.objectContaining({
         currentCaseSet: caseSet,
@@ -430,7 +432,7 @@ describe('LineListWidgetPrimaryMenu', () => {
   });
 
   it('emits the remove cases from event dialog event without the cases that are similar', async () => {
-    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CaseDbApiPermission[];
+    container.resolve(AuthorizationService).apiPermissions = ALL_PERMISSIONS as unknown as CommonDbApiPermission[];
     const eventBus = container.resolve(EventBusService);
     const listener = vi.fn();
     eventBus.addEventListener('openRemoveCasesFromEventDialog', listener);
@@ -447,7 +449,7 @@ describe('LineListWidgetPrimaryMenu', () => {
         similarCaseIds: ['case-2'],
       }]);
       await openActionsMenu(screen);
-      await screen.getByRole('menuitem', { name: 'Remove selected cases from this event', exact: true }).click();
+      await screen.getByRole('menuitem', { exact: true, name: 'Remove selected cases from this event' }).click();
 
       expect(listener).toHaveBeenCalledWith({
         caseSet,
@@ -467,7 +469,7 @@ describe('LineListWidgetPrimaryMenu', () => {
       await waitForRows();
       dashboardStore.getState().setSelectedIds(['case-1']);
       await openActionsMenu(screen);
-      await screen.getByRole('menuitem', { name: 'Edit selected cases', exact: true }).click();
+      await screen.getByRole('menuitem', { exact: true, name: 'Edit selected cases' }).click();
 
       expect(listener).toHaveBeenCalledWith([expect.objectContaining({ id: 'case-1' })]);
     } finally {
@@ -482,7 +484,7 @@ describe('LineListWidgetPrimaryMenu', () => {
     dashboardStore.getState().setSelectedIds(['case-1']);
     await openActionsMenu(screen);
 
-    await expect.element(screen.getByRole('menuitem', { name: 'Edit selected cases', exact: true })).toHaveAttribute('aria-disabled', 'true');
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Edit selected cases' })).toHaveAttribute('aria-disabled', 'true');
   });
 
   it('uses the value getter of a column to determine which columns have data in the column editor', async () => {

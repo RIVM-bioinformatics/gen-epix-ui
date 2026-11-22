@@ -6,7 +6,10 @@ import {
   it,
   vi,
 } from 'vitest';
-import type { CommonDbApiPermission, CommonDbUser } from '@gen-epix/api-commondb';
+import type {
+  CommonDbApiPermission,
+  CommonDbUser,
+} from '@gen-epix/api-commondb';
 import type { CaseDbCaseUploadResult } from '@gen-epix/api-casedb';
 import { AuthorizationService } from '@gen-epix/ui-client-common/classes/services/AuthorizationService';
 import {
@@ -16,9 +19,9 @@ import {
 
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import {
+  createUploadStore,
   STEP_ORDER_UPLOAD,
   UploadStoreContext,
-  createUploadStore,
 } from '../../../stores/uploadStore';
 import type { UploadStore } from '../../../stores/uploadStore/uploadStore';
 import { UPLOAD_STEP } from '../../../models/upload.models';
@@ -53,7 +56,7 @@ const createDataTransfer = (fileNames: string[]) => {
   return dataTransfer;
 };
 
-const mockUploadApi = (responder: () => Response | Promise<Response> = () => Response.json({ status: 'CREATED', cases: [{ id: 'case-1', status: 'CREATED' }] })) => {
+const mockUploadApi = (responder: () => Promise<Response> | Response = () => Response.json({ cases: [{ id: 'case-1', status: 'CREATED' }], status: 'CREATED' })) => {
   container.resolve(AuthorizationService).user = USER;
   mockApiRequest('POST', '/v1/upload/cases', responder);
 };
@@ -139,7 +142,7 @@ describe('UploadCreateCases', () => {
     });
     mockUploadApi(async () => {
       await uploadGate;
-      return Response.json({ status: 'CREATED', cases: [{ id: 'case-1', status: 'CREATED' }] });
+      return Response.json({ cases: [{ id: 'case-1', status: 'CREATED' }], status: 'CREATED' });
     });
     const onUploadComplete = vi.fn();
     const { screen } = await renderUploadCreateCases({ onUploadComplete });
@@ -148,7 +151,7 @@ describe('UploadCreateCases', () => {
     releaseUpload();
     await expect.element(screen.getByText('Upload completed.')).toBeVisible();
     await vi.waitFor(() => {
-      expect(onUploadComplete).toHaveBeenCalledWith({ status: 'CREATED', cases: [{ id: 'case-1', status: 'CREATED' }] });
+      expect(onUploadComplete).toHaveBeenCalledWith({ cases: [{ id: 'case-1', status: 'CREATED' }], status: 'CREATED' });
     });
   });
 
@@ -201,7 +204,7 @@ describe('UploadCreateCases', () => {
   });
 
   it('should show an error when the batch upload fails', async () => {
-    mockUploadApi(() => Response.json({ status: 'FAILED', cases: [] }));
+    mockUploadApi(() => Response.json({ cases: [], status: 'FAILED' }));
     const { screen } = await renderUploadCreateCases();
     await screen.getByRole('button', { name: 'Start upload' }).click();
     await expect.element(screen.getByText('Failed to create cases during upload.')).toBeVisible();
@@ -228,7 +231,7 @@ describe('UploadCreateCases', () => {
   it('should ignore a stale upload result after the upload was restarted', async () => {
     let rejectFirstCompletion: (reason: unknown) => void = () => undefined;
     const onUploadComplete = vi.fn()
-      .mockImplementationOnce(() => new Promise((_resolve, reject) => {
+      .mockImplementationOnce(async () => new Promise((_resolve, reject) => {
         rejectFirstCompletion = reject;
       }))
       .mockResolvedValueOnce(undefined);

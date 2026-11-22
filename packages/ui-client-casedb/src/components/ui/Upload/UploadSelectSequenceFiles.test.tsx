@@ -22,15 +22,13 @@ import { AuthorizationService } from '@gen-epix/ui-client-common/classes/service
 import { mockApiRequest } from '@gen-epix/ui-client-common/test/lib';
 
 import {
+  createUploadStore,
   STEP_ORDER_UPLOAD,
   UploadStoreContext,
-  createUploadStore,
 } from '../../../stores/uploadStore';
 import type { UploadStore } from '../../../stores/uploadStore/uploadStore';
-import {
-  UPLOAD_STEP,
-  type UploadMappedColumn,
-} from '../../../models/upload.models';
+import { UPLOAD_STEP } from '../../../models/upload.models';
+import type { UploadMappedColumn } from '../../../models/upload.models';
 import {
   COMPLETE_CASE_TYPE_ID,
   COMPLETE_CASE_TYPE_TEXT_COL_ID,
@@ -117,8 +115,8 @@ const READS_COL: CaseDbCol = {
 
 type CaseTypeOptions = {
   hasReads?: boolean;
-  hasSequence?: boolean;
   hasSecondSampleIdCol?: boolean;
+  hasSequence?: boolean;
 };
 
 const createSelectSequenceCompleteCaseType = ({
@@ -133,22 +131,22 @@ const createSelectSequenceCompleteCaseType = ({
   };
   const refCols: Record<string, CaseDbRefCol> = {
     ...base.ref_cols,
-    [SAMPLE_ID_REF_COL_ID]: { code: 'sample', col_type: CaseDbColType.ID_SAMPLE, ref_dim_id: 'ref-dim-other' } as CaseDbRefCol,
+    [SAMPLE_ID_REF_COL_ID]: { code: 'sample', col_type: CaseDbColType.ID_SAMPLE, ref_dim_id: 'ref-dim-other' },
   };
   const colIds = [COMPLETE_CASE_TYPE_TEXT_COL_ID, SAMPLE_ID_COL_ID];
   if (hasSecondSampleIdCol) {
     cols[SECOND_SAMPLE_ID_COL_ID] = SECOND_SAMPLE_ID_COL;
-    refCols[SECOND_SAMPLE_ID_REF_COL_ID] = { code: 'sample2', col_type: CaseDbColType.ID_SAMPLE, ref_dim_id: 'ref-dim-other' } as CaseDbRefCol;
+    refCols[SECOND_SAMPLE_ID_REF_COL_ID] = { code: 'sample2', col_type: CaseDbColType.ID_SAMPLE, ref_dim_id: 'ref-dim-other' };
     colIds.push(SECOND_SAMPLE_ID_COL_ID);
   }
   if (hasSequence) {
     cols[SEQUENCE_COL_ID] = SEQUENCE_COL;
-    refCols[SEQUENCE_REF_COL_ID] = { code: 'genome', col_type: CaseDbColType.GENETIC_SEQUENCE, ref_dim_id: 'ref-dim-other' } as CaseDbRefCol;
+    refCols[SEQUENCE_REF_COL_ID] = { code: 'genome', col_type: CaseDbColType.GENETIC_SEQUENCE, ref_dim_id: 'ref-dim-other' };
     colIds.push(SEQUENCE_COL_ID);
   }
   if (hasReads) {
     cols[READS_COL_ID] = READS_COL;
-    refCols[READS_REF_COL_ID] = { code: 'reads', col_type: CaseDbColType.GENETIC_READS, ref_dim_id: 'ref-dim-other' } as CaseDbRefCol;
+    refCols[READS_REF_COL_ID] = { code: 'reads', col_type: CaseDbColType.GENETIC_READS, ref_dim_id: 'ref-dim-other' };
     colIds.push(READS_COL_ID);
   }
   return {
@@ -160,7 +158,7 @@ const createSelectSequenceCompleteCaseType = ({
   };
 };
 
-const createMappedSampleIdColumn = (col: CaseDbCol, originalIndex: number, sampleIdentifierIssuerId: string | null = ISSUER_ID): UploadMappedColumn => ({
+const createMappedSampleIdColumn = (col: CaseDbCol, originalIndex: number, sampleIdentifierIssuerId: null | string = ISSUER_ID): UploadMappedColumn => ({
   col,
   isSampleIdColumn: true,
   originalIndex,
@@ -208,12 +206,12 @@ const renderSelectSequenceFiles = async ({
   sequencingProtocolId = null,
   validatedCases = DEFAULT_VALIDATED_CASES,
 }: {
-  assemblyProtocolId?: string | null;
+  assemblyProtocolId?: null | string;
   completeCaseType?: CaseDbCompleteCaseType;
   fileNames?: string[];
   mappedColumns?: UploadMappedColumn[];
-  sampleIdColId?: string | null;
-  sequencingProtocolId?: string | null;
+  sampleIdColId?: null | string;
+  sequencingProtocolId?: null | string;
   validatedCases?: CaseDbCaseUploadResult[];
 } = {}) => {
   const store: StoreApi<UploadStore> = createUploadStore({
@@ -242,7 +240,7 @@ const renderSelectSequenceFiles = async ({
 
 const getFileInput = async (baseElement: HTMLElement) => {
   await expect.poll(() => baseElement.querySelector<HTMLInputElement>('input[type="file"]')).not.toBeNull();
-  return baseElement.querySelector<HTMLInputElement>('input[type="file"]') as HTMLInputElement;
+  return baseElement.querySelector<HTMLInputElement>('input[type="file"]');
 };
 
 const addFiles = async (baseElement: HTMLElement, fileNames: string[]) => {
@@ -339,7 +337,7 @@ describe('UploadSelectSequenceFiles', () => {
     });
 
     await expect.poll(() => document.querySelector('form')).not.toBeNull();
-    const form = document.querySelector('form') as HTMLFormElement;
+    const form = document.forms[0];
     form.addEventListener('submit', event => event.preventDefault());
     form.requestSubmit();
     expect(store.getState().activeStep).toBe(UPLOAD_STEP.SELECT_SEQUENCE_FILES);

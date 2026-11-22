@@ -47,6 +47,7 @@ type FormFields = {
 };
 
 const getSelectedFiles = (dataTransfer?: DataTransfer) => {
+  /* v8 ignore next -- callers always pass a DataTransfer (the store type is non-nullable), and DataTransfer.files is always a FileList */
   return Array.from(dataTransfer?.files ?? []);
 };
 

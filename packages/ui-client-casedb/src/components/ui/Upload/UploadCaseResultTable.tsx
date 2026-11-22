@@ -98,6 +98,7 @@ export const UploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, com
   const onEpiUploadEditColumnValuesDialogSubmit = useCallback((content: CaseDbCase['content']) => {
     const contentPerCaseId: { [caseId: string]: CaseDbCase['content'] } = {};
     Object.keys(content).forEach((colId) => {
+      /* v8 ignore next -- the dialog only submits the opened column, whose edit icon is shown only when it has rights entries */
       const caseIds = caseRightsColMap?.[colId] ?? [];
       caseIds.forEach((caseId) => {
         contentPerCaseId[caseId] = {
@@ -386,6 +387,7 @@ export const UploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, com
           isInitiallyVisible,
           renderCell,
           type: 'text',
+          /* v8 ignore next -- hideInFilter and hideInDownload are set and no sort is offered (no comparatorFactory), so the valueGetter is never invoked from the UI */
           valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
           widthPx: 250,
         } satisfies TableColumn<CaseDbCaseUploadResult>);

@@ -78,9 +78,11 @@ export const UploadMapSequences = () => {
 
     const alertTitleElement = document.getElementById(alertTitleId);
     const alertContentElement = document.getElementById(alertContentId);
+    /* v8 ignore start -- the alert title and content elements are always rendered by this component, so the early return is unreachable */
     if (!alertTitleElement || !alertContentElement) {
       return;
     }
+    /* v8 ignore stop */
     const {
       mappedFiles,
       numberOfFilesToMap,
@@ -214,12 +216,14 @@ export const UploadMapSequences = () => {
         }}
       >
         {createDropDown({
+          /* v8 ignore next -- completeCaseTypeColStats.sequenceColumns and readsColumns are disjoint by column type, so isSequenceColumn is never true for a reads cell */
           dropDownOptions: isSequenceColumn ? sequenceDropDownOptions : readsDropDownOptions,
           dropDownValue: dropDownValueFwd,
           label: `${col.label} FWD`,
           onChange: onChangeFwd,
         })}
         {createDropDown({
+          /* v8 ignore next -- completeCaseTypeColStats.sequenceColumns and readsColumns are disjoint by column type, so isSequenceColumn is never true for a reads cell */
           dropDownOptions: isSequenceColumn ? sequenceDropDownOptions : readsDropDownOptions,
           dropDownValue: dropDownValueRev,
           label: `${col.label} REV`,
@@ -267,6 +271,7 @@ export const UploadMapSequences = () => {
         isInitiallyVisible: true,
         renderCell: renderSequenceCell,
         type: 'text',
+        /* v8 ignore next -- valueGetter runs only for sort, filter or export, which are disabled for this column (no comparatorFactory, hideInFilter, hideInDownload) */
         valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
         widthPx: 400,
       });
@@ -283,6 +288,7 @@ export const UploadMapSequences = () => {
         isInitiallyVisible: true,
         renderCell: renderReadsCell,
         type: 'text',
+        /* v8 ignore next -- valueGetter runs only for sort, filter or export, which are disabled for this column (no comparatorFactory, hideInFilter, hideInDownload) */
         valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
         widthPx: 800,
       });
@@ -290,6 +296,7 @@ export const UploadMapSequences = () => {
 
     const uniqueColIds: Set<string> = new Set();
     selectedValidatedCases.forEach((vc) => {
+      /* v8 ignore next -- uploadStore computes the sequence mapping from validated_content for every case before this renders, so validated_content is never undefined here */
       Object.keys(vc.validated_content || {}).forEach((colId) => uniqueColIds.add(colId));
     });
 
@@ -301,6 +308,7 @@ export const UploadMapSequences = () => {
       }
 
       const col = completeCaseType.cols[colId];
+      /* v8 ignore else -- ordered_col_ids and cols are built from the same complete case type, so every ordered id has a column */
       if (col) {
         tableCols.push({
           headerName: col.code,

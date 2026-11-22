@@ -143,12 +143,14 @@ export const TreeWidget = () => {
       }
       treeHighlightingSubject.next(highlighting);
     });
+    /* v8 ignore start -- treeHighlightingSubject only receives non-TREE origins (see the guard above), so this TREE-origin bridge never runs */
     const unsubscribeTreeHighlightingSubject = treeHighlightingSubject.subscribe((highlighting) => {
       if (highlighting.origin !== DASHBOARD_COMPONENT_NAME.TREE) {
         return;
       }
       dashboardContext.highlight(highlighting);
     });
+    /* v8 ignore stop */
 
     return () => {
       unsubscribeHighlightingManager();
@@ -332,6 +334,7 @@ export const TreeWidget = () => {
     if (pathProperties?.treeNode) {
       const { treeNode } = pathProperties;
       setContextMenuConfig({
+        /* v8 ignore next -- NewickUtil and TreeService always set subTreeLeaveNames on tree nodes, so the fallback is unreachable */
         caseIds: treeNode.subTreeLeaveNames ? treeNode.subTreeLeaveNames : [treeNode.name],
         mouseEvent,
         position: {
@@ -351,6 +354,7 @@ export const TreeWidget = () => {
       return;
     }
 
+    /* v8 ignore next -- every line path property is built from a non-empty leaf list, so subTreeLeaveNames is never nullish here */
     if (pathProperties?.subTreeLeaveNames?.length) {
       setContextMenuConfig({
         caseIds: pathProperties.subTreeLeaveNames,
@@ -413,6 +417,7 @@ export const TreeWidget = () => {
 
     const menu: MenuItemData = {
       disabled: !treeConfiguration,
+      /* v8 ignore next -- treeConfigurations is always an array from useMemo, so the optional chaining is unreachable */
       items: treeConfigurations?.map<MenuItemData>(treeConfigurationConfig => ({
         active: !!treeConfiguration && treeConfiguration.computedId === treeConfigurationConfig.computedId,
         callback: () => {

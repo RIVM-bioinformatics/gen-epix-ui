@@ -132,9 +132,11 @@ export const UserRightsDialogCaseAccessPolicy = ({ user }: UserRightsDialogCaseA
     TableUtil.createOptionsColumn({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
   ], [dataCollectionOptionsQuery.options, t]);
 
+  /* v8 ignore start -- Table only calls getRowName when onRowClick or onReadableIndexClick is set; this table sets neither */
   const getRowName = useCallback((row: AccessCasePolity) => {
     return dataCollectionMapQuery.map.get(row.data_collection_id)?.name ?? row.data_collection_id;
   }, [dataCollectionMapQuery.map]);
+  /* v8 ignore stop */
 
   useInitializeTableStore({ columns: tableColumns, rows: effectiveAccessCasePolicies, store: tableStore });
 

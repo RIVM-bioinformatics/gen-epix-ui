@@ -1,6 +1,7 @@
-import {
-  CaseDbColType,
-  type CaseDbCompleteCaseType,
+import { CaseDbColType } from '@gen-epix/api-casedb';
+import type {
+  CaseDbCase,
+  CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { container } from 'tsyringe';
 import { createRef } from 'react';
@@ -106,7 +107,7 @@ const createStore = (): StoreApi<DashboardStore> => {
     caseSetId: null,
     completeCaseType: createCompleteCaseType(),
     config: { ...CaseDbStandardConfigUtil.createConfig(), theme: createCaseDbDemoTheme('light') },
-    idSelectorCallback: (row: { id: string }) => row.id,
+    idSelectorCallback: (row: CaseDbCase) => row.id,
     storageNamePostFix: `remove-find-similar-cases-result-dialog-${storeCounter}`,
     storageVersion: 1,
   });
@@ -132,12 +133,12 @@ const renderDialog = async () => {
 
 describe('RemoveFindSimilarCasesResultDialog', () => {
   let removeLinkListener: () => void = () => undefined;
-  let linkListener: ReturnType<typeof vi.fn>;
+  let linkListener: ReturnType<typeof vi.fn<(payload: void) => void>>;
 
   beforeEach(() => {
     store = createStore();
     registerHandlers();
-    linkListener = vi.fn();
+    linkListener = vi.fn<(payload: void) => void>();
     removeLinkListener = container.resolve(EventBusService).addEventListener('onLinkLineListAndTree', linkListener);
   });
 

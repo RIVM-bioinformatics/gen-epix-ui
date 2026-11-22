@@ -3,6 +3,7 @@ import {
   expect,
   it,
 } from 'vitest';
+import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import { container } from 'tsyringe';
 import type {
   CaseDbApiPermission,
@@ -53,7 +54,7 @@ const renderPage = async (initialItems: CaseSetStatusFixture[] = [statusAlphaFix
   const screen = await renderRoutedPage(
     <CaseSetStatusAdminPage />, {
       path: ROUTE_PATH,
-      permissions,
+      permissions: permissions as CommonDbApiPermission[],
       url: URL,
     },
   );
@@ -68,8 +69,8 @@ describe('CaseSetStatusAdminPage', () => {
   it('lists the case set statuses from the case set statuses endpoint', async () => {
     const { screen } = await renderPage();
 
-    await expect.element(screen.getByRole('cell', { name: 'Alpha', exact: true })).toBeInTheDocument();
-    await expect.element(screen.getByRole('cell', { name: 'Beta', exact: true })).toBeInTheDocument();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'Alpha' })).toBeInTheDocument();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'Beta' })).toBeInTheDocument();
   });
 
   it('creates a case set status via the case set statuses endpoint', async () => {
@@ -120,7 +121,7 @@ describe('CaseSetStatusAdminPage', () => {
   it('hides the create, edit and delete actions without permissions', async () => {
     const { screen } = await renderPage([statusAlphaFixture], []);
 
-    await expect.element(screen.getByRole('cell', { name: 'Alpha', exact: true })).toBeInTheDocument();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'Alpha' })).toBeInTheDocument();
     await expect.poll(() => screen.getByRole('button', { name: 'Create item' }).query()).toBeNull();
   });
 });

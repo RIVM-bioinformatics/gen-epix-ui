@@ -264,7 +264,7 @@ export const UploadSelectFile = () => {
                 </AlertTitle>
                 {sheet && (
                   <Typography>
-                    {t('Sheet name: {{sheet}}', { sheet: sheet || '' })}
+                    {t('Sheet name: {{sheet}}', { sheet })}
                   </Typography>
                 )}
                 <Typography>

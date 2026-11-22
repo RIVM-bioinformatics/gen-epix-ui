@@ -8,12 +8,13 @@ import {
 import writeXlsxFile from 'write-excel-file/browser';
 import type { CommonDbUser } from '@gen-epix/api-commondb';
 import { AuthorizationService } from '@gen-epix/ui-client-common/classes/services/AuthorizationService';
+import { NotificationService } from '@gen-epix/ui-client-common/classes/services/NotificationService';
 import { mockApiRequest } from '@gen-epix/ui-client-common/test/lib';
 
 import {
+  createUploadStore,
   STEP_ORDER_UPLOAD,
   UploadStoreContext,
-  createUploadStore,
 } from '../../../stores/uploadStore';
 import type { UploadStore } from '../../../stores/uploadStore/uploadStore';
 import { UPLOAD_STEP } from '../../../models/upload.models';
@@ -96,7 +97,7 @@ const renderUploadSelectFile = async () => {
 
 const getFileInput = async (screen: Awaited<ReturnType<typeof renderUploadSelectFile>>['screen']) => {
   await expect.poll(() => screen.baseElement.querySelector<HTMLInputElement>('input[type="file"]')).not.toBeNull();
-  return screen.baseElement.querySelector<HTMLInputElement>('input[type="file"]') as HTMLInputElement;
+  return screen.baseElement.querySelector<HTMLInputElement>('input[type="file"]');
 };
 
 const selectFile = async (screen: Awaited<ReturnType<typeof renderUploadSelectFile>>['screen'], file: File) => {
@@ -321,5 +322,35 @@ describe('UploadSelectFile', () => {
 
     await expect.element(screen.getByText('Sheet is required', { exact: true })).toBeVisible();
     await expect.poll(() => store.getState().activeStep).toBe(UPLOAD_STEP.SELECT_FILE);
+  });
+
+  it('should show the error message when refreshing the case validation fails for the selected case type', async () => {
+    mockUploadSelectFileApi();
+    const { screen, store } = await renderUploadSelectFile();
+
+    await selectFile(screen, createCsvFile('cases.csv'));
+    await expect.poll(() => store.getState().rawData).not.toBeNull();
+    store.setState({ completeCaseType: null, invalidateCaseValidationQuery: async () => Promise.reject(new Error('Case validation refresh failed')) });
+    await expect.element(screen.getByRole('combobox', { name: 'Case type' })).not.toBeDisabled();
+    await screen.getByRole('combobox', { name: 'Case type' }).click();
+    await screen.getByRole('option', { exact: true, name: CASE_TYPE_NAME }).click();
+
+    await expect.poll(() => container.resolve(NotificationService).data.map(notification => notification.message)).toContain('Case validation refresh failed');
+  });
+
+  it('should show a generic error message when refreshing the case validation rejects with a non-error value', async () => {
+    mockUploadSelectFileApi();
+    const { screen, store } = await renderUploadSelectFile();
+    const nonErrorRejection: unknown = 'boom';
+
+    await selectFile(screen, createCsvFile('cases.csv'));
+    await expect.poll(() => store.getState().rawData).not.toBeNull();
+    // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors -- the test needs a non-Error rejection
+    store.setState({ completeCaseType: null, invalidateCaseValidationQuery: async () => Promise.reject(nonErrorRejection) });
+    await expect.element(screen.getByRole('combobox', { name: 'Case type' })).not.toBeDisabled();
+    await screen.getByRole('combobox', { name: 'Case type' }).click();
+    await screen.getByRole('option', { exact: true, name: CASE_TYPE_NAME }).click();
+
+    await expect.poll(() => container.resolve(NotificationService).data.map(notification => notification.message)).toContain('Sorry, an unexpected error has occurred.');
   });
 });

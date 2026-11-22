@@ -3,6 +3,7 @@ import {
   expect,
   it,
 } from 'vitest';
+import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import { container } from 'tsyringe';
 import type {
   CaseDbApiPermission,
@@ -116,14 +117,15 @@ const renderPage = async (initialItems: CaseTypeSetFixture[] = [setAlphaFixture,
   for (const id of ['set-alpha', 'set-beta', 'created-3']) {
     const pathname = `${CASE_TYPE_SETS_PATH}/${id}/case_types`;
     mockApiRequest('PUT', pathname, async (request) => {
-      membershipPuts.push({ body: await request.json(), pathname });
+      const body = (await request.json()) as MembershipPutCall['body'];
+      membershipPuts.push({ body, pathname });
       return Response.json({});
     });
   }
   const screen = await renderRoutedPage(
     <CaseTypeSetsAdminPage />, {
       path: ROUTE_PATH,
-      permissions,
+      permissions: permissions as CommonDbApiPermission[],
       url: URL,
     },
   );
@@ -138,12 +140,12 @@ describe('CaseTypeSetsAdminPage', () => {
   it('lists the case type sets with their category and case type count', async () => {
     const { screen } = await renderPage();
 
-    await expect.element(screen.getByRole('cell', { name: 'Alpha set', exact: true })).toBeInTheDocument();
-    await expect.element(screen.getByRole('cell', { name: 'Beta set', exact: true })).toBeInTheDocument();
-    await expect.element(screen.getByRole('cell', { name: 'Content', exact: true })).toBeInTheDocument();
-    await expect.element(screen.getByRole('cell', { name: 'Security', exact: true })).toBeInTheDocument();
-    await expect.element(screen.getByRole('cell', { name: '2 / 3', exact: true })).toBeInTheDocument();
-    await expect.element(screen.getByRole('cell', { name: '0 / 3', exact: true })).toBeInTheDocument();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'Alpha set' })).toBeInTheDocument();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'Beta set' })).toBeInTheDocument();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'Content' })).toBeInTheDocument();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'Security' })).toBeInTheDocument();
+    await expect.element(screen.getByRole('cell', { exact: true, name: '2 / 3' })).toBeInTheDocument();
+    await expect.element(screen.getByRole('cell', { exact: true, name: '0 / 3' })).toBeInTheDocument();
   });
 
   it('renders no rows until the case type set memberships have loaded', async () => {
@@ -154,11 +156,11 @@ describe('CaseTypeSetsAdminPage', () => {
     const { screen } = await renderPage([setAlphaFixture, setBetaFixture], CASE_TYPE_SET_PERMISSIONS, membershipsGate);
 
     await expect.element(screen.getByRole('button', { name: 'Create item' })).toBeInTheDocument();
-    await expect.poll(() => screen.getByRole('cell', { name: 'Alpha set', exact: true }).query()).toBeNull();
+    await expect.poll(() => screen.getByRole('cell', { exact: true, name: 'Alpha set' }).query()).toBeNull();
 
     releaseMemberships();
 
-    await expect.element(screen.getByRole('cell', { name: '2 / 3', exact: true })).toBeInTheDocument();
+    await expect.element(screen.getByRole('cell', { exact: true, name: '2 / 3' })).toBeInTheDocument();
   });
 
   it('creates a case type set and synchronizes its selected case types', async () => {
@@ -229,7 +231,7 @@ describe('CaseTypeSetsAdminPage', () => {
   it('hides the create action without permissions', async () => {
     const { screen } = await renderPage([setAlphaFixture], []);
 
-    await expect.element(screen.getByRole('cell', { name: 'Alpha set', exact: true })).toBeInTheDocument();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'Alpha set' })).toBeInTheDocument();
     await expect.poll(() => screen.getByRole('button', { name: 'Create item' }).query()).toBeNull();
   });
 });

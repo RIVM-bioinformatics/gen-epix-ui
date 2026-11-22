@@ -10,6 +10,7 @@ import { userEvent } from 'vitest/browser';
 import { getInstanceByDom } from 'echarts/core';
 import type { EChartsType } from 'echarts/core';
 import { ErrorBoundary } from 'react-error-boundary';
+import type { FallbackProps } from 'react-error-boundary';
 import {
   CaseDbColType,
   CaseDbDimType,
@@ -64,6 +65,9 @@ const DIM_OTHER_ID = 'dim-other';
 const DIM_GEO_ID = 'dim-geo';
 const REF_DIM_OTHER_ID = 'ref-dim-other';
 const REF_DIM_GEO_ID = 'ref-dim-geo';
+const DIM_GEO_TWO_ID = 'dim-geo-two';
+const REF_DIM_GEO_TWO_ID = 'ref-dim-geo-two';
+const GEO_COL_DIM_TWO_ID = 'col-geo-dim-two';
 const REGION_SET_ID = 'region-set-1';
 const REGION_SET_SHAPE_ID = 'region-set-shape-1';
 const GEO_COL_ID = 'col-geo';
@@ -95,7 +99,7 @@ const REGION_SET_SHAPE_TWO = { geo_json: createGeoJson(1), id: REGION_SET_SHAPE_
 
 const createGeoRefDim = (): CaseDbRefDim => ({ code: 'geo', dim_type: CaseDbDimType.GEO, id: REF_DIM_GEO_ID, label: 'Geo' });
 
-const createMapCompleteCaseType = ({ includeGeoDim = true }: { includeGeoDim?: boolean } = {}): CaseDbCompleteCaseType => {
+const createMapCompleteCaseType = ({ includeGeoDim = true, includeSecondGeoDim = false }: { includeGeoDim?: boolean; includeSecondGeoDim?: boolean } = {}): CaseDbCompleteCaseType => {
   const dims: Record<string, CaseDbDim> = {
     [DIM_OTHER_ID]: { case_type_id: COMPLETE_CASE_TYPE_ID, code: 'other', id: DIM_OTHER_ID, label: 'Other', rank: 1, ref_dim_id: REF_DIM_OTHER_ID },
   };
@@ -121,6 +125,15 @@ const createMapCompleteCaseType = ({ includeGeoDim = true }: { includeGeoDim?: b
     refCols['ref-col-geo-set-two'] = { code: 'geo_set_two', col_type: CaseDbColType.GEO_REGION, ref_dim_id: REF_DIM_GEO_ID, region_set_id: REGION_SET_TWO_ID };
     orderedColIdsByDim[DIM_GEO_ID] = [GEO_COL_ID, GEO_COL_TWO_ID, GEO_COL_REGION_SET_TWO_ID];
     orderedDimIds.push(DIM_GEO_ID);
+
+    if (includeSecondGeoDim) {
+      dims[DIM_GEO_TWO_ID] = { case_type_id: COMPLETE_CASE_TYPE_ID, code: 'geo_dim_two', id: DIM_GEO_TWO_ID, label: 'Geo two', rank: 3, ref_dim_id: REF_DIM_GEO_TWO_ID };
+      refDims[REF_DIM_GEO_TWO_ID] = { code: 'geo_dim_two', dim_type: CaseDbDimType.GEO, id: REF_DIM_GEO_TWO_ID, label: 'Geo two' };
+      cols[GEO_COL_DIM_TWO_ID] = { case_type_id: COMPLETE_CASE_TYPE_ID, code: 'geo_dim_two', dim_id: DIM_GEO_TWO_ID, id: GEO_COL_DIM_TWO_ID, label: 'Region in dim two', rank: 1, ref_col_id: 'ref-col-geo-dim-two' };
+      refCols['ref-col-geo-dim-two'] = { code: 'geo_dim_two', col_type: CaseDbColType.GEO_REGION, ref_dim_id: REF_DIM_GEO_TWO_ID, region_set_id: REGION_SET_ID };
+      orderedColIdsByDim[DIM_GEO_TWO_ID] = [GEO_COL_DIM_TWO_ID];
+      orderedDimIds.push(DIM_GEO_TWO_ID);
+    }
   }
 
   const readColIds = Object.keys(cols);
@@ -203,6 +216,12 @@ const createDashboardContextValue = (highlight: DashboardContextValue['highlight
   reset: vi.fn(),
 });
 
+const renderErrorFallback = ({ error }: FallbackProps) => (
+  <div>
+    {(error as Error).message}
+  </div>
+);
+
 const renderMapWidget = async ({
   cases = CASES,
   columnId,
@@ -245,7 +264,7 @@ const renderMapWidget = async ({
       <DashboardStoreContext value={dashboardStore}>
         <DashboardContext value={dashboardContext}>
           <div style={{ height: 600, width: 800 }}>
-            <ErrorBoundary fallbackRender={({ error }) => <div>{(error as Error).message}</div>}>
+            <ErrorBoundary fallbackRender={renderErrorFallback}>
               <MapWidget />
             </ErrorBoundary>
           </div>
@@ -267,6 +286,11 @@ const getMapChart = async (): Promise<EChartsType> => {
     throw new Error('Map chart instance not found');
   }
   return chart;
+};
+
+// ECharts types the trigger payload strictly; these tests send partial payloads shaped like the ones ECharts emits.
+const triggerChartEvent = (chart: EChartsType, eventType: string, payload: object) => {
+  chart.trigger(eventType, payload);
 };
 
 describe('MapWidget', () => {
@@ -302,9 +326,21 @@ describe('MapWidget', () => {
     const { screen } = await renderMapWidget({ columnId: GEO_COL_ID });
 
     await userEvent.click(screen.getByRole('button', { name: 'Map: Region' }).element());
-    await userEvent.click(screen.getByRole('menuitem', { name: 'Region two', exact: true }).element());
+    await userEvent.click(screen.getByRole('menuitem', { exact: true, name: 'Region two' }).element());
 
     await expect.element(screen.getByText('Map: Region two')).toBeInTheDocument();
+  });
+
+  it('lists the geo columns of every geo dimension in the title menu, separated by a divider', async () => {
+    const { screen } = await renderMapWidget({
+      columnId: GEO_COL_ID,
+      completeCaseType: createMapCompleteCaseType({ includeSecondGeoDim: true }),
+    });
+
+    await userEvent.click(screen.getByRole('button', { name: 'Map: Region' }).element());
+    await userEvent.click(screen.getByRole('menuitem', { exact: true, name: 'Region in dim two' }).element());
+
+    await expect.element(screen.getByText('Map: Region in dim two')).toBeInTheDocument();
   });
 
   it('shows the unavailable message when no geo column is found', async () => {
@@ -321,7 +357,7 @@ describe('MapWidget', () => {
   });
 
   it('shows the unavailable message when no shape exists for the selected column', async () => {
-    const { screen } = await renderMapWidget({ regionSetShapes: [], columnId: GEO_COL_ID });
+    const { screen } = await renderMapWidget({ columnId: GEO_COL_ID, regionSetShapes: [] });
 
     await expect.element(screen.getByText('No geographical shape found for the selected column.', { exact: false })).toBeInTheDocument();
   });
@@ -357,7 +393,7 @@ describe('MapWidget', () => {
     const chart = await getMapChart();
     const dispatchSpy = vi.spyOn(chart, 'dispatchAction');
 
-    dashboardContext.highlightSubject.next({ caseIds: ['case-1'], origin: DASHBOARD_COMPONENT_NAME.MAP } as Highlighting);
+    dashboardContext.highlightSubject.next({ caseIds: ['case-1'], origin: DASHBOARD_COMPONENT_NAME.MAP });
     expect(dispatchSpy).not.toHaveBeenCalled();
   });
 
@@ -366,12 +402,12 @@ describe('MapWidget', () => {
     const chart = await getMapChart();
     const dispatchSpy = vi.spyOn(chart, 'dispatchAction');
 
-    dashboardContext.highlightSubject.next({ caseIds: ['case-1'], origin: 'OTHER' as Highlighting['origin'] } as Highlighting);
+    dashboardContext.highlightSubject.next({ caseIds: ['case-1'], origin: 'OTHER' });
     await vi.waitFor(() => {
       expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({ type: 'highlight' }));
     });
 
-    dashboardContext.highlightSubject.next({ caseIds: [], origin: 'OTHER' as Highlighting['origin'] } as Highlighting);
+    dashboardContext.highlightSubject.next({ caseIds: [], origin: 'OTHER' });
     await vi.waitFor(() => {
       expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({ type: 'downplay' }));
     });
@@ -399,5 +435,67 @@ describe('MapWidget', () => {
     } finally {
       eventBus.removeEventListener('onDownloadOptionsChanged', changedListener);
     }
+  });
+
+  it('highlights the cases of a hovered region and clears the highlight on mouse out', async () => {
+    const { highlight } = await renderMapWidget({ columnId: GEO_COL_ID });
+    const chart = await getMapChart();
+
+    triggerChartEvent(chart, 'mouseover', { data: { genEpixData: { caseIds: ['case-1', 'case-2'] } } });
+    expect(highlight).toHaveBeenLastCalledWith({ caseIds: ['case-1', 'case-2'], origin: DASHBOARD_COMPONENT_NAME.MAP });
+
+    triggerChartEvent(chart, 'mouseout', {});
+    expect(highlight).toHaveBeenLastCalledWith({ caseIds: [], origin: DASHBOARD_COMPONENT_NAME.MAP });
+  });
+
+  it('ignores hover events that carry no case data', async () => {
+    const { highlight } = await renderMapWidget({ columnId: GEO_COL_ID });
+    const chart = await getMapChart();
+
+    triggerChartEvent(chart, 'mouseover', {});
+    expect(highlight).not.toHaveBeenCalled();
+  });
+
+  it('shows the region context menu on mouse up and filters on the focussed region', async () => {
+    const { dashboardStore, screen } = await renderMapWidget({ columnId: GEO_COL_ID });
+    const chart = await getMapChart();
+
+    triggerChartEvent(chart, 'mouseup', {
+      data: { genEpixData: { caseIds: ['case-1'], regionId: REGION_ONE.id } },
+      event: { event: new MouseEvent('mouseup', { clientX: 100, clientY: 100 }) },
+    });
+    const filterMenuItem = screen.getByRole('menuitem', { exact: true, name: 'Filter (show only Region one)' });
+    await expect.element(filterMenuItem).toBeVisible();
+    await userEvent.click(filterMenuItem.element());
+
+    await vi.waitFor(() => {
+      expect(dashboardStore.getState().filters.find((filter) => filter.id === GEO_COL_ID)?.filterValue).toEqual([REGION_ONE.id]);
+    });
+    await expect.element(screen.getByRole('menuitem', { exact: true, name: 'Filter (show only Region one)' })).not.toBeInTheDocument();
+  });
+
+  it('closes the region context menu without a filter item when the region is unknown', async () => {
+    const { screen } = await renderMapWidget({ columnId: GEO_COL_ID });
+    const chart = await getMapChart();
+
+    triggerChartEvent(chart, 'mouseup', {
+      data: { genEpixData: { caseIds: ['case-1'], regionId: 'region-unknown' } },
+      event: { event: new MouseEvent('mouseup', { clientX: 100, clientY: 100 }) },
+    });
+    await userEvent.keyboard('{Escape}');
+
+    await expect.element(screen.getByText('Map: Region', { exact: true })).toBeInTheDocument();
+    await expect.poll(() => document.querySelectorAll('[role="menuitem"]').length).toBe(0);
+  });
+
+  it('dispatches an empty highlight for highlighted case ids that are not on the map', async () => {
+    const { dashboardContext } = await renderMapWidget({ columnId: GEO_COL_ID });
+    const chart = await getMapChart();
+    const dispatchSpy = vi.spyOn(chart, 'dispatchAction');
+
+    dashboardContext.highlightSubject.next({ caseIds: ['case-unknown'], origin: 'OTHER' });
+    await vi.waitFor(() => {
+      expect(dispatchSpy).toHaveBeenCalledWith({ dataIndex: [], seriesIndex: [], type: 'highlight' });
+    });
   });
 });

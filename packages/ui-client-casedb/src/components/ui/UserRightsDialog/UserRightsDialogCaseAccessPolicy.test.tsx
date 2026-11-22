@@ -7,8 +7,8 @@ import {
 } from 'vitest';
 import type {
   CaseDbCaseType,
-  CaseDbCol,
   CaseDbCaseTypeSetMember,
+  CaseDbCol,
   CaseDbColSetMember,
   CaseDbDataCollection,
   CaseDbOrganizationAccessCasePolicy,
@@ -69,7 +69,7 @@ const createUser = (overrides: Partial<CaseDbUser> = {}): CaseDbUser => ({
   organization_id: ORGANIZATION_ID,
   roles: [],
   ...overrides,
-} as CaseDbUser);
+});
 
 const createOrganizationPolicy = (overrides: Partial<CaseDbOrganizationAccessCasePolicy>): CaseDbOrganizationAccessCasePolicy => ({
   add_case: true,
@@ -87,7 +87,7 @@ const createOrganizationPolicy = (overrides: Partial<CaseDbOrganizationAccessCas
   write_case_set: true,
   write_col_set_id: WRITE_COL_SET_ORGANIZATION,
   ...overrides,
-} as CaseDbOrganizationAccessCasePolicy);
+});
 
 const createUserPolicy = (overrides: Partial<CaseDbUserAccessCasePolicy>): CaseDbUserAccessCasePolicy => ({
   add_case: true,
@@ -104,7 +104,7 @@ const createUserPolicy = (overrides: Partial<CaseDbUserAccessCasePolicy>): CaseD
   write_case_set: true,
   write_col_set_id: WRITE_COL_SET_USER,
   ...overrides,
-} as CaseDbUserAccessCasePolicy);
+});
 
 const CASE_TYPE_SET_MEMBERS: CaseDbCaseTypeSetMember[] = [
   { case_type_id: CASE_TYPE_ONE_ID, case_type_set_id: CASE_TYPE_SET_ORGANIZATION },
@@ -167,7 +167,7 @@ const ORGANIZATION_POLICIES: CaseDbOrganizationAccessCasePolicy[] = [
 
 const USER_POLICIES: CaseDbUserAccessCasePolicy[] = [
   createUserPolicy({ data_collection_id: DATA_COLLECTION_ONE_ID }),
-  createUserPolicy({ data_collection_id: DATA_COLLECTION_THREE_ID, case_type_set_id: CASE_TYPE_SET_DISJOINT_USER }),
+  createUserPolicy({ case_type_set_id: CASE_TYPE_SET_DISJOINT_USER, data_collection_id: DATA_COLLECTION_THREE_ID }),
   createUserPolicy({ data_collection_id: DATA_COLLECTION_FOUR_ID }),
   createUserPolicy({ data_collection_id: DATA_COLLECTION_SIX_ID, user_id: OTHER_USER_ID }),
   createUserPolicy({ data_collection_id: DATA_COLLECTION_SEVEN_ID, is_active: false }),
@@ -191,9 +191,10 @@ const mockUserRightsCaseAccessPolicyApi = (overrides: {
 
 const renderUserRightsCaseAccessPolicy = async (user: CaseDbUser = createUser()) => {
   return renderComponent(
-    <Box sx={{
-      display: 'flex', flexDirection: 'column', height: 800, '& > *': { flex: 1, minHeight: 0 },
-    }}
+    <Box
+      sx={{
+        '& > *': { flex: 1, minHeight: 0 }, display: 'flex', flexDirection: 'column', height: 800,
+      }}
     >
       <UserRightsDialogCaseAccessPolicy user={user} />
     </Box>,

@@ -41,32 +41,34 @@ const createUser = (overrides: Partial<CaseDbUser> = {}): CaseDbUser => ({
   organization_id: 'org-1',
   roles: [],
   ...overrides,
-} as CaseDbUser);
+});
 
-const CASE_TYPE_ONE: CaseDbCaseType = { id: 'case-type-1', name: 'Case type one' } as CaseDbCaseType;
-const CASE_TYPE_TWO: CaseDbCaseType = { id: 'case-type-2', name: 'Case type two' } as CaseDbCaseType;
+const CASE_TYPE_ONE: CaseDbCaseType = { id: 'case-type-1', name: 'Case type one' };
+const CASE_TYPE_TWO: CaseDbCaseType = { id: 'case-type-2', name: 'Case type two' };
 const CASE_TYPE_SET_CATEGORY: CaseDbCaseTypeSetCategory = { id: 'cat-1', name: 'Category one' } as CaseDbCaseTypeSetCategory;
 const CASE_TYPE_SET: CaseDbCaseTypeSet = { case_type_set_category_id: 'cat-1', id: 'cts-1', name: 'Set one' } as CaseDbCaseTypeSet;
 const CASE_TYPE_SET_MEMBERS: CaseDbCaseTypeSetMember[] = [
-  { case_type_id: 'case-type-1', case_type_set_id: 'cts-1', id: 'ctsm-1' } as CaseDbCaseTypeSetMember,
-  { case_type_id: 'case-type-2', case_type_set_id: 'cts-1', id: 'ctsm-2' } as CaseDbCaseTypeSetMember,
-  { case_type_id: 'unknown-set-member-case-type', case_type_set_id: 'cts-1', id: 'ctsm-3' } as CaseDbCaseTypeSetMember,
+  { case_type_id: 'case-type-1', case_type_set_id: 'cts-1', id: 'ctsm-1' },
+  { case_type_id: 'case-type-2', case_type_set_id: 'cts-1', id: 'ctsm-2' },
+  { case_type_id: 'unknown-set-member-case-type', case_type_set_id: 'cts-1', id: 'ctsm-3' },
 ];
 const DIM: CaseDbDim = { id: 'dim-1', label: 'Dimension one' } as CaseDbDim;
 const COL_ONE: CaseDbCol = { case_type_id: 'case-type-1', dim_id: 'dim-1', id: 'col-1', label: 'Column one' } as CaseDbCol;
 const COL_TWO: CaseDbCol = { case_type_id: 'case-type-2', dim_id: 'dim-1', id: 'col-2', label: 'Column two' } as CaseDbCol;
 const COL_THREE: CaseDbCol = { case_type_id: 'case-type-1', dim_id: 'dim-1', id: 'col-3', label: 'Column three' } as CaseDbCol;
 const COL_FOUR: CaseDbCol = { case_type_id: 'case-type-2', dim_id: 'dim-1', id: 'col-4', label: 'Column four' } as CaseDbCol;
-const COL_SET_READ: CaseDbColSet = { id: 'cs-read', name: 'Read set' } as CaseDbColSet;
-const COL_SET_WRITE: CaseDbColSet = { id: 'cs-write', name: 'Write set' } as CaseDbColSet;
+const COL_SET_READ: CaseDbColSet = { id: 'cs-read', name: 'Read set' };
+const COL_SET_WRITE: CaseDbColSet = { id: 'cs-write', name: 'Write set' };
 const COL_SET_MEMBERS: CaseDbColSetMember[] = [
-  { col_id: 'col-1', col_set_id: 'cs-read', id: 'csm-1' } as CaseDbColSetMember,
-  { col_id: 'col-2', col_set_id: 'cs-write', id: 'csm-2' } as CaseDbColSetMember,
-  { col_id: 'col-3', col_set_id: 'cs-read', id: 'csm-3' } as CaseDbColSetMember,
-  { col_id: 'col-3', col_set_id: 'cs-write', id: 'csm-4' } as CaseDbColSetMember,
+  { col_id: 'col-1', col_set_id: 'cs-read', id: 'csm-1' },
+  { col_id: 'col-2', col_set_id: 'cs-write', id: 'csm-2' },
+  { col_id: 'col-3', col_set_id: 'cs-read', id: 'csm-3' },
+  { col_id: 'col-3', col_set_id: 'cs-write', id: 'csm-4' },
+  { col_id: 'unknown-col', col_set_id: 'cs-read', id: 'csm-5' },
+  { col_id: 'unknown-col', col_set_id: 'cs-write', id: 'csm-6' },
 ];
-const DATA_COLLECTION_ONE: CaseDbDataCollection = { id: 'data-collection-1', name: 'Data collection one' } as CaseDbDataCollection;
-const DATA_COLLECTION_TWO: CaseDbDataCollection = { id: 'data-collection-2', name: 'Data collection two' } as CaseDbDataCollection;
+const DATA_COLLECTION_ONE: CaseDbDataCollection = { id: 'data-collection-1', name: 'Data collection one' };
+const DATA_COLLECTION_TWO: CaseDbDataCollection = { id: 'data-collection-2', name: 'Data collection two' };
 
 const mockDetailsApi = () => {
   mockApiRequest('GET', '/v1/case_type_set_members', () => Response.json(CASE_TYPE_SET_MEMBERS));
@@ -129,7 +131,7 @@ const createUserEffectiveRight = (overrides: Partial<UserEffectiveRight> = {}): 
   uncategorized_read_col_ids: ['col-2'],
   uncategorized_write_col_ids: ['col-1'],
   write_case_set: false,
-  write_col_set_ids: ['cs-write'],
+  write_col_set_ids: ['cs-write', 'unknown-col-set'],
   ...overrides,
 } as UserEffectiveRight);
 
@@ -149,19 +151,18 @@ const createEmptyUserEffectiveRight = (): UserEffectiveRight => createUserEffect
 const renderDetailsDialog = async (
   userEffectiveRight: UserEffectiveRight = createUserEffectiveRight(),
   type: UsersEffectiveRightsDetailsDialogOpenProps['type'] = 'caseTypeSets',
+  mockOverrides?: () => void,
 ) => {
   mockDetailsApi();
+  mockOverrides?.();
   const ref = createRef<UsersEffectiveRightsDetailsDialogRefMethods>();
-  const screen = await renderComponent(<UsersEffectiveRightsDetailsDialog ref={ref} />);
+  const screen = await renderComponent(
+    <UsersEffectiveRightsDetailsDialog ref={ref} />,
+  );
   ref.current?.open({ type, user: createUser(), userEffectiveRight });
   return screen;
 };
 
-// Uncovered branches (not reachable without an unknown id or a value the types forbid):
-// - `caseTypeA?.name ?? ''` (case type name is typed required): lines ~192, ~537
-// - `colMapQuery.map.get(id)` fallbacks `?? id` / `?? caseTypeId` for unknown col or case type ids,
-//   which crash the col name factory first: lines ~277-278, ~333-334, ~340, ~369-370, ~393, ~422-423, ~429, ~586
-// - `refCol && ...` and its `??` fallback after `refCol.id` is already dereferenced: lines ~300, ~386
 describe('UsersEffectiveRightsDetailsDialog', () => {
   afterEach(() => {
     container.resolve(QueryClientService).queryClient.clear();
@@ -251,6 +252,67 @@ describe('UsersEffectiveRightsDetailsDialog', () => {
 
     await panel.getByRole('link', { name: 'Uncategorized write columns sets' }).click();
     await expect.element(panel.getByText('Case type one -> Dimension one -> Column one', { exact: true })).toBeVisible();
+  });
+
+  it('sorts unknown ids next to known ones in sets and uncategorized lists', async () => {
+    const screen = await renderDetailsDialog(
+      createUserEffectiveRight({
+        effective_share_case_rights: [
+          {
+            add_case: false,
+            add_case_set: false,
+            case_type_set_ids: [],
+            categorized_case_type_ids: [],
+            from_data_collection_id: 'data-collection-1',
+            remove_case: false,
+            remove_case_set: false,
+            uncategorized_case_type_ids: ['unknown-case-type', 'case-type-2', 'unknown-case-type-2'],
+          },
+        ],
+        uncategorized_case_type_ids: ['unknown-case-type', 'case-type-2', 'unknown-case-type-2'],
+        uncategorized_read_col_ids: ['unknown-col-a', 'col-2', 'unknown-col-b'],
+        uncategorized_write_col_ids: ['unknown-col-a', 'col-1', 'unknown-col-b'],
+      }),
+      'caseTypeSets',
+      () => {
+        mockApiRequest('GET', '/v1/case_type_set_members', () => Response.json([...CASE_TYPE_SET_MEMBERS].reverse()));
+        mockApiRequest('GET', '/v1/col_set_members', () => Response.json([...COL_SET_MEMBERS].reverse()));
+      },
+    );
+
+    await expect.element(screen.getByRole('link', { name: 'Category one | Set one' })).toBeInTheDocument();
+    await screen.getByRole('tab', { name: 'Read columns' }).click();
+    await expect.element(screen.getByRole('link', { name: 'Read set' })).toBeInTheDocument();
+    await screen.getByRole('tab', { name: 'Write columns' }).click();
+    await expect.element(screen.getByRole('link', { name: 'Write set' })).toBeInTheDocument();
+    await screen.getByRole('tab', { name: 'Rights' }).click();
+    await expect.element(screen.getByRole('tabpanel')).toBeInTheDocument();
+  });
+
+  it('sorts unknown case type set members in additional share rights', async () => {
+    const screen = await renderDetailsDialog(
+      createUserEffectiveRight({
+        effective_share_case_rights: [
+          {
+            add_case: false,
+            add_case_set: false,
+            case_type_set_ids: ['cts-1'],
+            categorized_case_type_ids: [],
+            from_data_collection_id: 'data-collection-1',
+            remove_case: false,
+            remove_case_set: false,
+            uncategorized_case_type_ids: [],
+          },
+        ],
+      }),
+      'caseTypeSets',
+      () => {
+        mockApiRequest('GET', '/v1/case_type_set_members', () => Response.json([...CASE_TYPE_SET_MEMBERS].reverse()));
+      },
+    );
+
+    await screen.getByRole('tab', { name: 'Rights' }).click();
+    await expect.element(screen.getByRole('tabpanel')).toBeInTheDocument();
   });
 
   it('shows the rights flags on the rights tab', async () => {
@@ -382,5 +444,30 @@ describe('UsersEffectiveRightsDetailsDialog', () => {
     await expect.element(panel.getByRole('definition').nth(1)).toHaveTextContent('Yes');
     await expect.element(panel.getByRole('definition').nth(2)).toHaveTextContent('Yes');
     await expect.element(panel.getByRole('definition').nth(3)).toHaveTextContent('Yes');
+  });
+
+  it('shows unknown column ids by their raw id in column sets and uncategorized columns', async () => {
+    const screen = await renderDetailsDialog(createUserEffectiveRight({
+      uncategorized_read_col_ids: ['unknown-col', 'col-2'],
+      uncategorized_write_col_ids: ['unknown-col'],
+    }), 'readColSets');
+    const readPanel = screen.getByRole('tabpanel');
+
+    await readPanel.getByRole('link', { name: 'Read set' }).click();
+    await expect.element(readPanel.getByText('unknown-col', { exact: true }).first()).toBeVisible();
+
+    await readPanel.getByRole('link', { name: 'Uncategorized read columns sets' }).click();
+    await expect.element(readPanel.getByText('Case type two -> Dimension one -> Column two', { exact: true })).toBeVisible();
+    await expect.element(readPanel.getByText('unknown-col', { exact: true }).last()).toBeVisible();
+
+    await screen.getByRole('tab', { name: 'Write columns' }).click();
+    const writePanel = screen.getByRole('tabpanel');
+
+    await expect.element(writePanel.getByRole('link', { name: 'unknown-col-set' })).toBeInTheDocument();
+    await writePanel.getByRole('link', { name: 'Write set' }).click();
+    await expect.element(writePanel.getByText('unknown-col', { exact: true }).first()).toBeVisible();
+
+    await writePanel.getByRole('link', { name: 'Uncategorized write columns sets' }).click();
+    await expect.element(writePanel.getByText('unknown-col', { exact: true }).last()).toBeVisible();
   });
 });

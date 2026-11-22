@@ -16,6 +16,7 @@ import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/Depend
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { container } from 'tsyringe';
 import { ErrorBoundary } from 'react-error-boundary';
+import type { FallbackProps } from 'react-error-boundary';
 import {
   afterEach,
   beforeEach,
@@ -29,6 +30,11 @@ import { userEvent } from 'vitest/browser';
 import { EventBusService } from '../../../classes/services/EventBusService';
 import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import type { CaseDbConfig } from '../../../models/config.models';
+import type {
+  TreeWidgetData,
+  TreeWidgetDataPersistable,
+} from '../../../models/dashboard.models';
+import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil/TreeWidgetUtil';
 import type {
   Highlighting,
   LineListRangeSubjectValue,
@@ -46,6 +52,7 @@ import {
 } from '../../../test/fixtures/dashboard';
 import { renderComponent } from '../../../test/lib';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
+import type { CaseInfoDialogOpenProps } from '../CaseInfoDialog';
 import type { DashboardContextValue } from '../Dashboard/context/DashboardContext';
 
 import { TreeWidget } from './TreeWidget';
@@ -62,11 +69,13 @@ const NJ_ALGORITHM_NAME = 'NJ algorithm';
 const UPGMA_ALGORITHM_NAME = 'UPGMA algorithm';
 const VALID_NEWICK = '(row-a:1,row-b:2);';
 const EMPTY_NEWICK = '();';
+const NESTED_NEWICK = '((row-a:1,row-b:1)clade-ab:1,row-c:2);';
 const TREE_FIGURE_NAME = `Figure of a phylogenetic tree belonging to ${SNP_COL_LABEL}. Generated using ${SNP_PROTOCOL_NAME} and ${NJ_ALGORITHM_NAME}.`;
 const MLVA_TREE_FIGURE_NAME = `Figure of a phylogenetic tree belonging to ${MLVA_COL_LABEL}. Generated using ${MLVA_PROTOCOL_NAME} and ${UPGMA_ALGORITHM_NAME}.`;
 const SNP_CONFIGURATION_LABEL = `${SNP_PROTOCOL_NAME} - ${NJ_ALGORITHM_NAME}`;
 const MLVA_CONFIGURATION_LABEL = `${MLVA_PROTOCOL_NAME} - ${UPGMA_ALGORITHM_NAME}`;
 const TWO_CASES = [createDashboardCase({ content: {}, id: 'row-a' }), createDashboardCase({ content: {}, id: 'row-b' })];
+const THREE_CASES = [...TWO_CASES, createDashboardCase({ content: {}, id: 'row-c' })];
 
 const createTreeAlgorithm = (code: string): CaseDbTreeAlgorithm => ({
   code,
@@ -78,7 +87,7 @@ const createTreeAlgorithm = (code: string): CaseDbTreeAlgorithm => ({
 } as CaseDbTreeAlgorithm);
 
 const createTreeCompleteCaseType = (props: Partial<CaseDbCompleteCaseType['props']> = {}): CaseDbCompleteCaseType => {
-  const baseCaseType = createDashboardCompleteCaseType({ props: { read_max_n_cases: 1000, read_max_tree_size: 100, ...props } as CaseDbCompleteCaseType['props'] });
+  const baseCaseType = createDashboardCompleteCaseType({ props: { read_max_n_cases: 1000, read_max_tree_size: 100, ...props } });
   const dimId = baseCaseType.ordered_dim_ids[0];
   const refDimId = baseCaseType.dims[dimId].ref_dim_id;
   const createGeneticDistanceCol = (id: string, label: string, refColId: string, treeAlgorithmCode: string): CaseDbCol => ({
@@ -122,11 +131,12 @@ const createTreeCompleteCaseType = (props: Partial<CaseDbCompleteCaseType['props
   };
 
   return createDashboardCompleteCaseType({
-    cols: { ...baseCaseType.cols, [SNP_COL_ID]: snpCol, [MLVA_COL_ID]: mlvaCol },
+    // Built from an ordered array because lint sorts object literal keys; the default tree is the first genetic-distance col.
+    cols: Object.fromEntries([...Object.entries(baseCaseType.cols), [SNP_COL_ID, snpCol], [MLVA_COL_ID, mlvaCol]]),
     genetic_distance_protocols: { 'gdp-mlva': mlvaProtocol, 'gdp-snp': snpProtocol },
     ordered_col_ids: [...baseCaseType.ordered_col_ids, SNP_COL_ID, MLVA_COL_ID],
     ordered_col_ids_by_dim: { ...baseCaseType.ordered_col_ids_by_dim, [dimId]: [...baseCaseType.ordered_col_ids, SNP_COL_ID, MLVA_COL_ID] },
-    props: { read_max_n_cases: 1000, read_max_tree_size: 100, ...props } as CaseDbCompleteCaseType['props'],
+    props: { read_max_n_cases: 1000, read_max_tree_size: 100, ...props },
     ref_cols: refCols,
     tree_algorithms: treeAlgorithms,
   });
@@ -151,16 +161,55 @@ const defaultTreeResponder: TreeResponder = (body) => {
   return Response.json({ newick_repr: VALID_NEWICK, protocol_id: protocolId });
 };
 
+const yieldToEventLoop = async () => new Promise<void>((resolve) => {
+  const channel = new MessageChannel();
+  channel.port1.onmessage = () => {
+    channel.port1.close();
+    resolve();
+  };
+  channel.port2.postMessage(null);
+});
+
+const findMenuItemByLabel = (itemLabel: string): HTMLElement | undefined => Array.from(document.querySelectorAll<HTMLElement>('[role="menuitem"]'))
+  .find((item) => item.textContent?.trim() === itemLabel);
+
+const openTreeMenuItemBySweep = async (canvas: HTMLCanvasElement, itemLabel: string): Promise<HTMLElement> => {
+  const rect = canvas.getBoundingClientRect();
+  const sweepStepPx = 3;
+
+  for (let clientY = rect.top + 1; clientY < rect.bottom; clientY += sweepStepPx) {
+    for (let clientX = rect.left + 1; clientX < rect.right; clientX += sweepStepPx) {
+      canvas.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, clientX, clientY }));
+      await yieldToEventLoop();
+      const menuItem = findMenuItemByLabel(itemLabel);
+      if (menuItem) {
+        return menuItem;
+      }
+    }
+  }
+  throw new Error(`Menu item "${itemLabel}" was not reached by clicking the tree`);
+};
+
+const renderErrorFallback = ({ error }: FallbackProps) => (
+  <div>
+    {(error as Error).message}
+  </div>
+);
+
 type RenderTreeWidgetOptions = {
   cases?: CaseDbCase[];
   completeCaseType?: CaseDbCompleteCaseType;
   treeResponder?: TreeResponder;
+  widgetData?: Partial<TreeWidgetData>;
+  widgetDataPersistable?: Partial<TreeWidgetDataPersistable>;
 };
 
 const renderTreeWidget = async ({
   cases = TWO_CASES,
   completeCaseType = createTreeCompleteCaseType(),
   treeResponder = defaultTreeResponder,
+  widgetData = {},
+  widgetDataPersistable = {},
 }: RenderTreeWidgetOptions = {}) => {
   const config = DependencyContainerUtil.resolveConfig<CaseDbConfig>();
   const userProfileStore = createUserProfileStore(config);
@@ -186,6 +235,8 @@ const renderTreeWidget = async ({
     return treeResponder(body);
   });
 
+  dashboardStore.getState().updateWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE, widgetData);
+  dashboardStore.getState().updateWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE, widgetDataPersistable);
   dashboardStore.setState({ globalAbortSignal: new AbortController().signal });
   await dashboardStore.getState().fetchData();
 
@@ -195,7 +246,9 @@ const renderTreeWidget = async ({
       <DashboardStoreContext value={dashboardStore}>
         <DashboardContext value={dashboardContext}>
           <div style={{ height: 600, width: 800 }}>
-            <ErrorBoundary fallbackRender={({ error }) => <div>{(error as Error).message}</div>}>
+            <ErrorBoundary
+              fallbackRender={renderErrorFallback}
+            >
               <TreeWidget />
             </ErrorBoundary>
           </div>
@@ -329,7 +382,8 @@ describe('TreeWidget', () => {
     eventBus.emit('onDownloadOptionsRequested');
 
     await vi.waitFor(() => {
-      expect(downloadOptionsListener).toHaveBeenCalled();
+      const latestPayload = downloadOptionsListener.mock.lastCall?.[0] as { items: { disabled: boolean }[] } | undefined;
+      expect(latestPayload?.items.every((item) => !item.disabled)).toBe(true);
     });
     const payload = downloadOptionsListener.mock.lastCall?.[0] as { disabled: boolean; items: { callback: () => void; label: string }[]; zone: string };
     expect(payload.zone).toBe(DASHBOARD_COMPONENT_NAME.TREE);
@@ -337,6 +391,7 @@ describe('TreeWidget', () => {
     expect(payload.items.map((item) => item.label)).toEqual(['Save as Newick', 'Save as JPEG', 'Save as PNG']);
 
     payload.items[0].callback();
+    payload.items[1].callback();
     payload.items[2].callback();
 
     await screen.unmount();
@@ -407,5 +462,111 @@ describe('TreeWidget', () => {
     dashboardContext.highlightSubject.next({ caseIds: ['row-a'], origin: DASHBOARD_COMPONENT_NAME.TREE });
 
     expect(dashboardContext.highlight).not.toHaveBeenCalled();
+  });
+
+  it('filters to the subtree of an internal node selected on the tree', async () => {
+    const { dashboardStore, screen } = await renderTreeWidget({
+      cases: THREE_CASES,
+      treeResponder: () => Response.json({ newick_repr: NESTED_NEWICK, protocol_id: 'gdp-snp' }),
+    });
+    await expect.element(screen.getByRole('figure', { name: TREE_FIGURE_NAME })).toBeInTheDocument();
+    const canvas = screen.getByRole('figure', { name: TREE_FIGURE_NAME }).element() as HTMLCanvasElement;
+
+    const zoomInItem = await openTreeMenuItemBySweep(canvas, 'Filter (show only this subtree)');
+    zoomInItem.click();
+
+    await expect.element(screen.getByRole('button', { name: 'Remove tree filter' })).toBeEnabled();
+    expect(dashboardStore.getState().filters.some((filter) => filter.filterValue === 'clade-ab')).toBe(true);
+  }, 120_000);
+
+  it('opens the case details from a leaf selected on the tree', async () => {
+    const { screen } = await renderTreeWidget({
+      cases: THREE_CASES,
+      treeResponder: () => Response.json({ newick_repr: NESTED_NEWICK, protocol_id: 'gdp-snp' }),
+    });
+    await expect.element(screen.getByRole('figure', { name: TREE_FIGURE_NAME })).toBeInTheDocument();
+    const canvas = screen.getByRole('figure', { name: TREE_FIGURE_NAME }).element() as HTMLCanvasElement;
+    const eventBus = container.resolve(EventBusService);
+    const openCaseInfoListener = vi.fn<(payload: CaseInfoDialogOpenProps) => void>();
+    eventBus.addEventListener('openCaseInfoDialog', openCaseInfoListener);
+
+    const showDetailsItem = await openTreeMenuItemBySweep(canvas, 'Show details');
+    showDetailsItem.click();
+
+    await vi.waitFor(() => {
+      expect(openCaseInfoListener).toHaveBeenCalledOnce();
+    });
+    expect(openCaseInfoListener.mock.lastCall?.[0].caseId).toMatch(/^row-[abc]$/);
+    eventBus.removeEventListener('openCaseInfoDialog', openCaseInfoListener);
+  }, 120_000);
+
+  it('unlinks the tree from the line list when the line list gets sorted', async () => {
+    const { dashboardStore, screen } = await renderTreeWidget();
+    await expect.element(screen.getByRole('figure', { name: TREE_FIGURE_NAME })).toBeInTheDocument();
+    await expect.element(screen.getByRole('button', { name: 'Unlink Tree and Line List' })).toBeInTheDocument();
+
+    await dashboardStore.getState().setSorting('id', 'asc');
+
+    await expect.element(screen.getByRole('button', { name: 'Link Tree and Line List' })).toBeInTheDocument();
+  });
+
+  it('links the tree back to the line list and clears the sorting from the primary menu', async () => {
+    const { dashboardStore, screen } = await renderTreeWidget();
+    await expect.element(screen.getByRole('figure', { name: TREE_FIGURE_NAME })).toBeInTheDocument();
+    await dashboardStore.getState().setSorting('id', 'asc');
+    await expect.element(screen.getByRole('button', { name: 'Link Tree and Line List' })).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Link Tree and Line List' }).element());
+
+    await expect.element(screen.getByRole('button', { name: 'Unlink Tree and Line List' })).toBeInTheDocument();
+    await vi.waitFor(() => {
+      expect(dashboardStore.getState().sortByField).toBeNull();
+    });
+  });
+
+  it('clears the tree highlight with a TREE origin when the pointer leaves the tree', async () => {
+    const { dashboardContext, screen } = await renderTreeWidget();
+    await expect.element(screen.getByRole('figure', { name: TREE_FIGURE_NAME })).toBeInTheDocument();
+    const canvas = screen.getByRole('figure', { name: TREE_FIGURE_NAME }).element() as HTMLCanvasElement;
+
+    dashboardContext.highlightSubject.next({ caseIds: ['row-a'], origin: DASHBOARD_COMPONENT_NAME.LINE_LIST });
+    await yieldToEventLoop();
+    const rect = canvas.getBoundingClientRect();
+    canvas.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: rect.left + 2, clientY: rect.bottom - 2 }));
+
+    await vi.waitFor(() => {
+      expect(dashboardContext.highlight).toHaveBeenCalledWith({ caseIds: [], origin: DASHBOARD_COMPONENT_NAME.TREE });
+    });
+  });
+
+  it('uses the default view state when the persisted scroll and zoom values are missing', async () => {
+    const { screen } = await renderTreeWidget({
+      widgetData: { horizontalScrollPosition: undefined, verticalScrollPosition: undefined, zoomLevel: undefined },
+    });
+
+    await expect.element(screen.getByRole('figure', { name: TREE_FIGURE_NAME })).toBeInTheDocument();
+  });
+
+  it('uses fallback labels when the persisted tree configuration has empty names', async () => {
+    const [defaultTreeConfiguration] = TreeWidgetUtil.getTreeConfigurations(createTreeCompleteCaseType());
+    const { screen } = await renderTreeWidget({
+      widgetDataPersistable: {
+        treeConfiguration: {
+          ...defaultTreeConfiguration,
+          col: { ...defaultTreeConfiguration.col, label: '' },
+          geneticDistanceProtocol: { ...defaultTreeConfiguration.geneticDistanceProtocol, name: '' },
+          treeAlgorithm: { ...defaultTreeConfiguration.treeAlgorithm, name: '' },
+        },
+      },
+    });
+
+    await expect.element(screen.getByRole('figure', { name: 'Figure of a phylogenetic tree belonging to data. Generated using unknown protocol and unknown algorithm.' })).toBeInTheDocument();
+  });
+
+  it('restores the default tree configuration when the persisted configuration is null', async () => {
+    const { screen } = await renderTreeWidget({ widgetDataPersistable: { treeConfiguration: null } });
+
+    await expect.element(screen.getByRole('figure', { name: TREE_FIGURE_NAME })).toBeInTheDocument();
+    await expect.element(screen.getByRole('button', { name: `Tree: ${SNP_CONFIGURATION_LABEL}` })).toBeInTheDocument();
   });
 });

@@ -24,7 +24,7 @@ const createUser = (overrides: Partial<CaseDbUser> = {}): CaseDbUser => ({
   organization_id: 'org-1',
   roles: [],
   ...overrides,
-} as CaseDbUser);
+});
 
 const mockEmptyPolicyApi = () => {
   mockApiRequest('GET', '/v1/organization_access_case_policies', () => Response.json([]));
@@ -38,7 +38,9 @@ const mockEmptyPolicyApi = () => {
 
 const renderUserRightsDialog = async (user: CaseDbUser = createUser()) => {
   const ref = createRef<UserRightsDialogRefMethods>();
-  const screen = await renderComponent(<UserRightsDialog ref={ref} />);
+  const screen = await renderComponent(
+    <UserRightsDialog ref={ref} />,
+  );
   ref.current?.open({ user });
   return screen;
 };

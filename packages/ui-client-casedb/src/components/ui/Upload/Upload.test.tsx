@@ -10,9 +10,9 @@ import { AuthorizationService } from '@gen-epix/ui-client-common/classes/service
 import { mockApiRequest } from '@gen-epix/ui-client-common/test/lib';
 
 import {
+  createUploadStore,
   STEP_ORDER_UPLOAD,
   UploadStoreContext,
-  createUploadStore,
 } from '../../../stores/uploadStore';
 import type { UploadStore } from '../../../stores/uploadStore/uploadStore';
 import { UPLOAD_STEP } from '../../../models/upload.models';

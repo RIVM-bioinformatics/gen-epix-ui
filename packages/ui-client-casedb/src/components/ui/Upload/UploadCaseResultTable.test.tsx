@@ -17,8 +17,8 @@ import { mockApiRequest } from '@gen-epix/ui-client-common/test/lib';
 import { AuthorizationService } from '@gen-epix/ui-client-common/classes/services/AuthorizationService';
 import type { TableStore } from '@gen-epix/ui-client-common/stores/tableStore';
 import {
-  TableStoreContextProvider,
   createTableStore,
+  TableStoreContextProvider,
 } from '@gen-epix/ui-client-common/stores/tableStore';
 import type { CommonDbUser } from '@gen-epix/api-commondb';
 
@@ -62,7 +62,7 @@ const createCompleteCaseTypeWithTwoCols = (): CaseDbCompleteCaseType => {
         write_col_ids: [textCol.id, otherCol.id],
       },
     },
-    cols: { [textCol.id]: textCol, [otherCol.id]: otherCol },
+    cols: { [otherCol.id]: otherCol, [textCol.id]: textCol },
     ordered_col_ids: [textCol.id, otherCol.id],
     ordered_col_ids_by_dim: { 'dim-other': [textCol.id, otherCol.id] },
   });
@@ -160,7 +160,7 @@ const createProps = (overrides: Partial<UploadCaseResultTableProps> = {}, tableS
     getOriginalCellValue: vi.fn(() => 'orig'),
     onCaseContentEditSubmit: vi.fn(),
     onColContentEditSubmit: vi.fn(),
-    tableStore: tableStore as StoreApi<TableStore<CaseDbCaseUploadResult>>,
+    tableStore,
     ...overrides,
   };
 };
@@ -189,9 +189,9 @@ describe('UploadCaseResultTable', () => {
     mockTableApi();
     const { screen } = await renderUploadCaseResultTable();
 
-    await expect.element(screen.getByRole('cell', { name: 'Alph Alpha', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'Alph Alpha' })).toBeVisible();
     await expect.element(screen.getByText('two', { exact: true })).toBeVisible();
-    await expect.element(screen.getByRole('cell', { name: 'gamma Gamma', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'gamma Gamma' })).toBeVisible();
     await expect.element(screen.getByText('case-1', { exact: true })).toBeVisible();
     await expect.element(screen.getByText('case-3', { exact: true })).toBeVisible();
   });
@@ -297,7 +297,7 @@ describe('UploadCaseResultTable', () => {
 
     await expect.element(screen.getByLabelText('Text: Text is invalid, Other col: Other is invalid', { exact: true })).toBeVisible();
 
-    await screen.getByRole('cell', { name: 'Del Delta', exact: true }).getByTestId('ErrorOutlinedIcon').hover();
+    await screen.getByRole('cell', { exact: true, name: 'Del Delta' }).getByTestId('ErrorOutlinedIcon').hover();
     await expect.element(screen.getByRole('tooltip').getByText('Text: Text was transformed', { exact: true })).toBeVisible();
   });
 
@@ -377,9 +377,9 @@ describe('UploadCaseResultTable', () => {
     const { props, screen } = await renderUploadCaseResultTable();
 
     await screen.getByRole('button', { name: 'Row actions' }).first().click();
-    await screen.getByRole('menuitem', { name: 'Edit', exact: true }).click();
+    await screen.getByRole('menuitem', { exact: true, name: 'Edit' }).click();
     await screen.getByRole('textbox', { name: 'Text' }).fill('Changed');
-    await screen.getByRole('button', { name: 'Save', exact: true }).click();
+    await screen.getByRole('button', { exact: true, name: 'Save' }).click();
 
     await vi.waitFor(() => {
       expect(props.onCaseContentEditSubmit).toHaveBeenCalledWith('case-1', expect.objectContaining({ [COMPLETE_CASE_TYPE_TEXT_COL_ID]: 'Changed' }));

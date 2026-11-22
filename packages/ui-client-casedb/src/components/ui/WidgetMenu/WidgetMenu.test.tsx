@@ -19,13 +19,23 @@ describe('WidgetMenu', () => {
   });
 
   it('should render a provided React element as is', async () => {
-    const screen = await renderComponent(<WidgetMenu menu={<span>Custom menu</span>} />);
+    const screen = await renderComponent(
+      <WidgetMenu
+        menu={(
+          <span>
+            {'Custom menu'}
+          </span>
+        )}
+      />,
+    );
 
     await expect.element(screen.getByText('Custom menu')).toBeInTheDocument();
   });
 
   it('should render nothing for a value that is neither an element nor a menu', async () => {
-    const screen = await renderComponent(<WidgetMenu menu={'not a menu'} />);
+    const screen = await renderComponent(
+      <WidgetMenu menu={'not a menu'} />,
+    );
 
     await expect.poll(() => screen.getByRole('button').query()).toBeNull();
   });
@@ -36,11 +46,17 @@ describe('WidgetMenu', () => {
       {
         callback,
         label: 'Plain action',
-        leftIcon: <span>left</span>,
+        leftIcon: (
+          <span>
+            {'left'}
+          </span>
+        ),
         uid: 'plain-action',
       },
     ];
-    const screen = await renderComponent(<WidgetMenu menu={menu} />);
+    const screen = await renderComponent(
+      <WidgetMenu menu={menu} />,
+    );
 
     await screen.getByRole('button', { name: 'Plain action' }).click();
 
@@ -53,10 +69,16 @@ describe('WidgetMenu', () => {
         callback: vi.fn(),
         disabled: true,
         label: 'Disabled action',
-        rightIcon: <span>right</span>,
+        rightIcon: (
+          <span>
+            {'right'}
+          </span>
+        ),
       },
     ];
-    const screen = await renderComponent(<WidgetMenu menu={menu} />);
+    const screen = await renderComponent(
+      <WidgetMenu menu={menu} />,
+    );
 
     await expect.element(screen.getByRole('button', { name: 'Disabled action' })).toBeDisabled();
   });
@@ -69,7 +91,9 @@ describe('WidgetMenu', () => {
         label: 'No icon action',
       },
     ];
-    const screen = await renderComponent(<WidgetMenu menu={menu} />);
+    const screen = await renderComponent(
+      <WidgetMenu menu={menu} />,
+    );
 
     await screen.getByRole('button', { name: 'No icon action' }).click();
 
@@ -90,7 +114,9 @@ describe('WidgetMenu', () => {
         label: 'Nested menu',
       },
     ];
-    const screen = await renderComponent(<WidgetMenu menu={menu} />);
+    const screen = await renderComponent(
+      <WidgetMenu menu={menu} />,
+    );
 
     await screen.getByRole('button', { name: 'Nested menu' }).click();
     await screen.getByRole('menuitem', { name: 'Nested action' }).click();
@@ -111,7 +137,9 @@ describe('WidgetMenu', () => {
         label: 'Disabled nested menu',
       },
     ];
-    const screen = await renderComponent(<WidgetMenu menu={menu} />);
+    const screen = await renderComponent(
+      <WidgetMenu menu={menu} />,
+    );
 
     await expect.element(screen.getByRole('button', { name: 'Disabled nested menu' })).toBeDisabled();
   });

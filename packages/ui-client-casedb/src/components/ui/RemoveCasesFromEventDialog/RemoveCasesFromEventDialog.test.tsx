@@ -52,9 +52,9 @@ const CASE_ONE: CaseDbCase = { case_type_id: CASE_TYPE_ID, content: {}, created_
 const CASE_TWO: CaseDbCase = { case_type_id: CASE_TYPE_ID, content: {}, created_in_data_collection_id: 'dc-1', id: 'case-2' };
 const CASE_THREE: CaseDbCase = { case_type_id: CASE_TYPE_ID, content: {}, created_in_data_collection_id: 'dc-1', id: 'case-3' };
 
-const MEMBER_ONE: CaseDbCaseSetMember = { case_id: CASE_ONE.id, case_set_id: CASE_SET.id, id: 'member-1' } as CaseDbCaseSetMember;
-const MEMBER_TWO: CaseDbCaseSetMember = { case_id: CASE_TWO.id, case_set_id: CASE_SET.id, id: 'member-2' } as CaseDbCaseSetMember;
-const MEMBER_OTHER_EVENT: CaseDbCaseSetMember = { case_id: CASE_ONE.id, case_set_id: 'cs-other', id: 'member-3' } as CaseDbCaseSetMember;
+const MEMBER_ONE: CaseDbCaseSetMember = { case_id: CASE_ONE.id, case_set_id: CASE_SET.id, id: 'member-1' };
+const MEMBER_TWO: CaseDbCaseSetMember = { case_id: CASE_TWO.id, case_set_id: CASE_SET.id, id: 'member-2' };
+const MEMBER_OTHER_EVENT: CaseDbCaseSetMember = { case_id: CASE_ONE.id, case_set_id: 'cs-other', id: 'member-3' };
 
 let caseSetMembers: CaseDbCaseSetMember[] = [];
 let deleteRequests: string[][] = [];

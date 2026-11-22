@@ -3,10 +3,7 @@ import {
   expect,
   it,
 } from 'vitest';
-import type {
-  CaseDbApiPermission,
-  CaseDbUser,
-} from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission } from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbPermissionType,
@@ -34,7 +31,7 @@ const USERS_PATH = '/v1/users';
 const INVITE_USER_CONSTRAINTS_PATH = '/v1/invite_user/constraints';
 const ORGANIZATION_ID = '00000000-0000-4000-8000-000000000001';
 
-const createUser = (overrides: Partial<CommonDbUser> = {}): CommonDbUser => ({
+const createUser = (overrides: Partial<CommonDbUser> = {}): { id: string } & CommonDbUser => ({
   email: 'jane@example.test',
   id: '00000000-0000-4000-8000-000000000101',
   is_active: true,
@@ -76,7 +73,7 @@ const USER_FIXTURE = createUser({
 const TEST_PAGE_LABEL = 'Test effective rights';
 const VIEW_PAGE_LABEL = 'View effective rights';
 
-const renderPage = async (permissions: (CommonDbApiPermission | CaseDbApiPermission)[]) => {
+const renderPage = async (permissions: (CaseDbApiPermission | CommonDbApiPermission)[]) => {
   container.resolve(AuthorizationService).user = createUser({
     email: 'admin@example.test',
     id: 'user-admin',
@@ -87,7 +84,9 @@ const renderPage = async (permissions: (CommonDbApiPermission | CaseDbApiPermiss
   mockOrganizations();
   mockApiRequest('GET', INVITE_USER_CONSTRAINTS_PATH, () => Response.json({ organization_ids: [ORGANIZATION_ID], roles: ['ADMIN', 'USER'] }));
   mockCrudApi(USERS_PATH, [USER_FIXTURE]);
-  return await renderRoutedPage(<CaseDbUsersAdminPage />, { permissions: permissions as CommonDbApiPermission[] });
+  return await renderRoutedPage(
+    <CaseDbUsersAdminPage />, { permissions: permissions as CommonDbApiPermission[] },
+  );
 };
 
 const openRowActions = async (screen: Awaited<ReturnType<typeof renderPage>>) => {

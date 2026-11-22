@@ -18,16 +18,15 @@ import { AuthorizationService } from '@gen-epix/ui-client-common/classes/service
 import { mockApiRequest } from '@gen-epix/ui-client-common/test/lib';
 
 import {
+  createUploadStore,
   STEP_ORDER_UPLOAD,
   UploadStoreContext,
-  createUploadStore,
 } from '../../../stores/uploadStore';
 import type { UploadStore } from '../../../stores/uploadStore/uploadStore';
 import { UPLOAD_STEP } from '../../../models/upload.models';
 import {
   COMPLETE_CASE_TYPE_DATA_COLLECTION_ID,
   COMPLETE_CASE_TYPE_ID,
-  COMPLETE_CASE_TYPE_NAME,
   COMPLETE_CASE_TYPE_TEXT_COL_ID,
   createCompleteCaseType,
   mockCompleteCaseTypeLoaderApi,
@@ -73,22 +72,6 @@ const SAMPLE_ID_COL: CaseDbCol = {
   ref_col_id: SAMPLE_ID_REF_COL_ID,
 };
 
-const createSampleIdCompleteCaseType = (): CaseDbCompleteCaseType => {
-  const sampleIdRefCol: CaseDbRefCol = {
-    code: 'sample',
-    col_type: CaseDbColType.ID_SAMPLE,
-    ref_dim_id: 'ref-dim-other',
-  } as CaseDbRefCol;
-  const base = createWritableCompleteCaseType([COMPLETE_CASE_TYPE_TEXT_COL_ID, SAMPLE_ID_COL_ID]);
-  return {
-    ...base,
-    cols: { ...base.cols, [SAMPLE_ID_COL_ID]: SAMPLE_ID_COL },
-    ordered_col_ids: [COMPLETE_CASE_TYPE_TEXT_COL_ID, SAMPLE_ID_COL_ID],
-    ordered_col_ids_by_dim: { 'dim-other': [COMPLETE_CASE_TYPE_TEXT_COL_ID, SAMPLE_ID_COL_ID] },
-    ref_cols: { ...base.ref_cols, [SAMPLE_ID_REF_COL_ID]: sampleIdRefCol },
-  };
-};
-
 const createWritableCompleteCaseType = (
   writeColIds: string[] = [COMPLETE_CASE_TYPE_TEXT_COL_ID],
 ): CaseDbCompleteCaseType => {
@@ -112,7 +95,23 @@ const createWritableCompleteCaseType = (
   };
 };
 
-const mockMapColumnsApi = (cols: CaseDbCol[] = [TEXT_COL as CaseDbCol]) => {
+const createSampleIdCompleteCaseType = (): CaseDbCompleteCaseType => {
+  const sampleIdRefCol: CaseDbRefCol = {
+    code: 'sample',
+    col_type: CaseDbColType.ID_SAMPLE,
+    ref_dim_id: 'ref-dim-other',
+  };
+  const base = createWritableCompleteCaseType([COMPLETE_CASE_TYPE_TEXT_COL_ID, SAMPLE_ID_COL_ID]);
+  return {
+    ...base,
+    cols: { ...base.cols, [SAMPLE_ID_COL_ID]: SAMPLE_ID_COL },
+    ordered_col_ids: [COMPLETE_CASE_TYPE_TEXT_COL_ID, SAMPLE_ID_COL_ID],
+    ordered_col_ids_by_dim: { 'dim-other': [COMPLETE_CASE_TYPE_TEXT_COL_ID, SAMPLE_ID_COL_ID] },
+    ref_cols: { ...base.ref_cols, [SAMPLE_ID_REF_COL_ID]: sampleIdRefCol },
+  };
+};
+
+const mockMapColumnsApi = (cols: CaseDbCol[] = [TEXT_COL]) => {
   container.resolve(AuthorizationService).user = USER;
   mockCompleteCaseTypeLoaderApi(createCompleteCaseType());
   mockApiRequest('GET', '/v1/cols', () => Response.json(cols.map(col => ({ ...col }))));
@@ -191,8 +190,8 @@ describe('UploadMapColumns', () => {
       ],
     });
 
-    await expect.element(screen.getByRole('cell', { name: 'value-1, value-2', exact: true })).toBeVisible();
-    await expect.element(screen.getByRole('cell', { name: '<no data>', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'value-1, value-2' })).toBeVisible();
+    await expect.element(screen.getByRole('cell', { exact: true, name: '<no data>' })).toBeVisible();
   });
 
   it('should show no data in the preview for a column missing from a shorter row', async () => {
@@ -204,7 +203,7 @@ describe('UploadMapColumns', () => {
       ],
     });
 
-    await expect.element(screen.getByRole('cell', { name: '<no data>', exact: true })).toBeVisible();
+    await expect.element(screen.getByRole('cell', { exact: true, name: '<no data>' })).toBeVisible();
   });
 
   it('should show an info message when all columns have been mapped', async () => {
@@ -250,7 +249,7 @@ describe('UploadMapColumns', () => {
   });
 
   it('should require an identifier issuer for a mapped sample ID column before proceeding', async () => {
-    mockMapColumnsApi([TEXT_COL as CaseDbCol, SAMPLE_ID_COL]);
+    mockMapColumnsApi([TEXT_COL, SAMPLE_ID_COL]);
     const { screen, store } = await renderMapColumns({
       completeCaseType: createSampleIdCompleteCaseType(),
       rawData: [
@@ -268,7 +267,7 @@ describe('UploadMapColumns', () => {
   });
 
   it('should clear validation errors when a column mapping is changed', async () => {
-    mockMapColumnsApi([TEXT_COL as CaseDbCol, SAMPLE_ID_COL]);
+    mockMapColumnsApi([TEXT_COL, SAMPLE_ID_COL]);
     const { screen } = await renderMapColumns({
       completeCaseType: createSampleIdCompleteCaseType(),
       rawData: [

@@ -67,7 +67,7 @@ const createTestDashboardStore = (sortedData: CaseDbCase[]) => {
   return dashboardStore;
 };
 
-const EmitDownloadOptionsHarness = () => {
+const EmitDownloadOptionsHarness = (): null => {
   useEpiLineListWidgetEmitDownloadOptions();
   return null;
 };
@@ -210,7 +210,6 @@ describe('useEpiLineListWidgetEmitDownloadOptions', () => {
 
     await invokeCallback(getItem(getSection(getLastDownloadConfig(downloadListener), SELECTED_ROWS_LABEL), DOWNLOAD_SEQUENCES_LABEL));
     expect(sequenceDialogListener).toHaveBeenLastCalledWith({ cases: [expect.objectContaining({ id: 'case-2' })] });
-    expect(sequenceDialogListener.mock.lastCall?.[0].cases).toHaveLength(1);
   });
 
   it('runs the excel and csv download callbacks for all rows and selected rows', async () => {

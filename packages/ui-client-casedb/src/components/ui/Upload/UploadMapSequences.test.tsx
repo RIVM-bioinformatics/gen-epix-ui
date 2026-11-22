@@ -8,21 +8,18 @@ import type {
   CaseDbCaseUploadResult,
   CaseDbCol,
   CaseDbCompleteCaseType,
-  CaseDbRefCol,
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import { Box } from '@mui/material';
 
 import {
+  createUploadStore,
   STEP_ORDER_UPLOAD,
   UploadStoreContext,
-  createUploadStore,
 } from '../../../stores/uploadStore';
 import type { UploadStore } from '../../../stores/uploadStore/uploadStore';
-import {
-  UPLOAD_STEP,
-  type UploadSequenceMapping,
-} from '../../../models/upload.models';
+import { UPLOAD_STEP } from '../../../models/upload.models';
+import type { UploadSequenceMapping } from '../../../models/upload.models';
 import {
   COMPLETE_CASE_TYPE_ID,
   COMPLETE_CASE_TYPE_TEXT_COL_ID,
@@ -81,29 +78,29 @@ const createSequenceCompleteCaseType = (): CaseDbCompleteCaseType => {
     ...base,
     cols: {
       ...base.cols,
+      [READS_COL_ID]: READS_COL,
       [SAMPLE_ID_COL_ID]: SAMPLE_ID_COL,
       [SEQUENCE_COL_ID]: SEQUENCE_COL,
-      [READS_COL_ID]: READS_COL,
     },
     ordered_col_ids: colIds,
     ordered_col_ids_by_dim: { 'dim-other': colIds },
     ref_cols: {
       ...base.ref_cols,
-      [SAMPLE_ID_REF_COL_ID]: {
-        code: 'sample',
-        col_type: CaseDbColType.ID_SAMPLE,
-        ref_dim_id: 'ref-dim-other',
-      } as CaseDbRefCol,
-      [SEQUENCE_REF_COL_ID]: {
-        code: 'genome',
-        col_type: CaseDbColType.GENETIC_SEQUENCE,
-        ref_dim_id: 'ref-dim-other',
-      } as CaseDbRefCol,
       [READS_REF_COL_ID]: {
         code: 'reads',
         col_type: CaseDbColType.GENETIC_READS,
         ref_dim_id: 'ref-dim-other',
-      } as CaseDbRefCol,
+      },
+      [SAMPLE_ID_REF_COL_ID]: {
+        code: 'sample',
+        col_type: CaseDbColType.ID_SAMPLE,
+        ref_dim_id: 'ref-dim-other',
+      },
+      [SEQUENCE_REF_COL_ID]: {
+        code: 'genome',
+        col_type: CaseDbColType.GENETIC_SEQUENCE,
+        ref_dim_id: 'ref-dim-other',
+      },
     },
   };
 };
@@ -128,7 +125,7 @@ const renderMapSequences = async ({
 }: {
   completeCaseType?: CaseDbCompleteCaseType;
   fileNames: string[];
-  sampleIdColId?: string | null;
+  sampleIdColId?: null | string;
   selectedCaseIds?: string[];
   sequenceMapping?: UploadSequenceMapping;
   validatedCases?: CaseDbCaseUploadResult[];
@@ -144,7 +141,7 @@ const renderMapSequences = async ({
   store.setState({
     activeStep: UPLOAD_STEP.MAP_SEQUENCES,
     sampleIdColId,
-    selectedIdsForUpload: selectedCaseIds ?? validatedCases.map(validatedCase => validatedCase.id as string),
+    selectedIdsForUpload: selectedCaseIds ?? validatedCases.map(validatedCase => validatedCase.id),
     sequenceFilesDataTransfer,
     sequenceMapping: sequenceMapping ?? UploadUtil.getEpiUploadSequenceMapping(completeCaseType, validatedCases, sequenceFilesDataTransfer),
     shouldResetSequenceMapping: false,
@@ -282,8 +279,8 @@ describe('UploadMapSequences', () => {
       fileNames: ['ID-1.fasta'],
       selectedCaseIds: [CASE_ID_1],
       validatedCases: [
-        createValidatedCase(CASE_ID_1, { [SAMPLE_ID_COL_ID]: SAMPLE_ID_1, [COMPLETE_CASE_TYPE_TEXT_COL_ID]: 'Selected text' }),
-        createValidatedCase(CASE_ID_2, { [SAMPLE_ID_COL_ID]: SAMPLE_ID_2, [COMPLETE_CASE_TYPE_TEXT_COL_ID]: 'Unselected text' }),
+        createValidatedCase(CASE_ID_1, { [COMPLETE_CASE_TYPE_TEXT_COL_ID]: 'Selected text', [SAMPLE_ID_COL_ID]: SAMPLE_ID_1 }),
+        createValidatedCase(CASE_ID_2, { [COMPLETE_CASE_TYPE_TEXT_COL_ID]: 'Unselected text', [SAMPLE_ID_COL_ID]: SAMPLE_ID_2 }),
       ],
     });
 

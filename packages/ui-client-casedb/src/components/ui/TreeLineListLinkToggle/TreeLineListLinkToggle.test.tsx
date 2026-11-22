@@ -27,7 +27,9 @@ const getAnimatedWrapper = (): HTMLElement => {
 const getAnimationName = () => getComputedStyle(getAnimatedWrapper()).animationName;
 
 const renderToggle = async (isLinked: boolean) => {
-  return renderComponent(<TreeLineListLinkToggle isLinked={isLinked} />);
+  return renderComponent(
+    <TreeLineListLinkToggle isLinked={isLinked} />,
+  );
 };
 
 describe('TreeLineListLinkToggle', () => {
@@ -58,7 +60,9 @@ describe('TreeLineListLinkToggle', () => {
   it('animates when the link is lost without a user-initiated unlink', async () => {
     const screen = await renderToggle(true);
 
-    await screen.rerender(<TreeLineListLinkToggle isLinked={false} />);
+    await screen.rerender(
+      <TreeLineListLinkToggle isLinked={false} />,
+    );
 
     await expect.element(screen.getByText(UNLINKED_LABEL)).toBeVisible();
     await expect.poll(getAnimationName).not.toBe('none');
@@ -68,7 +72,9 @@ describe('TreeLineListLinkToggle', () => {
     const screen = await renderToggle(true);
 
     container.resolve(EventBusService).emit('onUnlinkLineListAndTree');
-    await screen.rerender(<TreeLineListLinkToggle isLinked={false} />);
+    await screen.rerender(
+      <TreeLineListLinkToggle isLinked={false} />,
+    );
 
     await expect.poll(getAnimationName).not.toBe('none');
   });
@@ -76,7 +82,9 @@ describe('TreeLineListLinkToggle', () => {
   it('does not animate when the link is gained', async () => {
     const screen = await renderToggle(false);
 
-    await screen.rerender(<TreeLineListLinkToggle isLinked />);
+    await screen.rerender(
+      <TreeLineListLinkToggle isLinked />,
+    );
 
     await expect.element(screen.getByText(LINKED_LABEL)).toBeVisible();
     expect(getAnimationName()).toBe('none');
@@ -86,7 +94,9 @@ describe('TreeLineListLinkToggle', () => {
     const screen = await renderToggle(true);
 
     container.resolve(EventBusService).emit('onUnlinkLineListAndTree', { userInitiated: true });
-    await screen.rerender(<TreeLineListLinkToggle isLinked={false} />);
+    await screen.rerender(
+      <TreeLineListLinkToggle isLinked={false} />,
+    );
 
     await expect.element(screen.getByText(UNLINKED_LABEL)).toBeVisible();
     expect(getAnimationName()).toBe('none');
@@ -97,7 +107,9 @@ describe('TreeLineListLinkToggle', () => {
     vi.stubGlobal('matchMedia', matchMediaMock);
     const screen = await renderToggle(true);
 
-    await screen.rerender(<TreeLineListLinkToggle isLinked={false} />);
+    await screen.rerender(
+      <TreeLineListLinkToggle isLinked={false} />,
+    );
 
     await expect.element(screen.getByText(UNLINKED_LABEL)).toBeVisible();
     expect(matchMediaMock).toHaveBeenCalledWith(REDUCED_MOTION_QUERY);
@@ -108,7 +120,9 @@ describe('TreeLineListLinkToggle', () => {
     vi.stubGlobal('matchMedia', undefined);
     const screen = await renderToggle(true);
 
-    await screen.rerender(<TreeLineListLinkToggle isLinked={false} />);
+    await screen.rerender(
+      <TreeLineListLinkToggle isLinked={false} />,
+    );
 
     await expect.poll(getAnimationName).not.toBe('none');
   });
