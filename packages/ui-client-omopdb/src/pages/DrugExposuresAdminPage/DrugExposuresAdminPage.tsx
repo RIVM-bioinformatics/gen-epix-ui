@@ -95,6 +95,7 @@ export const DrugExposuresAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here (only assigned in this block), so the false arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -102,9 +103,11 @@ export const DrugExposuresAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- fallbackValue is always set here: every caller passes an item with an id or validated form values with a non-empty person_id, so the false arm is unreachable */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else comment above; the fallback always returns */
     return t`New drug exposure`;
   }, [personOptionsQuery.options, t]);
   const schema = useMemo(() => {

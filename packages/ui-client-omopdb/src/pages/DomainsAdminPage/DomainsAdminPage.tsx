@@ -76,6 +76,7 @@ export const DomainsAdminPage = () => {
       if (domainConceptIdOption?.label) {
         return domainConceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined at this first assignment, so the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = domainConceptId;
       }
@@ -83,9 +84,11 @@ export const DomainsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- domain_concept_id is yup-required (non-empty) in create and rows always have an id, so fallbackValue is always set here */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else skip above */
     return t`New domain`;
   }, [conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

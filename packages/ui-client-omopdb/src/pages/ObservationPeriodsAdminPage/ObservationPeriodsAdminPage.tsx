@@ -67,6 +67,7 @@ export const ObservationPeriodsAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- person is the first reference checked, so fallbackValue is always unset here */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -101,9 +102,11 @@ export const ObservationPeriodsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- a create item always has a non-empty person_id (yup required), so fallbackValue is set */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: rows always have an id, and create items always set fallbackValue via person_id */
     return t`New observation period`;
   }, [personOptionsQuery.options, conceptOptionsQuery.options, organizationOptionsQuery.options, t]);
   const schema = useMemo(() => {

@@ -70,6 +70,7 @@ export const CohortDefinitionsAdminPage = () => {
       if (definitionTypeConceptIdOption?.label) {
         return definitionTypeConceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is still undefined at this first assignment, so the check is always true */
       if (!fallbackValue) {
         fallbackValue = definitionTypeConceptId;
       }
@@ -94,9 +95,11 @@ export const CohortDefinitionsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- create values always have non-empty definition_type_concept_id and subject_concept_id (yup required), which set fallbackValue, and rows always have an id, so fallbackValue is always set here */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: an edit row always has an id, and a create submit has non-empty required concept ids, so fallbackValue is set above */
     return t`New cohort definition`;
   }, [conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

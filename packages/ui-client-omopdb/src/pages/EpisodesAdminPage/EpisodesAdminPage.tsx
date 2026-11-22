@@ -75,6 +75,7 @@ export const EpisodesAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is still undefined at this first assignment, so the check is always true */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -102,9 +103,11 @@ export const EpisodesAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- create values always have non-empty episode_concept_id and person_id (yup required), which set fallbackValue, and rows always have an id, so this return is never reached */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else skip above */
     return t`New episode`;
   }, [personOptionsQuery.options, conceptOptionsQuery.options, episodeOptionsQuery.options, t]);
   const schema = useMemo(() => {

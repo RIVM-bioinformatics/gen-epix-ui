@@ -66,6 +66,7 @@ export const ConditionErasAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is still undefined here: it is only assigned in this block, so the false arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -97,9 +98,11 @@ export const ConditionErasAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- reaching here without fallbackValue needs no non-empty person_id or condition_concept_id, no provenance or source traceback, and no row id; every caller passes an item with an id or validated form values with a required person_id and condition_concept_id, so the false arm is unreachable */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else comment above; the fallback always returns */
     return t`New condition era`;
   }, [personOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

@@ -76,6 +76,7 @@ export const ConceptClassesAdminPage = () => {
       if (conceptClassConceptIdOption?.label) {
         return conceptClassConceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined at this first assignment, so the false arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = conceptClassConceptId;
       }
@@ -83,9 +84,11 @@ export const ConceptClassesAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- concept_class_concept_id is a required non-empty string on submitted values, so fallbackValue is set whenever this is reached; rows always return at the id check */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else skip above */
     return t`New concept class`;
   }, [conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

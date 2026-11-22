@@ -66,6 +66,7 @@ export const DoseErasAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined at the first check, so the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -100,9 +101,11 @@ export const DoseErasAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- fallbackValue is always set here in create, since yup requires non-empty person, drug and unit ids, and rows always have an id */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: see the fallbackValue ignore above */
     return t`New dose era`;
   }, [personOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

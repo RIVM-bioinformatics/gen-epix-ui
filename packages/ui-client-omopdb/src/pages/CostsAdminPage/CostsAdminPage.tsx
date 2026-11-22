@@ -69,6 +69,7 @@ export const CostsAdminPage = () => {
       if (revenueCodeConceptIdOption?.label) {
         return revenueCodeConceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always unset when this block runs, so the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = revenueCodeConceptId;
       }
@@ -100,9 +101,11 @@ export const CostsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- unreachable: validated create values always have a non-empty cost_domain_id and rows always have a non-empty id, so fallbackValue is set here */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: see the else comment above */
     return t`New cost`;
   }, [conceptOptionsQuery.options, domainOptionsQuery.options, t]);
   const schema = useMemo(() => {

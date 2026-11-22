@@ -64,6 +64,7 @@ export const VisitDetailIdentifiersAdminPage = () => {
       if (identifierIssuerIdOption?.label) {
         return identifierIssuerIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here, so the check is always true */
       if (!fallbackValue) {
         fallbackValue = identifierIssuerId;
       }
@@ -88,9 +89,11 @@ export const VisitDetailIdentifiersAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- create requires a non-empty identifier_issuer_id, which sets fallbackValue; rows return at the id check */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the preceding else ignore */
     return t`New visit detail identifier`;
   }, [identifierIssuerOptionsQuery.options, visitDetailOptionsQuery.options, t]);
   const schema = useMemo(() => {

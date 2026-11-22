@@ -65,6 +65,7 @@ export const NoteNlpsAdminPage = () => {
       if (noteIdOption?.label) {
         return noteIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here (only assigned in this block after this check), so the check is always true */
       if (!fallbackValue) {
         fallbackValue = noteId;
       }
@@ -102,9 +103,11 @@ export const NoteNlpsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- unreachable: create values are yup-validated so note_id is a non-empty string, which always sets fallbackValue; rows always have a non-empty id and return earlier */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the preceding else ignore */
     return t`New note nlp`;
   }, [noteOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

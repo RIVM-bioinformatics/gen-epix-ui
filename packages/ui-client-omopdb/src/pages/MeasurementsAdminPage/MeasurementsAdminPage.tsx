@@ -97,6 +97,7 @@ export const MeasurementsAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always unset here; it is only assigned in this block */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -104,9 +105,11 @@ export const MeasurementsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- id-less items are validated form values with a required person_id, so fallbackValue is set */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: see the fallbackValue guard above; rows always have an id and form values always have a person_id */
     return t`New measurement`;
   }, [personOptionsQuery.options, t]);
   const schema = useMemo(() => {

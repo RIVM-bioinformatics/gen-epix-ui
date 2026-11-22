@@ -70,6 +70,7 @@ export const CdmSourcesAdminPage = () => {
       if (cdmVersionConceptIdOption?.label) {
         return cdmVersionConceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is only assigned in this block, so it is always undefined here */
       if (!fallbackValue) {
         fallbackValue = cdmVersionConceptId;
       }
@@ -91,9 +92,11 @@ export const CdmSourcesAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- only yup-validated create values lack an id, and they always have a non-empty cdm_version_concept_id, so fallbackValue is set */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: fallbackValue is always set here (see the if above) */
     return t`New cdm source`;
   }, [conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

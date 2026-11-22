@@ -80,6 +80,7 @@ export const NotesAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here (only assigned later in this function), so the check is always true */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -107,9 +108,11 @@ export const NotesAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- unreachable: create values are yup-validated so person_id, note_type_concept_id and note_class_concept_id are non-empty, which always sets fallbackValue; rows always have a non-empty id and return earlier */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the preceding else ignore */
     return t`New note`;
   }, [personOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

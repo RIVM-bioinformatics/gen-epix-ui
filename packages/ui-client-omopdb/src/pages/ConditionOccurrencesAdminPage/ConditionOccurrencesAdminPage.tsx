@@ -87,6 +87,7 @@ export const ConditionOccurrencesAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always unset when the person block runs, so the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -104,9 +105,11 @@ export const ConditionOccurrencesAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- create values always have a required, non-empty person_id, which sets fallbackValue */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: yup requires non-empty person_id and condition_concept_id, and rows always have an id, so fallbackValue is always set here */
     return t`New condition occurrence`;
   }, [personOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

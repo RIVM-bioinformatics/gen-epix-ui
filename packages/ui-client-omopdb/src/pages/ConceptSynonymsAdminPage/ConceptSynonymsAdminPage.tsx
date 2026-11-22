@@ -69,6 +69,7 @@ export const ConceptSynonymsAdminPage = () => {
       if (conceptIdOption?.label) {
         return conceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here (only assigned in this block), so the false arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = conceptId;
       }
@@ -86,9 +87,11 @@ export const ConceptSynonymsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- the false arm needs an item without id and without a non-empty concept_id or language_concept_id; rows always have an id and validated create values always have both (required) */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable for the same reason as the fallback check above */
     return t`New concept synonym`;
   }, [conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

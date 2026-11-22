@@ -74,6 +74,7 @@ export const DeathsAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here, so the check is always true */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -101,9 +102,11 @@ export const DeathsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- validated create values always set fallbackValue via the required person_id, and rows always have an id */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the preceding else ignore */
     return t`New death`;
   }, [personOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

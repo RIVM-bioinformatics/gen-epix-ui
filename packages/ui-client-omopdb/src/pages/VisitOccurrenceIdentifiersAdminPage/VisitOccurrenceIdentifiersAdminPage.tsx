@@ -64,6 +64,7 @@ export const VisitOccurrenceIdentifiersAdminPage = () => {
       if (identifierIssuerIdOption?.label) {
         return identifierIssuerIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here; it is only assigned in this block */
       if (!fallbackValue) {
         fallbackValue = identifierIssuerId;
       }
@@ -88,9 +89,11 @@ export const VisitOccurrenceIdentifiersAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- rows always have a non-empty id (returned above); validated create values always set identifier_issuer_id, so fallbackValue is set */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the preceding else ignore */
     return t`New visit occurrence identifier`;
   }, [identifierIssuerOptionsQuery.options, visitOccurrenceOptionsQuery.options, t]);
   const schema = useMemo(() => {

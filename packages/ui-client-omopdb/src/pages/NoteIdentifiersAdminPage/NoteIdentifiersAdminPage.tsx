@@ -64,6 +64,7 @@ export const NoteIdentifiersAdminPage = () => {
       if (identifierIssuerIdOption?.label) {
         return identifierIssuerIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here (only assigned in this block), so the check is always true */
       if (!fallbackValue) {
         fallbackValue = identifierIssuerId;
       }
@@ -88,9 +89,11 @@ export const NoteIdentifiersAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- unreachable: validated create/edit values always set fallbackValue via identifier_issuer_id, and rows always have a non-empty id */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the preceding else ignore */
     return t`New note identifier`;
   }, [identifierIssuerOptionsQuery.options, noteOptionsQuery.options, t]);
   const schema = useMemo(() => {

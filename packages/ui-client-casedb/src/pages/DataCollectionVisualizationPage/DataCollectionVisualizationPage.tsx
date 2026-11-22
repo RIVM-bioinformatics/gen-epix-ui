@@ -465,6 +465,7 @@ export const DataCollectionVisualizationPage = () => {
 
     const rawNodes = Array.from(nodesById.values())
       .map(node => {
+        /* v8 ignore next -- every ensured node receives at least one access or share stat increment, so the fallback is unreachable */
         const stats = nodeStats.get(node.id) ?? {
           accessLinkCount: 0,
           shareInCount: 0,

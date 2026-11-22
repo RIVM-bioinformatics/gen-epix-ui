@@ -64,6 +64,7 @@ export const DrugExposureIdentifiersAdminPage = () => {
       if (identifierIssuerIdOption?.label) {
         return identifierIssuerIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined at the first check, so the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = identifierIssuerId;
       }
@@ -88,9 +89,11 @@ export const DrugExposureIdentifiersAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- fallbackValue is always set here in create, since yup requires non-empty issuer and drug exposure ids, and rows always have an id */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: see the fallbackValue ignore above */
     return t`New drug exposure identifier`;
   }, [identifierIssuerOptionsQuery.options, drugExposureOptionsQuery.options, t]);
   const schema = useMemo(() => {

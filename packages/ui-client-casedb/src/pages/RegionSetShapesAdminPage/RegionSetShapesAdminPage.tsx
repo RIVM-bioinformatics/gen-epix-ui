@@ -75,7 +75,7 @@ export const RegionSetShapesAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       geo_json: string().freeFormText(),
-      scale: number().required().positive().transform((_val: unknown, orig: number | string) => orig === '' ? undefined : orig),
+      scale: number().required().positive().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
     });
   }, []);
 

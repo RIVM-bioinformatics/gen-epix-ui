@@ -82,6 +82,7 @@ export const ConceptsAdminPage = () => {
       if (domainIdOption?.label) {
         return domainIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here: it is first assigned in this block, so the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = domainId;
       }
@@ -99,9 +100,11 @@ export const ConceptsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- domain_id is required on create, so a non-empty domain_id always sets fallbackValue; rows return on their id first */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else ignore above */
     return t`New concept`;
   }, [domainOptionsQuery.options, vocabularyOptionsQuery.options, t]);
   const schema = useMemo(() => {

@@ -83,8 +83,8 @@ export const AstMeasurementsAdminPage = () => {
       content2: string().nullable().optional(),
       format: string().required(),
       protocol_id: string().required(),
-      qc_result_human: mixed<SeqDbQualityControlResult>().oneOf(Object.values(SeqDbQualityControlResultValues)).optional(),
-      qc_result_machine: mixed<SeqDbQualityControlResult>().oneOf(Object.values(SeqDbQualityControlResultValues)).optional(),
+      qc_result_human: mixed<SeqDbQualityControlResult>().oneOf(Object.values(SeqDbQualityControlResultValues)).nullable().optional(),
+      qc_result_machine: mixed<SeqDbQualityControlResult>().oneOf(Object.values(SeqDbQualityControlResultValues)).nullable().optional(),
       qc_score: number().nullable().optional(),
       sample_id: string().required(),
     });

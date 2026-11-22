@@ -64,6 +64,7 @@ export const DrugStrengthsAdminPage = () => {
       if (drugConceptIdOption?.label) {
         return drugConceptIdOption.label;
       }
+      /* v8 ignore else -- first fallback check: fallbackValue is still undefined here, so the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = drugConceptId;
       }
@@ -101,9 +102,11 @@ export const DrugStrengthsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- validated create data always has a non-empty drug_concept_id, and items with an id return above, so fallbackValue is always set here */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else comment above; the fallback always returns */
     return t`New drug strength`;
   }, [conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

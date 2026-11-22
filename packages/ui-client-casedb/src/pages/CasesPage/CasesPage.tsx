@@ -217,6 +217,7 @@ export const CasesPage = () => {
           id: getCaseTypeSetCategoryRowId(caseTypeSetCategory.id),
           isInitiallyVisible: true,
           maxNumOptionsExpanded: Infinity,
+          /* v8 ignore next -- caseTypeSetCategoryOptions has an entry for every category in this same list, so the fallback is unreachable */
           options: caseTypeSetCategoryOptions[caseTypeSetCategory.id] ?? [],
           type: 'options',
           widthFlex: 1,

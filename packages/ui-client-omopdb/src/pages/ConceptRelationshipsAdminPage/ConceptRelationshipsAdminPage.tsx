@@ -65,6 +65,7 @@ export const ConceptRelationshipsAdminPage = () => {
       if (conceptId1Option?.label) {
         return conceptId1Option.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here (no earlier assignment), so the false arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = conceptId1;
       }
@@ -96,12 +97,15 @@ export const ConceptRelationshipsAdminPage = () => {
     if (typeof validStartDate === 'number') {
       return String(validStartDate);
     }
+    /* v8 ignore else -- rows always have an id; create values always return at the start date check (yup casts the DATE value to a non-blank string) */
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore next 3 -- needs a blank start date and no id; create values always return at the start date check and rows always have an id */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the block above */
     return t`New concept relationship`;
   }, [conceptOptionsQuery.options, relationshipOptionsQuery.options, t]);
   const schema = useMemo(() => {

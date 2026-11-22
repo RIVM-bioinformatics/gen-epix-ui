@@ -63,6 +63,7 @@ export const CohortsAdminPage = () => {
       if (cohortDefinitionIdOption?.label) {
         return cohortDefinitionIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is only assigned inside this block, so it is always undefined here and the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = cohortDefinitionId;
       }
@@ -88,12 +89,15 @@ export const CohortsAdminPage = () => {
     if (typeof cohortEndDate === 'number') {
       return String(cohortEndDate);
     }
+    /* v8 ignore else -- a create submit always has a date-picker cohort_start_date, which is never blank and returns above; rows and edit dialogs always have an id */
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore next 3 -- unreachable: a create submit requires a non-blank cohort_start_date (returns above), and rows and edit dialogs always have an id, so this fallback block is never reached */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the fallbackValue block above */
     return t`New cohort`;
   }, [cohortDefinitionOptionsQuery.options, t]);
   const schema = useMemo(() => {

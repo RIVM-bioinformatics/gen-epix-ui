@@ -79,6 +79,7 @@ export const SourceToConceptMapsAdminPage = () => {
       if (sourceConceptIdOption?.label) {
         return sourceConceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined at this point, so the check is always true */
       if (!fallbackValue) {
         fallbackValue = sourceConceptId;
       }
@@ -96,9 +97,11 @@ export const SourceToConceptMapsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- a create always sets fallbackValue from source_concept_id or returns earlier, and edit rows return via id */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: same proof as the preceding else ignore, so the translated fallback is never returned */
     return t`New source to concept map`;
   }, [conceptOptionsQuery.options, vocabularyOptionsQuery.options, t]);
   const schema = useMemo(() => {

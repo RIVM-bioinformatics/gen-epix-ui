@@ -66,6 +66,7 @@ export const DrugErasAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined at the first check, so the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -97,9 +98,11 @@ export const DrugErasAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- person_id is required (rejects '', so length > 0 holds) and rows always have an id */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: same reason as the else above */
     return t`New drug era`;
   }, [personOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

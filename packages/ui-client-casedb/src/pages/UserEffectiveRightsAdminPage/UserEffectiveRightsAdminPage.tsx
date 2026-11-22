@@ -91,10 +91,10 @@ export const UserEffectiveRightsAdminPage = () => {
   const caseTypeSetNameFactory = useCaseTypeSetNameFactory();
   const dataCollectionMapQuery = useDataCollectionsMapQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
-  const organizationAccessCasePoliciesQuery = useOrganizationAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === user.organization_id));
-  const organizationShareCasePoliciesQuery = useOrganizationShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === user.organization_id));
-  const userAccessCasePoliciesQuery = useUserAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user.id));
-  const userShareCasePoliciesQuery = useUserShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user.id));
+  const organizationAccessCasePoliciesQuery = useOrganizationAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === user?.organization_id));
+  const organizationShareCasePoliciesQuery = useOrganizationShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === user?.organization_id));
+  const userAccessCasePoliciesQuery = useUserAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user?.id));
+  const userShareCasePoliciesQuery = useUserShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user?.id));
 
   const loadables = useArray([
     organizationAccessCasePoliciesQuery,
@@ -204,7 +204,7 @@ export const UserEffectiveRightsAdminPage = () => {
 
   const renderReadCaseSetsCell = useCallback(({ row }: TableRowParams<UserEffectiveRight>) => {
     return renderSetCell({
-      getName: (colId: string) => colSetMapQuery.map.get(colId).name,
+      getName: (colId: string) => colSetMapQuery.map.get(colId)?.name,
       setIds: row.read_col_set_ids,
       type: 'readColSets',
       uncategorizedMemberIds: row.uncategorized_read_col_ids,

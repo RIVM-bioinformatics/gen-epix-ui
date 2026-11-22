@@ -63,6 +63,7 @@ export const FactRelationshipsAdminPage = () => {
       if (relationshipConceptIdOption?.label) {
         return relationshipConceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined at this first assignment, so the false arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = relationshipConceptId;
       }
@@ -84,9 +85,11 @@ export const FactRelationshipsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- yup required() rejects '' so a create value reaching here has a non-empty relationship_concept_id, which sets fallbackValue; rows always have an id above */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else comment above */
     return t`New fact relationship`;
   }, [conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

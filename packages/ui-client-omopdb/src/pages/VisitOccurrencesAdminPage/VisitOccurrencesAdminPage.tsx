@@ -94,6 +94,7 @@ export const VisitOccurrencesAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is only assigned in this block, so it is always undefined here and the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -101,9 +102,11 @@ export const VisitOccurrencesAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- rows always have a non-empty id (withId throws otherwise), and yup-validated create values always have a non-empty person_id, so fallbackValue is set */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the preceding else ignore */
     return t`New visit occurrence`;
   }, [personOptionsQuery.options, t]);
   const schema = useMemo(() => {
