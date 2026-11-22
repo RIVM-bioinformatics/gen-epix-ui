@@ -82,7 +82,7 @@ export const UploadSelectFile = () => {
     createdInDataCollectionId: string().uuid4().required(),
     fileList: mixed().required(t`File is required`),
     sheet: string().when('fileList', {
-      is: UploadUtil.isXlsxFile(fileName),
+      is: () => UploadUtil.isXlsxFile(fileName),
       otherwise: (sheetSchema) => sheetSchema.notRequired(),
       then: (sheetSchema) => sheetSchema.required(t`Sheet is required`),
     }),

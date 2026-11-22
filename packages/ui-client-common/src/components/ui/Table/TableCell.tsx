@@ -148,6 +148,7 @@ export const TableCell = <TRowData, TDataContext = null>({
     }
     return {
       '*': backgroundColor ?? {
+        /* v8 ignore next -- color is only set when backgroundColor is set, and then this object is not used, so the truthy arm is unreachable */
         color: color ? `${color} !important` : undefined,
       },
       background: isFrozen ? theme.palette.background.paper : backgroundColor,

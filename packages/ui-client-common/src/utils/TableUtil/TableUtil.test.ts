@@ -738,6 +738,20 @@ describe('TableUtil downloads', () => {
     expect(decodeCsvDataUrl(dataUrl)).toBe('Options,Computed options,Display options\n"Alpha, Gamma",Beta,b\n');
   });
 
+  it('exports an empty label for option values missing from the option list', () => {
+    const optionsColumn = TableUtil.createOptionsColumn<TestRow>({
+      id: 'options',
+      name: 'Options',
+      options: OPTION_VALUES,
+    });
+    const createDownloadUrl = vi.spyOn(DownloadUtil, 'createDownloadUrl').mockImplementation(() => undefined);
+
+    TableUtil.downloadAsCSV([createRow({ options: 'missing' })], ['options'], [optionsColumn], 'missing.csv');
+
+    const [dataUrl] = createDownloadUrl.mock.calls[0] ?? [];
+    expect(decodeCsvDataUrl(dataUrl)).toBe('Options\n\n');
+  });
+
   it('writes typed values to an Excel workbook and downloads it', async () => {
     writeXlsxFileMock.mockReturnValue({
       toBlob: async () => Promise.resolve(new Blob(['workbook'])),
@@ -773,6 +787,92 @@ describe('TableUtil downloads', () => {
     expect(createDownloadUrl).toHaveBeenCalledWith(
       'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,excel-base64',
       'rows.xlsx',
+    );
+  });
+
+  it('keeps empty and invalid date strings as text in Excel workbooks', async () => {
+    writeXlsxFileMock.mockReturnValue({
+      toBlob: async () => Promise.resolve(new Blob(['workbook'])),
+    });
+    vi.spyOn(DownloadUtil, 'arrayBufferToBase64').mockReturnValue('excel-base64');
+    vi.spyOn(DownloadUtil, 'createDownloadUrl').mockImplementation(() => undefined);
+    const dateColumn = TableUtil.createDateColumn<TestRow>({
+      dateFormat: DATE_FORMAT.DATE,
+      id: 'date',
+      name: 'Date',
+    });
+    const dataRow = createRow({ date: '' });
+    const invalidDataRow = createRow({ date: 'not a date' });
+
+    await TableUtil.downloadAsExcel([dataRow, invalidDataRow], ['date'], [dateColumn], 'dates.xlsx');
+
+    expect(writeXlsxFileMock).toHaveBeenCalledWith(
+      [
+        [{ type: String, value: 'Date' }],
+        [{ type: String, value: '' }],
+        [{ type: String, value: 'not a date' }],
+      ],
+      {
+        columns: [{ width: 20 }],
+        stickyRowsCount: 1,
+      },
+    );
+  });
+
+  it('uses column ids as CSV headers when a column has no header name', () => {
+    const createDownloadUrl = vi.spyOn(DownloadUtil, 'createDownloadUrl').mockImplementation(() => undefined);
+    const unnamedColumn = {
+      ...TableUtil.createTextColumn<TestRow>({ id: 'name', name: 'Unused' }),
+      headerName: undefined,
+    } as TableColumn<TestRow>;
+
+    TableUtil.downloadAsCSV([createRow({ name: 'Alpha' })], ['name'], [unnamedColumn], 'unnamed.csv');
+
+    const [dataUrl] = createDownloadUrl.mock.calls[0] ?? [];
+    expect(decodeCsvDataUrl(dataUrl)).toBe('name\nAlpha\n');
+  });
+  it('exports null, undefined, dates, objects and unserializable values as CSV text', () => {
+    const createValueColumn = (id: 'allTags' | 'id' | 'name' | 'tags', value: unknown) => ({
+      ...TableUtil.createTextColumn<TestRow>({ id, name: id }),
+      valueGetter: () => value,
+    }) as unknown as TableColumn<TestRow>;
+    const createDownloadUrl = vi.spyOn(DownloadUtil, 'createDownloadUrl').mockImplementation(() => undefined);
+
+    TableUtil.downloadAsCSV(
+      [createRow()],
+      ['name', 'tags', 'id', 'allTags'],
+      [
+        createValueColumn('name', null),
+        createValueColumn('tags', undefined),
+        createValueColumn('id', new Date('2020-06-01T10:00:00.000Z')),
+        createValueColumn('allTags', () => 'not serializable'),
+      ],
+      'values.csv',
+    );
+
+    const [dataUrl] = createDownloadUrl.mock.calls[0] ?? [];
+    expect(decodeCsvDataUrl(dataUrl)).toBe('name,tags,id,allTags\n,,2020-06-01T10:00:00.000Z,\n');
+  });
+
+  it('keeps boolean values typed as booleans in Excel exports', async () => {
+    writeXlsxFileMock.mockReturnValue({
+      toBlob: async () => Promise.resolve(new Blob(['workbook'])),
+    });
+    vi.spyOn(DownloadUtil, 'arrayBufferToBase64').mockReturnValue('excel-base64');
+    vi.spyOn(DownloadUtil, 'createDownloadUrl').mockImplementation(() => undefined);
+    const activeColumn = {
+      ...TableUtil.createTextColumn<TestRow>({ id: 'active', name: 'Active' }),
+      valueGetter: () => true,
+    } as unknown as TableColumn<TestRow>;
+
+    await TableUtil.downloadAsExcel([createRow()], ['active'], [activeColumn], 'flags.xlsx');
+
+    expect(writeXlsxFileMock).toHaveBeenCalledWith(
+      [
+        [{ type: String, value: 'Active' }],
+        [{ type: Boolean, value: true }],
+      ],
+      expect.anything(),
     );
   });
 });

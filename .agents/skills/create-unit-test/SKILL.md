@@ -43,14 +43,20 @@ description: >-
 - Preserve unrelated user changes and existing public APIs. Use the owning
   package's existing Vitest, TypeScript, and ESLint configuration rather than
   introducing new test infrastructure.
-- This is a test-writing skill, not an implementation-fixing workflow. Do not
-  change production code, exported types or signatures, default values,
-  runtime behavior, rendered output, package exports, or dependencies to make a
-  test pass or reach coverage. If a likely production defect is found, stop at
-  the approval gate below. Only make a production change after the user
-  explicitly authorizes it, and keep that change backward-compatible; if the
-  requested fix cannot preserve the public API and existing behavior, ask for
-  explicit approval of the specific breaking change before proceeding.
+- This skill may make a minimal production fix when tests or monorepo
+  validation expose a confirmed defect or an affected caller. Keep the public
+  API and all behavior outside the confirmed defect backward-compatible; do not
+  change implementation merely to match an incorrect test expectation or reach
+  coverage. After creating all requested tests, run `pnpm run validate` from
+  the repository root. If it fails because another package needs to adapt,
+  update that package with a backward-compatible fix and rerun validation until
+  it passes.
+- Never silently introduce a backward-incompatible change. If a necessary fix
+  would break a public API or existing supported behavior, stop and ask the
+  user to approve that specific change before implementing it. In the final
+  summary, list the production changes and clearly identify every
+  backward-incompatible change introduced; state explicitly when there are
+  none.
 
 ## 1. Review the Logic Before Editing Tests
 
@@ -74,19 +80,22 @@ do not infer one module's contract or coverage from another module.
 4. State the intended behavior and one cheap, focused check that could
    disprove the assessment. Derive expectations independently from the
    implementation under test.
-5. If a likely production defect is found, stop and ask the user how to
-   proceed before editing tests. Explain the source location, triggering input,
-   expected versus actual behavior, and uncertainty. Offer fixing the module
-   first, clarifying the contract, or explicitly authorizing a regression test.
-   Do not silently fix production code, encode a suspected defect as expected
-   behavior, or hide it with a skip or expected-failure marker.
+5. If a likely production defect is found, do not encode the defect as expected
+   behavior or hide it with a skip or expected-failure marker. Establish the
+   intended behavior from the public contract and relevant callers, then add a
+   focused test for that behavior. If the contract or cause is uncertain, stop
+   and ask the user to clarify before writing the test or changing production
+   code. A confirmed defect may be fixed after the test is in place, provided
+   the fix is backward-compatible. If it cannot be fixed without a breaking
+   change, ask the user to approve that specific change.
 6. If no likely defect is found, briefly record that assessment and proceed.
    This review does not prove the implementation correct.
 
 If another likely implementation defect appears while writing or running the
-test, stop the batch and apply the same approval gate before making further
-test edits or moving to the next target. Do not continue with later targets
-until the user authorizes the resolution.
+test, pause that target and follow step 5. Continue only after the behavior is
+established and the target's tests and focused validation are complete. If the
+issue remains ambiguous or requires a breaking change that the user has not
+approved, stop the batch and report the blocking target and unprocessed targets.
 
 ## 2. Determine the Colocated Test
 
@@ -171,6 +180,24 @@ remaining gaps.
      `ui-phylogenetic-tree` have no client wrapper: use `render` from
      `vitest-browser-react` with just the target's required providers; see
      `packages/ui-phylogenetic-tree/src/components/PhylogeneticTree/PhylogeneticTree.test.tsx`.
+   - Do not call React's `act` (from `react` or `react-dom/test-utils`) in browser
+     tests. `vitest-browser-react` enables the act environment only inside its own
+     `render`, `rerender` and `unmount` wrappers, so a direct `act(...)` call triggers
+     "The current testing environment is not configured to support act(...)" warnings.
+     Call component methods, ref methods or state setters directly and assert with
+     `await expect.element(...)`, which retries until the DOM settles.
+2. **Do not mock or spy on utilities**, including their module exports, or
+   replace data hooks just to manufacture component states. Vary props,
+   callback presence, config, initial state, request data/status and user
+   actions to reach branches. Drive the real component with browser locators
+   and awaited user actions; use assertions such as
+   `await expect.element(screen.getByRole('alert')).toBeVisible()` for DOM updates.
+   Cover loading, empty, success and error states where they exist.
+   Use `await screen.rerender(...)` to test transitions without remounting.
+   When a necessary element cannot be targeted reliably through accessible
+   roles, labels or text, add a test id to the component for testability. Always
+   create test-id attributes with `TestIdUtil.createAttributes(...)` from
+   `@gen-epix/ui-core/utils/TestIdUtil`; do not hardcode `data-testid`.
 2. **Do not mock or spy on utilities**, including their module exports, or
    replace data hooks just to manufacture component states. Vary props,
    callback presence, config, initial state, request data/status and user
@@ -228,12 +255,19 @@ changing coverage exclusions or thresholds.
 If coverage is below 100 percent, identify the uncovered path, add the
 smallest behavior-focused case that exercises it, and rerun the same focused
 command before moving to another target. If the uncovered path is unreachable
-or reflects a production defect, use the logic-review approval gate rather than
-weakening the requirement or continuing the batch.
+or reflects a production defect, do not weaken the requirement; resolve it with
+a backward-compatible fix or stop and ask the user if a breaking change is
+necessary.
 
 Do not commit generated `coverage/` output. Run the package's broader
 `test-run` only when the request requires suite-level validation or when the
 focused change affects shared test infrastructure.
+
+After all requested tests have been created or updated, run `pnpm run validate`
+from the repository root. If validation identifies affected callers or
+implementations in other monorepo packages, fix them without breaking existing
+public contracts and rerun `pnpm run validate`. Do not report the task complete
+until the root validation passes.
 
 ## Final Checklist
 
@@ -253,10 +287,12 @@ focused change affects shared test infrastructure.
   and lines.
 - Lint, type checking, and the focused test command pass for every processed
   target.
+- Root `pnpm run validate` passes after all requested tests and any
+  backward-compatible monorepo fixes are complete.
 - No unrelated files, generated reports, package metadata, or configuration
   were changed.
-- Production implementation and public contracts were not changed unless the
-  user explicitly authorized a backward-compatible fix.
+- Production changes are listed in the final summary, with all
+  backward-incompatible changes explicitly identified or reported as none.
 
 Report the requested path, discovered eligible targets, skipped categories,
 each source module and test path, behavior categories covered, validation

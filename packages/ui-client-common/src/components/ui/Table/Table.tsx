@@ -199,6 +199,8 @@ export const Table = <TRowData, TDataContext = null>({
   }, [config.enablePageEvents, getRowName, onRowClick]);
 
   const getVisibleTableSettingsColumns = useCallback(() => {
+    // The ref is always set in the init effect before the header and body that call this are rendered (guarded by isInitialized)
+    /* v8 ignore next -- unreachable fallback, see comment above */
     return tableColumnVisualSettingsRef?.current?.filter(c => c.isVisible) ?? [];
   }, []);
 
@@ -261,6 +263,7 @@ export const Table = <TRowData, TDataContext = null>({
     // select all rows between the last clicked row and the currently clicked row
     const lastClickedRowIndex = sortedData.findIndex(r => idSelectorCallback(r) === lastClickedRowIdRef.current);
     const currentClickedRowIndex = sortedData.findIndex(r => idSelectorCallback(r) === rowId);
+    /* v8 ignore next 3 -- the reset effect on sortedData guarantees the last clicked row is in sortedData, and the clicked row comes from sortedData */
     if (lastClickedRowIndex === -1 || currentClickedRowIndex === -1) {
       return;
     }
@@ -457,6 +460,7 @@ export const Table = <TRowData, TDataContext = null>({
   const onTableHeaderCellDrag = useCallback((event: TableDragEvent, tableColumn: TableColumn<TRowData, TDataContext>) => {
     const body = windowService.body;
     const document = windowService.document;
+    /* v8 ignore next 3 -- a browser window always has a document with a body, so this guard cannot be reached */
     if (!body || !document) {
       throw new Error('Cannot handle table column dragging without a document body.');
     }
@@ -662,6 +666,7 @@ export const Table = <TRowData, TDataContext = null>({
       const previousHighlightedIds = new Set(previousHighlightedRowIds);
       tableContainer.querySelectorAll<HTMLElement>('[data-testid=virtuoso-item-list] [data-id]').forEach(rowNode => {
         const rowId = rowNode.getAttribute('data-id');
+        /* v8 ignore next 3 -- the selector only matches elements that have a data-id attribute */
         if (rowId === null) {
           return;
         }
@@ -734,6 +739,7 @@ export const Table = <TRowData, TDataContext = null>({
     }
   }, [getScrollerElement, onVerticalScrollPositionChange, onVisibleItemIndexChange, rowHeightPx]);
 
+  /* v8 ignore next 3 -- Virtuoso never invokes itemSize when fixedItemHeight is set */
   const handleItemSize = useCallback(() => {
     return rowHeightPx;
   }, [rowHeightPx]);

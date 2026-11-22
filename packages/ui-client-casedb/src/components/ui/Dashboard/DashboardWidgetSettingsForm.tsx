@@ -51,13 +51,14 @@ export const DashboardWidgetSettingsForm = ({ widgetName }: DashboardEpiCurveSet
     defaultValues: defaultFormValues,
     values: defaultFormValues,
   });
-  const { control } = formMethods;
+  const { control, reset } = formMethods;
 
   const formValues = useWatch({ control });
 
   const onResetButtonClick = useCallback(() => {
     resetWidgetSettings(widgetName);
-  }, [resetWidgetSettings, widgetName]);
+    reset(defaultFormValues);
+  }, [defaultFormValues, reset, resetWidgetSettings, widgetName]);
 
   useEffect(() => {
     setWidgetSettings(widgetName, formValues);
@@ -75,7 +76,7 @@ export const DashboardWidgetSettingsForm = ({ widgetName }: DashboardEpiCurveSet
         }}
       >
         <GenericForm<FieldValues>
-          formFieldDefinitions={formFieldDefinitions}
+          formFieldDefinitions={formFieldDefinitions ?? []}
           formId={formId}
           formMethods={formMethods}
           onSubmit={onSubmit}
@@ -99,7 +100,7 @@ export const DashboardWidgetSettingsForm = ({ widgetName }: DashboardEpiCurveSet
             startIcon={<RestartAltIcon />}
             variant={'outlined'}
           >
-            {t('Reset {widgetName} settings', { widgetName })}
+            {t('Reset {{widgetName}} settings', { widgetName })}
           </Button>
         </Box>
       </Box>

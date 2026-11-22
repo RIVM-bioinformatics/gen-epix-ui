@@ -20,12 +20,17 @@ export const startTestApi = () => {
   });
   transport.on('request', async ({ controller, request }) => {
     const url = new URL(request.url);
-    if (url.origin !== TEST_API_ORIGIN) {
+    const isSameOrigin = url.origin === globalThis.location.origin;
+    if (url.origin !== TEST_API_ORIGIN && !isSameOrigin) {
       return;
     }
     const key = `${request.method} ${url.pathname}`;
     const respond = handlers.get(key);
     if (!respond) {
+      // Same-origin requests without a registered handler reach the dev server, e.g. Vite module requests.
+      if (isSameOrigin) {
+        return;
+      }
       unexpected.push(key);
       controller.respondWith(Response.json({ detail: `Unhandled test request: ${key}` }, { status: 501 }));
       return;

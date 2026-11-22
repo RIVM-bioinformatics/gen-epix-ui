@@ -85,7 +85,7 @@ export const LegendaItem = ({ children, item, tooltip, tooltipProps }: LegendaIt
 
   const onMouseOver = useCallback(() => {
     dashboardContext.highlight({
-      caseIds: Object.entries(stratification?.caseIdColors).filter(([_itemId, itemColor]) => itemColor === item.color).map(([itemId]) => itemId),
+      caseIds: Object.entries(stratification?.caseIdColors ?? {}).filter(([_itemId, itemColor]) => itemColor === item.color).map(([itemId]) => itemId),
       origin: DASHBOARD_COMPONENT_NAME.LEGENDA,
     });
   }, [item.color, stratification, dashboardContext]);

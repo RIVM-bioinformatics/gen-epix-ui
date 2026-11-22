@@ -204,7 +204,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                           onClick={() => onToggleSectionLinkClick(`case-type-sets-${caseTypeSetId}`)}
                           tabIndex={0}
                         >
-                          {caseTypeSetNameFactory.getName(caseTypeSet) ?? caseTypeSetId}
+                          {caseTypeSet ? caseTypeSetNameFactory.getName(caseTypeSet) : caseTypeSetId}
                         </Link>
                         <Box sx={{ display: visibleItems.includes(`case-type-sets-${caseTypeSetId}`) ? 'block' : 'none' }}>
                           {sortedCaseTypeSetMembers.map((caseTypeSetMember) => {
@@ -549,7 +549,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                               onClick={() => onToggleSectionLinkClick(`${right.from_data_collection_id}-${caseTypeSetId}`)}
                               tabIndex={0}
                             >
-                              {caseTypeSetNameFactory.getName(caseTypeSet) ?? caseTypeSetId}
+                              {caseTypeSet ? caseTypeSetNameFactory.getName(caseTypeSet) : caseTypeSetId}
                             </Link>
                             <Box sx={{ display: visibleItems.includes(`${right.from_data_collection_id}-${caseTypeSetId}`) ? 'block' : 'none' }}>
                               {sortedCaseTypeSetMembers.map((caseTypeSetMember) => {

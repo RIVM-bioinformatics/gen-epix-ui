@@ -438,7 +438,7 @@ export class TableUtil {
     }));
 
     const blob = await writeXlsxFile(excelData, {
-      columns: (data[0] ?? []).map(() => ({ width: 20 })),
+      columns: exportColumns.map(() => ({ width: 20 })),
       stickyRowsCount: 1,
     }).toBlob();
     const base64 = DownloadUtil.arrayBufferToBase64(await blob.arrayBuffer());
@@ -655,33 +655,34 @@ export class TableUtil {
     return new Map(allColumnVisualSettings.map(c => [c.id, c]));
   }
 
-  private static getExportColumns<TRowData, TDataContext>(visibleColumnIds: string[], columns: TableColumn<TRowData, TDataContext>[]): TableColumn<TRowData, TDataContext>[] {
+  private static getExportColumns<TRowData, TDataContext>(visibleColumnIds: string[], columns: TableColumn<TRowData, TDataContext>[]): Array<{ id: string } & TableColumn<TRowData, TDataContext>> {
     const fixedColumnIds: string[] = Object.values(FIXED_COLUMN_ID);
     return visibleColumnIds
+      .filter(id => !fixedColumnIds.includes(id))
       .map(id => columns.find(column => column.id === id))
-      .filter((column): column is TableColumn<TRowData, TDataContext> => {
-        return !!column && !column.hideInDownload && !fixedColumnIds.includes(column.id ?? '');
+      .filter((column): column is { id: string } & TableColumn<TRowData, TDataContext> => {
+        return !!column && !column.hideInDownload;
       });
   }
 
   private static getExportData<TRowData, TDataContext>(sortedData: TRowData[], visibleColumnIds: string[], columns: TableColumn<TRowData, TDataContext>[], dataContext: TDataContext): Array<Array<boolean | number | string>> {
     const exportColumns = TableUtil.getExportColumns(visibleColumnIds, columns);
-    const headers = exportColumns.map(column => column.headerName ?? column.id ?? '');
+    const headers = exportColumns.map(column => column.headerName ?? column.id);
     const rows = sortedData.map((row, rowIndex) => {
       return exportColumns.map((column) => {
         const params = {
           column,
           dataContext,
-          id: column.id ?? '',
+          id: column.id,
           row,
           rowIndex,
         };
-        let value: unknown = undefined;
+        let value: unknown;
         if (column.displayValueGetter) {
           value = column.displayValueGetter(params);
         } else if (column.valueGetter) {
           value = column.valueGetter(params);
-        } else if (column.id !== undefined) {
+        } else {
           value = row[column.id as keyof TRowData];
         }
         if (!column.displayValueGetter && column.type === 'options') {

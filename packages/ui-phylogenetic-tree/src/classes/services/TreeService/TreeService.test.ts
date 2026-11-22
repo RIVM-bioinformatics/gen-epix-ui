@@ -1137,6 +1137,20 @@ describe('TreeService', () => {
       const ancestorText = asm.distanceTexts.find(t => t.nodeNames.includes('inner'));
       expect(ancestorText).toBeDefined();
     });
+
+    it('keeps the first sorted index when a leaf name appears more than once in sortedLeafNames', () => {
+      const tree = makeNode('root', 0, [makeLeaf('a', 1), makeLeaf('b', 1)]);
+      const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: tree, sortedLeafNames: ['a', 'b', 'a'], treeCanvasWidth });
+      // 'a' keeps its first index (0), so its support line sits at 0 * itemHeight + itemHeight / 2
+      expect(asm.supportLines.find(line => line.nodeName === 'a')?.toY).toBe(TABLE_ROW_HEIGHT / 2);
+    });
+
+    it('places the support line above the tree when a leaf name is missing from sortedLeafNames', () => {
+      const tree = makeNode('root', 0, [makeLeaf('a', 1), makeLeaf('b', 1)]);
+      const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: tree, sortedLeafNames: ['a'], treeCanvasWidth });
+      // missing 'b' falls back to sorting index -1, giving -1 * itemHeight + itemHeight / 2
+      expect(asm.supportLines.find(line => line.nodeName === 'b')?.toY).toBe(-TABLE_ROW_HEIGHT / 2);
+    });
   });
 
   describe('getNewScrollPositionForZoomLevel', () => {
@@ -1852,6 +1866,73 @@ describe('TreeService', () => {
       });
 
       expect(ctx.imageSmoothingEnabled).toBe(true);
+    });
+
+    const renderTreeCanvas = (canvas: HTMLCanvasElement, overrides: { devicePixelRatio?: number; headerHeight?: number } = {}) => {
+      treeService.drawTreeCanvas({
+        backgroundColor: '#ffffff',
+        canvas,
+        devicePixelRatio: overrides.devicePixelRatio ?? 1,
+        dimFn: vi.fn(),
+        geneticTreeWidth: new Decimal(0),
+        headerHeight: overrides.headerHeight,
+        highlightedNodeNames: [],
+        horizontalScrollPosition: 0,
+        isLinked: false,
+        itemHeight: 30,
+        labelFont: '12px mono',
+        nodeNameColors: null,
+        pixelToGeneticDistanceRatio: 1,
+        range: { endIndex: 0, startIndex: 0 },
+        regularFillColorSupportLine: REGULAR_FILL_CANVAS,
+        scaleColor: '#000000',
+        scaleFont: 'bold 11px Arial',
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
+        supportLineColorLinked: '#000000',
+        supportLineColorUnlinked: '#bbbbbb',
+        tickerMarkScale: { geneticDistanceOfSingleLine: 0, minGeneticScaleUnit: new Decimal(0), numberOfLines: 0 },
+        treeAssembly: makeEmptyAssembly(),
+        treeCanvasHeight: 100,
+        treeCanvasWidth: 200,
+        treeColor: '#000000',
+        treePadding: TREE_PADDING_CANVAS,
+        verticalScrollPosition: 0,
+        zoomLevel: 1,
+      });
+    };
+
+    it('keeps canvas dimensions that already match the client size and device pixel ratio', () => {
+      const ctx = makeTreeCanvasCtx();
+      const canvas = {
+        clientHeight: 100,
+        clientWidth: 200,
+        getContext: vi.fn().mockReturnValue(ctx),
+        height: 200,
+        width: 400,
+      } as unknown as HTMLCanvasElement;
+
+      renderTreeCanvas(canvas, { devicePixelRatio: 2 });
+
+      expect(canvas.width).toBe(400);
+      expect(canvas.height).toBe(200);
+    });
+
+    it('draws header dividers and clips the tree below the header', () => {
+      const ctx = { ...makeTreeCanvasCtx(), clip: vi.fn(), rect: vi.fn(), restore: vi.fn(), save: vi.fn() };
+      const canvas = {
+        clientHeight: 100,
+        clientWidth: 200,
+        getContext: vi.fn().mockReturnValue(ctx),
+        height: 0,
+        width: 0,
+      } as unknown as HTMLCanvasElement;
+
+      renderTreeCanvas(canvas, { headerHeight: 40 });
+
+      expect(ctx.moveTo).toHaveBeenCalledWith(0, 0);
+      expect(ctx.moveTo).toHaveBeenCalledWith(0, 39);
+      expect(ctx.clip).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -3074,6 +3155,81 @@ describe('TreeService', () => {
       const dimmedCalls = drawCalls.filter(c => c.color === DIM_COLOR);
       expect(dimmedCalls.length).toBeGreaterThanOrEqual(1);
       expect(dimFn).toHaveBeenCalledWith(TREE_COLOR);
+    });
+
+    type DrawTreeOverrides = {
+      highlightedNodeNames?: string[];
+      isLinked?: boolean;
+      range?: { endIndex: number; startIndex: number };
+      shouldShowDistances?: boolean;
+      shouldShowLeafLabels?: boolean;
+      verticalScrollPosition?: number;
+    };
+
+    const makeFiveGroupAssembly = (): TreeAssembly => {
+      const groups = ['a', 'b', 'c', 'd', 'e'].map(prefix => makeNode(`${prefix}-group`, 1, [makeLeaf(`${prefix}1`, 1), makeLeaf(`${prefix}2`, 1)]));
+      return assembleTreeForTest({ itemHeight: 30, pixelToGeneticDistanceRatio: 100, rootNode: makeNode('root', 0, groups), treeCanvasWidth: 800 });
+    };
+
+    const drawTreeWith = (ctx: ReturnType<typeof makeTrackedCtx>['ctx'], treeAssembly: TreeAssembly, overrides: DrawTreeOverrides = {}) => {
+      treeService.drawTree({
+        canvas: makeCanvas(ctx),
+        devicePixelRatio: 1,
+        dimFn: makeDimFn(),
+        highlightedNodeNames: overrides.highlightedNodeNames ?? [],
+        horizontalScrollPosition: 0,
+        isLinked: overrides.isLinked ?? true,
+        itemHeight: 30,
+        labelFont: TREE_FONT,
+        nodeNameColors: null,
+        range: overrides.range ?? { endIndex: 0, startIndex: 0 },
+        shouldShowDistances: overrides.shouldShowDistances ?? false,
+        shouldShowLeafLabels: overrides.shouldShowLeafLabels ?? false,
+        shouldShowSupportLinesWhenUnlinked: false,
+        supportLineColorLinked: TREE_COLOR,
+        supportLineColorUnlinked: DIM_COLOR,
+        treeAssembly,
+        treeColor: TREE_COLOR,
+        verticalScrollPosition: overrides.verticalScrollPosition ?? 0,
+        zoomLevel: 1,
+      });
+    };
+
+    it('skips ancestor lines, ancestor nodes and leaves that are scrolled out of view', () => {
+      const { ctx, drawCalls } = makeTrackedCtx();
+      drawTreeWith(ctx, makeFiveGroupAssembly(), { range: { endIndex: 0, startIndex: 100 }, verticalScrollPosition: 5000 });
+      expect(drawCalls).toHaveLength(0);
+    });
+
+    it('draws ancestor lines, ancestor nodes and leaves that are inside the viewport', () => {
+      const { ctx, drawCalls } = makeTrackedCtx();
+      drawTreeWith(ctx, makeFiveGroupAssembly(), { verticalScrollPosition: 0 });
+      expect(drawCalls.some(call => call.type === 'stroke')).toBe(true);
+      expect(drawCalls.some(call => call.type === 'fill')).toBe(true);
+    });
+
+    it('draws only distance texts that are inside the viewport', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      assembly.distanceTexts = [
+        { nodeNames: ['a'], text: 'far', x: 10, y: 5000 },
+        { nodeNames: ['b'], text: 'near', x: 10, y: 30 },
+      ];
+      drawTreeWith(ctx, assembly, { highlightedNodeNames: ['a', 'b'], shouldShowDistances: true });
+      expect(ctx.fillText).toHaveBeenCalledTimes(1);
+      expect(ctx.fillText).toHaveBeenCalledWith('near', 10, 30);
+    });
+
+    it('draws only leaf labels that are inside the viewport', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      assembly.nodeLabels = [
+        { nodeName: 'far', x: 10, y: 5000 },
+        { nodeName: 'near', x: 10, y: 30 },
+      ];
+      drawTreeWith(ctx, assembly, { shouldShowLeafLabels: true });
+      expect(ctx.fillText).toHaveBeenCalledTimes(1);
+      expect(ctx.fillText).toHaveBeenCalledWith('near', 10, 30);
     });
   });
 });

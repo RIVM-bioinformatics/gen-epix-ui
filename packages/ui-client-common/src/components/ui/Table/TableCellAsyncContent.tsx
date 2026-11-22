@@ -10,15 +10,18 @@ export type TableCellAsyncContentProps = {
 export const TableCellAsyncContent = ({ content }: TableCellAsyncContentProps) => {
   const [text, setText] = useState<string>(null);
   useEffect(() => {
+    let isCurrent = true;
     const perform = async () => {
-      if (content instanceof Promise) {
-        setText(await content);
-      } else {
-        setText(content);
+      const resolvedText = content instanceof Promise ? await content : content;
+      if (isCurrent) {
+        setText(resolvedText);
       }
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
+    return () => {
+      isCurrent = false;
+    };
   }, [content]);
   return (
     <>

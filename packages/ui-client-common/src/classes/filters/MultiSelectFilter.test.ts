@@ -25,8 +25,10 @@ const createFilter = (options: AutoCompleteOption[] = createOptions(), maxNumOpt
 
 const MAXIMUM_CASES: Array<[number | undefined, number]> = [
   [undefined, 5],
+  [-1, -1],
   [0, 0],
   [1000, 1000],
+  [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
   [Number.NaN, 5],
 ];
 
@@ -66,6 +68,18 @@ describe('MultiSelectFilter', () => {
 
   it('renders unknown selected values as empty labels', () => {
     expect(createFilter().getPresentationValue(['unknown'])).toBe('');
+  });
+
+  it('ignores options without a value', () => {
+    const filter = createFilter([{ label: 'No value' }]);
+
+    expect(filter.getPresentationValue([undefined])).toBe('');
+  });
+
+  it('uses an empty label when an option label is absent', () => {
+    const filter = createFilter([{ value: 'without-label' }]);
+
+    expect(filter.getPresentationValue(['without-label'])).toBe('');
   });
 
   it('does not filter rows when the filter value is unset, malformed, or empty', () => {

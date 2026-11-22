@@ -382,6 +382,7 @@ export const MapWidget = () => {
     if (!series.length) {
       return t`No cases with valid geographical information found for the selected column.`;
     }
+    /* v8 ignore next -- every canShowWidget=false case returns above, so this fallback is unreachable */
     return null;
   }, [canShowWidget, col, regionSetShape?.geo_json, series.length, t]);
 

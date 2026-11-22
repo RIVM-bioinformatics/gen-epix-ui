@@ -88,6 +88,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
   const onFormSubmit = useCallback((formValues: FormFields): void => {
     if (formValues.organization_id === user.organization_id) {
       onClose();
+      return;
     }
     const perform = async () => {
       const notificationKey = container.resolve(NotificationService).showNotification({

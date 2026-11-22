@@ -70,6 +70,7 @@ export const LineListWidgetPrimaryMenu = ({
   const hasSelectionFilter = filters.some((filter) => filter instanceof SelectionFilter && filter.filterValue.length > 0);
   const columnsMenuItem = useTableColumnsMenu({ hasCellData });
 
+  /* v8 ignore next -- findSimilarCasesResults is typed as a non-nullable array, so the optional chaining and fallback are unreachable */
   const similarCaseIds = useMemo(() => findSimilarCasesResults?.flatMap((result) => result.similarCaseIds) || [], [findSimilarCasesResults]);
 
   const rowsWithoutSimilarCases = useMemo(() => {
@@ -168,11 +169,13 @@ export const LineListWidgetPrimaryMenu = ({
         },
       );
     }
+    /* v8 ignore else -- the base actions menu always has four items, so the length guard is always true */
     if (actionsColumnMenuItem.items.length > 3) {
       actionsColumnMenuItem.items[3].divider = true;
     }
 
     last(actionsColumnMenuItem.items).divider = true;
+    /* v8 ignore else -- shouldShowBulkEditCaseMenuItem is a constant true */
     if (shouldShowBulkEditCaseMenuItem) {
       actionsColumnMenuItem.items.push(
         {

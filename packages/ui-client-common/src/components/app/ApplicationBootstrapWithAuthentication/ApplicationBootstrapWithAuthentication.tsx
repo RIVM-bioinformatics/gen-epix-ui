@@ -60,9 +60,7 @@ export const ApplicationBootstrapWithAuthentication = ({ children }: PropsWithCh
   }, []);
 
   useEffect(() => {
-    if (categorizedOutages) {
-      setCategorizedOutages(categorizedOutages);
-    }
+    setCategorizedOutages(categorizedOutages);
 
     const windowService = container.resolve(WindowService);
     const timeout = windowService.window.setTimeout(() => {

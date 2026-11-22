@@ -198,9 +198,6 @@ export const TreeWidget = () => {
     if (!hasEnoughSequencesToShowTree) {
       return t`The phylogenetic tree cannot be displayed because there are not enough sequences available for the shown cases. A minimum of 2 sequences is required to generate a phylogenetic tree.`;
     }
-    if (hasEnoughSequencesToShowTree && !tree) {
-      return t`The phylogenetic tree cannot be displayed because the tree could not be generated. Either there are no sequences available for the shown cases or the selected tree configuration does not yield a valid tree.`;
-    }
     if (hasToManyResultsToShowTree) {
       return (
         (
@@ -225,6 +222,9 @@ export const TreeWidget = () => {
           </>
         )
       );
+    }
+    if (hasEnoughSequencesToShowTree && !tree) {
+      return t`The phylogenetic tree cannot be displayed because the tree could not be generated. Either there are no sequences available for the shown cases or the selected tree configuration does not yield a valid tree.`;
     }
   }, [caseIds.length, completeCaseType.props.read_max_tree_size, hasEnoughSequencesToShowTree, hasToManyResultsToShowTree, isTreeUnavailable, onOpenFiltersButtonClick, t, tree]);
 

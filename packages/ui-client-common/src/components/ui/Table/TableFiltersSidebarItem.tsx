@@ -87,7 +87,7 @@ const TableFiltersSidebarItemContentFilterDimension = <TRowData, TDataContext = 
   }, [dimensionFilters.length, filterDimension.allowOnlyPreferredFilter]);
 
   const menuItems = useMemo<MenuItemData>(() => {
-    return shouldShowDropDown
+    return shouldShowDropDown && filteredDimensionFilters.length
       ? {
         items: dimensionFilters.map(filter => ({
           active: filter === filteredDimensionFilters[0],

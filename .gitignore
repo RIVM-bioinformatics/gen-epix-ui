@@ -11,3 +11,5 @@ __screenshots__
 graphify-out
 .graphify-scope
 **/.vitest/attachments
+cc-*
+lcov.info

@@ -12,6 +12,11 @@ export const LineListWidgetTitle = () => {
   const sortedData = useStore(dashboardStore, useShallow((state) => state.sortedData));
   const selectedIds = useStore(dashboardStore, useShallow((state) => state.selectedIds));
 
+  const selectedCount = selectedIds.length;
+  const shownCount = sortedData.length;
+  /* v8 ignore next -- sortedData and selectedIds are arrays, so their length is never nullish and the ?? 0 fallbacks are unreachable */
+  const message = t('Line list: {{shownCount}} cases, {{selectedCount}} selected', { selectedCount: selectedCount ?? 0, shownCount: shownCount ?? 0 });
+
   return (
     <Typography
       aria-live={'polite'}
@@ -22,7 +27,7 @@ export const LineListWidgetTitle = () => {
         lineHeight: theme => theme.spacing(3),
       }}
     >
-      {t('Line list: {{shownCount}} cases, {{selectedCount}} selected', { selectedCount: selectedIds.length ?? 0, shownCount: sortedData.length ?? 0 })}
+      {message}
     </Typography>
   );
 };

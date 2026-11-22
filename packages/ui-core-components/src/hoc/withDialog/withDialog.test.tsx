@@ -1,6 +1,5 @@
 import type { ReactElement } from 'react';
 import {
-  act,
   createRef,
   useCallback,
   useEffect,
@@ -132,9 +131,7 @@ it('opens with props and updates dialog state through content callbacks', async 
   );
 
   expect(screen.baseElement.querySelector('[role="dialog"]')).toBeNull();
-  act(() => {
-    ref.current?.open({ message: 'loaded' });
-  });
+  ref.current?.open({ message: 'loaded' });
 
   await expect.element(screen.getByRole('dialog')).toBeVisible();
   await expect.element(screen.getByRole('heading', { name: 'Record title' })).toBeVisible();
@@ -181,15 +178,11 @@ it('uses the default title when none is provided and supports closing by ref', a
     />,
   );
 
-  act(() => {
-    ref.current?.open({ message: 'ready' });
-  });
+  ref.current?.open({ message: 'ready' });
   await expect.element(screen.getByRole('heading', { name: 'Default title' })).toBeVisible();
   await expect.element(screen.getByText('Record: ready')).toBeVisible();
 
-  act(() => {
-    ref.current?.close();
-  });
+  ref.current?.close();
   await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
   expect(onClose).not.toHaveBeenCalled();
 });
@@ -208,9 +201,7 @@ it('honors no-title and disabled-backdrop options', async () => {
     />,
   );
 
-  act(() => {
-    ref.current?.open({ message: 'ready' });
-  });
+  ref.current?.open({ message: 'ready' });
   await expect.element(screen.getByRole('dialog')).toBeVisible();
   await expect.element(screen.getByTestId('untitled-with-dialog-title')).not.toBeInTheDocument();
   await expect.element(screen.getByTestId('untitled-with-dialog-closeButton'))
@@ -220,9 +211,7 @@ it('honors no-title and disabled-backdrop options', async () => {
   pressEscape(screen.baseElement);
   await expect.element(screen.getByRole('dialog')).toBeVisible();
 
-  act(() => {
-    ref.current?.close();
-  });
+  ref.current?.close();
   await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
   expect(onClose).not.toHaveBeenCalled();
 });

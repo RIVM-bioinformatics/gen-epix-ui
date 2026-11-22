@@ -153,6 +153,9 @@ export default defineConfig({
         '**/test/**',
         '**/tests/**',
       ],
+      include: [
+        'src/**/*.{ts,tsx}',
+      ],
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       reportsDirectory: './coverage',
