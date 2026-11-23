@@ -299,6 +299,8 @@ describe('MapWidget', () => {
   });
 
   afterEach(() => {
+    // Abort any fetch still in flight so it cannot resume after the query cache is cleared and issue requests into the next test.
+    activeDashboardStore?.getState().fetchAbortController?.abort();
     activeDashboardStore?.getState().destroy();
     activeDashboardStore = undefined;
     container.resolve(QueryClientService).queryClient.clear();

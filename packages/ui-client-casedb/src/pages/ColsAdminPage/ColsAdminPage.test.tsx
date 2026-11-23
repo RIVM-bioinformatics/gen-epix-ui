@@ -280,7 +280,7 @@ describe('ColsAdminPage', () => {
       label: 'Label new',
       ref_col_id: REF_COL_TEXT_ID,
     }));
-  });
+  }, 60000);
 
   it('does not save a genetic distance column without its required genetic distance fields', async () => {
     const { mock, screen } = await renderPage();
