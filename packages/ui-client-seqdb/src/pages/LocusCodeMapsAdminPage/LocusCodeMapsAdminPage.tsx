@@ -54,9 +54,11 @@ const isStringRecord = (value: unknown): value is Record<string, string> => {
 
 const parseCodeMapJson = (codeMapJson: string): Record<string, string> => {
   const parsed: unknown = JSON.parse(codeMapJson);
+  /* v8 ignore start -- the valid-code-map form validation applies the same checks before submit, and locus option values are always non-empty IDs, so this throw is unreachable */
   if (!isStringRecord(parsed) || Object.entries(parsed).some(([code, locusId]) => code.length > 255 || !locusId)) {
     throw new Error('Invalid locus code map.');
   }
+  /* v8 ignore stop */
 
   return parsed;
 };
@@ -147,11 +149,19 @@ export const LocusCodeMapsAdminPage = () => {
     code_map_json: '{}',
   }), []);
 
-  const getFormValuesFromItem = useCallback((item: SeqDbLocusCodeMapWithId): Partial<FormFields> => ({
-    code_map_json: JSON.stringify(item.code_map, null, 2),
-  }), []);
+  const getFormValuesFromItem = useCallback((item?: SeqDbLocusCodeMapWithId): Partial<FormFields> => {
+    if (!item) {
+      return {};
+    }
+
+    return {
+      code: item.code,
+      code_map_json: JSON.stringify(item.code_map, null, 2),
+    };
+  }, []);
 
   const locusLabelsById = useMemo(() => {
+    /* v8 ignore next -- useLocusOptionsQuery always builds a string label, so the value fallback is unreachable */
     return new Map(locusOptionsQuery.options.map(option => [option.value, option.label ?? option.value]));
   }, [locusOptionsQuery.options]);
 

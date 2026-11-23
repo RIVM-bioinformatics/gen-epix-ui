@@ -61,6 +61,7 @@ export const LocusSetsAdminPage = () => {
   }, []);
 
   const getName = useCallback((item: FormFields | SeqDbLocusSetWithId) => {
+    /* v8 ignore next -- fetched and created locus sets always have an id (requireLocusSetId), and validated create values always have a required name, so the empty fallback is unreachable */
     return item.name || item.code || ('id' in item && item.id) || '';
   }, []);
 
@@ -97,6 +98,7 @@ export const LocusSetsAdminPage = () => {
   }, [locusOptionsQuery.isLoading, locusOptionsQuery.options, t]);
 
   const locusLabelsById = useMemo(() => {
+    /* v8 ignore next -- useLocusOptionsQuery always builds a string label, so the value fallback is unreachable */
     return new Map(locusOptionsQuery.options.map(option => [option.value, option.label ?? option.value]));
   }, [locusOptionsQuery.options]);
 

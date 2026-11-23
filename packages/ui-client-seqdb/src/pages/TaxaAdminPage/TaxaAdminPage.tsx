@@ -41,10 +41,11 @@ type FormFields = {
 
 const parseNcbiAncestorTaxids = (taxidsJson: string): number[] => {
   const parsedTaxids: unknown = JSON.parse(taxidsJson);
+  /* v8 ignore start -- createOne/updateOne only run after the valid-taxid-array schema test accepted the same string, so this guard is unreachable through the form */
   if (!Array.isArray(parsedTaxids) || !parsedTaxids.every(taxid => typeof taxid === 'number' && Number.isInteger(taxid) && taxid > 0)) {
     throw new Error('NCBI ancestor tax IDs must be a JSON array of numbers.');
   }
-
+  /* v8 ignore stop */
   return parsedTaxids as number[];
 };
 
@@ -71,9 +72,11 @@ export const TaxaAdminPage = () => {
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: SeqDbTaxon) => {
+    /* v8 ignore start -- CrudPage only calls updateOne for items with a truthy id (items without one are created instead), so this guard is unreachable through the page */
     if (!item.id) {
       throw new Error('Cannot update a taxon without an ID.');
     }
+    /* v8 ignore stop */
 
     const { ncbiAncestorTaxidsJson, ...taxon } = variables;
     return (await container.resolve(SeqDbSeqApi).taxaPutOne(item.id, {
@@ -95,11 +98,11 @@ export const TaxaAdminPage = () => {
     return item.name || item.code || ('id' in item && item.id) || '';
   }, []);
 
-  const getFormValuesFromItem = useCallback((item: SeqDbTaxon): Partial<FormFields> => {
+  const getFormValuesFromItem = useCallback((item?: SeqDbTaxon): Partial<FormFields> => {
     return {
       ...item,
-      ancestor_taxon_ids: item.ancestor_taxon_ids ?? [],
-      ncbiAncestorTaxidsJson: JSON.stringify(item.ncbi_ancestor_taxids ?? [], null, 2),
+      ancestor_taxon_ids: item?.ancestor_taxon_ids ?? [],
+      ncbiAncestorTaxidsJson: JSON.stringify(item?.ncbi_ancestor_taxids ?? [], null, 2),
     };
   }, []);
 
@@ -111,6 +114,7 @@ export const TaxaAdminPage = () => {
       name: SchemaUtil.name,
       ncbi_taxid: number().integer().min(1).nullable().optional(),
       ncbiAncestorTaxidsJson: string().required().test('valid-taxid-array', t`Enter a JSON array of NCBI tax IDs.`, (value) => {
+        /* v8 ignore next -- the form always supplies ncbiAncestorTaxidsJson as a string (defaultNewItem and getFormValuesFromItem), so value is never undefined */
         if (value === undefined) {
           return false;
         }

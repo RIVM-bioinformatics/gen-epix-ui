@@ -105,10 +105,12 @@ export const SeqProfilesAdminPage = () => {
     const profileTypeLabel = seqProfileTypeOptionsQuery.options.find(option => option.value === item.seq_profile_type)?.label ?? String(item.seq_profile_type);
     const sampleLabel = sampleOptionsQuery.options.find(option => option.value === item.sample_id)?.label ?? item.sample_id;
     const protocolLabel = protocolOptionsQuery.options.find(option => option.value === item.protocol_id)?.label ?? item.protocol_id;
+    /* v8 ignore start -- the final '' is unreachable: create submits require content (yup), and stored items always have a non-empty id */
     return [profileTypeLabel, sampleLabel, protocolLabel].filter(Boolean).join(' - ')
       || item.content.slice(0, 60)
       || ('id' in item && item.id)
       || '';
+    /* v8 ignore stop */
   }, [protocolOptionsQuery.options, sampleOptionsQuery.options, seqProfileTypeOptionsQuery.options]);
 
   const schema = useMemo(() => {

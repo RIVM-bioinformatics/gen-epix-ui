@@ -38,6 +38,7 @@ export const SeqCategorySetsAdminPage = () => {
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: SeqDbSeqCategorySet) => {
+    /* v8 ignore next 3 -- CrudPage only calls updateOne for rows with a truthy id */
     if (!item.id) {
       throw new Error('Cannot update a sequence category set without an ID.');
     }

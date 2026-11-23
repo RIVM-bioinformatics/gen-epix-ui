@@ -53,9 +53,11 @@ export const TreeAlgorithmsAdminPage = () => {
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm) => {
+    /* v8 ignore start -- CrudPage only calls updateOne for items with a truthy id (items without one are created instead), so this guard is unreachable through the page */
     if (!item.id) {
       throw new Error('Cannot update a tree algorithm without an ID.');
     }
+    /* v8 ignore stop */
 
     return (await container.resolve(SeqDbSeqApi).treeAlgorithmsPutOne(item.id, { ...variables, id: item.id })).data;
   }, []);

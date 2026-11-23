@@ -67,6 +67,7 @@ export const RefAllelesAdminPage = () => {
     const locusName = locusLabel || item.locus_id;
     const indexName = Number.isFinite(item.index) ? String(item.index) : '';
     const descriptiveName = [locusName, indexName].filter(Boolean).join(' - ');
+    /* v8 ignore next -- the final '' is unreachable: stored items always have a non-empty id (requireRefAlleleId) and create submits require a non-empty seq (schema) */
     return descriptiveName || item.seq || ('id' in item && item.id) || '';
   }, [locusOptionsQuery.options]);
 

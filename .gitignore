@@ -13,3 +13,6 @@ graphify-out
 **/.vitest/attachments
 cc-*
 lcov.info
+*.log
+.scratch*
+**/coverage-*

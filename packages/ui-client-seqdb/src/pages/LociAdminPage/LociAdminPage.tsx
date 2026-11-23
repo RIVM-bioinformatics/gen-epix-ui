@@ -61,6 +61,7 @@ export const LociAdminPage = () => {
   }, []);
 
   const getName = useCallback((item: FormFields | SeqDbLocusWithId) => {
+    /* v8 ignore next -- fetched and created loci always have an id (requireLocusId), and validated create values always have a required code, so the empty fallback is unreachable */
     return item.name || item.code || ('id' in item && item.id) || '';
   }, []);
 

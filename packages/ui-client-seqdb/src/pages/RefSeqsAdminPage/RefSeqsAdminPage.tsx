@@ -63,6 +63,7 @@ export const RefSeqsAdminPage = () => {
   }, []);
 
   const getName = useCallback((item: FormFields | SeqDbRefSeqWithId) => {
+    /* v8 ignore next -- stored items always have an ID (requireRefSeqId) and created items always have a required name or code */
     return item.name || item.code || ('id' in item && item.id) || '';
   }, []);
 
