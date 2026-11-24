@@ -395,7 +395,7 @@ describe('HistogramWidget', () => {
     const highlightCall = dispatchSpy.mock.calls.find(([action]) => (action as { type: string }).type === 'highlight');
     const batch = (highlightCall?.[0] as unknown as { batch: { dataIndex: number; notBlur?: boolean; seriesIndex?: number }[] }).batch;
     expect(batch.every((target) => target.seriesIndex === undefined)).toBe(true);
-    expect(batch.length).toBe(2);
+    expect(batch).toHaveLength(2);
     expect(batch[1].notBlur).toBe(true);
     expect(batch[0].notBlur).toBeUndefined();
   });
@@ -414,7 +414,7 @@ describe('HistogramWidget', () => {
     const highlightCall = dispatchSpy.mock.calls.find(([action]) => (action as { type: string }).type === 'highlight');
     const batch = (highlightCall?.[0] as unknown as { batch: { dataIndex: number; notBlur?: boolean; seriesIndex?: number }[] }).batch;
     expect(batch.every((target) => target.seriesIndex !== undefined)).toBe(true);
-    expect(batch.length).toBe(2);
+    expect(batch).toHaveLength(2);
     expect(batch[0].notBlur).toBeUndefined();
     expect(batch[1].notBlur).toBe(true);
   });

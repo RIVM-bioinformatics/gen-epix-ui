@@ -218,7 +218,7 @@ describe('RemoveCasesFromEventDialog', () => {
 
     await expect.poll(() => screen.getByText('Are you sure you want to remove 2 selected cases from Event one?').query()).toBeNull();
     expect(deleteRequests).toEqual([]);
-    expect(caseSetMembers.length).toBe(3);
+    expect(caseSetMembers).toHaveLength(3);
   });
 
   it('does not offer removal when more cases are selected than the delete limit allows', async () => {

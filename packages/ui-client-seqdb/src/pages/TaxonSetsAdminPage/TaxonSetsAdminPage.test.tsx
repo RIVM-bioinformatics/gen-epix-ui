@@ -145,30 +145,12 @@ describe('TaxonSetsAdminPage', () => {
     await expect.element(screen.getByRole('cell', { exact: true, name: 'Alpha set' })).not.toBeInTheDocument();
   });
 
-  it('shows an error notification and does not call the API when deleting a taxon set without an ID', async () => {
-    const { mock, screen } = await renderPage([{ code: 'NOIDSET', id: null, name: 'No ID set' }]);
-
-    await screen.getByRole('button', { name: 'Row actions' }).first().click();
-    await screen.getByRole('menuitem', { name: 'Delete' }).click();
-    await screen.getByRole('button', { name: 'Confirm' }).click();
-
-    await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('could not be deleted')]));
-    expect(mock.calls.filter(({ method }) => method === 'DELETE')).toHaveLength(0);
-  });
-
-  it('confirms deletion of a taxon set with no name or ID by its code without failing', async () => {
-    const { mock, screen } = await renderPage([{ code: 'CODEONLYSET', id: null, name: '' }]);
-
-    await screen.getByRole('button', { name: 'Row actions' }).first().click();
-    await screen.getByRole('menuitem', { name: 'Delete' }).click();
-    await screen.getByRole('button', { name: 'Confirm' }).click();
-
-    await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('could not be deleted')]));
-    expect(mock.calls.filter(({ method }) => method === 'DELETE')).toHaveLength(0);
-  });
-
-  it('confirms deletion of a taxon set with no name, code or ID without failing', async () => {
-    const { mock, screen } = await renderPage([{ code: '', id: null, name: '' }]);
+  it.each([
+    { description: 'without an ID', taxonSet: { code: 'NOIDSET', id: null, name: 'No ID set' } },
+    { description: 'with no name or ID', taxonSet: { code: 'CODEONLYSET', id: null, name: '' } },
+    { description: 'with no name, code or ID', taxonSet: { code: '', id: null, name: '' } },
+  ])('shows an error notification and does not call the API when deleting a taxon set $description', async ({ taxonSet }) => {
+    const { mock, screen } = await renderPage([taxonSet]);
 
     await screen.getByRole('button', { name: 'Row actions' }).first().click();
     await screen.getByRole('menuitem', { name: 'Delete' }).click();

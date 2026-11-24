@@ -74,6 +74,46 @@ export type DateRangePickerProps<TFieldValues extends FieldValues, TName extends
 
 type DateRangeValue = [Date | null, Date | null];
 
+const getFromPickerMaxDate = (maxDate: Date | undefined, toValue: Date | null): Date | null => {
+  return toValue && maxDate ? new Date(Math.min(maxDate.getTime(), toValue.getTime())) : toValue ?? maxDate;
+};
+
+const getToPickerMinDate = (minDate: Date | undefined, fromValue: Date | null): Date | null => {
+  return fromValue && minDate ? new Date(Math.max(minDate.getTime(), fromValue.getTime())) : fromValue ?? minDate;
+};
+
+const getRangeAfterFromBlur = (fromInputValue: Date | null, toValue: Date | null, minDate: Date | undefined, maxDate: Date | undefined): DateRangeValue => {
+  if (!isValid(fromInputValue)) {
+    return [null, toValue];
+  }
+  if (fromInputValue < minDate) {
+    return [minDate, toValue];
+  }
+  if (fromInputValue > maxDate) {
+    return [maxDate, maxDate];
+  }
+  if (toValue && fromInputValue > toValue) {
+    return [toValue, fromInputValue];
+  }
+  return [fromInputValue, toValue];
+};
+
+const getRangeAfterToBlur = (toInputValue: Date | null, fromValue: Date | null, minDate: Date | undefined, maxDate: Date | undefined): DateRangeValue => {
+  if (!isValid(toInputValue)) {
+    return [fromValue, null];
+  }
+  if (toInputValue > maxDate) {
+    return [fromValue, maxDate];
+  }
+  if (toInputValue < minDate) {
+    return [minDate, minDate];
+  }
+  if (fromValue && toInputValue < fromValue) {
+    return [toInputValue, fromValue];
+  }
+  return [fromValue, toInputValue];
+};
+
 export const DateRangePicker = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   dateFormat = DATE_FORMAT.DATE,
   disabled = false,
@@ -192,35 +232,13 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
 
     const onFromBlur = () => {
       const fromInputValue = inputValueToDate(fromInputRef.current.value);
-
-      if (!isValid(fromInputValue)) {
-        handleChange(onChange, [null, toValue]);
-      } else if (fromInputValue < minDate) {
-        handleChange(onChange, [minDate, toValue]);
-      } else if (fromInputValue > maxDate) {
-        handleChange(onChange, [maxDate, maxDate]);
-      } else if (toValue && fromInputValue > toValue) {
-        handleChange(onChange, [toValue, fromInputValue]);
-      } else {
-        handleChange(onChange, [fromInputValue, toValue]);
-      }
+      handleChange(onChange, getRangeAfterFromBlur(fromInputValue, toValue, minDate, maxDate));
       onBlur();
     };
 
     const onToBlur = () => {
       const toInputValue = inputValueToDate(toInputRef.current.value);
-
-      if (!isValid(toInputValue)) {
-        handleChange(onChange, [fromValue, null]);
-      } else if (toInputValue > maxDate) {
-        handleChange(onChange, [fromValue, maxDate]);
-      } else if (toInputValue < minDate) {
-        handleChange(onChange, [minDate, minDate]);
-      } else if (fromValue && toInputValue < fromValue) {
-        handleChange(onChange, [toInputValue, fromValue]);
-      } else {
-        handleChange(onChange, [fromValue, toInputValue]);
-      }
+      handleChange(onChange, getRangeAfterToBlur(toInputValue, fromValue, minDate, maxDate));
       onBlur();
     };
 
@@ -289,7 +307,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               inputRef={fromInputRef}
               label={t`From`}
               loading={loading}
-              maxDate={toValue && maxDate ? new Date(Math.min(maxDate.getTime(), toValue.getTime())) : toValue ?? maxDate}
+              maxDate={getFromPickerMaxDate(maxDate, toValue)}
               minDate={minDate}
               // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
               onChange={onFromValueChange}
@@ -318,7 +336,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               label={t`To`}
               loading={loading}
               maxDate={maxDate}
-              minDate={fromValue && minDate ? new Date(Math.max(minDate.getTime(), fromValue.getTime())) : fromValue ?? minDate}
+              minDate={getToPickerMinDate(minDate, fromValue)}
               // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
               onChange={onToValueChange}
               referenceDate={maxDate}

@@ -351,8 +351,8 @@ describe('EpiCurveBarChart', () => {
     await new Promise(resolve => {
       setTimeout(resolve, 50);
     });
-    expect(highlightBatches.length).toBe(0);
-    expect(downplayEvents.length).toBe(0);
+    expect(highlightBatches).toHaveLength(0);
+    expect(downplayEvents).toHaveLength(0);
   });
 
   it('stops reacting to highlights after unmount', async () => {
@@ -365,7 +365,7 @@ describe('EpiCurveBarChart', () => {
     await new Promise(resolve => {
       setTimeout(resolve, 50);
     });
-    expect(highlightBatches.length).toBe(0);
+    expect(highlightBatches).toHaveLength(0);
   });
 
   it('renders without a chart ready callback', async () => {

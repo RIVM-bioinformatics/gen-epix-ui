@@ -132,7 +132,7 @@ describe('useSiteOptionsQuery', () => {
     const { result } = renderHook(() => useSiteOptionsQuery(), { wrapper });
 
     await waitFor(() => {
-      expect(result.current.options.length).toBe(2);
+      expect(result.current.options).toHaveLength(2);
     });
     expect(result.current.options).toEqual([
       { label: 'Site A', value: 'site-2' },

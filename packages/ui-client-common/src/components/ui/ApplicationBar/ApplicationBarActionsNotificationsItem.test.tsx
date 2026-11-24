@@ -74,7 +74,7 @@ describe('ApplicationBarActionsNotificationsItem', () => {
     await screen.getByTitle('Notifications').click();
 
     await expect.poll(() => getNotificationService().data.every(x => !x.visible)).toBe(true);
-    expect(getNotificationService().data.length).toBe(1);
+    expect(getNotificationService().data).toHaveLength(1);
   });
 
   it('opens the notifications drawer when the button is clicked', async () => {

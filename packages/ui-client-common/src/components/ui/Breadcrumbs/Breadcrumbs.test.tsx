@@ -108,7 +108,7 @@ describe('Breadcrumbs', () => {
     );
 
     await expect.element(screen.getByRole('heading', { level: 1, name: 'Index' })).toBeVisible();
-    expect(document.querySelectorAll('nav[aria-label="breadcrumbs"] a[href="/parent"]').length).toBe(0);
+    expect(document.querySelectorAll('nav[aria-label="breadcrumbs"] a[href="/parent"]')).toHaveLength(0);
   });
 
   it('renders only the home breadcrumb heading when the current route is the root', async () => {
@@ -119,6 +119,6 @@ describe('Breadcrumbs', () => {
     );
 
     await expect.element(screen.getByRole('heading', { level: 1, name: 'Home' })).toBeVisible();
-    expect(document.querySelectorAll('nav[aria-label="breadcrumbs"] a').length).toBe(0);
+    expect(document.querySelectorAll('nav[aria-label="breadcrumbs"] a')).toHaveLength(0);
   });
 });

@@ -428,7 +428,7 @@ describe('UploadSelectSequenceFiles', () => {
     const input = await getFileInput(screen.baseElement);
     expect(input.accept).toContain('.fasta');
     expect(input.accept).toContain('.fastq');
-    expect(screen.baseElement.querySelectorAll('[role="alert"]').length).toBe(0);
+    expect(screen.baseElement.querySelectorAll('[role="alert"]')).toHaveLength(0);
   });
 
   it('should add and clear selected files', async () => {
@@ -465,7 +465,7 @@ describe('UploadSelectSequenceFiles', () => {
     await expect.element(screen.getByRole('button', { exact: true, name: 'Proceed' })).toBeVisible();
     await screen.getByRole('button', { exact: true, name: 'Proceed' }).click();
     await expect.poll(() => store.getState().activeStep).toBe(UPLOAD_STEP.CREATE_CASES);
-    expect(store.getState().sequenceFilesDataTransfer.files.length).toBe(0);
+    expect(store.getState().sequenceFilesDataTransfer.files).toHaveLength(0);
   });
 
   it('should go back to the preview step', async () => {

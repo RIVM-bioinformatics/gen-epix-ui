@@ -263,7 +263,7 @@ describe('CasesAlreadyInCaseSetWarning', () => {
     const screen = await renderWarning([CASE_ONE]);
 
     await expect.element(screen.getByText('Sorry, an unexpected error has occurred.')).toBeInTheDocument();
-    expect(screen.getByRole('alert').elements().length).toBe(0);
+    expect(screen.getByRole('alert').elements()).toHaveLength(0);
   });
 
   it('shows an error when the case sets cannot be loaded', async () => {
@@ -272,6 +272,6 @@ describe('CasesAlreadyInCaseSetWarning', () => {
     const screen = await renderWarning([CASE_ONE]);
 
     await expect.element(screen.getByText('Sorry, an unexpected error has occurred.')).toBeInTheDocument();
-    expect(screen.getByRole('alert').elements().length).toBe(0);
+    expect(screen.getByRole('alert').elements()).toHaveLength(0);
   });
 });

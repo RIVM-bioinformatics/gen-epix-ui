@@ -179,7 +179,7 @@ export const GenericForm = <TFormFields extends FieldValues>({
           />
         );
       default:
-        throw Error('Unsupported form field definition');
+        throw new Error('Unsupported form field definition');
     }
   }, [booleanOptions, disableAll, isFormFieldRequired]);
 

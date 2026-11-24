@@ -152,9 +152,30 @@ remaining gaps.
 - In `.test.ts` unit tests, mock dependencies only at their boundary and where needed to isolate the
   target. Patch the symbol where the target looks it up, not where the symbol
   was originally declared. Restore spies, mocks, timers, and global state.
-- Prefer parametrized cases for inputs that differ only in data. Use focused
-  fixtures or builders when setup is reused, and do not share mutable objects
-  across cases.
+- Parameterize similar cases. When two or more `it`/`test` blocks share the same
+  arrange and assert steps and differ only in data, merge them into one
+  `it.each([...])` (or `test.each`) table. Name each row in the title with
+  `$field` placeholders (for example `'shows an error when $reason'`), and make
+  the title describe the assertion that actually runs; do not claim "without
+  failing" when the test expects an error. Use focused fixtures or builders
+  when setup is reused, and do not share mutable objects across cases.
+- Use specific matchers. Write `expect(list).toHaveLength(n)` instead of
+  `expect(list.length).toBe(n)`, and `toBe`/`toEqual` only for the value type
+  they fit. This applies to arrays, NodeLists and `.elements()` results alike.
+  Use `expect.poll` only when the value is genuinely asynchronous.
+- Only mark a function `async` when it contains an `await`. This applies to
+  test callbacks, helpers and render wrappers. A helper that only returns a
+  promise, such as `renderComponent` returning the render promise, should be
+  a plain function (`const renderX = (...) => render(...)`). Marking such a
+  helper `async` triggers SonarCloud S7503.
+- Throw `new Error(...)`, never `throw Error(...)`, in test helpers and
+  production code alike.
+- Keep helper functions small. Test helpers and component render logic that
+  branch heavily should move each branch into a named helper so the enclosing
+  function stays under SonarCloud's cognitive complexity limit (S3776). Do not
+  add nested ternaries or long `if` chains inside a single function. Move
+  branch logic into module-scope pure helpers and keep the branch order
+  unchanged.
 - Assert both successful and failure paths. Avoid assertions that merely copy
   the implementation's calculation or verify private call order when the
   resulting behavior can be checked directly.
@@ -166,7 +187,10 @@ remaining gaps.
    `ui-client-seqdb`, `ui-client-omopdb`, `ui-core-components` and `ui-core-form`,
    import `renderComponent` from that package's `src/test/lib` (a relative import
    from the test, or `@gen-epix/<own-package>/test/lib`). Use
-   `const screen = await renderComponent(<Widget {...props} />)`.
+   `const screen = await renderComponent(<Widget {...props} />)` inside an
+   `it` callback that is `async` only because it awaits. The `renderComponent`
+   helper itself is not `async`; do not add `async` to any render helper or
+   to a test callback that contains no `await`.
    Do not import a different client's renderer or run setup manually.
    - Clients already get their standard config, demo theme, initialized English
      and Dutch translations, Emotion and the app's DI-backed React Query client.
@@ -293,6 +317,12 @@ until the root validation passes.
 - Existing colocated coverage was updated rather than duplicated.
 - Applicable branches, errors, boundaries, side effects, and state transitions
   are covered for every processed target.
+- Similar cases are merged into `it.each` tables with titles that match the
+  assertions. Assertions use specific matchers such as `toHaveLength`, and
+  no function is marked `async` without an `await`. Errors are thrown with
+  `new Error`. Branch-heavy helpers were split so complexity stays low. These
+  checks cover SonarCloud rules S5976, S5906, S7503, S7723 and S3776, which
+  lint does not enforce.
 - Every processed target reports 100 percent statements, branches, functions,
   and lines.
 - Lint, type checking, and the focused test command pass for every processed

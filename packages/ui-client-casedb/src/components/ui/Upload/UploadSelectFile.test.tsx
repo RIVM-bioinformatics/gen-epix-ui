@@ -157,27 +157,13 @@ const createMultiSheetXlsxFile = async () => {
 };
 
 describe('UploadSelectFile', () => {
-  it('should show a warning and no form when the user has insufficient data access', async () => {
+  it.each([
+    { emptyEndpoint: '/v1/case_types', reason: 'the user has insufficient data access' },
+    { emptyEndpoint: '/v1/cols', reason: 'the case type has no columns' },
+    { emptyEndpoint: '/v1/data_collections', reason: 'there are no data collections to create cases in' },
+  ])('should show a warning and no form when $reason', async ({ emptyEndpoint }) => {
     mockUploadSelectFileApi();
-    mockApiRequest('GET', '/v1/case_types', () => Response.json([]));
-    const { screen } = await renderUploadSelectFile();
-
-    await expect.element(screen.getByRole('alert')).toHaveTextContent('Upload is disabled because you have insufficient data access to proceed. Contact your organization administrator for assistance.');
-    await expect.poll(() => screen.baseElement.querySelector('input[type="file"]')).toBeNull();
-  });
-
-  it('should show a warning and no form when the case type has no columns', async () => {
-    mockUploadSelectFileApi();
-    mockApiRequest('GET', '/v1/cols', () => Response.json([]));
-    const { screen } = await renderUploadSelectFile();
-
-    await expect.element(screen.getByRole('alert')).toHaveTextContent('Upload is disabled because you have insufficient data access to proceed. Contact your organization administrator for assistance.');
-    await expect.poll(() => screen.baseElement.querySelector('input[type="file"]')).toBeNull();
-  });
-
-  it('should show a warning and no form when there are no data collections to create cases in', async () => {
-    mockUploadSelectFileApi();
-    mockApiRequest('GET', '/v1/data_collections', () => Response.json([]));
+    mockApiRequest('GET', emptyEndpoint, () => Response.json([]));
     const { screen } = await renderUploadSelectFile();
 
     await expect.element(screen.getByRole('alert')).toHaveTextContent('Upload is disabled because you have insufficient data access to proceed. Contact your organization administrator for assistance.');
