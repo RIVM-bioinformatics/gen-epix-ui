@@ -198,18 +198,6 @@ remaining gaps.
    roles, labels or text, add a test id to the component for testability. Always
    create test-id attributes with `TestIdUtil.createAttributes(...)` from
    `@gen-epix/ui-core/utils/TestIdUtil`; do not hardcode `data-testid`.
-2. **Do not mock or spy on utilities**, including their module exports, or
-   replace data hooks just to manufacture component states. Vary props,
-   callback presence, config, initial state, request data/status and user
-   actions to reach branches. Drive the real component with browser locators
-   and awaited user actions; use assertions such as
-   `await expect.element(screen.getByRole('alert')).toBeVisible()` for DOM updates.
-   Cover loading, empty, success and error states where they exist.
-   Use `await screen.rerender(...)` to test transitions without remounting.
-   When a necessary element cannot be targeted reliably through accessible
-   roles, labels or text, add a test id to the component for testability. Always
-   create test-id attributes with `TestIdUtil.createAttributes(...)` from
-   `@gen-epix/ui-core/utils/TestIdUtil`; do not hardcode `data-testid`.
 3. **Mock HTTP, not the SDK or Axios.** Register responses inside the test or
    its `beforeEach`, before rendering. Client browser setup intercepts both
    XHR and fetch for the test API; an unhandled API request fails the test.
@@ -228,6 +216,14 @@ remaining gaps.
    `ui-client-common/src/test/lib`; keep domain-specific records in the domain
    package. Return fresh typed SDK data per case. Never import browser-only
    helpers into jsdom unit tests or production modules.
+5. **Give rendered list items unique keys.** React warns "Encountered two children
+   with the same key" when sibling items share a key, and that warning is only
+   logged, so tests still pass. Do not build fixtures from identical sibling
+   objects when the component keys them. Vary a distinguishing field such as
+   `id`, `name`, `size` or `index`. Keys derived from a content hash (for example
+   `StringUtil.createHash(JSON.stringify(item))`) collide for identical items, so
+   the fixture must differ. Build lists with `Array.from({ length }, (_, index) => ...)`
+   and include `index` in the varying field.
 
 ## 5. Validate 100 Percent Target Coverage
 
@@ -243,6 +239,20 @@ pnpm --filter <package> run lint
 pnpm --filter <package> run check-types
 pnpm --filter <package> exec vitest run --project <unit-or-browser> --coverage --coverage.include=<source-path> <test-path>
 ```
+
+Vitest's default summary hides console output, so React warnings such as
+duplicate keys are invisible there. After the coverage run, rerun the focused
+command with `--reporter=verbose` and check both streams. Vitest prints console
+output to stderr and stdout, so search both:
+
+```bash
+pnpm --filter <package> exec vitest run --project <unit-or-browser> --reporter=verbose <test-path> > /tmp/unit-test-verbose.log 2>&1
+grep -nE "same key|two children" /tmp/unit-test-verbose.log
+```
+
+The grep must find nothing. Any match means a sibling fixture or component key
+needs fixing; the test is not complete until it is clean. Delete the temporary
+log afterwards.
 
 Use the configured V8 coverage provider and **verify the intended file actually
 ran** (do not use `--passWithNoTests` for this check). The focused test
@@ -287,6 +297,8 @@ until the root validation passes.
   and lines.
 - Lint, type checking, and the focused test command pass for every processed
   target.
+- The verbose focused run has no "same key" or "two children" warnings in
+  stderr or stdout.
 - Root `pnpm run validate` passes after all requested tests and any
   backward-compatible monorepo fixes are complete.
 - No unrelated files, generated reports, package metadata, or configuration

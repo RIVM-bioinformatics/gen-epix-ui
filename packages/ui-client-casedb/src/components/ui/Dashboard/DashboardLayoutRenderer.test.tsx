@@ -95,10 +95,10 @@ const NESTED_ARRANGEMENT: DashboardArrangement = {
 
 // Each nested group is empty, so its layout is empty and reset skips it.
 const MANY_GROUPS_ARRANGEMENT: DashboardArrangement = {
-  cells: Array.from({ length: MANY_GROUP_COUNT }, (): DashboardArrangement => ({
+  cells: Array.from({ length: MANY_GROUP_COUNT }, (_, index): DashboardArrangement => ({
     cells: [],
     orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
-    size: 1,
+    size: index + 1,
   })),
   orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
   size: 100,
