@@ -33,4 +33,4 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
       - run: pnpm --filter @gen-epix/ui-client-common exec playwright install-deps chromium
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-      - run: pnpm run validate
+      - run: pnpm run validate-ci

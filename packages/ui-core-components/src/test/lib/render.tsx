@@ -12,7 +12,7 @@ import type { RenderOptions } from 'vitest-browser-react';
 export const renderComponent = async (
   ui: ReactNode,
   { theme = createTheme(), wrapper: Wrapper, ...options }: { theme?: Theme } & RenderOptions = {},
-) => render(ui, {
+) => await render(ui, {
   ...options,
   wrapper: ({ children }) => (
     <I18nextProvider i18n={i18next}>

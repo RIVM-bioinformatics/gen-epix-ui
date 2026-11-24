@@ -28,6 +28,8 @@ const proxyThrottleConfig: { [key: string]: number } = {
   // '/v1/outages/0191fb18-7ef9-e584-1666-28d37e8e4079': 5000,
 };
 
+const isCi = !!process.env.CI;
+
 const gitRootPath = findGitRootPath();
 
 
@@ -132,6 +134,9 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    fileParallelism: !isCi,
+    maxConcurrency: isCi ? 1 : 5,
+    maxWorkers: isCi ? 1 : 2,
     globals: true,
     server: {
       deps: {

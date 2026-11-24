@@ -166,7 +166,9 @@ pnpm run add-missing-translations
  - Always pass a compare function to `.sort()` (S2871), for example
    `.sort((a, b) => a.localeCompare(b))`.
  - Throw `new Error(...)`, never `throw Error(...)` (S7723).
- - Only mark a function `async` when it contains an `await` (S7503).
+ - Only mark a function `async` when it contains an `await` (S7503). Functions
+   that return a promise must still be `async` for lint, so write
+   `async (...) => await render(...)` instead of dropping `async`.
  - Keep functions under the cognitive complexity limit by moving branches into
    named helpers (S3776).
  - Use `toHaveLength(n)` instead of `expect(x.length).toBe(n)` (S5906).
@@ -314,6 +316,11 @@ explicitly approves their removal.
  instance with `initReactI18next`. Calling `i18next.init()` alone does not
  connect it to React; avoid `NO_I18NEXT_INSTANCE` warnings, and prefer an
  isolated instance to prevent shared test state.
+- Vitest concurrency is controlled by each `vite.config.ts` `test` block, which
+ sets `fileParallelism`, `maxConcurrency`, and `maxWorkers` from `isCi`
+ (`!!process.env.CI`): serial on CI, parallel locally. Do not pass
+ `--maxWorkers` in `test-run` scripts, because the CLI flag overrides config.
+ CI runs `pnpm run validate-ci` (Lerna `--concurrency=1`), not `validate`.
 - Keep tests focused on observable behavior and existing public APIs.
 - Do not broaden snapshots or coverage churn while fixing a narrow bug.
 

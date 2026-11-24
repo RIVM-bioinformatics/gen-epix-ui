@@ -28,5 +28,5 @@ export const renderComponent = async <TFields extends FieldValues,>(
       </FormProvider>
     );
   };
-  return renderCoreComponent(ui, { ...options, wrapper: TestForm });
+  return await renderCoreComponent(ui, { ...options, wrapper: TestForm });
 };

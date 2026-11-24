@@ -114,6 +114,54 @@ const getRangeAfterToBlur = (toInputValue: Date | null, fromValue: Date | null, 
   return [fromValue, toInputValue];
 };
 
+const getDateRangePickerViews = (dateFormat: DateRangePickerProps<FieldValues>['dateFormat']): MuiDateTimePickerProps['views'] => {
+  switch (dateFormat) {
+    case DATE_FORMAT.DATE:
+    case DATE_FORMAT.DATE_TIME:
+      return undefined;
+    case DATE_FORMAT.YEAR:
+      return ['year'];
+    case DATE_FORMAT.YEAR_MONTH:
+      return ['year', 'month'];
+    default:
+      throw new Error(`Unsupported date format: ${String(dateFormat)}`);
+  }
+};
+
+const sanitizeDateRangeValue = (value: DateRangeValue, dateFormat: DateRangePickerProps<FieldValues>['dateFormat']): DateRangeValue => {
+  const sanitizedValue: DateRangeValue = [null, null];
+  // The views switch rejects runtime-invalid formats before this function can run.
+  // eslint-disable-next-line default-case
+  switch (dateFormat) {
+    case DATE_FORMAT.DATE:
+      sanitizedValue[0] = value[0] ? set(value[0], { hours: 0, milliseconds: 0, minutes: 0, seconds: 0 }) : null;
+      sanitizedValue[1] = value[1] ? set(value[1], { hours: 23, milliseconds: 999, minutes: 59, seconds: 59 }) : null;
+      break;
+    case DATE_FORMAT.DATE_TIME:
+      sanitizedValue[0] = value[0] ? set(value[0], { milliseconds: 0, seconds: 0 }) : null;
+      sanitizedValue[1] = value[1] ? set(value[1], { milliseconds: 999, seconds: 59 }) : null;
+      break;
+    case DATE_FORMAT.YEAR:
+      sanitizedValue[0] = value[0] ? set(value[0], { date: 1, hours: 0, milliseconds: 0, minutes: 0, month: 0, seconds: 0 }) : null;
+      sanitizedValue[1] = value[1] ? set(value[1], { date: 31, hours: 23, milliseconds: 999, minutes: 59, month: 11, seconds: 59 }) : null;
+      break;
+    case DATE_FORMAT.YEAR_MONTH:
+      sanitizedValue[0] = value[0] ? set(value[0], { date: 1, hours: 0, milliseconds: 0, minutes: 0, seconds: 0 }) : null;
+      sanitizedValue[1] = value[1] ? set(lastDayOfMonth(value[1]), { hours: 23, milliseconds: 999, minutes: 59, seconds: 59 }) : null;
+      break;
+  }
+  return sanitizedValue;
+};
+
+const parseDateInputValue = (inputValue: string, dateFormat: DateRangePickerProps<FieldValues>['dateFormat']): Date | null => {
+  if (!inputValue) {
+    return null;
+  }
+  return dateFormat === DATE_FORMAT.YEAR_MONTH
+    ? parse(inputValue, 'MMMM yyyy', new Date())
+    : parseISO(inputValue);
+};
+
 export const DateRangePicker = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   dateFormat = DATE_FORMAT.DATE,
   disabled = false,
@@ -131,6 +179,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
   const hasError = !!errorMessage;
   const hasWarning = !!warningMessage && !hasError;
+  const isFieldDisabled = disabled || loading;
   const fromInputRef = useRef<HTMLInputElement>(null);
   const toInputRef = useRef<HTMLInputElement>(null);
   const theme = useTheme();
@@ -142,53 +191,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
     return subMonths(now, 3);
   }, []);
 
-  const views = useMemo<MuiDateTimePickerProps['views']>(() => {
-    switch (dateFormat) {
-      case DATE_FORMAT.DATE:
-      case DATE_FORMAT.DATE_TIME:
-        return undefined;
-      case DATE_FORMAT.YEAR:
-        return ['year'];
-      case DATE_FORMAT.YEAR_MONTH:
-        return ['year', 'month'];
-      default:
-        throw new Error(`Unsupported date format: ${String(dateFormat)}`);
-    }
-  }, [dateFormat]);
-
-  const sanitizeValue = useCallback((value: DateRangeValue): DateRangeValue => {
-    const sanitizedValue: DateRangeValue = [null, null];
-    // The views switch rejects runtime-invalid formats before this callback can run.
-    // eslint-disable-next-line default-case
-    switch (dateFormat) {
-      case DATE_FORMAT.DATE:
-        sanitizedValue[0] = value[0] ? set(value[0], { hours: 0, milliseconds: 0, minutes: 0, seconds: 0 }) : null;
-        sanitizedValue[1] = value[1] ? set(value[1], { hours: 23, milliseconds: 999, minutes: 59, seconds: 59 }) : null;
-        break;
-      case DATE_FORMAT.DATE_TIME:
-        sanitizedValue[0] = value[0] ? set(value[0], { milliseconds: 0, seconds: 0 }) : null;
-        sanitizedValue[1] = value[1] ? set(value[1], { milliseconds: 999, seconds: 59 }) : null;
-        break;
-      case DATE_FORMAT.YEAR:
-        sanitizedValue[0] = value[0] ? set(value[0], { date: 1, hours: 0, milliseconds: 0, minutes: 0, month: 0, seconds: 0 }) : null;
-        sanitizedValue[1] = value[1] ? set(value[1], { date: 31, hours: 23, milliseconds: 999, minutes: 59, month: 11, seconds: 59 }) : null;
-        break;
-      case DATE_FORMAT.YEAR_MONTH:
-        sanitizedValue[0] = value[0] ? set(value[0], { date: 1, hours: 0, milliseconds: 0, minutes: 0, seconds: 0 }) : null;
-        sanitizedValue[1] = value[1] ? set(lastDayOfMonth(value[1]), { hours: 23, milliseconds: 999, minutes: 59, seconds: 59 }) : null;
-        break;
-    }
-    return sanitizedValue;
-  }, [dateFormat]);
-
-  const inputValueToDate = useCallback((inputValue: string): Date | null => {
-    if (!inputValue) {
-      return null;
-    }
-    return dateFormat === DATE_FORMAT.YEAR_MONTH
-      ? parse(inputValue, 'MMMM yyyy', new Date())
-      : parseISO(inputValue);
-  }, [dateFormat]);
+  const views = useMemo<MuiDateTimePickerProps['views']>(() => getDateRangePickerViews(dateFormat), [dateFormat]);
 
   const customLocale = useMemo<Locale>(() => {
     /**
@@ -203,7 +206,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
   const outerValue = useWatch({ control, name }) as DateRangeValue;
 
   const handleChange = useCallback((onChange: (value: DateRangeValue) => void, value: DateRangeValue) => {
-    const sanitizedValue = sanitizeValue(value);
+    const sanitizedValue = sanitizeDateRangeValue(value, dateFormat);
     if (isEqual(sanitizedValue, outerValue)) {
       return;
     }
@@ -211,7 +214,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
     if (onChangeProp) {
       (onChangeProp)(sanitizedValue);
     }
-  }, [onChangeProp, outerValue, sanitizeValue]);
+  }, [dateFormat, onChangeProp, outerValue]);
 
   const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
     ref({
@@ -231,13 +234,13 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
     };
 
     const onFromBlur = () => {
-      const fromInputValue = inputValueToDate(fromInputRef.current.value);
+      const fromInputValue = parseDateInputValue(fromInputRef.current.value, dateFormat);
       handleChange(onChange, getRangeAfterFromBlur(fromInputValue, toValue, minDate, maxDate));
       onBlur();
     };
 
     const onToBlur = () => {
-      const toInputValue = inputValueToDate(toInputRef.current.value);
+      const toInputValue = parseDateInputValue(toInputRef.current.value, dateFormat);
       handleChange(onChange, getRangeAfterToBlur(toInputValue, fromValue, minDate, maxDate));
       onBlur();
     };
@@ -263,7 +266,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
       >
         <FormLabel
           component={'legend'}
-          disabled={disabled || loading}
+          disabled={isFieldDisabled}
           id={id}
           required={required}
           sx={{
@@ -302,7 +305,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
             }}
           >
             <MuiDatePicker
-              disabled={disabled || loading}
+              disabled={isFieldDisabled}
               disableFuture
               inputRef={fromInputRef}
               label={t`From`}
@@ -330,7 +333,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               views={views as MuiDatePickerProps['views']}
             />
             <MuiDatePicker
-              disabled={disabled || loading}
+              disabled={isFieldDisabled}
               disableFuture
               inputRef={toInputRef}
               label={t`To`}
@@ -370,7 +373,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
         </FormHelperText>
       </FormControl>
     );
-  }, [hasError, infoMessage, label, name, disabled, loading, id, required, customLocale, theme, t, maxDate, minDate, defaultFromDate, hasWarning, views, errorMessage, warningMessage, handleChange, inputValueToDate]);
+  }, [hasError, infoMessage, label, name, disabled, loading, isFieldDisabled, id, required, customLocale, theme, t, maxDate, minDate, defaultFromDate, hasWarning, views, errorMessage, warningMessage, handleChange, dateFormat]);
 
   return (
     <Controller

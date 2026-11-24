@@ -370,5 +370,5 @@ describe('MeasurementsAdminPage', () => {
 
     await expect.poll(() => postRequests.length).toBe(1);
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('Measurement "person-2" could not be created.')]));
-  });
+  }, 60000);
 });

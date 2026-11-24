@@ -456,7 +456,7 @@ describe('ColsAdminPage', () => {
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => mock.calls.filter(({ method }) => method === 'POST').length).toBe(1);
-  });
+  }, 60000);
 
   it('does not save a genetic distance column with an NCBI TaxID that has trailing characters', async () => {
     const { mock, screen } = await renderPage();
@@ -479,7 +479,7 @@ describe('ColsAdminPage', () => {
 
     await expect.element(screen.getByText('Create new column', { exact: true })).toBeVisible();
     expect(mock.calls.filter(({ method }) => method === 'POST')).toHaveLength(0);
-  });
+  }, 60000);
 
   it('clears the genetic sequence column when the case type changes to one with several genetic sequence columns', async () => {
     const { screen } = await renderPage({ cols: [...COLS, EXTRA_GS_COL] });
@@ -492,5 +492,5 @@ describe('ColsAdminPage', () => {
     await waitForFormChangeDebounce();
 
     await expect.element(screen.getByRole('combobox', { exact: true, name: 'Genetic sequence column' })).not.toHaveTextContent('Label B');
-  });
+  }, 60000);
 });

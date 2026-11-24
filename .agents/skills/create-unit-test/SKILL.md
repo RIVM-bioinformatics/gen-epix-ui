@@ -163,11 +163,12 @@ remaining gaps.
   `expect(list.length).toBe(n)`, and `toBe`/`toEqual` only for the value type
   they fit. This applies to arrays, NodeLists and `.elements()` results alike.
   Use `expect.poll` only when the value is genuinely asynchronous.
-- Only mark a function `async` when it contains an `await`. This applies to
-  test callbacks, helpers and render wrappers. A helper that only returns a
-  promise, such as `renderComponent` returning the render promise, should be
-  a plain function (`const renderX = (...) => render(...)`). Marking such a
-  helper `async` triggers SonarCloud S7503.
+- Only mark a function `async` when it contains an `await` (SonarCloud S7503).
+  This applies to test callbacks, helpers and render wrappers. Lint enforces
+  `@typescript-eslint/promise-function-async`, which requires any function that
+  returns a promise to be `async`. Satisfy both rules by writing
+  `async (...) => await render(...)` in helpers that return a promise, so the
+  `await` keeps S7503 satisfied.
 - Throw `new Error(...)`, never `throw Error(...)`, in test helpers and
   production code alike.
 - Always pass a compare function to `Array.prototype.sort`, such as
@@ -193,8 +194,9 @@ remaining gaps.
    from the test, or `@gen-epix/<own-package>/test/lib`). Use
    `const screen = await renderComponent(<Widget {...props} />)` inside an
    `it` callback that is `async` only because it awaits. The `renderComponent`
-   helper itself is not `async`; do not add `async` to any render helper or
-   to a test callback that contains no `await`.
+   helper is `async` and returns `await render(...)`, which satisfies both
+   `promise-function-async` and S7503. Do not add `async` to a test callback
+   or helper that contains no `await`.
    Do not import a different client's renderer or run setup manually.
    - Clients already get their standard config, demo theme, initialized English
      and Dutch translations, Emotion and the app's DI-backed React Query client.
@@ -327,6 +329,9 @@ until the root validation passes.
   `new Error`. Branch-heavy helpers were split so complexity stays low. These
   checks cover SonarCloud rules S5976, S5906, S7503, S7723, S2871 and S3776,
   which lint does not enforce.
+- Test scripts do not pass `--maxWorkers`. Concurrency comes from the target's
+  `vite.config.ts`, which serializes on CI (`process.env.CI`) and stays
+  parallel locally. See [AGENTS.md](../../../AGENTS.md) Testing Notes.
 - Every processed target reports 100 percent statements, branches, functions,
   and lines.
 - Lint, type checking, and the focused test command pass for every processed

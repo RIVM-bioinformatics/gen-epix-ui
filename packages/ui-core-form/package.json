@@ -121,7 +121,7 @@
     "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",
     "test-run": "vitest run --passWithNoTests --coverage",
     "update-exports": "node scripts/update-exports.js",
-    "validate": "pnpm run test-missing-translations && pnpm run check-types && pnpm run lint && pnpm run test-run -- --maxWorkers=2"
+    "validate": "pnpm run test-missing-translations && pnpm run check-types && pnpm run lint && pnpm run test-run"
   },
   "browserslist": [
     "last 2 Chrome versions"
