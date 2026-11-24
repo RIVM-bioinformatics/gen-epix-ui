@@ -4,10 +4,7 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  boolean,
-  object,
-} from 'yup';
+import { object } from 'yup';
 import type {
   SeqDbApiPermission,
   SeqDbTreeAlgorithmClass,
@@ -65,8 +62,8 @@ export const TreeAlgorithmClassesAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       code: SchemaUtil.code,
-      is_dist_based: boolean().required(),
-      is_seq_based: boolean().required(),
+      is_dist_based: SchemaUtil.boolean.required(),
+      is_seq_based: SchemaUtil.boolean.required(),
       name: SchemaUtil.name,
       rank: SchemaUtil.rank.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
     });

@@ -5,7 +5,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  boolean,
   object,
   string,
 } from 'yup';
@@ -77,7 +76,7 @@ export const TreeAlgorithmsAdminPage = () => {
     return object<FormFields>().shape({
       code: string().oneOf(Object.values(SeqDbTreeAlgorithmValues)).required(),
       description: SchemaUtil.description,
-      is_ultrametric: boolean().required(),
+      is_ultrametric: SchemaUtil.boolean.required(),
       name: SchemaUtil.name,
       rank: SchemaUtil.rank.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       tree_algorithm_class_id: string().required(),

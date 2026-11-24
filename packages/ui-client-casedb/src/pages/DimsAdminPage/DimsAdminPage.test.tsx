@@ -159,6 +159,25 @@ const openRowActions = async (screen: Awaited<ReturnType<typeof renderPage>>['sc
   await screen.getByRole('button', { name: 'Row actions' }).first().click();
 };
 
+const openCreateDialog = async (screen: Awaited<ReturnType<typeof renderPage>>['screen']) => {
+  await screen.getByRole('button', { name: 'Create item' }).click();
+  await expect.element(screen.getByText('Create new dimensions', { exact: true })).toBeVisible();
+};
+
+const selectComboboxOption = async (screen: Awaited<ReturnType<typeof renderPage>>['screen'], fieldName: string, optionLabel: string) => {
+  await screen.getByRole('combobox', { exact: true, name: fieldName }).click();
+  await screen.getByRole('option', { exact: true, name: optionLabel }).click();
+};
+
+const fillCreateDimension = async (screen: Awaited<ReturnType<typeof renderPage>>['screen'], refDimLabel: string) => {
+  await selectComboboxOption(screen, 'Case type', 'Measles case type');
+  await selectComboboxOption(screen, 'Reference dimension', refDimLabel);
+  await screen.getByRole('textbox', { exact: true, name: 'Code' }).fill('NEW_DIM');
+  await screen.getByRole('textbox', { exact: true, name: 'Label' }).fill('New dim');
+  await screen.getByRole('spinbutton', { exact: true, name: 'Occurrence' }).fill('1');
+  await screen.getByRole('spinbutton', { exact: true, name: 'Rank' }).fill('4');
+};
+
 describe('DimsAdminPage', () => {
   it('lists all dimensions with their case type and reference dimension when no case type is selected', async () => {
     const { screen } = await renderPage();
@@ -257,5 +276,41 @@ describe('DimsAdminPage', () => {
     await openRowActions(screen);
     await expect.element(screen.getByRole('menuitem', { name: 'Edit' })).toBeVisible();
     await expect.poll(() => screen.getByRole('menuitem', { name: 'Manage columns' }).query()).toBeNull();
+  });
+
+  it('does not save a time reference dimension without a case date dimension value', async () => {
+    const { mock, screen } = await renderPage();
+
+    await openCreateDialog(screen);
+    await fillCreateDimension(screen, 'Date');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.element(screen.getByText('Create new dimensions', { exact: true })).toBeVisible();
+    expect(mock.calls.filter(({ method }) => method === 'POST')).toHaveLength(0);
+  });
+
+  it('saves a non time reference dimension without a case date dimension value', async () => {
+    const { mock, screen } = await renderPage();
+
+    await openCreateDialog(screen);
+    await fillCreateDimension(screen, 'Host type');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => mock.calls.filter(({ method }) => method === 'POST').length).toBe(1);
+    expect(mock.calls.find(({ method }) => method === 'POST')?.body).toEqual(expect.objectContaining({
+      ref_dim_id: REF_DIM_HOST_ID,
+    }));
+  });
+
+  it('clears the case date dimension when the reference dimension changes to a non time reference dimension', async () => {
+    const { screen } = await renderPage();
+
+    await openCreateDialog(screen);
+    await selectComboboxOption(screen, 'Reference dimension', 'Date');
+    await selectComboboxOption(screen, 'Case date dimension', 'Yes');
+    await expect.element(screen.getByRole('combobox', { exact: true, name: 'Case date dimension' })).toHaveTextContent('Yes');
+
+    await selectComboboxOption(screen, 'Reference dimension', 'Host type');
+    await expect.element(screen.getByRole('combobox', { exact: true, name: 'Case date dimension' })).not.toHaveTextContent('Yes');
   });
 });

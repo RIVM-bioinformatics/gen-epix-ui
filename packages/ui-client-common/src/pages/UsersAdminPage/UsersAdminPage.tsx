@@ -9,7 +9,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   array,
-  boolean,
   object,
   string,
 } from 'yup';
@@ -142,7 +141,7 @@ export const UsersAdminPage = ({
     return object<FormFields>().shape({
       description: SchemaUtil.description,
       email: string().email().nullable(),
-      is_active: boolean().required(),
+      is_active: SchemaUtil.boolean.required(),
       key: string().optional(),
       name: string().nullable(),
       roles: array().required().min(1),

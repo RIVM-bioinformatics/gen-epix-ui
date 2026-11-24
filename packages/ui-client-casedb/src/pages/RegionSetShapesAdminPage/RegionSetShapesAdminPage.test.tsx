@@ -112,7 +112,7 @@ describe('RegionSetShapesAdminPage', () => {
     await screen.getByRole('button', { name: 'Create item' }).click();
     await expect.element(screen.getByText('Create new region set shape', { exact: true })).toBeVisible();
     await screen.getByRole('spinbutton', { name: 'Scale' }).fill('4');
-    await screen.getByRole('textbox', { name: 'Scale' }).fill('{"type":"Polygon"}');
+    await screen.getByRole('textbox', { name: 'GEO JSON' }).fill('{"type":"Polygon"}');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => mock.calls.filter(({ method }) => method === 'POST').length).toBe(1);

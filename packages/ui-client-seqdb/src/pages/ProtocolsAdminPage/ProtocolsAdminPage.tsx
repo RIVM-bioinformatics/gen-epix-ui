@@ -5,7 +5,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  boolean,
   mixed,
   object,
   string,
@@ -129,7 +128,7 @@ export const ProtocolsAdminPage = () => {
       git_commit_hash: string().nullable().optional(),
       git_commit_tag: string().nullable().optional(),
       git_repository_uri: string().nullable().optional(),
-      is_integer_distance: boolean().nullable().optional(),
+      is_integer_distance: SchemaUtil.boolean.nullable().optional(),
       locus_set_id: string().nullable().optional(),
       max_stored_distance: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       name: SchemaUtil.name.nullable().notRequired(),

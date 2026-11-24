@@ -63,6 +63,21 @@ describe('SchemaUtil', () => {
     });
   });
 
+  describe('boolean', () => {
+    it('transforms an empty string to null', () => {
+      expect(SchemaUtil.boolean.nullable().validateSync('')).toBeNull();
+    });
+
+    it('passes through boolean values', () => {
+      expect(SchemaUtil.boolean.validateSync(true)).toBe(true);
+      expect(SchemaUtil.boolean.validateSync(false)).toBe(false);
+    });
+
+    it('rejects an empty string when required', () => {
+      expect(() => SchemaUtil.boolean.required().validateSync('')).toThrow();
+    });
+  });
+
   it('creates a nullable number schema', () => {
     expect(SchemaUtil.number.describe().nullable).toBe(true);
     expect(SchemaUtil.number.cast(null)).toBeNull();

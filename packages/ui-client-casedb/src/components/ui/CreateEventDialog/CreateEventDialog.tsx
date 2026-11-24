@@ -10,7 +10,6 @@ import SaveIcon from '@mui/icons-material/Save';
 import { useTranslation } from 'react-i18next';
 import {
   array,
-  boolean,
   object,
   string,
 } from 'yup';
@@ -108,7 +107,7 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
     description: SchemaUtil.description.required(),
     name: SchemaUtil.name,
     share_in_data_collection_ids: array().of(string().uuid4()),
-    shouldApplySharingToCases: boolean().required(),
+    shouldApplySharingToCases: SchemaUtil.boolean.required(),
   }), []);
 
   const formMethods = useForm<FormFields>({

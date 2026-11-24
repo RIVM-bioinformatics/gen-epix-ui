@@ -89,7 +89,7 @@ export const RegionSetShapesAdminPage = () => {
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        label: t`Scale`,
+        label: t`GEO JSON`,
         multiline: true,
         name: 'geo_json',
         rows: 20,

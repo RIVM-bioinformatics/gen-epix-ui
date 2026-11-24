@@ -94,6 +94,7 @@ Define these together from the actual read/write models:
     - `name` → `SchemaUtil.name` (TEXTFIELD)
     - `rank` → `SchemaUtil.rank` (TEXTFIELD with `type: 'number'`)
     - any other attribute of type `number` → `SchemaUtil.number` (TEXTFIELD with `type: 'number'`)
+    - any attribute of type `boolean` → `SchemaUtil.boolean` (BOOLEAN). Do not use yup `boolean()` directly. The form's default for an unset BOOLEAN field is `''`, which yup `boolean()` rejects with "Field is mandatory". `SchemaUtil.boolean` maps `''` to `null` first, so an empty optional field is accepted. Chain `.nullable()` for optional booleans, and `.required()` for required ones (a required `SchemaUtil.boolean` rejects the empty value, which is intended). Conditional requiredness uses `SchemaUtil.boolean.when(...)`, as in `DimsAdminPage.tsx`.
   - **Requiredness:** the `SchemaUtil` helpers are required, non-nullable schemas (`description` is required too). For optional values, chain `.nullable().notRequired()`. `SchemaUtil.number` rejects an empty input, so optional numbers also need an empty-to-`undefined` transform. Use the pattern from `CostsAdminPage.tsx` or `PersonsAdminPage.tsx` in ui-client-omopdb:
     ```ts
     SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => (orig === '' ? undefined : value))

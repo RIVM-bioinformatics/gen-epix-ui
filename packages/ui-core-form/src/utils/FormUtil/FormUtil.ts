@@ -12,7 +12,6 @@ import type { TFunction } from 'i18next';
 import type { ObjectSchema } from 'yup';
 import {
   array,
-  boolean,
   number,
   object,
   string,
@@ -22,6 +21,7 @@ import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
 import type { FormFieldDefinition } from '../../models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form.models';
+import { SchemaUtil } from '../SchemaUtil';
 
 export class FormUtil {
   public static areFormValuesValid<TFormFields extends FieldValues>(formFieldDefinitions: FormFieldDefinition<TFormFields>[], values: unknown): boolean {
@@ -139,7 +139,7 @@ export class FormUtil {
           }));
         case FORM_FIELD_DEFINITION_TYPE.BOOLEAN:
           return s.concat(object().shape({
-            [fieldDefinition.name]: boolean().nullable().transform((_val: unknown, orig: unknown) => orig ?? null),
+            [fieldDefinition.name]: SchemaUtil.boolean.nullable(),
           }));
         case FORM_FIELD_DEFINITION_TYPE.DATE:
           return s.concat(object().shape({

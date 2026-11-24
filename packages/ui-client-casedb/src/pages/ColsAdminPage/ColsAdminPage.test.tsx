@@ -3,6 +3,7 @@ import {
   expect,
   it,
 } from 'vitest';
+import { userEvent } from 'vitest/browser';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import type {
   CaseDbApiPermission,
@@ -434,6 +435,50 @@ describe('ColsAdminPage', () => {
     await waitForFormChangeDebounce();
 
     await expect.element(screen.getByRole('combobox', { exact: true, name: 'Genetic sequence column' })).toHaveTextContent('Case type one -> Dim one -> Label B');
+  });
+
+  it('saves a genetic distance column with a valid NCBI TaxID', async () => {
+    const { mock, screen } = await renderPage();
+
+    await openCreateDialog(screen);
+    await selectAutocompleteOption(screen, 'Case type', 'Case type one');
+    await selectAutocompleteOption(screen, 'Dimension', 'Case type one -> Dim one');
+    await selectAutocompleteOption(screen, 'Reference column', 'Ref col gd');
+    await screen.getByRole('textbox', { exact: true, name: 'Code' }).fill('col-gd');
+    await screen.getByRole('textbox', { exact: true, name: 'Label' }).fill('Label gd');
+    await screen.getByRole('textbox', { exact: true, name: 'Rank' }).fill('4');
+    await screen.getByRole('combobox', { exact: true, name: 'Genetic sequence column' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Case type one -> Dim one -> Label B' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Tree algorithm codes' }).click();
+    await screen.getByRole('option', { exact: true, name: 'NJ' }).click();
+    await userEvent.keyboard('{Escape}');
+    await screen.getByRole('textbox', { exact: true, name: 'NCBI TaxID' }).fill('NCBI:txid123');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => mock.calls.filter(({ method }) => method === 'POST').length).toBe(1);
+  });
+
+  it('does not save a genetic distance column with an NCBI TaxID that has trailing characters', async () => {
+    const { mock, screen } = await renderPage();
+
+    await openCreateDialog(screen);
+    await selectAutocompleteOption(screen, 'Case type', 'Case type one');
+    await selectAutocompleteOption(screen, 'Dimension', 'Case type one -> Dim one');
+    await selectAutocompleteOption(screen, 'Reference column', 'Ref col gd');
+    await screen.getByRole('textbox', { exact: true, name: 'Code' }).fill('col-gd');
+    await screen.getByRole('textbox', { exact: true, name: 'Label' }).fill('Label gd');
+    await screen.getByRole('textbox', { exact: true, name: 'Rank' }).fill('4');
+    await screen.getByRole('combobox', { exact: true, name: 'Genetic sequence column' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Case type one -> Dim one -> Label B' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Tree algorithm codes' }).click();
+    await screen.getByRole('option', { exact: true, name: 'NJ' }).click();
+    await userEvent.keyboard('{Escape}');
+    await screen.getByRole('textbox', { exact: true, name: 'NCBI TaxID' }).fill('NCBI:txid123abc');
+    await screen.getByRole('button', { name: 'Save' }).click();
+    await waitForFormChangeDebounce();
+
+    await expect.element(screen.getByText('Create new column', { exact: true })).toBeVisible();
+    expect(mock.calls.filter(({ method }) => method === 'POST')).toHaveLength(0);
   });
 
   it('clears the genetic sequence column when the case type changes to one with several genetic sequence columns', async () => {
