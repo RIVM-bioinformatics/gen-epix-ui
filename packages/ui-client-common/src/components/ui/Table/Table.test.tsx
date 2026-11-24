@@ -530,13 +530,15 @@ describe('Table', () => {
     store.getState().emitEvent('columnVisibilityChange', ['name', 'flag', 'option', 'date']);
     await expect.element(getHeaderLocator(screen, 'Count')).not.toBeInTheDocument();
     await expect.element(getHeaderLocator(screen, 'Name')).toBeInTheDocument();
+    expect(getVisibleColumnOrder(store)).toContain(FIXED_COLUMN_ID.ROW_SELECT);
 
-    store.getState().emitEvent('columnOrderChange', ['flag', 'name', 'option', 'date', 'count']);
-    await expect.poll(() => getVisibleColumnOrder(store)[0]).toBe('flag');
+    const fullColumnOrder = [FIXED_COLUMN_ID.ROW_SELECT, FIXED_COLUMN_ID.READABLE_INDEX, 'flag', 'name', 'option', 'count', 'date', FIXED_COLUMN_ID.ACTIONS];
+    store.getState().emitEvent('columnOrderChange', fullColumnOrder);
+    await expect.poll(() => getVisibleColumnOrder(store)).toEqual(fullColumnOrder.filter((id) => id !== 'count'));
 
     store.getState().emitEvent('reset');
     await expect.element(getHeaderLocator(screen, 'Count')).toBeInTheDocument();
-    await expect.poll(() => getVisibleColumnOrder(store)[0]).not.toBe('flag');
+    await expect.poll(() => getVisibleColumnOrder(store)[0]).toBe(FIXED_COLUMN_ID.ROW_SELECT);
   });
 
   it('opens the columns editor dialog on the openColumnsEditorDialog event', async () => {
@@ -660,6 +662,46 @@ describe('Table', () => {
     dispatchMouseEvent(document, 'mouseup', { clientX: 900, clientY: 20 });
 
     await expect.poll(() => getVisibleColumnOrder(store)).not.toEqual(['name', 'count', 'flag']);
+  });
+
+  it('disables pointer events on the header row while a column is being dragged', async () => {
+    const dragColumns: TableColumn<TestRow>[] = [
+      {
+        headerName: 'Name',
+        id: 'name',
+        isInitiallyVisible: true,
+        type: 'text',
+        valueGetter: ({ row }) => row.name,
+        widthPx: 200,
+      },
+      {
+        headerName: 'Count',
+        id: 'count',
+        isInitiallyVisible: true,
+        type: 'number',
+        valueGetter: ({ row }) => row.count,
+        widthPx: 200,
+      },
+    ];
+    const store = await createTestStore(dragColumns, createRows(ROW_COUNT));
+
+    const screen = await renderTable(store);
+
+    // The header row is re-rendered while dragging, so it is queried again on every check
+    // The header cell is cloned into the body while dragging, so the header row is captured before the drag starts
+    const headerRow = getHeaderLocator(screen, 'Name').element().closest<HTMLElement>('[role="row"]');
+    if (!headerRow) {
+      throw new Error('Header row not found');
+    }
+    expect(getComputedStyle(headerRow).pointerEvents).not.toBe('none');
+
+    const nameContent = getHeaderContent(screen, 'Name');
+    dispatchMouseEvent(nameContent, 'mousedown', { clientX: 100, clientY: 20 });
+    dispatchMouseEvent(document, 'mousemove', { clientX: 110, clientY: 20 });
+    await expect.poll(() => getComputedStyle(headerRow).pointerEvents).toBe('none');
+
+    dispatchMouseEvent(document, 'mouseup', { clientX: 110, clientY: 20 });
+    await expect.poll(() => getComputedStyle(headerRow).pointerEvents).not.toBe('none');
   });
 
   it('moves a column to the left when its header is dragged across the previous column', async () => {

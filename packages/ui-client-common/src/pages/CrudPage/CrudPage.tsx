@@ -211,7 +211,7 @@ export const CrudPage = <
     idSelectorCallback: (item) => item.id,
     navigatorFunction: container.resolve(RouterService).router.navigate,
     storageNamePostFix: tableStoreStorageNamePostFix ? `CRUDPage-${resourceQueryKeyBase}-${tableStoreStorageNamePostFix}` : `CRUDPage-${resourceQueryKeyBase}`,
-    storageVersion: tableStoreStorageVersion ?? 1,
+    storageVersion: tableStoreStorageVersion ?? 2,
   }), [defaultSortByField, defaultSortDirection, resourceQueryKeyBase, tableStoreStorageNamePostFix, tableStoreStorageVersion]);
 
   const isLoadablesLoading = useMemo(() => {

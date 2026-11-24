@@ -297,6 +297,28 @@ describe('table store state actions', () => {
     expect(store.getState().navigateFunction).toBe(navigatorFunction);
   });
 
+  it('removes duplicate column visual settings when setting them and keeps clean input by reference', () => {
+    const store = createTestStore();
+    const duplicatedSettings = [createVisualSettings('name'), createVisualSettings('name'), createVisualSettings('status')];
+    const cleanSettings = [createVisualSettings('name'), createVisualSettings('status')];
+
+    store.getState().setColumnVisualSettingsUncondensed(duplicatedSettings);
+    expect(store.getState().columnVisualSettingsUncondensed.map((setting) => setting.id)).toEqual(['name', 'status']);
+
+    store.getState().setColumnVisualSettingsUncondensed(cleanSettings);
+    expect(store.getState().columnVisualSettingsUncondensed).toBe(cleanSettings);
+
+    store.getState().setColumnVisualSettingsCondensed([createVisualSettings('status'), createVisualSettings('status')]);
+    expect(store.getState().columnVisualSettingsCondensed?.map((setting) => setting.id)).toEqual(['status']);
+
+    store.getState().setColumnVisualSettingsCondensed(null);
+    expect(store.getState().columnVisualSettingsCondensed).toBeNull();
+
+    store.getState().setIsCondensed(true);
+    store.getState().setCurrentColumnVisualSettings([createVisualSettings('name'), createVisualSettings('name')]);
+    expect(store.getState().getCurrentColumnVisualSettings().map((setting) => setting.id)).toEqual(['name']);
+  });
+
   it('creates condensed settings lazily and retains them when toggled repeatedly', () => {
     const store = createTestStore();
     const uncondensedSettings = [createVisualSettings('name')];
@@ -358,6 +380,56 @@ describe('table store state actions', () => {
     const replacement = { person: 'identifier' };
     store.getState().setVisibleFilterWithinDimensions(replacement);
     expect(store.getState().visibleFilterWithinDimensions).toBe(replacement);
+  });
+});
+
+describe('table store column visual settings reconciliation', () => {
+  it('reconciles persisted settings with columns that are set after hydration', () => {
+    localStorage.removeItem(PERSISTED_STORAGE_KEY);
+    localStorage.setItem(PERSISTED_STORAGE_KEY, JSON.stringify({
+      state: {
+        columnVisualSettingsCondensed: [createVisualSettings('stale'), createVisualSettings('name')],
+        columnVisualSettingsUncondensed: [createVisualSettings('name'), createVisualSettings('name'), createVisualSettings('stale')],
+        isCondensed: false,
+      },
+      version: 7,
+    }));
+    const store = createTestStore({
+      storageNamePostFix: 'unit-test',
+      storageVersion: 7,
+    });
+
+    store.getState().setColumns([createTextColumn('name'), createTextColumn('id')]);
+
+    expect(store.getState().columnVisualSettingsUncondensed.map(setting => setting.id)).toEqual(['name', 'id']);
+    expect(store.getState().columnVisualSettingsCondensed?.map(setting => setting.id)).toEqual(['name', 'id']);
+    localStorage.removeItem(PERSISTED_STORAGE_KEY);
+  });
+
+  it('keeps settings when columns are cleared before they are known', () => {
+    const store = createTestStore();
+    const settings = [createVisualSettings('name')];
+    store.getState().setColumns([createTextColumn('name')]);
+    store.getState().setColumnVisualSettingsUncondensed(settings);
+
+    store.getState().setColumns([]);
+
+    expect(store.getState().columnVisualSettingsUncondensed).toBe(settings);
+  });
+
+  it('reconciles stale settings during initialization', async () => {
+    const store = createTestStore();
+    store.setState({
+      columns: [createTextColumn('name'), createTextColumn('id')],
+      columnVisualSettingsCondensed: null,
+      columnVisualSettingsUncondensed: [createVisualSettings('stale'), createVisualSettings('name')],
+      isCondensed: true,
+    });
+
+    await store.getState().initialize(new AbortController().signal);
+
+    expect(store.getState().columnVisualSettingsUncondensed.map(setting => setting.id)).toEqual(['name', 'id']);
+    expect(store.getState().columnVisualSettingsCondensed?.map(setting => setting.id)).toEqual(['name', 'id']);
   });
 });
 

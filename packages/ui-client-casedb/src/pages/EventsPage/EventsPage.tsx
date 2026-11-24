@@ -176,7 +176,7 @@ export const EventsPage = () => {
     idSelectorCallback: (row) => row.id,
     navigatorFunction: container.resolve(RouterService).router.navigate,
     storageNamePostFix: 'caseSets',
-    storageVersion: 3,
+    storageVersion: 4,
   }), []);
 
   useInitializeTableStore({ columns, createFiltersFromColumns: true, rows: data, store: tableStore });

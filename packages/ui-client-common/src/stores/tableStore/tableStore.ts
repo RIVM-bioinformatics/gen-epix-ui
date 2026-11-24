@@ -189,8 +189,27 @@ export const updateSearchParams = (key: string, value: string, givenSearchParams
   return searchParams;
 };
 
+type ColumnVisualSettingsState<TData, TDataContext> = Pick<TableStore<TData, TDataContext>, 'columns' | 'columnVisualSettingsCondensed' | 'columnVisualSettingsUncondensed' | 'isCondensed'>;
+
+// Stored settings can be restored before or after the live columns are set, so this is applied on hydration, on setColumns and on initialize
+const reconcileColumnVisualSettingsState = <TData, TDataContext>({ columns, columnVisualSettingsCondensed, columnVisualSettingsUncondensed, isCondensed }: ColumnVisualSettingsState<TData, TDataContext>): Pick<TableStore<TData, TDataContext>, 'columnVisualSettingsCondensed' | 'columnVisualSettingsUncondensed'> => {
+  const reconciledColumnVisualSettingsUncondensed = TableUtil.reconcileColumnVisualSettings(columns, columnVisualSettingsUncondensed);
+  let reconciledColumnVisualSettingsCondensed = columnVisualSettingsCondensed ? TableUtil.reconcileColumnVisualSettings(columns, columnVisualSettingsCondensed) : null;
+  if (isCondensed && !reconciledColumnVisualSettingsCondensed && columns?.length) {
+    reconciledColumnVisualSettingsCondensed = TableUtil.createCondensedVisualColumnSettingsFromColumnSettings(columns, reconciledColumnVisualSettingsUncondensed);
+  }
+  return {
+    columnVisualSettingsCondensed: reconciledColumnVisualSettingsCondensed,
+    columnVisualSettingsUncondensed: reconciledColumnVisualSettingsUncondensed,
+  };
+};
+
 export const createTableStorePersistConfiguration = <TData, TDataContext, TStore extends TableStore<TData, TDataContext>>(storageNamePostFix: string, version: number, partialize?: (state: Partial<TStore>) => Partial<TStore>): PersistOptions<TStore> => {
   return {
+    merge: (persistedState, currentState) => {
+      const mergedState = { ...currentState, ...(persistedState as Partial<TStore>) };
+      return { ...mergedState, ...reconcileColumnVisualSettingsState(mergedState) };
+    },
     name: `GENEPIX-TableStore-${storageNamePostFix}`,
     partialize: (state) => ({
       columnVisualSettingsCondensed: state.columnVisualSettingsCondensed,
@@ -232,15 +251,9 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
     },
     initialize: async (globalAbortSignal: AbortSignal) => {
       set({ globalAbortSignal });
-      const { columns, columnVisualSettingsCondensed, columnVisualSettingsUncondensed, destroy, fetchData, isCondensed, setColumnVisualSettingsCondensed, setColumnVisualSettingsUncondensed, sortByField, sortDirection, updateUrl } = get();
+      const { destroy, fetchData, sortByField, sortDirection, updateUrl } = get();
 
-      if (!TableUtil.areColumnVisualSettingsValid(columns, columnVisualSettingsUncondensed)) {
-        setColumnVisualSettingsUncondensed(TableUtil.createInitialVisualColumnSettings(columns));
-      }
-      if (!TableUtil.areColumnVisualSettingsValid(columns, columnVisualSettingsCondensed)) {
-        // note: use get() to ensure we get the updated columnVisualSettingsUncondensed if it was just set in the previous line
-        setColumnVisualSettingsCondensed(isCondensed ? TableUtil.createCondensedVisualColumnSettingsFromColumnSettings(columns, get().columnVisualSettingsUncondensed) : null);
-      }
+      set(reconcileColumnVisualSettingsState(get()));
 
       const globalAbortSignalListener = () => {
         globalAbortSignal.removeEventListener('abort', globalAbortSignalListener);
@@ -389,20 +402,22 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
       set({ columnDimensions });
     },
     setColumns: (columns: TableColumn<TData, TDataContext>[]) => {
-      set({ columns });
+      const { columnVisualSettingsCondensed, columnVisualSettingsUncondensed, isCondensed } = get();
+      set({ columns, ...reconcileColumnVisualSettingsState({ columns, columnVisualSettingsCondensed, columnVisualSettingsUncondensed, isCondensed }) });
     },
     setColumnVisualSettingsCondensed: (columnVisualSettingsCondensed: TableColumnVisualSettings[]) => {
-      set({ columnVisualSettingsCondensed });
+      set({ columnVisualSettingsCondensed: columnVisualSettingsCondensed && TableUtil.removeDuplicateColumnVisualSettings(columnVisualSettingsCondensed) });
     },
     setColumnVisualSettingsUncondensed: (columnVisualSettingsUncondensed: TableColumnVisualSettings[]) => {
-      set({ columnVisualSettingsUncondensed });
+      set({ columnVisualSettingsUncondensed: TableUtil.removeDuplicateColumnVisualSettings(columnVisualSettingsUncondensed) });
     },
     setCurrentColumnVisualSettings: (columnVisualSettings: TableColumnVisualSettings[]) => {
       const { isCondensed } = get();
+      const uniqueColumnVisualSettings = TableUtil.removeDuplicateColumnVisualSettings(columnVisualSettings);
       if (isCondensed) {
-        set({ columnVisualSettingsCondensed: columnVisualSettings });
+        set({ columnVisualSettingsCondensed: uniqueColumnVisualSettings });
       } else {
-        set({ columnVisualSettingsUncondensed: columnVisualSettings });
+        set({ columnVisualSettingsUncondensed: uniqueColumnVisualSettings });
       }
     },
     setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => {

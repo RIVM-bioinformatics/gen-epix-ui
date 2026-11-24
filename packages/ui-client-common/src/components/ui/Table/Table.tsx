@@ -159,6 +159,7 @@ export const Table = <TRowData, TDataContext = null>({
   const tableColumnVisualSettingsRef = useRef<TableColumnVisualSettings[]>(null);
   const eventListenersCleanerRef = useRef<() => void>(noop);
   const [isInitialized, setIsInitialized] = useState(false);
+  const fixedHeaderRowRef = useRef<HTMLDivElement>(null);
   const borderColor = useMemo(() => lighten(alpha(theme.palette.divider, 1), 0.1), [theme.palette.divider]);
   const headerBorderColor = useMemo(() => darken(alpha(theme.palette.divider, 1), 0.15), [theme.palette.divider]);
   const scrollbarSize = useScrollbarSize();
@@ -330,11 +331,11 @@ export const Table = <TRowData, TDataContext = null>({
   const getScrollerElement = useCallback(() => tableContainer?.querySelector('[data-virtuoso-scroller=true]'), [tableContainer]);
 
   const saveColumnVisualSettingsToStore = useCallback(() => {
-    setCurrentColumnVisualSettingsInStore(tableColumnVisualSettingsRef.current);
+    // Store a snapshot so later in-place reordering of the ref does not mutate the store state
+    setCurrentColumnVisualSettingsInStore(tableColumnVisualSettingsRef.current.map((columnVisualSettings) => ({ ...columnVisualSettings })));
   }, [setCurrentColumnVisualSettingsInStore]);
 
   const saveColumnVisualSettingsToStoreDebounced = useDebouncedCallback(() => {
-    console.log('saveColumnVisualSettingsToStoreDebounced');
     saveColumnVisualSettingsToStore();
   }, 500, { trailing: true });
 
@@ -494,9 +495,12 @@ export const Table = <TRowData, TDataContext = null>({
         box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.5);
       `;
       body.appendChild(dragConfigRef.current.clonedElement);
+      // Header icons must not react to hover while a column is being dragged. Set imperatively to avoid re-rendering the table.
+      fixedHeaderRowRef.current?.style.setProperty('pointer-events', 'none');
     }
     if (event.type === 'end') {
       // Restore the original behaviors and styles
+      fixedHeaderRowRef.current?.style.removeProperty('pointer-events');
       body.style.removeProperty('overflow');
       tableContainer?.style.setProperty('--selection-background', 'highlight');
       document.getSelection().empty();
@@ -523,6 +527,7 @@ export const Table = <TRowData, TDataContext = null>({
     return (
       <Box
         aria-rowindex={1}
+        ref={fixedHeaderRowRef}
         role={'row'}
         sx={{
           [`&:hover .${tableHeaderCellClassNames.columnDivider}`]: {
@@ -703,8 +708,9 @@ export const Table = <TRowData, TDataContext = null>({
         updateTable();
       }),
       addTableEventListener('columnVisibilityChange', (columnIds: string[]) => {
+        const frozenColumnIds = new Set(tableStore.getState().columns.filter(c => c.frozen).map(c => c.id));
         tableColumnVisualSettingsRef.current.forEach(column => {
-          column.isVisible = columnIds.includes(column.id);
+          column.isVisible = frozenColumnIds.has(column.id) || columnIds.includes(column.id);
         });
         updateTable();
       }),

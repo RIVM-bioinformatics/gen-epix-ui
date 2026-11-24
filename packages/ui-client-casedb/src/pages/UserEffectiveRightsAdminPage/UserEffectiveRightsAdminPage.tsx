@@ -116,7 +116,7 @@ export const UserEffectiveRightsAdminPage = () => {
     idSelectorCallback: (entry) => entry.data_collection_id,
     navigatorFunction: container.resolve(RouterService).router.navigate,
     storageNamePostFix: 'UsersEffectiveRightsAdminPage-Table',
-    storageVersion: 1,
+    storageVersion: 2,
   }), []);
 
   const effectiveRights = useMemo<UserEffectiveRight[]>(() => {

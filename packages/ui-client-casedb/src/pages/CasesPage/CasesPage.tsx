@@ -287,7 +287,7 @@ export const CasesPage = () => {
     isRowEnabledCallback: (row) => row.n_cases > 0,
     navigatorFunction: container.resolve(RouterService).router.navigate,
     storageNamePostFix: 'cases',
-    storageVersion: 1,
+    storageVersion: 2,
   }), []);
 
   useInitializeTableStore({ columns, createFiltersFromColumns: true, rows: data, store: tableStore });

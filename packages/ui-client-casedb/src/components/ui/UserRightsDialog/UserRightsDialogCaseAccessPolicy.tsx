@@ -72,7 +72,7 @@ export const UserRightsDialogCaseAccessPolicy = ({ user }: UserRightsDialogCaseA
     defaultSortDirection: 'asc',
     idSelectorCallback: (entry) => entry.data_collection_id,
     storageNamePostFix: 'UserRightsDialogCaseAccessPolicy-Table',
-    storageVersion: 1,
+    storageVersion: 2,
   }), []);
 
   const effectiveAccessCasePolicies = useMemo<AccessCasePolity[]>(() => {

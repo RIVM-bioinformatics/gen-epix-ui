@@ -149,6 +149,70 @@ describe('TableUtil column builders', () => {
       createVisualSettings('missing'),
     ])).toBe(false);
     expect(TableUtil.areColumnVisualSettingsValid(columns, [createVisualSettings('name')])).toBe(false);
+    expect(TableUtil.areColumnVisualSettingsValid(columns, [
+      createVisualSettings('name'),
+      createVisualSettings('name'),
+    ])).toBe(false);
+  });
+
+  it('rejects column visual settings that hide a frozen column', () => {
+    const columns = [
+      { ...createTextColumn('name'), frozen: TABLE_COLUMN_FROZEN.LEFT },
+      createTextColumn('id'),
+    ];
+
+    expect(TableUtil.areColumnVisualSettingsValid(columns, [
+      createVisualSettings('name', { isVisible: false }),
+      createVisualSettings('id'),
+    ])).toBe(false);
+    expect(TableUtil.areColumnVisualSettingsValid(columns, [
+      createVisualSettings('name'),
+      createVisualSettings('id', { isVisible: false }),
+    ])).toBe(true);
+  });
+
+  it('reconciles column visual settings with the table columns', () => {
+    const columns = [
+      { ...createTextColumn('name'), frozen: TABLE_COLUMN_FROZEN.LEFT },
+      createTextColumn('id'),
+      createTextColumn('date'),
+    ];
+
+    const reconciled = TableUtil.reconcileColumnVisualSettings(columns, [
+      createVisualSettings('date'),
+      createVisualSettings('missing'),
+      createVisualSettings('name', { isVisible: false }),
+      createVisualSettings('date'),
+    ]);
+
+    expect(reconciled.map(s => s.id)).toEqual(['date', 'name', 'id']);
+    expect(reconciled.find(s => s.id === 'name')?.isVisible).toBe(true);
+    expect(TableUtil.areColumnVisualSettingsValid(columns, reconciled)).toBe(true);
+  });
+
+  it('inserts missing columns after their preceding column', () => {
+    const columns = [createTextColumn('name'), createTextColumn('id'), createTextColumn('score')];
+
+    const reconciled = TableUtil.reconcileColumnVisualSettings(columns, [
+      createVisualSettings('name'),
+      createVisualSettings('score'),
+    ]);
+
+    expect(reconciled.map(s => s.id)).toEqual(['name', 'id', 'score']);
+    expect(TableUtil.areColumnVisualSettingsValid(columns, reconciled)).toBe(true);
+  });
+
+  it('returns the same instance when column visual settings are already valid', () => {
+    const columns = [createTextColumn('name'), createTextColumn('id')];
+    const settings = [createVisualSettings('id'), createVisualSettings('name')];
+
+    expect(TableUtil.reconcileColumnVisualSettings(columns, settings)).toBe(settings);
+  });
+
+  it('keeps the settings unchanged when no columns are known yet', () => {
+    const settings = [createVisualSettings('name')];
+
+    expect(TableUtil.reconcileColumnVisualSettings([], settings)).toBe(settings);
   });
 
   it('creates the supported column definitions with defaults and overrides', () => {
@@ -378,6 +442,29 @@ describe('TableUtil column builders', () => {
     const condensedSettings = TableUtil.createCondensedVisualColumnSettingsFromColumnSettings(columns, settings);
 
     expect(condensedSettings.map(setting => setting.id)).toEqual(['score', 'id', 'name']);
+  });
+
+  it('moves a condensed column past hidden columns without losing or duplicating columns', () => {
+    const leftColumn: TableColumnText<TestRow> = {
+      ...createTextColumn('id'),
+      frozen: TABLE_COLUMN_FROZEN.LEFT,
+    };
+    const coloredColumn: TableColumnText<TestRow> = {
+      ...createTextColumn('name'),
+      cellColorGetter: () => 'red',
+    };
+    const columns: TableColumn<TestRow>[] = [leftColumn, createTextColumn('score'), createTextColumn('tags'), coloredColumn];
+    const settings = [
+      createVisualSettings('id'),
+      createVisualSettings('score'),
+      createVisualSettings('tags', { isVisible: false }),
+      createVisualSettings('name'),
+    ];
+
+    const condensedSettings = TableUtil.createCondensedVisualColumnSettingsFromColumnSettings(columns, settings);
+
+    expect(condensedSettings.map(setting => setting.id)).toEqual(['id', 'name', 'tags', 'score']);
+    expect(condensedSettings.find(setting => setting.id === 'tags')).toMatchObject({ isVisible: false });
   });
 });
 
@@ -1083,6 +1170,25 @@ describe('TableUtil visible columns and movement', () => {
     ];
     expect(TableUtil.handleMoveColumn(dimensions, forwardSettings, columns, columns[0], 1)).toBe(true);
     expect(forwardSettings.map(setting => setting.id)).toEqual(['b1', 'a1', 'a2', 'extra', 'b2']);
+  });
+
+  it('keeps every column exactly once when a dimension block swaps with a non-contiguous dimension member', () => {
+    const columns = ['a1', 'a2', 'b0', 'b1', 'c', 'b2'].map(id => createTextColumn(id as keyof TestRow));
+    const dimensions = [
+      createDimension('a', ['a1', 'a2']),
+      createDimension('b', ['b0', 'b1', 'b2']),
+    ];
+    const settings = [
+      createVisualSettings('a1'),
+      createVisualSettings('a2', { isVisible: false }),
+      createVisualSettings('b0', { isVisible: false }),
+      createVisualSettings('b1'),
+      createVisualSettings('c'),
+      createVisualSettings('b2', { isVisible: false }),
+    ];
+
+    expect(TableUtil.handleMoveColumn(dimensions, settings, columns, columns[0], 1)).toBe(true);
+    expect(settings.map(setting => setting.id)).toEqual(['b1', 'b0', 'a1', 'a2', 'c', 'b2']);
   });
 });
 
