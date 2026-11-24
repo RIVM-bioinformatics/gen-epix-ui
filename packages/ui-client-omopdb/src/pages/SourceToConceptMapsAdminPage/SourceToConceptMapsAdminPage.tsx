@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbSourceToConceptMap,
@@ -113,8 +114,8 @@ export const SourceToConceptMapsAdminPage = () => {
       source_vocabulary_id: string().required(),
       target_concept_id: string().required(),
       target_vocabulary_id: string().required(),
-      valid_end_date: string().required(),
-      valid_start_date: string().required(),
+      valid_end_date: SchemaUtil.isoString.required(),
+      valid_start_date: SchemaUtil.isoString.required(),
     });
   }, []);
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {

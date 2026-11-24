@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbConditionEra,
@@ -108,9 +108,9 @@ export const ConditionErasAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       condition_concept_id: string().required(),
-      condition_era_end_date: string().required(),
-      condition_era_start_date: string().required(),
-      condition_occurrence_count: number().nullable().notRequired(),
+      condition_era_end_date: SchemaUtil.isoString.required(),
+      condition_era_start_date: SchemaUtil.isoString.required(),
+      condition_occurrence_count: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       person_id: string().required(),
       provenance_id: string().nullable().notRequired(),
       source_traceback: string().nullable().notRequired(),
@@ -124,7 +124,7 @@ export const ConditionErasAdminPage = () => {
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Condition Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'condition_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Condition Era Start Date`, name: 'condition_era_start_date' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Condition Era End Date`, name: 'condition_era_end_date' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Condition Occurrence Count`, name: 'condition_occurrence_count' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Condition Occurrence Count`, name: 'condition_occurrence_count', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [conceptOptionsQuery.isLoading, personOptionsQuery.isLoading, conceptOptionsQuery.options, personOptionsQuery.options, t]);
   const tableColumns = useMemo((): TableColumn<Row>[] => {

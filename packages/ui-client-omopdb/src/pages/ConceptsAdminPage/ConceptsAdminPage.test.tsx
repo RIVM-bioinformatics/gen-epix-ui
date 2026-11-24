@@ -147,6 +147,28 @@ describe('ConceptsAdminPage', () => {
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
   });
 
+  it('sends a filled concept int id as number in the created concept', async () => {
+    const { screen } = await renderPage([]);
+    const postBodies = mockConceptPost();
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await screen.getByRole('textbox', { name: 'Concept Name' }).fill('Delta Concept');
+    await screen.getByRole('textbox', { name: 'Concept Code' }).fill('D1');
+    await screen.getByRole('combobox', { name: 'Domain ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Drug' }).click();
+    await screen.getByRole('combobox', { name: 'Vocabulary ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'SNOMED' }).click();
+    await screen.getByRole('combobox', { name: 'Concept Class ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Clinical Drug' }).click();
+    await fillDate(screen, 'Valid Start Date', ['2021', '03', '04']);
+    await fillDate(screen, 'Valid End Date', ['2099', '12', '31']);
+    await screen.getByRole('spinbutton', { exact: true, name: 'Concept Int ID' }).fill('42');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toEqual(expect.objectContaining({ concept_int_id: 42 }));
+  });
+
   it('edits a concept via the concepts endpoint', async () => {
     const { mock, screen } = await renderPage();
 

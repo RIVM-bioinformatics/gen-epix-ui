@@ -140,7 +140,7 @@ describe('TreeAlgorithmsAdminPage', () => {
     await expect.element(screen.getByText('Create new tree algorithm', { exact: true })).toBeVisible();
     await fillRequiredFields(screen, 'New tree');
     await screen.getByRole('textbox', { exact: true, name: 'Description' }).fill('Created in test');
-    await screen.getByRole('textbox', { exact: true, name: 'Rank' }).fill('3');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Rank' }).fill('3');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => postBodies.length).toBe(1);
@@ -153,6 +153,26 @@ describe('TreeAlgorithmsAdminPage', () => {
       tree_algorithm_class_id: 'class-one',
     });
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('New tree')]));
+  });
+
+  it('omits the rank when the field is cleared', async () => {
+    const { screen } = await renderPage([]);
+    const postBodies: Partial<SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm>[] = [];
+    mockApiRequest('POST', TREE_ALGORITHMS_PATH, async (request) => {
+      const body = await request.json() as Partial<SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm>;
+      postBodies.push(body);
+      return Response.json({ ...body, id: 'created-tree' }, { status: 201 });
+    });
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await fillRequiredFields(screen, 'New tree');
+    const rankField = screen.getByRole('spinbutton', { exact: true, name: 'Rank' });
+    await rankField.fill('3');
+    await rankField.fill('');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]?.rank).toBeUndefined();
   });
 
   it('does not create a tree algorithm without an algorithm code', async () => {
@@ -201,7 +221,7 @@ describe('TreeAlgorithmsAdminPage', () => {
 
     await screen.getByRole('button', { name: 'Create item' }).click();
     await fillRequiredFields(screen, 'Negative rank');
-    await screen.getByRole('textbox', { exact: true, name: 'Rank' }).fill('-1');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Rank' }).fill('-1');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.element(screen.getByText('Create new tree algorithm', { exact: true })).toBeVisible();

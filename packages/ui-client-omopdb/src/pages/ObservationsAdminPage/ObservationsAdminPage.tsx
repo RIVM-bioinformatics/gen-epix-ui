@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbObservation,
@@ -104,8 +104,8 @@ export const ObservationsAdminPage = () => {
     return object<FormFields>().shape({
       obs_event_field_concept_id: string().nullable().notRequired(),
       observation_concept_id: string().required(),
-      observation_date: string().required(),
-      observation_datetime: string().nullable().notRequired(),
+      observation_date: SchemaUtil.isoString.required(),
+      observation_datetime: SchemaUtil.isoString.nullable().notRequired(),
       observation_event_id: string().nullable().notRequired(),
       observation_iso_interval: string().nullable().notRequired(),
       observation_source_concept_id: string().nullable().notRequired(),
@@ -122,7 +122,7 @@ export const ObservationsAdminPage = () => {
       unit_source_value: string().nullable().notRequired(),
       value_as_concept_id: string().nullable().notRequired(),
       value_as_iso_interval: string().nullable().notRequired(),
-      value_as_number: number().nullable().notRequired(),
+      value_as_number: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       value_as_string: string().nullable().notRequired(),
       value_source_value: string().nullable().notRequired(),
       visit_detail_id: string().nullable().notRequired(),
@@ -138,7 +138,7 @@ export const ObservationsAdminPage = () => {
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Observation Date`, name: 'observation_date' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE_TIME, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Observation Datetime`, name: 'observation_datetime' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Observation Type Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'observation_type_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Value As Number`, name: 'value_as_number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Value As Number`, name: 'value_as_number', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Value As String`, name: 'value_as_string' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Value As Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'value_as_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Qualifier Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'qualifier_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,

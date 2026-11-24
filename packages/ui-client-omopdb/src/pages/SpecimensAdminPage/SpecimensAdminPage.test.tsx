@@ -182,6 +182,26 @@ describe('SpecimensAdminPage', () => {
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
   });
 
+  it('sends a filled quantity as number in the created specimen', async () => {
+    const { screen } = await renderPage([]);
+    const postBodies = mockSpecimenPost();
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await expect.element(screen.getByText('Create new specimen', { exact: true })).toBeVisible();
+    await screen.getByRole('combobox', { exact: true, name: 'Person ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'person-1' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Specimen Concept ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Inpatient' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Specimen Type Concept ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Outpatient' }).click();
+    await fillDate(screen, 'Specimen Date', ['2022', '01', '01']);
+    await screen.getByRole('spinbutton', { exact: true, name: 'Quantity' }).fill('3');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toEqual(expect.objectContaining({ quantity: 3 }));
+  });
+
   it('names a specimen being created by its fallback label when all of its source values are blank', async () => {
     const { screen } = await renderPage([]);
     let releaseCreate: () => void = () => undefined;

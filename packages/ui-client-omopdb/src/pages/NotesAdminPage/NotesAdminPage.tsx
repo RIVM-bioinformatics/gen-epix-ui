@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbNote,
@@ -120,8 +121,8 @@ export const NotesAdminPage = () => {
       encoding_concept_id: string().required(),
       language_concept_id: string().required(),
       note_class_concept_id: string().required(),
-      note_date: string().required(),
-      note_datetime: string().nullable().notRequired(),
+      note_date: SchemaUtil.isoString.required(),
+      note_datetime: SchemaUtil.isoString.nullable().notRequired(),
       note_event_field_concept_id: string().nullable().notRequired(),
       note_event_id: string().nullable().notRequired(),
       note_source_value: string().nullable().notRequired(),

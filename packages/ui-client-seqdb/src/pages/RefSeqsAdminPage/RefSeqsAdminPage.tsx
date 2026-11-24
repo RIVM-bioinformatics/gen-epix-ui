@@ -74,7 +74,7 @@ export const RefSeqsAdminPage = () => {
       genbank_accession_code: string().nullable().optional(),
       name: SchemaUtil.name,
       seq: string().required(),
-      seq_format: mixed<SeqDbSeqFormat>().oneOf(Object.values(SeqDbSeqFormat)).optional(),
+      seq_format: mixed<SeqDbSeqFormat>().oneOf(Object.values(SeqDbSeqFormat)).nullable().optional(),
       taxon_id: string().required(),
     });
   }, []);

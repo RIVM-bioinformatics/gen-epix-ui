@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbNoteNlp,
@@ -113,8 +114,8 @@ export const NoteNlpsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       lexical_variant: string().required(),
-      nlp_date: string().required(),
-      nlp_datetime: string().nullable().notRequired(),
+      nlp_date: SchemaUtil.isoString.required(),
+      nlp_datetime: SchemaUtil.isoString.nullable().notRequired(),
       nlp_system: string().nullable().notRequired(),
       note_id: string().required(),
       note_nlp_concept_id: string().nullable().notRequired(),

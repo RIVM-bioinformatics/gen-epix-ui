@@ -118,6 +118,20 @@ describe('LocationsAdminPage', () => {
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
   });
 
+  it('sends filled latitude and longitude as numbers in the created location', async () => {
+    const { screen } = await renderPage();
+    const postBodies = mockLocationPost();
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await expect.element(screen.getByText('Create new location', { exact: true })).toBeVisible();
+    await screen.getByRole('spinbutton', { exact: true, name: 'Latitude' }).fill('52.5');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Longitude' }).fill('-2.25');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toEqual(expect.objectContaining({ latitude: 52.5, longitude: -2.25 }));
+  });
+
   it('saves a location without any name fields', async () => {
     const { screen } = await renderPage();
     const postBodies = mockLocationPost();

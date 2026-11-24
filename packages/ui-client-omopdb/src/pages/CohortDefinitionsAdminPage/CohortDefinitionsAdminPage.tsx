@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbCohortDefinition,
@@ -107,7 +108,7 @@ export const CohortDefinitionsAdminPage = () => {
       cohort_definition_description: string().nullable().notRequired(),
       cohort_definition_name: string().required(),
       cohort_definition_syntax: string().nullable().notRequired(),
-      cohort_initiation_date: string().nullable().notRequired(),
+      cohort_initiation_date: SchemaUtil.isoString.nullable().notRequired(),
       definition_type_concept_id: string().required(),
       subject_concept_id: string().required(),
     });

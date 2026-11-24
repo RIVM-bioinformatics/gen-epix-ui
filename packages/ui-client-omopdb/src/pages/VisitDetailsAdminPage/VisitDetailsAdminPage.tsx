@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbVisitDetail,
@@ -126,12 +127,12 @@ export const VisitDetailsAdminPage = () => {
       provider_id: string().nullable().notRequired(),
       source_traceback: string().nullable().notRequired(),
       visit_detail_concept_id: string().required(),
-      visit_detail_end_date: string().required(),
-      visit_detail_end_datetime: string().nullable().notRequired(),
+      visit_detail_end_date: SchemaUtil.isoString.required(),
+      visit_detail_end_datetime: SchemaUtil.isoString.nullable().notRequired(),
       visit_detail_source_concept_id: string().nullable().notRequired(),
       visit_detail_source_value: string().nullable().notRequired(),
-      visit_detail_start_date: string().required(),
-      visit_detail_start_datetime: string().nullable().notRequired(),
+      visit_detail_start_date: SchemaUtil.isoString.required(),
+      visit_detail_start_datetime: SchemaUtil.isoString.nullable().notRequired(),
       visit_detail_type_concept_id: string().required(),
       visit_occurrence_id: string().required(),
     });

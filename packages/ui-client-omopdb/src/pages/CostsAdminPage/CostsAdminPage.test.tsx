@@ -35,6 +35,21 @@ const PAYER_PLAN_PERIODS_PATH = '/v1/PayerPlanPeriods';
 const ROUTE_PATH = '/management/costs';
 const URL = '/management/costs';
 
+const NUMBER_FIELD_KEYS = [
+  'amount_allowed',
+  'paid_by_patient',
+  'paid_by_payer',
+  'paid_by_primary',
+  'paid_dispensing_fee',
+  'paid_ingredient_cost',
+  'paid_patient_coinsurance',
+  'paid_patient_copay',
+  'paid_patient_deductible',
+  'total_charge',
+  'total_cost',
+  'total_paid',
+];
+
 const COST_PERMISSIONS: OmopDbApiPermission[] = [
   { command_name: OmopDbCommandName.CostCrudCommand, permission_type: OmopDbPermissionType.CREATE },
   { command_name: OmopDbCommandName.CostCrudCommand, permission_type: OmopDbPermissionType.UPDATE },
@@ -149,7 +164,7 @@ describe('CostsAdminPage', () => {
     await screen.getByRole('combobox', { exact: true, name: 'Cost Type Concept ID' }).click();
     await screen.getByRole('option', { exact: true, name: 'Concept One' }).click();
     await screen.getByRole('textbox', { exact: true, name: 'Cost Event ID' }).fill('event-new');
-    await screen.getByRole('textbox', { exact: true, name: 'Total Charge' }).fill('12.5');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Total Charge' }).fill('12.5');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => postBodies.length).toBe(1);
@@ -160,6 +175,79 @@ describe('CostsAdminPage', () => {
       total_charge: 12.5,
     }));
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
+  });
+
+  it('omits cleared number fields from the created cost', async () => {
+    const { screen } = await renderPage([]);
+    const postBodies = mockCostPost();
+    const numberFieldLabels = [
+      'Amount Allowed',
+      'Paid By Patient',
+      'Paid By Payer',
+      'Paid By Primary',
+      'Paid Dispensing Fee',
+      'Paid Ingredient Cost',
+      'Paid Patient Coinsurance',
+      'Paid Patient Copay',
+      'Paid Patient Deductible',
+      'Total Charge',
+      'Total Cost',
+      'Total Paid',
+    ];
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Cost Domain ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Domain One' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Cost Type Concept ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Concept One' }).click();
+    await screen.getByRole('textbox', { exact: true, name: 'Cost Event ID' }).fill('event-new');
+    for (const label of numberFieldLabels) {
+      const numberField = screen.getByRole('spinbutton', { exact: true, name: label });
+      await numberField.fill('1');
+      await numberField.fill('');
+    }
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toEqual(expect.objectContaining({ cost_event_id: 'event-new' }));
+    for (const field of NUMBER_FIELD_KEYS) {
+      expect(postBodies[0]).not.toHaveProperty(field);
+    }
+  });
+
+  it('sends filled number fields as numbers in the created cost', async () => {
+    const { screen } = await renderPage([]);
+    const postBodies = mockCostPost();
+    const numberFields: Array<[string, string, number]> = [
+      ['Amount Allowed', 'amount_allowed', 1.5],
+      ['Paid By Patient', 'paid_by_patient', 2.5],
+      ['Paid By Payer', 'paid_by_payer', 3.5],
+      ['Paid By Primary', 'paid_by_primary', 4.5],
+      ['Paid Dispensing Fee', 'paid_dispensing_fee', 5.5],
+      ['Paid Ingredient Cost', 'paid_ingredient_cost', 6.5],
+      ['Paid Patient Coinsurance', 'paid_patient_coinsurance', 7.5],
+      ['Paid Patient Copay', 'paid_patient_copay', 8.5],
+      ['Paid Patient Deductible', 'paid_patient_deductible', 9.5],
+      ['Total Charge', 'total_charge', 10.5],
+      ['Total Cost', 'total_cost', 11.5],
+      ['Total Paid', 'total_paid', 12.5],
+    ];
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Cost Domain ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Domain One' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Cost Type Concept ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Concept One' }).click();
+    await screen.getByRole('textbox', { exact: true, name: 'Cost Event ID' }).fill('event-new');
+    for (const [label, , value] of numberFields) {
+      await screen.getByRole('spinbutton', { exact: true, name: label }).fill(String(value));
+    }
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toEqual(expect.objectContaining(
+      Object.fromEntries(numberFields.map(([, field, value]) => [field, value])),
+    ));
   });
 
   it('names an unsaved cost by its selected domain id when the domain is no longer among the options', async () => {

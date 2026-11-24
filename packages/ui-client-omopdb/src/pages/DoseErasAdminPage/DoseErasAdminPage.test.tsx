@@ -137,7 +137,7 @@ const fillRequiredCreateFields = async (screen: Awaited<ReturnType<typeof render
   await screen.getByRole('option', { exact: true, name: 'Condition' }).click();
   await screen.getByRole('combobox', { exact: true, name: 'Unit Concept ID' }).click();
   await screen.getByRole('option', { exact: true, name: 'Milligram' }).click();
-  await screen.getByRole('textbox', { exact: true, name: 'Dose Value' }).fill('2.5');
+  await screen.getByRole('spinbutton', { exact: true, name: 'Dose Value' }).fill('2.5');
   await fillDate(screen, 'Dose Era Start Date', ['2022', '01', '01']);
   await fillDate(screen, 'Dose Era End Date', ['2022', '02', '01']);
 };

@@ -74,7 +74,7 @@ const renderPage = async (initialItems: RefAlleleFixture[] = [refAlleleAlphaFixt
  * Overrides the POST handler of mockCrudApi so that the response can be shaped per test.
  */
 const mockRefAllelePost = (responseBody: (body: Partial<SeqDbRefAllele>) => unknown) => {
-  const postBodies: unknown[] = [];
+  const postBodies: Partial<SeqDbRefAllele>[] = [];
   mockApiRequest('POST', REF_ALLELES_PATH, async (request) => {
     const body = await request.json() as Partial<SeqDbRefAllele>;
     postBodies.push(body);
@@ -115,7 +115,7 @@ describe('RefAllelesAdminPage', () => {
     await expect.element(screen.getByText('Create new reference allele', { exact: true })).toBeVisible();
     await screen.getByRole('combobox', { name: 'Locus' }).click();
     await screen.getByRole('option', { exact: true, name: 'A - Alpha' }).click();
-    await screen.getByRole('textbox', { name: 'Index' }).fill('3');
+    await screen.getByRole('spinbutton', { name: 'Index' }).fill('3');
     await screen.getByRole('textbox', { name: 'Sequence' }).fill('TTAA');
     await screen.getByRole('combobox', { name: 'Sequence format' }).click();
     await screen.getByRole('option', { exact: true, name: 'DNA sequence' }).click();
@@ -140,7 +140,7 @@ describe('RefAllelesAdminPage', () => {
 
     await screen.getByRole('combobox', { name: 'Locus' }).click();
     await screen.getByRole('option', { exact: true, name: 'B' }).click();
-    await screen.getByRole('textbox', { name: 'Index' }).fill('1.5');
+    await screen.getByRole('spinbutton', { name: 'Index' }).fill('1.5');
     await screen.getByRole('textbox', { name: 'Sequence' }).fill('TTAA');
     await screen.getByRole('combobox', { name: 'Sequence format' }).click();
     await screen.getByRole('option', { exact: true, name: 'DNA sequence' }).click();
@@ -148,7 +148,7 @@ describe('RefAllelesAdminPage', () => {
     await expect.element(screen.getByText('Create new reference allele', { exact: true })).toBeVisible();
     expect(postBodies).toHaveLength(0);
 
-    await screen.getByRole('textbox', { name: 'Index' }).fill('4');
+    await screen.getByRole('spinbutton', { name: 'Index' }).fill('4');
     await screen.getByRole('button', { name: 'Save' }).click();
     await expect.poll(() => postBodies.length).toBe(1);
     expect(postBodies[0]).toEqual({ index: 4, locus_id: 'locus-2', seq: 'TTAA', seq_format: SeqDbSeqFormat.STR_DNA });
@@ -161,13 +161,30 @@ describe('RefAllelesAdminPage', () => {
     await screen.getByRole('button', { name: 'Create item' }).click();
     await screen.getByRole('combobox', { name: 'Locus' }).click();
     await screen.getByRole('option', { exact: true, name: 'B' }).click();
-    await screen.getByRole('textbox', { name: 'Index' }).fill('3');
+    await screen.getByRole('spinbutton', { name: 'Index' }).fill('3');
     await screen.getByRole('textbox', { name: 'Sequence' }).fill('TTAA');
     await screen.getByRole('combobox', { name: 'Sequence format' }).click();
     await screen.getByRole('option', { exact: true, name: 'DNA sequence' }).click();
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('could not be created')]));
+  });
+
+  it('creates a reference allele without a sequence format', async () => {
+    const { screen } = await renderPage();
+    const postBodies = mockRefAllelePost(body => ({ ...body, id: 'created-ref-allele' }));
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await screen.getByRole('combobox', { name: 'Locus' }).click();
+    await screen.getByRole('option', { exact: true, name: 'B' }).click();
+    await screen.getByRole('spinbutton', { name: 'Index' }).fill('3');
+    await screen.getByRole('textbox', { name: 'Sequence' }).fill('TTAA');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toMatchObject({ index: 3, locus_id: 'locus-2', seq: 'TTAA' });
+    expect(postBodies[0]?.seq_format ?? null).toBeNull();
+    await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
   });
 
   it('hides the create action without permissions', async () => {

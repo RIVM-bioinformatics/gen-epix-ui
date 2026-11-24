@@ -119,7 +119,7 @@ describe('PcrMeasurementsAdminPage', () => {
 
     await fillCreateForm(screen);
     await selectQualityControlResults(screen);
-    await screen.getByRole('textbox', { exact: true, name: 'Quality-control score' }).fill('75');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Quality-control score' }).fill('75');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => mock.calls.filter(({ method }) => method === 'POST').length).toBe(1);
@@ -174,7 +174,7 @@ describe('PcrMeasurementsAdminPage', () => {
     await screen.getByRole('menuitem', { name: 'Edit' }).click();
     await expect.element(screen.getByText('Edit item: S-1 - Protocol One', { exact: true })).toBeVisible();
     await screen.getByRole('textbox', { exact: true, name: 'Format' }).fill('FASTQ');
-    await screen.getByRole('textbox', { exact: true, name: 'Quality-control score' }).fill('95');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Quality-control score' }).fill('95');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => mock.calls.filter(({ method }) => method === 'PUT').length).toBe(1);
@@ -199,6 +199,23 @@ describe('PcrMeasurementsAdminPage', () => {
     await screen.getByRole('menuitem', { name: 'Edit' }).click();
 
     await expect.element(screen.getByText('Edit item: sample-y - protocol-x', { exact: true })).toBeVisible();
+  });
+
+  it('shows an error notification when the created PCR measurement has no ID', async () => {
+    const { screen } = await renderPage();
+    const postBodies: unknown[] = [];
+    mockApiRequest('POST', PCR_MEASUREMENTS_PATH, async (request) => {
+      const body = await request.json() as unknown;
+      postBodies.push(body);
+      return Response.json(body, { status: 201 });
+    });
+
+    await fillCreateForm(screen);
+    await selectQualityControlResults(screen);
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('could not be created')]));
   });
 
   it('deletes a PCR measurement', async () => {

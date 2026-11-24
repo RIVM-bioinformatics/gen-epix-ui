@@ -170,7 +170,7 @@ describe('ReadSetsAdminPage', () => {
     await selectOption(screen, 'Sample', 'S-1');
     await selectOption(screen, 'Protocol', 'Protocol One');
     await fillMandatoryEnumFields(screen);
-    await screen.getByRole('textbox', { exact: true, name: 'Quality-control score' }).fill('4.5');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Quality-control score' }).fill('4.5');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => postBodies.length).toBe(1);

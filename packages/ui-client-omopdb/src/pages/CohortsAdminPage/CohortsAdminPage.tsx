@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbCohort,
@@ -56,55 +57,20 @@ export const CohortsAdminPage = () => {
     return toTableRow(response.data);
   }, []);
   const getName = useCallback((item: FormFields | Row) => {
-    let fallbackValue: string | undefined;
-    const cohortDefinitionId = item.cohort_definition_id;
-    if (typeof cohortDefinitionId === 'string' && cohortDefinitionId.length > 0) {
-      const cohortDefinitionIdOption = cohortDefinitionOptionsQuery.options.find(candidate => candidate.value === cohortDefinitionId);
-      if (cohortDefinitionIdOption?.label) {
-        return cohortDefinitionIdOption.label;
-      }
-      /* v8 ignore else -- fallbackValue is only assigned inside this block, so it is always undefined here and the else arm is unreachable */
-      if (!fallbackValue) {
-        fallbackValue = cohortDefinitionId;
-      }
+    const cohortDefinitionIdOption = cohortDefinitionOptionsQuery.options.find(candidate => candidate.value === item.cohort_definition_id);
+    if (cohortDefinitionIdOption?.label) {
+      return cohortDefinitionIdOption.label;
     }
-    const subjectId = item.subject_id;
-    if (typeof subjectId === 'string' && subjectId.trim().length > 0) {
-      return subjectId;
+    if (item.subject_id.trim().length > 0) {
+      return item.subject_id;
     }
-    if (typeof subjectId === 'number') {
-      return String(subjectId);
-    }
-    const cohortStartDate = item.cohort_start_date;
-    if (typeof cohortStartDate === 'string' && cohortStartDate.trim().length > 0) {
-      return cohortStartDate;
-    }
-    if (typeof cohortStartDate === 'number') {
-      return String(cohortStartDate);
-    }
-    const cohortEndDate = item.cohort_end_date;
-    if (typeof cohortEndDate === 'string' && cohortEndDate.trim().length > 0) {
-      return cohortEndDate;
-    }
-    if (typeof cohortEndDate === 'number') {
-      return String(cohortEndDate);
-    }
-    /* v8 ignore else -- a create submit always has a date-picker cohort_start_date, which is never blank and returns above; rows and edit dialogs always have an id */
-    if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
-      return item.id;
-    }
-    /* v8 ignore next 3 -- unreachable: a create submit requires a non-blank cohort_start_date (returns above), and rows and edit dialogs always have an id, so this fallback block is never reached */
-    if (fallbackValue) {
-      return fallbackValue;
-    }
-    /* v8 ignore next -- unreachable, see the fallbackValue block above */
-    return t`New cohort`;
-  }, [cohortDefinitionOptionsQuery.options, t]);
+    return 'id' in item ? item.id : item.cohort_definition_id;
+  }, [cohortDefinitionOptionsQuery.options]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       cohort_definition_id: string().required(),
-      cohort_end_date: string().required(),
-      cohort_start_date: string().required(),
+      cohort_end_date: SchemaUtil.isoString.required(),
+      cohort_start_date: SchemaUtil.isoString.required(),
       subject_id: string().required(),
     });
   }, []);

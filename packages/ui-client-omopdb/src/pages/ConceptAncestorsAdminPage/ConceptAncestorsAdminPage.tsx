@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbConceptAncestor,
@@ -92,16 +92,16 @@ export const ConceptAncestorsAdminPage = () => {
     return object<FormFields>().shape({
       ancestor_concept_id: string().required(),
       descendant_concept_id: string().required(),
-      max_levels_of_separation: number().required(),
-      min_levels_of_separation: number().required(),
+      max_levels_of_separation: SchemaUtil.number.required(),
+      min_levels_of_separation: SchemaUtil.number.required(),
     });
   }, []);
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Ancestor Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'ancestor_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Descendant Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'descendant_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Min Levels Of Separation`, name: 'min_levels_of_separation' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Max Levels Of Separation`, name: 'max_levels_of_separation' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Min Levels Of Separation`, name: 'min_levels_of_separation', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Max Levels Of Separation`, name: 'max_levels_of_separation', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [conceptOptionsQuery.isLoading, conceptOptionsQuery.options, t]);
   const tableColumns = useMemo((): TableColumn<Row>[] => {

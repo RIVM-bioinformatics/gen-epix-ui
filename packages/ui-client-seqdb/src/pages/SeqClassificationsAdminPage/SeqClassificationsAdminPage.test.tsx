@@ -247,12 +247,11 @@ describe('SeqClassificationsAdminPage', () => {
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining(`"${CLASSIFICATION_LABEL}" could not be saved.`)]));
   });
 
-  it('does not list the classifications when the list contains a classification without an ID', async () => {
+  it('skips classifications without an ID and still lists the others', async () => {
     const { screen } = await renderPageWithItems([classificationFixture, { ...classificationFixture, id: '' }]);
 
-    await expect.element(screen.getByRole('heading', { level: 1, name: 'Sorry, an unexpected error has occurred.' })).toBeVisible();
-    await expect.element(screen.getByText(/Error message: SeqDB returned a sequence classification without an ID\.$/)).toBeVisible();
-    await expect.element(screen.getByRole('cell', { exact: true, name: 'SAMPLE-1' })).not.toBeInTheDocument();
+    await expect.element(screen.getByRole('cell', { exact: true, name: 'SAMPLE-1' })).toBeVisible();
+    await expect.element(screen.getByRole('heading', { level: 1, name: 'Sorry, an unexpected error has occurred.' })).not.toBeInTheDocument();
   });
 
   it('deletes a classification with an ID', async () => {

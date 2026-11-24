@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbDoseEra,
@@ -110,9 +110,9 @@ export const DoseErasAdminPage = () => {
   }, [personOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      dose_era_end_date: string().required(),
-      dose_era_start_date: string().required(),
-      dose_value: number().required(),
+      dose_era_end_date: SchemaUtil.isoString.required(),
+      dose_era_start_date: SchemaUtil.isoString.required(),
+      dose_value: SchemaUtil.number.required(),
       drug_concept_id: string().required(),
       person_id: string().required(),
       provenance_id: string().nullable().notRequired(),
@@ -127,7 +127,7 @@ export const DoseErasAdminPage = () => {
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Person ID`, loading: personOptionsQuery.isLoading, name: 'person_id', options: personOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Drug Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'drug_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Unit Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'unit_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Dose Value`, name: 'dose_value' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Dose Value`, name: 'dose_value', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Dose Era Start Date`, name: 'dose_era_start_date' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Dose Era End Date`, name: 'dose_era_end_date' } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;

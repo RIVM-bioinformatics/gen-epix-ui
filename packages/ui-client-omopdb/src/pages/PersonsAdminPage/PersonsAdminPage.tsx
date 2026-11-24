@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbPerson,
@@ -100,9 +100,9 @@ export const PersonsAdminPage = () => {
   }, [t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      birth_datetime: string().nullable().notRequired(),
+      birth_datetime: SchemaUtil.isoString.nullable().notRequired(),
       care_site_id: string().nullable().notRequired(),
-      day_of_birth: number().nullable().notRequired(),
+      day_of_birth: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       ethnicity_concept_id: string().required(),
       ethnicity_source_concept_id: string().nullable().notRequired(),
       ethnicity_source_value: string().nullable().notRequired(),
@@ -110,7 +110,7 @@ export const PersonsAdminPage = () => {
       gender_source_concept_id: string().nullable().notRequired(),
       gender_source_value: string().nullable().notRequired(),
       location_id: string().nullable().notRequired(),
-      month_of_birth: number().nullable().notRequired(),
+      month_of_birth: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       person_source_value: string().nullable().notRequired(),
       person_type_concept_id: string().required(),
       provenance_id: string().nullable().notRequired(),
@@ -120,7 +120,7 @@ export const PersonsAdminPage = () => {
       race_source_concept_id: string().nullable().notRequired(),
       race_source_value: string().nullable().notRequired(),
       source_traceback: string().nullable().notRequired(),
-      year_of_birth: number().required(),
+      year_of_birth: SchemaUtil.number.required(),
     });
   }, []);
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
@@ -128,9 +128,9 @@ export const PersonsAdminPage = () => {
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Provenance ID`, name: 'provenance_id' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Source Traceback`, name: 'source_traceback' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Gender Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'gender_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Year Of Birth`, name: 'year_of_birth' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Month Of Birth`, name: 'month_of_birth' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Day Of Birth`, name: 'day_of_birth' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Year Of Birth`, name: 'year_of_birth', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Month Of Birth`, name: 'month_of_birth', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Day Of Birth`, name: 'day_of_birth', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE_TIME, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Birth Datetime`, name: 'birth_datetime' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Race Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'race_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Ethnicity Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'ethnicity_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,

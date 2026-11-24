@@ -196,6 +196,35 @@ describe('ObservationsAdminPage', () => {
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
   });
 
+  it('omits a cleared value as number from the created observation', async () => {
+    const { screen } = await renderPage([]);
+    const postBodies = mockObservationPost();
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await fillRequiredFields(screen);
+    const valueAsNumberField = screen.getByRole('spinbutton', { exact: true, name: 'Value As Number' });
+    await valueAsNumberField.fill('5');
+    await valueAsNumberField.fill('');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).not.toHaveProperty('value_as_number');
+    await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
+  });
+
+  it('sends a filled value as number in the created observation', async () => {
+    const { screen } = await renderPage([]);
+    const postBodies = mockObservationPost();
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await fillRequiredFields(screen);
+    await screen.getByRole('spinbutton', { exact: true, name: 'Value As Number' }).fill('1.5');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toEqual(expect.objectContaining({ value_as_number: 1.5 }));
+  });
+
   it('names a new observation by its generic name when all name fields are blank', async () => {
     const { screen } = await renderPage([]);
     let releasePostResponse: () => void = () => undefined;

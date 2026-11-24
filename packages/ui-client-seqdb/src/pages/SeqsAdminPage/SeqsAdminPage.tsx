@@ -31,6 +31,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { useFileOptionsQuery } from '../../dataHooks/useFilesQuery';
 import { useFileCompressionOptionsQuery } from '../../dataHooks/useFileCompressionOptionsQuery';
@@ -183,7 +184,7 @@ export const SeqsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>()
       .shape({
-        code: string().nullable().optional(),
+        code: SchemaUtil.code.nullable().notRequired(),
         contigs_json: string()
           .required()
           .test('valid-contigs', t`Enter a JSON array of valid contigs`, (value) => {

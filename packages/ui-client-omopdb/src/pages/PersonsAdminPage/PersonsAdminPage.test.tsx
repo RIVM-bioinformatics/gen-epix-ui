@@ -139,7 +139,7 @@ const fillRequiredCreateFields = async (screen: PersonsScreen) => {
   await selectOption(screen, 'Race Concept ID', 'White');
   await selectOption(screen, 'Ethnicity Concept ID', 'Not Hispanic');
   await selectOption(screen, 'Person Type Concept ID', 'Patient Type');
-  await screen.getByRole('textbox', { exact: true, name: 'Year Of Birth' }).fill('1985');
+  await screen.getByRole('spinbutton', { exact: true, name: 'Year Of Birth' }).fill('1985');
 };
 
 describe('PersonsAdminPage', () => {
@@ -173,6 +173,41 @@ describe('PersonsAdminPage', () => {
     expect(postBody.person_source_value).toBe('Person New');
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('Person New')]));
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
+  });
+
+  it('omits cleared optional birth day and month from the created person', async () => {
+    const { screen } = await renderPage();
+    const postBodies = mockPersonPost();
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await fillRequiredCreateFields(screen);
+    const monthField = screen.getByRole('spinbutton', { exact: true, name: 'Month Of Birth' });
+    const dayField = screen.getByRole('spinbutton', { exact: true, name: 'Day Of Birth' });
+    await monthField.fill('6');
+    await dayField.fill('15');
+    await monthField.fill('');
+    await dayField.fill('');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    const postBody = postBodies[0] as Record<string, unknown>;
+    expect(postBody).not.toHaveProperty('month_of_birth');
+    expect(postBody).not.toHaveProperty('day_of_birth');
+    expect(Number(postBody.year_of_birth)).toBe(1985);
+  });
+
+  it('sends filled birth day and month as numbers in the created person', async () => {
+    const { screen } = await renderPage();
+    const postBodies = mockPersonPost();
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await fillRequiredCreateFields(screen);
+    await screen.getByRole('spinbutton', { exact: true, name: 'Month Of Birth' }).fill('6');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Day Of Birth' }).fill('15');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toEqual(expect.objectContaining({ day_of_birth: 15, month_of_birth: 6 }));
   });
 
   it('names an unsaved person without any name fields as new while the create request is pending', async () => {

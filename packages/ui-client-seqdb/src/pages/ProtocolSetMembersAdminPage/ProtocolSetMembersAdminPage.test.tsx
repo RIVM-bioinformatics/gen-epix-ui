@@ -114,6 +114,26 @@ describe('ProtocolSetMembersAdminPage', () => {
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('SET-A - Set One - Protocol One')]));
   });
 
+  it('shows an error notification when the created protocol set member has no ID', async () => {
+    const { screen } = await renderPage();
+    const postBodies: unknown[] = [];
+    mockApiRequest('POST', PROTOCOL_SET_MEMBERS_PATH, async (request) => {
+      const body = await request.json() as unknown;
+      postBodies.push(body);
+      return Response.json(body, { status: 201 });
+    });
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Protocol set' }).click();
+    await screen.getByRole('option', { exact: true, name: 'SET-A - Set One' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Protocol' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Protocol One' }).click();
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('could not be created')]));
+  });
+
   it('does not save a protocol set member without a protocol set', async () => {
     const { mock, screen } = await renderPage();
 

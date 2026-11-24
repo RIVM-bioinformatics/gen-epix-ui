@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbCost,
@@ -69,10 +69,7 @@ export const CostsAdminPage = () => {
       if (revenueCodeConceptIdOption?.label) {
         return revenueCodeConceptIdOption.label;
       }
-      /* v8 ignore else -- fallbackValue is always unset when this block runs, so the else arm is unreachable */
-      if (!fallbackValue) {
-        fallbackValue = revenueCodeConceptId;
-      }
+      fallbackValue = revenueCodeConceptId;
     }
     const revenueCodeSourceValue = item.revenue_code_source_value;
     if (typeof revenueCodeSourceValue === 'string' && revenueCodeSourceValue.trim().length > 0) {
@@ -101,39 +98,39 @@ export const CostsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
-    /* v8 ignore else -- unreachable: validated create values always have a non-empty cost_domain_id and rows always have a non-empty id, so fallbackValue is set here */
+    /* v8 ignore else -- cost_domain_id is required on create, so a non-empty cost_domain_id always sets fallbackValue; rows return on their id first */
     if (fallbackValue) {
       return fallbackValue;
     }
-    /* v8 ignore next -- unreachable: see the else comment above */
+    /* v8 ignore next -- unreachable, see the else ignore above */
     return t`New cost`;
   }, [conceptOptionsQuery.options, domainOptionsQuery.options, t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      amount_allowed: number().nullable().notRequired(),
+      amount_allowed: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       cost_domain_id: string().required(),
       cost_event_id: string().required(),
       cost_type_concept_id: string().required(),
       currency_concept_id: string().nullable().notRequired(),
       drg_concept_id: string().nullable().notRequired(),
       drg_source_value: string().nullable().notRequired(),
-      paid_by_patient: number().nullable().notRequired(),
-      paid_by_payer: number().nullable().notRequired(),
-      paid_by_primary: number().nullable().notRequired(),
-      paid_dispensing_fee: number().nullable().notRequired(),
-      paid_ingredient_cost: number().nullable().notRequired(),
-      paid_patient_coinsurance: number().nullable().notRequired(),
-      paid_patient_copay: number().nullable().notRequired(),
-      paid_patient_deductible: number().nullable().notRequired(),
+      paid_by_patient: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      paid_by_payer: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      paid_by_primary: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      paid_dispensing_fee: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      paid_ingredient_cost: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      paid_patient_coinsurance: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      paid_patient_copay: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      paid_patient_deductible: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       payer_plan_period_id: string().nullable().notRequired(),
       provenance_id: string().nullable().notRequired(),
       provided_by_organization_id: string().nullable().notRequired(),
       revenue_code_concept_id: string().nullable().notRequired(),
       revenue_code_source_value: string().nullable().notRequired(),
       source_traceback: string().nullable().notRequired(),
-      total_charge: number().nullable().notRequired(),
-      total_cost: number().nullable().notRequired(),
-      total_paid: number().nullable().notRequired(),
+      total_charge: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      total_cost: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      total_paid: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
     });
   }, []);
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
@@ -144,19 +141,19 @@ export const CostsAdminPage = () => {
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Cost Domain ID`, loading: domainOptionsQuery.isLoading, name: 'cost_domain_id', options: domainOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Cost Type Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'cost_type_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Currency Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'currency_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Total Charge`, name: 'total_charge' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Total Cost`, name: 'total_cost' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Total Paid`, name: 'total_paid' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Paid By Payer`, name: 'paid_by_payer' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Paid By Patient`, name: 'paid_by_patient' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Paid Patient Copay`, name: 'paid_patient_copay' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Paid Patient Coinsurance`, name: 'paid_patient_coinsurance' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Paid Patient Deductible`, name: 'paid_patient_deductible' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Paid By Primary`, name: 'paid_by_primary' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Paid Ingredient Cost`, name: 'paid_ingredient_cost' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Paid Dispensing Fee`, name: 'paid_dispensing_fee' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Total Charge`, name: 'total_charge', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Total Cost`, name: 'total_cost', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Total Paid`, name: 'total_paid', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Paid By Payer`, name: 'paid_by_payer', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Paid By Patient`, name: 'paid_by_patient', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Paid Patient Copay`, name: 'paid_patient_copay', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Paid Patient Coinsurance`, name: 'paid_patient_coinsurance', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Paid Patient Deductible`, name: 'paid_patient_deductible', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Paid By Primary`, name: 'paid_by_primary', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Paid Ingredient Cost`, name: 'paid_ingredient_cost', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Paid Dispensing Fee`, name: 'paid_dispensing_fee', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Payer Plan Period ID`, loading: payerPlanPeriodOptionsQuery.isLoading, name: 'payer_plan_period_id', options: payerPlanPeriodOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Amount Allowed`, name: 'amount_allowed' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Amount Allowed`, name: 'amount_allowed', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Revenue Code Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'revenue_code_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Revenue Code Source Value`, name: 'revenue_code_source_value' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`DRG Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'drg_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,

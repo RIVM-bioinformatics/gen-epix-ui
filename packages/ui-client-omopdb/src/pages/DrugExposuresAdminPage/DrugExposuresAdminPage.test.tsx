@@ -155,6 +155,28 @@ describe('DrugExposuresAdminPage', () => {
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
   });
 
+  it('sends filled days supply, quantity and refills as numbers in the created drug exposure', async () => {
+    const { screen } = await renderPage();
+    const postBodies = mockDrugExposurePost();
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Person ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'person-1' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Drug Concept ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Aspirin' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Drug Type Concept ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Oral' }).click();
+    await fillDate(screen, 'Drug Exposure Start Date', ['2022', '01', '01']);
+    await fillDate(screen, 'Drug Exposure End Date', ['2022', '02', '01']);
+    await screen.getByRole('spinbutton', { exact: true, name: 'Days Supply' }).fill('30');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Quantity' }).fill('2');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Refills' }).fill('1');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toEqual(expect.objectContaining({ days_supply: 30, quantity: 2, refills: 1 }));
+  });
+
   it('names a drug exposure after the typed drug source value when creating it fails', async () => {
     const { screen } = await renderPage();
     mockApiRequest('POST', DRUG_EXPOSURES_PATH, () => new Response(null, { status: 500 }));

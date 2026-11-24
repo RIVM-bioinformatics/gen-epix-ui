@@ -66,11 +66,7 @@ export const SeqClassificationsAdminPage = () => {
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     const response = await container.resolve(SeqDbSeqApi).seqClassificationsGetAll(null, null, { signal });
-    if (!response.data.every(isSeqDbSeqClassificationWithId)) {
-      throw new Error('SeqDB returned a sequence classification without an ID.');
-    }
-
-    return response.data;
+    return response.data.filter(isSeqDbSeqClassificationWithId);
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {

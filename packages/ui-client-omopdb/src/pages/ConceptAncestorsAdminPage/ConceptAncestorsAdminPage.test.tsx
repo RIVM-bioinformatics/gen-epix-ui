@@ -122,8 +122,8 @@ describe('ConceptAncestorsAdminPage', () => {
     await screen.getByRole('option', { exact: true, name: 'Concept One' }).click();
     await screen.getByRole('combobox', { name: 'Descendant Concept ID' }).click();
     await screen.getByRole('option', { exact: true, name: 'Concept Two' }).click();
-    await screen.getByRole('textbox', { name: 'Min Levels Of Separation' }).fill('3');
-    await screen.getByRole('textbox', { name: 'Max Levels Of Separation' }).fill('4');
+    await screen.getByRole('spinbutton', { name: 'Min Levels Of Separation' }).fill('3');
+    await screen.getByRole('spinbutton', { name: 'Max Levels Of Separation' }).fill('4');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => postBodies.length).toBe(1);
@@ -142,7 +142,7 @@ describe('ConceptAncestorsAdminPage', () => {
     await openRowActions(screen);
     await screen.getByRole('menuitem', { name: 'Edit' }).click();
     await expect.element(screen.getByText('Edit item: Concept One', { exact: true })).toBeVisible();
-    await screen.getByRole('textbox', { name: 'Max Levels Of Separation' }).fill('9');
+    await screen.getByRole('spinbutton', { name: 'Max Levels Of Separation' }).fill('9');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => mock.calls.filter(({ method }) => method === 'PUT').length).toBe(1);
@@ -217,8 +217,8 @@ describe('ConceptAncestorsAdminPage', () => {
     await screen.getByRole('option', { exact: true, name: 'Concept One' }).click();
     await screen.getByRole('combobox', { name: 'Descendant Concept ID' }).click();
     await screen.getByRole('option', { exact: true, name: 'Concept Two' }).click();
-    await screen.getByRole('textbox', { name: 'Min Levels Of Separation' }).fill('3');
-    await screen.getByRole('textbox', { name: 'Max Levels Of Separation' }).fill('4');
+    await screen.getByRole('spinbutton', { name: 'Min Levels Of Separation' }).fill('3');
+    await screen.getByRole('spinbutton', { name: 'Max Levels Of Separation' }).fill('4');
 
     let conceptRequestCount = 0;
     mockApiRequest('GET', CONCEPTS_PATH, () => {

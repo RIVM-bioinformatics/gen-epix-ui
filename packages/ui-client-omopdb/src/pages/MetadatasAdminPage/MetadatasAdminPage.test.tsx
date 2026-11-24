@@ -13,7 +13,6 @@ import {
   OmopDbPermissionType,
 } from '@gen-epix/api-omopdb';
 import { container } from 'tsyringe';
-import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { NotificationService } from '@gen-epix/ui-client-common/classes/services/NotificationService';
 import {
   mockApiRequest,
@@ -21,8 +20,6 @@ import {
   mockOrganizations,
   renderRoutedPage,
 } from '@gen-epix/ui-client-common/test/lib';
-
-import { OMOPDB_QUERY_KEY } from '../../constants/query.constants';
 
 import { MetadatasAdminPage } from './MetadatasAdminPage';
 
@@ -274,33 +271,14 @@ describe('MetadatasAdminPage', () => {
     await expect.poll(() => screen.getByRole('button', { name: 'Create item' }).query()).toBeNull();
   });
 
-  it('names an unsaved metadata by its selected concept when the options no longer include it', async () => {
-    const { screen } = await renderPage([]);
-    const postRequests: string[] = [];
+  it('rejects a whitespace-only name without posting', async () => {
+    const { mock, screen } = await renderPage([]);
 
     await screen.getByRole('button', { name: 'Create item' }).click();
     await screen.getByRole('textbox', { exact: true, name: 'Name' }).fill('   ');
-    await screen.getByRole('combobox', { exact: true, name: 'Metadata Concept ID' }).click();
-    await screen.getByRole('option', { exact: true, name: 'Concept One' }).click();
-    await screen.getByRole('combobox', { exact: true, name: 'Metadata Type Concept ID' }).click();
-    await screen.getByRole('option', { exact: true, name: 'concept-2' }).click();
-
-    let conceptsRequestCount = 0;
-    mockApiRequest('GET', CONCEPTS_PATH, () => {
-      conceptsRequestCount += 1;
-      return Response.json([]);
-    });
-    const queryClientService = container.resolve(QueryClientService);
-    await queryClientService.queryClient.invalidateQueries({ queryKey: queryClientService.getGenericKey(OMOPDB_QUERY_KEY.CONCEPTS) });
-    await expect.poll(() => conceptsRequestCount).toBe(1);
-
-    mockApiRequest('POST', METADATAS_PATH, (request) => {
-      postRequests.push(request.url);
-      return new Response(null, { status: 500 });
-    });
     await screen.getByRole('button', { name: 'Save' }).click();
 
-    await expect.poll(() => postRequests.length).toBe(1);
-    await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('Metadata "concept-1" could not be created.')]));
+    await expect.element(screen.getByText('Only digits, letters (including diacritics) and punctuation marks are allowed.').first()).toBeVisible();
+    expect(mock.calls.filter(({ method }) => method === 'POST')).toHaveLength(0);
   });
 });

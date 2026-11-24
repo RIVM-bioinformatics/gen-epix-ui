@@ -121,9 +121,9 @@ describe('FactRelationshipsAdminPage', () => {
     await screen.getByRole('button', { name: 'Create item' }).click();
     await expect.element(screen.getByText('Create new fact relationship', { exact: true })).toBeVisible();
     await screen.getByRole('textbox', { exact: true, name: 'Domain Concept ID 1' }).fill('domain-new-1');
-    await screen.getByRole('textbox', { exact: true, name: 'Fact ID 1' }).fill('50');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Fact ID 1' }).fill('50');
     await screen.getByRole('textbox', { exact: true, name: 'Domain Concept ID 2' }).fill('domain-new-2');
-    await screen.getByRole('textbox', { exact: true, name: 'Fact ID 2' }).fill('60');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Fact ID 2' }).fill('60');
     await screen.getByRole('combobox', { exact: true, name: 'Relationship Concept ID' }).click();
     await screen.getByRole('option', { exact: true, name: 'Visit end' }).click();
     await screen.getByRole('button', { name: 'Save' }).click();
@@ -145,9 +145,9 @@ describe('FactRelationshipsAdminPage', () => {
 
     await screen.getByRole('button', { name: 'Create item' }).click();
     await screen.getByRole('textbox', { exact: true, name: 'Domain Concept ID 1' }).fill('domain-new-1');
-    await screen.getByRole('textbox', { exact: true, name: 'Fact ID 1' }).fill('50');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Fact ID 1' }).fill('50');
     await screen.getByRole('textbox', { exact: true, name: 'Domain Concept ID 2' }).fill('domain-new-2');
-    await screen.getByRole('textbox', { exact: true, name: 'Fact ID 2' }).fill('60');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Fact ID 2' }).fill('60');
     await screen.getByRole('combobox', { exact: true, name: 'Relationship Concept ID' }).click();
     await screen.getByRole('option', { exact: true, name: 'Visit end' }).click();
     await screen.getByRole('button', { name: 'Save' }).click();
@@ -166,9 +166,9 @@ describe('FactRelationshipsAdminPage', () => {
 
     await screen.getByRole('button', { name: 'Create item' }).click();
     await screen.getByRole('textbox', { exact: true, name: 'Domain Concept ID 1' }).fill('   ');
-    await screen.getByRole('textbox', { exact: true, name: 'Fact ID 1' }).fill('50');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Fact ID 1' }).fill('50');
     await screen.getByRole('textbox', { exact: true, name: 'Domain Concept ID 2' }).fill('   ');
-    await screen.getByRole('textbox', { exact: true, name: 'Fact ID 2' }).fill('60');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Fact ID 2' }).fill('60');
     await screen.getByRole('combobox', { exact: true, name: 'Relationship Concept ID' }).click();
     await screen.getByRole('option', { exact: true, name: 'Visit end' }).click();
     const queryClientService = container.resolve(QueryClientService);
@@ -185,7 +185,7 @@ describe('FactRelationshipsAdminPage', () => {
     await openRowActions(screen);
     await screen.getByRole('menuitem', { name: 'Edit' }).click();
     await expect.element(screen.getByText('Edit item: Visit start', { exact: true })).toBeVisible();
-    await screen.getByRole('textbox', { exact: true, name: 'Fact ID 2' }).fill('21');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Fact ID 2' }).fill('21');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => mock.calls.filter(({ method }) => method === 'PUT').length).toBe(1);
@@ -208,7 +208,7 @@ describe('FactRelationshipsAdminPage', () => {
 
     await openRowActions(screen);
     await screen.getByRole('menuitem', { name: 'Edit' }).click();
-    await screen.getByRole('textbox', { exact: true, name: 'Fact ID 2' }).fill('21');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Fact ID 2' }).fill('21');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('Fact Relationship "Visit start" could not be saved.')]));

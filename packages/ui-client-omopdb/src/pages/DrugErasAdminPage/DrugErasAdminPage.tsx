@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbDrugEra,
@@ -108,12 +108,12 @@ export const DrugErasAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       drug_concept_id: string().required(),
-      drug_era_end_date: string().required(),
+      drug_era_end_date: SchemaUtil.isoString.required(),
       drug_era_end_iso_interval: string().nullable().notRequired(),
-      drug_era_start_date: string().required(),
+      drug_era_start_date: SchemaUtil.isoString.required(),
       drug_era_start_iso_interval: string().nullable().notRequired(),
-      drug_exposure_count: number().nullable().notRequired(),
-      gap_days: number().nullable().notRequired(),
+      drug_exposure_count: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      gap_days: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       person_id: string().required(),
       provenance_id: string().nullable().notRequired(),
       source_traceback: string().nullable().notRequired(),
@@ -127,8 +127,8 @@ export const DrugErasAdminPage = () => {
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Drug Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'drug_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Drug Era Start Date`, name: 'drug_era_start_date' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Drug Era End Date`, name: 'drug_era_end_date' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Drug Exposure Count`, name: 'drug_exposure_count' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Gap Days`, name: 'gap_days' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Drug Exposure Count`, name: 'drug_exposure_count', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Gap Days`, name: 'gap_days', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Drug Era Start ISO Interval`, name: 'drug_era_start_iso_interval' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Drug Era End ISO Interval`, name: 'drug_era_end_iso_interval' } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;

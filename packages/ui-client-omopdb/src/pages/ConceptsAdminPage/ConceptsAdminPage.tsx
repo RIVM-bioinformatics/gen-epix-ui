@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbConcept,
@@ -111,19 +111,19 @@ export const ConceptsAdminPage = () => {
     return object<FormFields>().shape({
       concept_class_id: string().required(),
       concept_code: string().required(),
-      concept_int_id: number().nullable().notRequired(),
+      concept_int_id: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       concept_name: string().required(),
       domain_id: string().required(),
       invalid_reason: string().nullable().notRequired(),
       standard_concept: string().nullable().notRequired(),
-      valid_end_date: string().required(),
-      valid_start_date: string().required(),
+      valid_end_date: SchemaUtil.isoString.required(),
+      valid_start_date: SchemaUtil.isoString.required(),
       vocabulary_id: string().required(),
     });
   }, []);
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Concept Int ID`, name: 'concept_int_id' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Concept Int ID`, name: 'concept_int_id', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Concept Name`, name: 'concept_name' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Domain ID`, loading: domainOptionsQuery.isLoading, name: 'domain_id', options: domainOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Vocabulary ID`, loading: vocabularyOptionsQuery.isLoading, name: 'vocabulary_id', options: vocabularyOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,

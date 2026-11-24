@@ -113,7 +113,7 @@ describe('TreeAlgorithmClassesAdminPage', () => {
     await screen.getByRole('textbox', { exact: true, name: 'Name' }).fill('New class');
     await screen.getByRole('switch', { name: 'Sequence-based' }).click();
     await screen.getByRole('switch', { name: 'Distance-based' }).click();
-    await screen.getByRole('textbox', { exact: true, name: 'Rank' }).fill('3');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Rank' }).fill('3');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => postBodies.length).toBe(1);
@@ -127,6 +127,30 @@ describe('TreeAlgorithmClassesAdminPage', () => {
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('New class')]));
   });
 
+  it('omits the rank when the field is cleared', async () => {
+    const { screen } = await renderPage([]);
+    const postBodies: Partial<SeqDbTreeAlgorithmClass>[] = [];
+    mockApiRequest('POST', TREE_ALGORITHM_CLASSES_PATH, async (request) => {
+      const body = await request.json() as Partial<SeqDbTreeAlgorithmClass>;
+      postBodies.push(body);
+      return Response.json({ ...body, id: 'created-class' }, { status: 201 });
+    });
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await screen.getByRole('textbox', { exact: true, name: 'Code' }).fill('CODE-EMPTY');
+    await screen.getByRole('textbox', { exact: true, name: 'Name' }).fill('Empty rank');
+    await screen.getByRole('switch', { name: 'Sequence-based' }).click();
+    await screen.getByRole('switch', { name: 'Distance-based' }).click();
+    const rankField = screen.getByRole('spinbutton', { exact: true, name: 'Rank' });
+    await rankField.fill('2');
+    await rankField.fill('');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]?.rank).toBeUndefined();
+    expect(postBodies[0]).toMatchObject({ code: 'CODE-EMPTY', name: 'Empty rank' });
+  });
+
   it('does not create a tree algorithm class with a negative rank', async () => {
     const { screen } = await renderPage([]);
     const postBodies: unknown[] = [];
@@ -138,7 +162,7 @@ describe('TreeAlgorithmClassesAdminPage', () => {
     await screen.getByRole('button', { name: 'Create item' }).click();
     await screen.getByRole('textbox', { exact: true, name: 'Code' }).fill('CODE-NEG');
     await screen.getByRole('textbox', { exact: true, name: 'Name' }).fill('Negative rank');
-    await screen.getByRole('textbox', { exact: true, name: 'Rank' }).fill('-1');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Rank' }).fill('-1');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.element(screen.getByText('Create new tree algorithm class', { exact: true })).toBeVisible();

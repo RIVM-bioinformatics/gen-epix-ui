@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbFactRelationship,
@@ -96,17 +96,17 @@ export const FactRelationshipsAdminPage = () => {
     return object<FormFields>().shape({
       domain_concept_id_1: string().required(),
       domain_concept_id_2: string().required(),
-      fact_id_1: number().required(),
-      fact_id_2: number().required(),
+      fact_id_1: SchemaUtil.number.required(),
+      fact_id_2: SchemaUtil.number.required(),
       relationship_concept_id: string().required(),
     });
   }, []);
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Domain Concept ID 1`, name: 'domain_concept_id_1' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Fact ID 1`, name: 'fact_id_1' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Fact ID 1`, name: 'fact_id_1', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Domain Concept ID 2`, name: 'domain_concept_id_2' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Fact ID 2`, name: 'fact_id_2' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Fact ID 2`, name: 'fact_id_2', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Relationship Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'relationship_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [conceptOptionsQuery.isLoading, conceptOptionsQuery.options, t]);

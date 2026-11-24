@@ -140,13 +140,33 @@ describe('DrugStrengthsAdminPage', () => {
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
   });
 
+  it('sends filled amount, numerator and denominator values as numbers in the created drug strength', async () => {
+    const { screen } = await renderPage();
+    const postBodies = mockDrugStrengthPost();
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await screen.getByRole('combobox', { name: 'Drug Concept ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Aspirin' }).click();
+    await screen.getByRole('combobox', { name: 'Ingredient Concept ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Caffeine' }).click();
+    await fillDate(screen, 'Valid Start Date', ['2022', '01', '01']);
+    await fillDate(screen, 'Valid End Date', ['2032', '01', '01']);
+    await screen.getByRole('spinbutton', { exact: true, name: 'Amount Value' }).fill('500');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Numerator Value' }).fill('250');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Denominator Value' }).fill('10');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toEqual(expect.objectContaining({ amount_value: 500, denominator_value: 10, numerator_value: 250 }));
+  });
+
   it('edits a drug strength via the drug strengths endpoint', async () => {
     const { mock, screen } = await renderPage();
 
     await openRowActions(screen);
     await screen.getByRole('menuitem', { name: 'Edit' }).click();
     await expect.element(screen.getByText('Edit item: Aspirin', { exact: true })).toBeVisible();
-    await screen.getByRole('textbox', { name: 'Box Size' }).fill('12');
+    await screen.getByRole('spinbutton', { name: 'Box Size' }).fill('12');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => mock.calls.filter(({ method }) => method === 'PUT').length).toBe(1);

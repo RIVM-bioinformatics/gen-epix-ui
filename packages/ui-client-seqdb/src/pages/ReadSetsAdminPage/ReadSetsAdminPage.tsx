@@ -6,7 +6,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   mixed,
-  number,
   object,
   string,
 } from 'yup';
@@ -32,6 +31,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { useFileOptionsQuery } from '../../dataHooks/useFilesQuery';
 import { useSampleOptionsQuery } from '../../dataHooks/useSamplesQuery';
@@ -95,7 +95,7 @@ export const ReadSetsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      code: string().nullable().optional(),
+      code: SchemaUtil.code.nullable().notRequired(),
       file_compression: mixed<SeqDbFileCompression>().oneOf(Object.values(SeqDbFileCompressionValues)).optional(),
       file_format: mixed<SeqDbReadsFileFormat>().oneOf(Object.values(SeqDbReadsFileFormatValues)).optional(),
       fwd_file_id: string().nullable().optional(),
@@ -104,7 +104,7 @@ export const ReadSetsAdminPage = () => {
       protocol_id: string().required(),
       qc_result_human: mixed<SeqDbQualityControlResult>().oneOf(Object.values(SeqDbQualityControlResultValues)).optional(),
       qc_result_machine: mixed<SeqDbQualityControlResult>().oneOf(Object.values(SeqDbQualityControlResultValues)).optional(),
-      qc_score: number().nullable().optional(),
+      qc_score: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       rev_file_id: string().nullable().optional(),
       rev_reads_hash: string().nullable().optional(),
       rev_uri: string().nullable().optional(),
@@ -200,9 +200,10 @@ export const ReadSetsAdminPage = () => {
         options: qualityControlResultOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         label: t`Quality-control score`,
         name: 'qc_score',
+        type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [fileCompressionOptionsQuery.options, fileOptionsQuery.isLoading, fileOptionsQuery.options, protocolOptionsQuery.isLoading, protocolOptionsQuery.options, qualityControlResultOptionsQuery.options, readsFileFormatOptionsQuery.options, sampleOptionsQuery.isLoading, sampleOptionsQuery.options, t]);

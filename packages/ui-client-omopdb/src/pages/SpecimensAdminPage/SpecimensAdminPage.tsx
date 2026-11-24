@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbSpecimen,
@@ -107,11 +107,11 @@ export const SpecimensAdminPage = () => {
       person_id: string().required(),
       provenance_id: string().nullable().notRequired(),
       provided_by_organization_id: string().nullable().notRequired(),
-      quantity: number().nullable().notRequired(),
+      quantity: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       source_traceback: string().nullable().notRequired(),
       specimen_concept_id: string().required(),
-      specimen_date: string().required(),
-      specimen_datetime: string().nullable().notRequired(),
+      specimen_date: SchemaUtil.isoString.required(),
+      specimen_datetime: SchemaUtil.isoString.nullable().notRequired(),
       specimen_iso_interval: string().nullable().notRequired(),
       specimen_source_id: string().nullable().notRequired(),
       specimen_source_value: string().nullable().notRequired(),
@@ -129,7 +129,7 @@ export const SpecimensAdminPage = () => {
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Specimen Type Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'specimen_type_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Specimen Date`, name: 'specimen_date' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE_TIME, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Specimen Datetime`, name: 'specimen_datetime' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Quantity`, name: 'quantity' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Quantity`, name: 'quantity', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Unit Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'unit_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Anatomic Site Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'anatomic_site_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Disease Status Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'disease_status_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,

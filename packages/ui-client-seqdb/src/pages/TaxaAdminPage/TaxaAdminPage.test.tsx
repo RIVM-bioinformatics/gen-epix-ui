@@ -127,6 +127,33 @@ describe('TaxaAdminPage', () => {
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
   });
 
+  it('sends the SNOMED CT ID when it is entered', async () => {
+    const { screen } = await renderPage();
+    const postBodies = mockTaxonPost(body => ({ ...body, id: 'created-taxon' }));
+
+    await fillNewTaxonRequiredFields(screen);
+    await screen.getByRole('spinbutton', { exact: true, name: 'SNOMED CT ID' }).fill('12345');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toEqual(expect.objectContaining({ code: 'NEW', snomed_sctid: 12345 }));
+  });
+
+  it('omits the SNOMED CT ID when the field is cleared', async () => {
+    const { screen } = await renderPage();
+    const postBodies = mockTaxonPost(body => ({ ...body, id: 'created-taxon' }));
+
+    await fillNewTaxonRequiredFields(screen);
+    const snomedField = screen.getByRole('spinbutton', { exact: true, name: 'SNOMED CT ID' });
+    await snomedField.fill('12345');
+    await snomedField.fill('');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]?.snomed_sctid).toBeUndefined();
+    expect(postBodies[0]).toEqual(expect.objectContaining({ code: 'NEW', name: 'New taxon' }));
+  });
+
   it('shows a validation error and does not post when the NCBI ancestor tax IDs are not a valid array', async () => {
     const { screen } = await renderPage();
     const postBodies = mockTaxonPost(body => ({ ...body, id: 'created-taxon' }));

@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import {
   array,
   mixed,
-  number,
   object,
   string,
 } from 'yup';
@@ -112,7 +111,7 @@ export const TaxaAdminPage = () => {
       code: SchemaUtil.code,
       ictv_ictv_id: string().nullable().optional(),
       name: SchemaUtil.name,
-      ncbi_taxid: number().integer().min(1).nullable().optional(),
+      ncbi_taxid: SchemaUtil.number.integer().min(1).notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       ncbiAncestorTaxidsJson: string().required().test('valid-taxid-array', t`Enter a JSON array of NCBI tax IDs.`, (value) => {
         /* v8 ignore next -- the form always supplies ncbiAncestorTaxidsJson as a string (defaultNewItem and getFormValuesFromItem), so value is never undefined */
         if (value === undefined) {
@@ -127,7 +126,7 @@ export const TaxaAdminPage = () => {
         }
       }),
       rank: mixed<SeqDbTaxonRank>().oneOf(Object.values(SeqDbTaxonRankValues)).required(),
-      snomed_sctid: number().integer().min(1).nullable().optional(),
+      snomed_sctid: SchemaUtil.number.integer().min(1).notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
     });
   }, [t]);
 
@@ -153,9 +152,10 @@ export const TaxaAdminPage = () => {
         required: true,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         label: t`NCBI tax ID`,
         name: 'ncbi_taxid',
+        type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -163,9 +163,10 @@ export const TaxaAdminPage = () => {
         name: 'ictv_ictv_id',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         label: t`SNOMED CT ID`,
         name: 'snomed_sctid',
+        type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,

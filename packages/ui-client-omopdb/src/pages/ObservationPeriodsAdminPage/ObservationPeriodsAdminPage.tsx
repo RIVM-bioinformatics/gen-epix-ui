@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbObservationPeriod,
@@ -111,9 +112,9 @@ export const ObservationPeriodsAdminPage = () => {
   }, [personOptionsQuery.options, conceptOptionsQuery.options, organizationOptionsQuery.options, t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      observation_period_end_date: string().required(),
+      observation_period_end_date: SchemaUtil.isoString.required(),
       observation_period_end_iso_interval: string().nullable().notRequired(),
-      observation_period_start_date: string().required(),
+      observation_period_start_date: SchemaUtil.isoString.required(),
       observation_period_start_iso_interval: string().nullable().notRequired(),
       period_type_concept_id: string().required(),
       person_id: string().required(),

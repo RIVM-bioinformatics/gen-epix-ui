@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbConceptRelationship,
@@ -114,8 +115,8 @@ export const ConceptRelationshipsAdminPage = () => {
       concept_id_2: string().required(),
       invalid_reason: string().nullable().notRequired(),
       relationship_id: string().required(),
-      valid_end_date: string().required(),
-      valid_start_date: string().required(),
+      valid_end_date: SchemaUtil.isoString.required(),
+      valid_start_date: SchemaUtil.isoString.required(),
     });
   }, []);
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {

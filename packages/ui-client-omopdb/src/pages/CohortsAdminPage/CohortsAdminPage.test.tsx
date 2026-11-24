@@ -198,19 +198,9 @@ describe('CohortsAdminPage', () => {
     await expect.element(screen.getByText('Edit item: Subject Alpha', { exact: true })).toBeVisible();
   });
 
-  it('names a cohort by its numeric subject', async () => {
-    const screen = await openEditDialogForItem({ ...cohortAlphaFixture, cohort_definition_id: '', subject_id: 42 as unknown as string });
-    await expect.element(screen.getByText('Edit item: 42', { exact: true })).toBeVisible();
-  });
-
-  it('names a cohort by its cohort start date when the subject is blank', async () => {
+  it('names a cohort by its id when the subject is blank', async () => {
     const screen = await openEditDialogForItem({ ...cohortAlphaFixture, cohort_definition_id: '', subject_id: '   ' });
-    await expect.element(screen.getByText('Edit item: 2024-01-01', { exact: true })).toBeVisible();
-  });
-
-  it('names a cohort by its cohort end date when the subject and start date are blank', async () => {
-    const screen = await openEditDialogForItem({ ...cohortAlphaFixture, cohort_definition_id: '', cohort_end_date: '2024-02-01', cohort_start_date: '', subject_id: '' });
-    await expect.element(screen.getByText('Edit item: 2024-02-01', { exact: true })).toBeVisible();
+    await expect.element(screen.getByText('Edit item: cohort-alpha', { exact: true })).toBeVisible();
   });
 
   it('names a cohort by its id when no other name field is set', async () => {
@@ -218,37 +208,7 @@ describe('CohortsAdminPage', () => {
     await expect.element(screen.getByText('Edit item: cohort-bare', { exact: true })).toBeVisible();
   });
 
-  it('names a created cohort by its numeric cohort start date when the subject and definition are blank', async () => {
-    const { screen } = await renderPage([]);
-    mockApiRequest('POST', COHORTS_PATH, () => Response.json({ cohort_definition_id: '', cohort_end_date: '', cohort_id: 'created-cohort', cohort_start_date: 20240101, id: 'created-cohort', subject_id: '' }, { status: 201 }));
-
-    await screen.getByRole('button', { name: 'Create item' }).click();
-    await screen.getByRole('combobox', { name: 'Cohort Definition ID' }).click();
-    await screen.getByRole('option', { exact: true, name: 'Definition Two' }).click();
-    await screen.getByRole('textbox', { name: 'Subject ID' }).fill('   ');
-    await fillDateField(screen, 'Cohort Start Date', '2024-01-01');
-    await fillDateField(screen, 'Cohort End Date', '2024-02-01');
-    await screen.getByRole('button', { name: 'Save' }).click();
-
-    await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('"20240101" has been created.')]));
-  });
-
-  it('names a created cohort by its numeric cohort end date when the subject and start date are blank', async () => {
-    const { screen } = await renderPage([]);
-    mockApiRequest('POST', COHORTS_PATH, () => Response.json({ cohort_definition_id: '', cohort_end_date: 20240201, cohort_id: 'created-cohort', cohort_start_date: '', id: 'created-cohort', subject_id: '' }, { status: 201 }));
-
-    await screen.getByRole('button', { name: 'Create item' }).click();
-    await screen.getByRole('combobox', { name: 'Cohort Definition ID' }).click();
-    await screen.getByRole('option', { exact: true, name: 'Definition Two' }).click();
-    await screen.getByRole('textbox', { name: 'Subject ID' }).fill('   ');
-    await fillDateField(screen, 'Cohort Start Date', '2024-01-01');
-    await fillDateField(screen, 'Cohort End Date', '2024-02-01');
-    await screen.getByRole('button', { name: 'Save' }).click();
-
-    await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('"20240201" has been created.')]));
-  });
-
-  it('names a created cohort by its start date when the subject is blank and its definition is no longer an option', async () => {
+  it('names a created cohort by its id when the subject is blank and its definition is no longer an option', async () => {
     const { screen } = await renderPage();
     const postBodies = mockCohortPost();
 
@@ -274,6 +234,6 @@ describe('CohortsAdminPage', () => {
 
     await expect.poll(() => postBodies.length).toBe(1);
     expect(postBodies[0]).toEqual(expect.objectContaining({ cohort_definition_id: 'def-2', subject_id: '   ' }));
-    await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('Mon Apr 01 2024')]));
+    await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('"created-cohort" has been created.')]));
   });
 });

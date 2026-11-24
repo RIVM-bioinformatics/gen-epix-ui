@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbPayerPlanPeriod,
@@ -97,8 +98,8 @@ export const PayerPlanPeriodsAdminPage = () => {
     return object<FormFields>().shape({
       family_source_value: string().nullable().notRequired(),
       payer_concept_id: string().nullable().notRequired(),
-      payer_plan_period_end_date: string().required(),
-      payer_plan_period_start_date: string().required(),
+      payer_plan_period_end_date: SchemaUtil.isoString.required(),
+      payer_plan_period_start_date: SchemaUtil.isoString.required(),
       payer_source_concept_id: string().nullable().notRequired(),
       payer_source_value: string().nullable().notRequired(),
       person_id: string().required(),

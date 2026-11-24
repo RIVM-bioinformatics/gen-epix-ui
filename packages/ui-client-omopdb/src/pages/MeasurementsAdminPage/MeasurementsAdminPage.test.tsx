@@ -176,6 +176,32 @@ describe('MeasurementsAdminPage', () => {
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
   });
 
+  it('sends filled number fields as numbers in the created measurement', async () => {
+    const { mock, screen } = await renderPage([]);
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await expect.element(screen.getByText('Create new measurement', { exact: true })).toBeVisible();
+    await screen.getByRole('combobox', { exact: true, name: 'Person ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'person-2' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Measurement Concept ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'Concept One' }).click();
+    await screen.getByRole('combobox', { exact: true, name: 'Measurement Type Concept ID' }).click();
+    await screen.getByRole('option', { exact: true, name: 'concept-2' }).click();
+    await fillDateField(screen, 'Measurement Date', '2024-03-04');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Value As Number' }).fill('1.5');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Range Low' }).fill('0.5');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Range High' }).fill('2.5');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => mock.calls.filter(({ method }) => method === 'POST').length).toBe(1);
+    const postCall = mock.calls.find(({ method }) => method === 'POST');
+    expect(postCall?.body).toEqual(expect.objectContaining({
+      range_high: 2.5,
+      range_low: 0.5,
+      value_as_number: 1.5,
+    }));
+  });
+
   it('edits a measurement via the measurements endpoint', async () => {
     const { mock, screen } = await renderPage();
 

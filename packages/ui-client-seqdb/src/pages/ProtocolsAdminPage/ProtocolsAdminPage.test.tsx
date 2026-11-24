@@ -136,6 +136,48 @@ describe('ProtocolsAdminPage', () => {
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
   });
 
+  it('sends the integer distance default as false when it is not changed on create', async () => {
+    const { screen } = await renderPage();
+    const postBodies = mockProtocolPost();
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await screen.getByRole('textbox', { name: 'Code' }).fill('P-DEF');
+    await screen.getByRole('textbox', { name: 'Name' }).fill('Default protocol');
+    await screen.getByRole('combobox', { name: 'Protocol type' }).click();
+    await screen.getByRole('option', { exact: true, name: 'SEQUENCING' }).click();
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toEqual(expect.objectContaining({ code: 'P-DEF', is_integer_distance: false }));
+  });
+
+  it('sends the maximum stored distance when it is entered', async () => {
+    const { screen } = await renderPage();
+    const postBodies = mockProtocolPost();
+
+    await openCreateDialogWithRequiredFields(screen);
+    await screen.getByRole('spinbutton', { exact: true, name: 'Maximum stored distance' }).fill('5');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toEqual(expect.objectContaining({ code: 'P-NEW', max_stored_distance: 5 }));
+  });
+
+  it('omits the maximum stored distance when the field is cleared', async () => {
+    const { screen } = await renderPage();
+    const postBodies = mockProtocolPost();
+
+    await openCreateDialogWithRequiredFields(screen);
+    const maxStoredDistanceField = screen.getByRole('spinbutton', { exact: true, name: 'Maximum stored distance' });
+    await maxStoredDistanceField.fill('4');
+    await maxStoredDistanceField.fill('');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]?.max_stored_distance).toBeUndefined();
+    expect(postBodies[0]).toEqual(expect.objectContaining({ code: 'P-NEW', name: 'New protocol' }));
+  });
+
   it('requires a code and a protocol type before submitting the create form', async () => {
     const { screen } = await renderPage();
     const postBodies = mockProtocolPost();
@@ -160,7 +202,7 @@ describe('ProtocolsAdminPage', () => {
     await expect.poll(() => postBodies.length).toBe(1);
   });
 
-  it('does not submit the create form for invalid additional properties or an invalid datetime', async () => {
+  it('does not submit the create form for invalid additional properties and sends the datetime as an ISO string', async () => {
     const { screen } = await renderPage();
     const postBodies = mockProtocolPost();
 
@@ -174,15 +216,15 @@ describe('ProtocolsAdminPage', () => {
     }
 
     await screen.getByRole('textbox', { name: PROPS_LABEL }).fill('{}');
-    await screen.getByRole('textbox', { name: 'Valid start datetime' }).fill('not-a-date');
-    await screen.getByRole('button', { name: 'Save' }).click();
-    await expect.element(screen.getByText('Create new protocol', { exact: true })).toBeVisible();
-    expect(postBodies).toHaveLength(0);
-
-    await screen.getByRole('textbox', { name: 'Valid start datetime' }).fill('2024-01-01T00:00:00Z');
+    const startDateTimeGroup = screen.getByRole('group', { name: 'Valid start datetime' });
+    await startDateTimeGroup.getByRole('spinbutton', { name: 'Year' }).fill('2024');
+    await startDateTimeGroup.getByRole('spinbutton', { name: 'Month' }).fill('01');
+    await startDateTimeGroup.getByRole('spinbutton', { name: 'Day' }).fill('01');
+    await startDateTimeGroup.getByRole('spinbutton', { name: 'Hours' }).fill('00');
+    await startDateTimeGroup.getByRole('spinbutton', { name: 'Minutes' }).fill('00');
     await screen.getByRole('button', { name: 'Save' }).click();
     await expect.poll(() => postBodies.length).toBe(1);
-    expect(postBodies[0]).toMatchObject({ props: {}, valid_start_datetime: '2024-01-01T00:00:00Z' });
+    expect(postBodies[0]).toMatchObject({ props: {}, valid_start_datetime: new Date(2024, 0, 1).toISOString() });
   });
 
   it('shows the stored additional properties as formatted JSON when editing', async () => {

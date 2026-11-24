@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbConditionOccurrence,
@@ -115,13 +116,13 @@ export const ConditionOccurrencesAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       condition_concept_id: string().required(),
-      condition_end_date: string().nullable().notRequired(),
-      condition_end_datetime: string().nullable().notRequired(),
+      condition_end_date: SchemaUtil.isoString.nullable().notRequired(),
+      condition_end_datetime: SchemaUtil.isoString.nullable().notRequired(),
       condition_end_iso_interval: string().nullable().notRequired(),
       condition_source_concept_id: string().nullable().notRequired(),
       condition_source_value: string().nullable().notRequired(),
-      condition_start_date: string().required(),
-      condition_start_datetime: string().nullable().notRequired(),
+      condition_start_date: SchemaUtil.isoString.required(),
+      condition_start_datetime: SchemaUtil.isoString.nullable().notRequired(),
       condition_start_iso_interval: string().nullable().notRequired(),
       condition_status_concept_id: string().nullable().notRequired(),
       condition_status_source_value: string().nullable().notRequired(),

@@ -148,7 +148,7 @@ describe('AstPredictionsAdminPage', () => {
     await screen.getByRole('option', { exact: true, name: 'Warning' }).click();
     await screen.getByRole('combobox', { exact: true, name: 'Human quality-control result' }).click();
     await screen.getByRole('option', { exact: true, name: 'Pass' }).click();
-    await screen.getByRole('textbox', { exact: true, name: 'Quality-control score' }).fill('75');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Quality-control score' }).fill('75');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => mock.calls.filter(({ method }) => method === 'POST').length).toBe(1);

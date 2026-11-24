@@ -148,7 +148,7 @@ describe('ProvidersAdminPage', () => {
     await expect.element(screen.getByText('Create new provider', { exact: true })).toBeVisible();
     await screen.getByRole('textbox', { exact: true, name: 'Provider Name' }).fill('Provider New');
     await screen.getByRole('textbox', { exact: true, name: 'Npi' }).fill('9876543210');
-    await screen.getByRole('textbox', { exact: true, name: 'Year Of Birth' }).fill('1985');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Year Of Birth' }).fill('1985');
     await selectOption(screen, 'Care Site ID', 'Care Site One');
     await selectOption(screen, 'Gender Concept ID', 'Female');
     await selectOption(screen, 'Specialty Concept ID', 'Cardiology');

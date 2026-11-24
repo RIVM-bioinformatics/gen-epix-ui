@@ -169,15 +169,13 @@ describe('DeviceExposuresAdminPage', () => {
     await expect.element(screen.getByText('Create new device exposure', { exact: true })).toBeVisible();
     await fillRequiredCreateFields(screen);
     await screen.getByRole('textbox', { exact: true, name: 'Provenance ID' }).fill('Typed provenance');
-    await screen.getByRole('textbox', { exact: true, name: 'Quantity' }).fill('3');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Quantity' }).fill('3');
     await screen.getByRole('button', { name: 'Save' }).click();
 
     await expect.poll(() => postBodies.length).toBe(1);
-    // The DATE field is posted via a string() schema, so the value is not ISO formatted.
-    const expectedStartDate: unknown = expect.stringContaining('2022');
     expect(postBodies[0]).toEqual(expect.objectContaining({
       device_concept_id: 'concept-1',
-      device_exposure_start_date: expectedStartDate,
+      device_exposure_start_date: new Date(2022, 0, 1).toISOString(),
       device_type_concept_id: 'concept-1',
       person_id: 'person-1',
       provenance_id: 'Typed provenance',

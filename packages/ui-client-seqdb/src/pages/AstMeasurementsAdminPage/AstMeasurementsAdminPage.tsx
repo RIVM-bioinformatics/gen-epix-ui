@@ -6,7 +6,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   mixed,
-  number,
   object,
   string,
 } from 'yup';
@@ -28,6 +27,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { useSampleOptionsQuery } from '../../dataHooks/useSamplesQuery';
 import { useProtocolOptionsQuery } from '../../dataHooks/useProtocolsQuery';
@@ -85,7 +85,7 @@ export const AstMeasurementsAdminPage = () => {
       protocol_id: string().required(),
       qc_result_human: mixed<SeqDbQualityControlResult>().oneOf(Object.values(SeqDbQualityControlResultValues)).nullable().optional(),
       qc_result_machine: mixed<SeqDbQualityControlResult>().oneOf(Object.values(SeqDbQualityControlResultValues)).nullable().optional(),
-      qc_score: number().nullable().optional(),
+      qc_score: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       sample_id: string().required(),
     });
   }, []);
@@ -148,9 +148,10 @@ export const AstMeasurementsAdminPage = () => {
         options: qualityControlResultOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         label: t`Quality-control score`,
         name: 'qc_score',
+        type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [protocolOptionsQuery.isLoading, protocolOptionsQuery.options, qualityControlResultOptionsQuery.options, sampleOptionsQuery.isLoading, sampleOptionsQuery.options, t]);

@@ -79,7 +79,7 @@ const renderPage = async (initialItems: RefSeqFixture[] = [refSeqAlphaFixture, r
  * Overrides the POST handler of mockCrudApi so that the response can be shaped per test.
  */
 const mockRefSeqPost = (responseBody: (body: Partial<SeqDbRefSeq>) => unknown) => {
-  const postBodies: unknown[] = [];
+  const postBodies: Partial<SeqDbRefSeq>[] = [];
   mockApiRequest('POST', REF_SEQS_PATH, async (request) => {
     const body = await request.json() as Partial<SeqDbRefSeq>;
     postBodies.push(body);
@@ -137,6 +137,25 @@ describe('RefSeqsAdminPage', () => {
     await expect.poll(() => postBodies.length).toBe(1);
     expect(postBodies[0]).toMatchObject({ code: 'RS-C', name: 'Gamma Sequence', seq: 'TTAA', taxon_id: 'taxon-2' });
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('Gamma Sequence')]));
+    await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
+  });
+
+  it('creates a reference sequence without a sequence format', async () => {
+    const { screen } = await renderPage();
+    const postBodies = mockRefSeqPost(body => ({ ...body, id: 'created-ref-seq' }));
+
+    await screen.getByRole('button', { name: 'Create item' }).click();
+    await expect.element(screen.getByText('Create new reference sequence', { exact: true })).toBeVisible();
+    await screen.getByRole('textbox', { name: 'Code' }).fill('RS-C');
+    await screen.getByRole('textbox', { name: 'Name' }).fill('Gamma Sequence');
+    await screen.getByRole('combobox', { name: 'Taxon' }).click();
+    await screen.getByRole('option', { exact: true, name: 'TX-2 - Taxon Two' }).click();
+    await screen.getByRole('textbox', { name: 'Sequence' }).fill('TTAA');
+    await screen.getByRole('button', { name: 'Save' }).click();
+
+    await expect.poll(() => postBodies.length).toBe(1);
+    expect(postBodies[0]).toMatchObject({ code: 'RS-C', name: 'Gamma Sequence', seq: 'TTAA', taxon_id: 'taxon-2' });
+    expect(postBodies[0]?.seq_format ?? null).toBeNull();
     await expect.poll(getNotificationMessages).toEqual(expect.arrayContaining([expect.stringContaining('has been created.')]));
   });
 

@@ -185,7 +185,7 @@ describe('ProcedureOccurrencesAdminPage', () => {
     await screen.getByRole('button', { name: 'Create item' }).click();
     await expect.element(screen.getByText('Create new procedure occurrence', { exact: true })).toBeVisible();
     await fillRequiredCreateFields(screen);
-    await screen.getByRole('textbox', { exact: true, name: 'Quantity' }).fill('4');
+    await screen.getByRole('spinbutton', { exact: true, name: 'Quantity' }).fill('4');
     await screen.getByRole('textbox', { exact: true, name: 'Procedure Source Value' }).fill('Procedure New');
     await screen.getByRole('button', { name: 'Save' }).click();
 

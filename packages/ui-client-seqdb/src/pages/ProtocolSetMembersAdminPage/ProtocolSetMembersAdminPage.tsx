@@ -42,7 +42,11 @@ export const ProtocolSetMembersAdminPage = () => {
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await container.resolve(SeqDbSeqApi).protocolSetMembersPostOne(variables)).data;
+    const response = await container.resolve(SeqDbSeqApi).protocolSetMembersPostOne(variables);
+    if (!response.data.id) {
+      throw new Error('SeqDB returned a protocol set member without an ID.');
+    }
+    return response.data;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: SeqDbProtocolSetMember) => {

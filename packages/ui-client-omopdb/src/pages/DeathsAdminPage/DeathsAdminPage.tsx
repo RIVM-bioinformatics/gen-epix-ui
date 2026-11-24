@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbDeath,
@@ -114,8 +115,8 @@ export const DeathsAdminPage = () => {
       cause_concept_id: string().nullable().notRequired(),
       cause_source_concept_id: string().nullable().notRequired(),
       cause_source_value: string().nullable().notRequired(),
-      death_date: string().required(),
-      death_datetime: string().nullable().notRequired(),
+      death_date: SchemaUtil.isoString.required(),
+      death_datetime: SchemaUtil.isoString.nullable().notRequired(),
       death_type_concept_id: string().nullable().notRequired(),
       person_id: string().required(),
       provenance_id: string().nullable().notRequired(),

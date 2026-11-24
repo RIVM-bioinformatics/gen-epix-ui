@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbDrugStrength,
@@ -112,30 +112,30 @@ export const DrugStrengthsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       amount_unit_concept_id: string().nullable().notRequired(),
-      amount_value: number().nullable().notRequired(),
-      box_size: number().nullable().notRequired(),
+      amount_value: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      box_size: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       denominator_unit_concept_id: string().nullable().notRequired(),
-      denominator_value: number().nullable().notRequired(),
+      denominator_value: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       drug_concept_id: string().required(),
       ingredient_concept_id: string().required(),
       invalid_reason: string().nullable().notRequired(),
       numerator_unit_concept_id: string().nullable().notRequired(),
-      numerator_value: number().nullable().notRequired(),
-      valid_end_date: string().required(),
-      valid_start_date: string().required(),
+      numerator_value: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      valid_end_date: SchemaUtil.isoString.required(),
+      valid_start_date: SchemaUtil.isoString.required(),
     });
   }, []);
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Drug Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'drug_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Ingredient Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'ingredient_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Amount Value`, name: 'amount_value' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Amount Value`, name: 'amount_value', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Amount Unit Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'amount_unit_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Numerator Value`, name: 'numerator_value' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Numerator Value`, name: 'numerator_value', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Numerator Unit Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'numerator_unit_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Denominator Value`, name: 'denominator_value' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Denominator Value`, name: 'denominator_value', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Denominator Unit Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'denominator_unit_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Box Size`, name: 'box_size' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Box Size`, name: 'box_size', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Valid Start Date`, name: 'valid_start_date' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Valid End Date`, name: 'valid_end_date' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Invalid Reason`, name: 'invalid_reason' } as const satisfies FormFieldDefinition<FormFields>,

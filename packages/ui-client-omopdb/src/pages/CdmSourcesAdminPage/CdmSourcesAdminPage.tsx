@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbCdmSource,
@@ -103,14 +104,14 @@ export const CdmSourcesAdminPage = () => {
     return object<FormFields>().shape({
       cdm_etl_reference: string().nullable().notRequired(),
       cdm_holder: string().required(),
-      cdm_release_date: string().required(),
+      cdm_release_date: SchemaUtil.isoString.required(),
       cdm_source_abbreviation: string().required(),
       cdm_source_name: string().required(),
       cdm_version: string().nullable().notRequired(),
       cdm_version_concept_id: string().required(),
       source_description: string().nullable().notRequired(),
       source_documentation_reference: string().nullable().notRequired(),
-      source_release_date: string().required(),
+      source_release_date: SchemaUtil.isoString.required(),
       vocabulary_version: string().required(),
     });
   }, []);
