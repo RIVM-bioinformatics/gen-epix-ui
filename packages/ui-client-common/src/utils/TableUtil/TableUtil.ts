@@ -54,8 +54,8 @@ export class TableUtil {
     }
 
     // Compare the sorted IDs so that duplicates and unknown IDs in the settings are rejected
-    const sortedTableColumnIds = (tableColumns ?? []).map(c => c.id).sort();
-    const sortedColumnVisualSettingsIds = columnVisualSettings.map(c => c.id).sort();
+    const sortedTableColumnIds = (tableColumns ?? []).map(c => c.id).sort((a, b) => a.localeCompare(b));
+    const sortedColumnVisualSettingsIds = columnVisualSettings.map(c => c.id).sort((a, b) => a.localeCompare(b));
 
     const haveSameIds = sortedTableColumnIds.length === sortedColumnVisualSettingsIds.length && sortedTableColumnIds.every((id, index) => id === sortedColumnVisualSettingsIds[index]);
     if (!haveSameIds) {

@@ -161,8 +161,16 @@ pnpm run add-missing-translations
  exports.
 - Preserve strict type behavior; avoid `any` unless the surrounding generated or
  compatibility code already requires it.
-
-## Code Organization And Directory Structure
+- SonarCloud rules that lint does not enforce, and that must be followed in
+ both production and test code:
+ - Always pass a compare function to `.sort()` (S2871), for example
+   `.sort((a, b) => a.localeCompare(b))`.
+ - Throw `new Error(...)`, never `throw Error(...)` (S7723).
+ - Only mark a function `async` when it contains an `await` (S7503).
+ - Keep functions under the cognitive complexity limit by moving branches into
+   named helpers (S3776).
+ - Use `toHaveLength(n)` instead of `expect(x.length).toBe(n)` (S5906).
+ - Merge similar test cases into `it.each` tables (S5976).
 
 The UI packages (`ui-client-common`, `ui-client-casedb`, and the thinner
 `ui-client-omopdb`/`ui-client-seqdb`) share one top-level `src/` taxonomy:

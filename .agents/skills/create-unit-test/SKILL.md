@@ -170,6 +170,10 @@ remaining gaps.
   helper `async` triggers SonarCloud S7503.
 - Throw `new Error(...)`, never `throw Error(...)`, in test helpers and
   production code alike.
+- Always pass a compare function to `Array.prototype.sort`, such as
+  `.sort((a, b) => a.localeCompare(b))`. A bare `.sort()` triggers SonarCloud
+  S2871 (CRITICAL) in production code, and test code should follow the same
+  rule.
 - Keep helper functions small. Test helpers and component render logic that
   branch heavily should move each branch into a named helper so the enclosing
   function stays under SonarCloud's cognitive complexity limit (S3776). Do not
@@ -321,8 +325,8 @@ until the root validation passes.
   assertions. Assertions use specific matchers such as `toHaveLength`, and
   no function is marked `async` without an `await`. Errors are thrown with
   `new Error`. Branch-heavy helpers were split so complexity stays low. These
-  checks cover SonarCloud rules S5976, S5906, S7503, S7723 and S3776, which
-  lint does not enforce.
+  checks cover SonarCloud rules S5976, S5906, S7503, S7723, S2871 and S3776,
+  which lint does not enforce.
 - Every processed target reports 100 percent statements, branches, functions,
   and lines.
 - Lint, type checking, and the focused test command pass for every processed
