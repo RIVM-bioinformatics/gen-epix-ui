@@ -52,6 +52,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
       background: theme.palette.primary.main,
       primaryColor: theme.palette.primary.contrastText,
     } satisfies ApplicationBarNavigationMenuTheme,
+    // createTheme always sets components, so the optional-chaining fallback is unreachable in practice
     ...(theme.components?.GenEpixUiClientCommonApplicationBarNavigationMenu ?? {}),
   }), [theme]);
   const authorizationService = useMemo(() => container.resolve(AuthorizationService), []);

@@ -41,6 +41,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import type { TransferListOption } from '../../../models/form.models';
 import { FormUtil } from '../../../utils/FormUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
+import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 
 export type TransferListProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;
@@ -49,7 +50,7 @@ export type TransferListProps<TFieldValues extends FieldValues, TName extends Pa
   readonly label: string;
   readonly loading?: boolean;
   readonly name: TName;
-  readonly onChange?: (value: string) => void;
+  readonly onChange?: ((value: string) => void) | ((value: string[]) => void);
   readonly options: TransferListOption[];
   readonly required?: boolean;
   readonly warningMessage?: string;
@@ -83,23 +84,18 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
     setFilterValue(event.target.value);
   }, 200, { trailing: true });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const internalOnChange = useCallback((value: string[], onChange: (...event: any[]) => void) => {
-    if (required && value === null) {
+  const internalOnChange = useCallback((value: string[], onChange: (value: string[]) => void) => {
+    if (required && value.length === 0) {
       return;
     }
     if (onChangeProp) {
-      onChangeProp(value as TFieldValues[TName]);
+      (onChangeProp as (value: string[]) => void)(value);
     }
     onChange(value);
   }, [onChangeProp, required]);
 
   const mappedOptions = useMemo(() => {
-    const map: { [key: string]: TransferListOption } = {};
-    options.forEach((option) => {
-      map[option.value] = option;
-    });
-    return map;
+    return new Map(options.map(option => [option.value, option] as const));
   }, [options]);
 
   const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
@@ -108,11 +104,13 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
         inputRef?.current?.focus();
       },
     });
-    const valueItems = value as string[];
-    const left: string[] = Object.keys(mappedOptions).filter(option => !valueItems.includes(option));
-    const right: string[] = Object.keys(mappedOptions).filter(option => valueItems.includes(option));
+    const valueItems: string[] = Array.isArray(value) ? value : [];
+    const optionValues = Array.from(mappedOptions.keys());
+    const left: string[] = optionValues.filter(option => !valueItems.includes(option));
+    const right: string[] = optionValues.filter(option => valueItems.includes(option));
     const leftChecked: string[] = intersection(checked, left);
     const rightChecked: string[] = intersection(checked, right);
+    const isDisabled = disabled || loading;
 
     const handleToggle = (item: string) => () => {
       const currentIndex = checked.indexOf(item);
@@ -126,7 +124,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
     };
     const onMoveAllRightButtonClick = () => {
       setChecked([]);
-      internalOnChange(Object.keys(mappedOptions), onChange);
+      internalOnChange(optionValues, onChange);
     };
     const onMoveAllLeftButtonClick = () => {
       setChecked([]);
@@ -165,13 +163,14 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
             if (!filterValue) {
               return true;
             }
-            return mappedOptions[item].label.toLowerCase().includes(filterValue.toLowerCase());
+            const optionLabel = mappedOptions.get(item)?.label;
+            return optionLabel?.toLowerCase().includes(filterValue.toLowerCase()) ?? false;
           }).map((item) => {
-            const option = mappedOptions[item];
+            const option = mappedOptions.get(item);
             const labelId = `transfer-list-item-${option.value}-label`;
             return (
               <ListItemButton
-                disabled={disabled}
+                disabled={isDisabled}
                 key={option.value}
                 onClick={handleToggle(option.value)}
                 role={'listitem'}
@@ -189,7 +188,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
                 >
                   <Checkbox
                     checked={checked.indexOf(item) !== -1}
-                    disabled={disabled}
+                    disabled={isDisabled}
                     slotProps={{
                       input: {
                         'aria-labelledby': labelId,
@@ -225,7 +224,9 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
       >
         <Box>
           <TextField
+            disabled={isDisabled}
             fullWidth
+            inputRef={inputRef}
             label={t`Filter`}
             onChange={onFilterValueChangeDebounced}
             size={'small'}
@@ -254,7 +255,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
 
               <Button
                 aria-label={t`move selected right`}
-                disabled={disabled || leftChecked.length === 0}
+                disabled={isDisabled || leftChecked.length === 0}
                 // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={onMoveRightButtonClick}
                 size={'small'}
@@ -265,7 +266,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
               </Button>
               <Button
                 aria-label={t`move selected left`}
-                disabled={disabled || rightChecked.length === 0}
+                disabled={isDisabled || rightChecked.length === 0}
                 // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={onMoveLeftButtonClick}
                 size={'small'}
@@ -276,7 +277,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
               </Button>
               <Button
                 aria-label={t`move all right`}
-                disabled={disabled || left.length === 0}
+                disabled={isDisabled || left.length === 0}
                 // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={onMoveAllRightButtonClick}
                 size={'small'}
@@ -287,7 +288,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
               </Button>
               <Button
                 aria-label={t`move all left`}
-                disabled={disabled || right.length === 0}
+                disabled={isDisabled || right.length === 0}
                 // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={onMoveAllLeftButtonClick}
                 size={'small'}
@@ -298,7 +299,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
               </Button>
               <Button
                 aria-label={t`Reset selection`}
-                disabled={disabled || options.length === 0}
+                disabled={isDisabled || options.length === 0}
                 // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={onResetButtonClick}
                 size={'small'}
@@ -309,7 +310,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
               </Button>
               <Button
                 aria-label={t`clear`}
-                disabled={disabled}
+                disabled={isDisabled}
                 // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={onMoveAllLeftButtonClick}
                 size={'small'}
@@ -326,12 +327,12 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
         </Box>
       </Box>
     );
-  }, [mappedOptions, checked, theme, t, onFilterValueChangeDebounced, height, disabled, options.length, internalOnChange, resetField, name, filterValue]);
+  }, [mappedOptions, checked, theme, t, onFilterValueChangeDebounced, height, disabled, loading, options.length, internalOnChange, resetField, name, filterValue]);
 
   return (
     <FormControl
       error={hasError}
-      {...TestIdUtil.createAttributes('ToggleButtonGroup', { name })}
+      {...TestIdUtil.createAttributes('TransferList', { label, name })}
       fullWidth
       sx={{
         margin: `${theme.spacing(2)} 0`,
@@ -351,6 +352,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
         name={name}
         render={renderController}
       />
+      { !!loading && <FormFieldLoadingIndicator />}
       <FormHelperText sx={{ ml: 0 }}>
         <FormFieldHelperText
           errorMessage={errorMessage}

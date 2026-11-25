@@ -66,6 +66,7 @@ export const MeasurementRelationsAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is still unassigned for the first reference, so !fallbackValue is always true */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -103,9 +104,11 @@ export const MeasurementRelationsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- id-less items are validated form values whose required person_id always sets fallbackValue */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: the preceding if always returns for id-less items */
     return t`New measurement relation`;
   }, [personOptionsQuery.options, measurementOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {

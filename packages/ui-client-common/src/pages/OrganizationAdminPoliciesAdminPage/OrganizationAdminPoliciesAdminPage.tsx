@@ -5,7 +5,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  boolean,
   object,
   string,
 } from 'yup';
@@ -15,6 +14,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { API_ABAC_TOKEN } from '../../constants/api.constants';
 import { useOrganizationAdminPolicyNameFactory } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
@@ -58,7 +58,7 @@ export const OrganizationAdminPoliciesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      is_active: boolean(),
+      is_active: SchemaUtil.boolean.nullable(),
       organization_id: string().required().uuid4(),
       user_id: string().required().uuid4(),
     });

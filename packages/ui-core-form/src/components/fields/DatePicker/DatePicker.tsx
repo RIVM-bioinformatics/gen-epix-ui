@@ -52,7 +52,7 @@ export type DatePickerProps<TFieldValues extends FieldValues, TName extends Path
   readonly label: string;
   readonly loading?: boolean;
   readonly name: TName;
-  readonly onChange?: (value: Date) => void;
+  readonly onChange?: ((value: Date) => void) | ((value: Date | null) => void);
   readonly required?: boolean;
   readonly warningMessage?: string;
 };
@@ -73,12 +73,11 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
   const hasError = !!errorMessage;
   const hasWarning = !!warningMessage && !hasError;
   const inputRef = useRef<HTMLInputElement>(null);
-  const onResetButtonClickRef = useRef<() => void>(() => undefined);
 
   const onMuiDatePickerChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
-    (newValue: Date) => {
+    (newValue: Date | null) => {
       if (onChangeProp) {
-        onChangeProp(newValue);
+        (onChangeProp)(newValue);
       }
       onChange(newValue);
     }
@@ -104,7 +103,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
       case DATE_FORMAT.YEAR_MONTH:
         return ['year', 'month'];
       default:
-        throw new Error(`Unsupported date format: ${dateFormat}`);
+        throw new Error(`Unsupported date format: ${String(dateFormat)}`);
     }
   }, [dateFormat]);
 
@@ -117,7 +116,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
       },
     });
 
-    onResetButtonClickRef.current = () => {
+    const onResetButtonClick = () => {
       onChange(null);
     };
 
@@ -164,7 +163,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
                   {...props}
                   disabled={disabled}
                   loading={loading}
-                  onResetButtonClickRef={onResetButtonClickRef}
+                  onResetButtonClick={onResetButtonClick}
                 />
               ),
             }}

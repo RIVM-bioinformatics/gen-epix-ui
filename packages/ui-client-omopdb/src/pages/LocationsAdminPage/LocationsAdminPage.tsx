@@ -5,7 +5,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
@@ -25,6 +24,7 @@ import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { OMOPDB_QUERY_KEY } from '../../constants/query.constants';
 import { OmopDbAdminUtil } from '../../utils/OmopDbAdminUtil';
@@ -77,6 +77,7 @@ export const LocationsAdminPage = () => {
       if (countryConceptIdOption?.label) {
         return countryConceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here (only assigned in this block), so the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = countryConceptId;
       }
@@ -104,9 +105,9 @@ export const LocationsAdminPage = () => {
       country_concept_id: string().nullable().notRequired(),
       country_source_value: string().nullable().notRequired(),
       county: string().nullable().notRequired(),
-      latitude: number().nullable().notRequired(),
+      latitude: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       location_source_value: string().nullable().notRequired(),
-      longitude: number().nullable().notRequired(),
+      longitude: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       state: string().nullable().notRequired(),
       zip: string().nullable().notRequired(),
     });
@@ -122,8 +123,8 @@ export const LocationsAdminPage = () => {
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Location Source Value`, name: 'location_source_value' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Country Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'country_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Country Source Value`, name: 'country_source_value' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Latitude`, name: 'latitude' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Longitude`, name: 'longitude' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Latitude`, name: 'latitude', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Longitude`, name: 'longitude', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [conceptOptionsQuery.isLoading, conceptOptionsQuery.options, t]);
   const tableColumns = useMemo((): TableColumn<Row>[] => {

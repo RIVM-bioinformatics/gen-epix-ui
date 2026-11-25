@@ -53,6 +53,7 @@ export const SampleIdentifiersAdminPage = () => {
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: SeqDbSampleIdentifier) => {
+    /* v8 ignore next -- CrudPage only calls updateOne for rows with a truthy id */
     const id = requireId(item.id);
     return (await container.resolve(SeqDbSeqApi).sampleIdentifiersPutOne(
       id,

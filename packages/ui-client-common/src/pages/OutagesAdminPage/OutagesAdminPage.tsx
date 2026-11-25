@@ -4,10 +4,7 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  boolean,
-  object,
-} from 'yup';
+import { object } from 'yup';
 import type {
   CommonDbApiPermission,
   CommonDbOutage,
@@ -59,8 +56,8 @@ export const OutagesAdminPage = () => {
       active_from: SchemaUtil.isoString,
       active_to: SchemaUtil.isoString,
       description: SchemaUtil.description.required(),
-      is_active: boolean(),
-      is_visible: boolean(),
+      is_active: SchemaUtil.boolean.nullable(),
+      is_visible: SchemaUtil.boolean.nullable(),
       visible_from: SchemaUtil.isoString,
       visible_to: SchemaUtil.isoString,
     });

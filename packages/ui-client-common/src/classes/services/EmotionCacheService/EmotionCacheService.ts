@@ -18,8 +18,13 @@ export class EmotionCacheService {
     @inject(CONFIG_TOKEN) config: ConfigBase,
     @inject(WindowService) windowService: WindowService,
   ) {
+    const document = windowService.document;
+    if (!document) {
+      throw new Error('Cannot create an Emotion cache without a document.');
+    }
+
     this.emotionCache = createCache({
-      container: windowService.document.head,
+      container: document.head,
       key: 'genepix',
       nonce: config.nonce,
       prepend: !!config.nonce,

@@ -40,6 +40,7 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
         error,
         stack: (error as Error)?.stack,
       },
+      /* v8 ignore next -- axios errors return early above, so this ternary's DEBUG arm is unreachable */
       level: isAxiosError(error) ? CommonDbLogLevel.DEBUG : CommonDbLogLevel.ERROR,
       topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
     }]);

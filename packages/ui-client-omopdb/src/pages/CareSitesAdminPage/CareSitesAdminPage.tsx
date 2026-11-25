@@ -87,6 +87,7 @@ export const CareSitesAdminPage = () => {
       if (placeOfServiceConceptIdOption?.label) {
         return placeOfServiceConceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here (only assigned in this block), so the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = placeOfServiceConceptId;
       }

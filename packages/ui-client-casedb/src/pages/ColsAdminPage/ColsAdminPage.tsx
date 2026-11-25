@@ -59,7 +59,7 @@ import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 type FormFields = OmitWithMetaData<CaseDbCol, 'case_type' | 'dim' | 'props' | 'ref_col'>;
 
-const NCBI_TAXID_REGEX = /^NCBI:txid\d+/;
+const NCBI_TAXID_REGEX = /^NCBI:txid\d+$/;
 
 export const ColsAdminPage = () => {
   const { t } = useTranslation();

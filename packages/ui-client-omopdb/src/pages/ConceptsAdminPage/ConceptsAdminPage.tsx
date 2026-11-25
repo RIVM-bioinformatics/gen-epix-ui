@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbConcept,
@@ -82,6 +82,7 @@ export const ConceptsAdminPage = () => {
       if (domainIdOption?.label) {
         return domainIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here: it is first assigned in this block, so the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = domainId;
       }
@@ -99,28 +100,30 @@ export const ConceptsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- domain_id is required on create, so a non-empty domain_id always sets fallbackValue; rows return on their id first */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else ignore above */
     return t`New concept`;
   }, [domainOptionsQuery.options, vocabularyOptionsQuery.options, t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       concept_class_id: string().required(),
       concept_code: string().required(),
-      concept_int_id: number().nullable().notRequired(),
+      concept_int_id: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       concept_name: string().required(),
       domain_id: string().required(),
       invalid_reason: string().nullable().notRequired(),
       standard_concept: string().nullable().notRequired(),
-      valid_end_date: string().required(),
-      valid_start_date: string().required(),
+      valid_end_date: SchemaUtil.isoString.required(),
+      valid_start_date: SchemaUtil.isoString.required(),
       vocabulary_id: string().required(),
     });
   }, []);
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Concept Int ID`, name: 'concept_int_id' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Concept Int ID`, name: 'concept_int_id', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Concept Name`, name: 'concept_name' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Domain ID`, loading: domainOptionsQuery.isLoading, name: 'domain_id', options: domainOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Vocabulary ID`, loading: vocabularyOptionsQuery.isLoading, name: 'vocabulary_id', options: vocabularyOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,

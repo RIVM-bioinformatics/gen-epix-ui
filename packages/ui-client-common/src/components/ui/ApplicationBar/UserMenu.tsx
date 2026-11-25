@@ -101,6 +101,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
           divider
         >
           <ListItemText
+            /* v8 ignore next -- UserUtil.getUserDisplayValue always returns a string, so the fallback is unreachable */
             primary={userName ?? t`Unknown`}
             slotProps={{
               primary: {

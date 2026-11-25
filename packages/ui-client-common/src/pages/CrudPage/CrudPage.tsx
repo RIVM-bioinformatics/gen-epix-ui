@@ -104,7 +104,7 @@ export type CrudPageProps<
   readonly extraUpdateOnePermissions?: TApiPermission[];
   readonly fetchAll: (signal: AbortSignal) => Promise<TData[]>;
   readonly fetchAllSelect?: (data: TData[]) => TData[];
-  readonly formFieldDefinitions: ((values: TFormFields, item: TData) => FormFieldDefinition<TFormFields>[]) | FormFieldDefinition<TFormFields>[];
+  readonly formFieldDefinitions: ((item: TData, values: TFormFields) => FormFieldDefinition<TFormFields>[]) | FormFieldDefinition<TFormFields>[];
   readonly getFormValuesFromItem?: (item: TData) => Partial<TFormFields>;
   readonly getName: (item: TData | TFormFields) => string;
   readonly getOptimisticUpdateIntermediateItem?: (variables: TFormFields, previousItem: TData) => TData;
@@ -211,7 +211,7 @@ export const CrudPage = <
     idSelectorCallback: (item) => item.id,
     navigatorFunction: container.resolve(RouterService).router.navigate,
     storageNamePostFix: tableStoreStorageNamePostFix ? `CRUDPage-${resourceQueryKeyBase}-${tableStoreStorageNamePostFix}` : `CRUDPage-${resourceQueryKeyBase}`,
-    storageVersion: tableStoreStorageVersion ?? 1,
+    storageVersion: tableStoreStorageVersion ?? 2,
   }), [defaultSortByField, defaultSortDirection, resourceQueryKeyBase, tableStoreStorageNamePostFix, tableStoreStorageVersion]);
 
   const isLoadablesLoading = useMemo(() => {

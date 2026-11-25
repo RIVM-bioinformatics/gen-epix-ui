@@ -9,6 +9,8 @@ import {
   join,
 } from 'path';
 
+import react from '@vitejs/plugin-react';
+import { playwright } from '@vitest/browser-playwright';
 import { esmExternalRequirePlugin } from 'vite';
 import dts from 'vite-plugin-dts';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
@@ -31,6 +33,8 @@ const createPeerDependencyExternalPatterns = () => {
 };
 
 const peerDependencyExternalPatterns = createPeerDependencyExternalPatterns();
+const isCi = !!process.env.CI;
+const isHeadlessTestRun = process.argv.includes('run') || isCi;
 
 const discoverEntries = (): { entries: Record<string, string>; flatKeys: Set<string> } => {
   const entries: Record<string, string> = {};
@@ -132,6 +136,9 @@ export default defineConfig({
     }),
   ],
   test: {
+    fileParallelism: !isCi,
+    maxConcurrency: isCi ? 1 : 5,
+    maxWorkers: isCi ? 1 : 2,
     coverage: {
       exclude: [
         'node_modules/',
@@ -143,6 +150,9 @@ export default defineConfig({
         '**/*.spec.{js,ts,jsx,tsx}',
         '**/test/**',
         '**/tests/**',
+      ],
+      include: [
+        'src/**/*.{ts,tsx}',
       ],
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
@@ -162,12 +172,33 @@ export default defineConfig({
         },
       },
       {
+        plugins: [
+          react(),
+        ],
         test: {
+          browser: {
+            enabled: true,
+            headless: isHeadlessTestRun,
+            instances: [
+              { browser: 'chromium' },
+            ],
+            provider: playwright(),
+            screenshotDirectory: join(import.meta.dirname, '__screenshots__'),
+            viewport: {
+              height: 1080,
+              width: 1920,
+            },
+          },
           globals: true,
           include: [
             'src/**/*.test.tsx',
           ],
           name: 'browser',
+          server: {
+            deps: {
+              inline: ['vitest-browser-react'],
+            },
+          },
           setupFiles: ['./src/test/setup/setup-browser.ts'],
           testTimeout: 30000,
         },

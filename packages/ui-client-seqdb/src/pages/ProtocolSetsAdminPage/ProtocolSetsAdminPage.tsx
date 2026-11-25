@@ -38,9 +38,11 @@ export const ProtocolSetsAdminPage = () => {
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: SeqDbProtocolSet) => {
+    /* v8 ignore start -- CrudPage only calls updateOne for items with a truthy id (items without one are created instead), so this guard is unreachable through the page */
     if (!item.id) {
       throw new Error('Cannot update a protocol set without an ID.');
     }
+    /* v8 ignore stop */
 
     return (await container.resolve(SeqDbSeqApi).protocolSetsPutOne(item.id, { ...variables, id: item.id })).data;
   }, []);

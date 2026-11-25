@@ -285,6 +285,10 @@
     "./utils/SeqDbStandardConfigUtil": {
       "types": "./src/utils/SeqDbStandardConfigUtil/index.ts",
       "import": "./src/utils/SeqDbStandardConfigUtil/index.ts"
+    },
+    "./test/lib": {
+      "types": "./src/test/lib/index.ts",
+      "import": "./src/test/lib/index.ts"
     }
   },
   "files": [
@@ -301,7 +305,7 @@
     "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",
     "test-run": "vitest run --passWithNoTests --coverage",
     "update-exports": "node scripts/update-exports.js",
-    "validate": "pnpm run lint && pnpm run check-types && pnpm run test-run && pnpm run test-missing-translations"
+    "validate": "pnpm run test-missing-translations && pnpm run check-types && pnpm run lint && pnpm run test-run"
   },
   "browserslist": [
     "last 2 Chrome versions"
@@ -350,6 +354,7 @@
     "vite-plugin-static-copy": "4.1.1",
     "vite-plugin-svgr": "5.2.0",
     "vitest": "5.1.0",
+    "vitest-browser-react": "2.3.0",
     "yup": "1.7.1"
   },
   "peerDependencies": {

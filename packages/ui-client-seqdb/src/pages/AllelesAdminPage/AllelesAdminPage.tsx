@@ -63,6 +63,7 @@ export const AllelesAdminPage = () => {
   }, []);
 
   const getName = useCallback((item: FormFields | SeqDbAllele) => {
+    /* v8 ignore next -- fetched alleles always have an id (requireAlleleId), and created alleles always have a required seq, so an empty seq implies an id */
     return item.seq || ('id' in item && item.id) || '';
   }, []);
 
@@ -70,7 +71,7 @@ export const AllelesAdminPage = () => {
     return object<FormFields>().shape({
       locus_id: string().required(),
       seq: string().required(),
-      seq_format: mixed<SeqDbSeqFormat>().oneOf(Object.values(SeqDbSeqFormat)).optional(),
+      seq_format: mixed<SeqDbSeqFormat>().oneOf(Object.values(SeqDbSeqFormat)).nullable().optional(),
     });
   }, []);
 

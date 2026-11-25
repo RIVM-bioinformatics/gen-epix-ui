@@ -64,6 +64,7 @@ export const ConditionOccurrenceIdentifiersAdminPage = () => {
       if (identifierIssuerIdOption?.label) {
         return identifierIssuerIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is only assigned in this block, so it is always unset here */
       if (!fallbackValue) {
         fallbackValue = identifierIssuerId;
       }
@@ -88,9 +89,11 @@ export const ConditionOccurrenceIdentifiersAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- create requires a non-empty identifier_issuer_id, which always sets fallbackValue; rows always have an id */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else ignore above */
     return t`New condition occurrence identifier`;
   }, [identifierIssuerOptionsQuery.options, conditionOccurrenceOptionsQuery.options, t]);
   const schema = useMemo(() => {

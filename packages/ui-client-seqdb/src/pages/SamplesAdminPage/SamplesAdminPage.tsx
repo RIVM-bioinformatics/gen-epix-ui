@@ -24,6 +24,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { SEQDB_QUERY_KEY } from '../../constants/query.constants';
@@ -72,7 +73,7 @@ export const SamplesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      code: string().nullable().optional(),
+      code: SchemaUtil.code.nullable().notRequired(),
       created_in_data_collection_id: string().required(),
     });
   }, []);

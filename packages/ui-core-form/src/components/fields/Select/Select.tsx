@@ -45,7 +45,7 @@ export type SelectProps<TFieldValues extends FieldValues, TName extends Path<TFi
   readonly loading?: boolean;
   readonly multiple?: TMultiple;
   readonly name: TName;
-  readonly onChange?: (value: string) => void;
+  readonly onChange?: ((value: Array<boolean | number | string> | boolean | number | string) => void) | ((value: string) => void);
   readonly options: SelectOption[];
   readonly required?: boolean;
   readonly warningMessage?: string;
@@ -86,15 +86,15 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
 
   const getIsOptionDisabled = useCallback((value: SelectOption['value']): boolean => mappedOptions.get(value)?.disabled, [mappedOptions]);
 
-  const renderValue = useCallback((value: string | string []) => {
+  const renderValue = useCallback((value: Value | Value[]) => {
     const values = Array.isArray(value) ? value : [value];
     return values.map(v => mappedOptions.get(v)?.label).join(', ');
   }, [mappedOptions]);
 
   const onMuiSelectChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
-    (event: SelectChangeEvent<string>) => {
+    (event: SelectChangeEvent<Value | Value[]>) => {
       if (onChangeProp) {
-        onChangeProp(event.target.value);
+        (onChangeProp as (value: Value | Value[]) => void)(event.target.value);
       }
       onChange(event.target.value);
     }
@@ -106,8 +106,9 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
         inputRef?.current?.focus();
       },
     });
+    const selectedValues: Value[] = Array.isArray(value) ? value : [];
     const onResetButtonClick = () => {
-      onMuiSelectChange(onChange)({ target: { value: multiple ? [] : '' } } as SelectChangeEvent<string>);
+      onMuiSelectChange(onChange)({ target: { value: multiple ? [] : '' } } as SelectChangeEvent<Value | Value[]>);
     };
 
     return (
@@ -127,7 +128,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
           error={hasError}
           input={(
             <OutlinedInput
-              endAdornment={disabled || required ? undefined : (
+              endAdornment={disabled || loading || required ? undefined : (
                 <InputAdornment
                   position={'start'}
                   sx={{
@@ -174,13 +175,13 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
             return (
               <MenuItem
                 disabled={getIsOptionDisabled(option.value)}
-                key={option.value.toString()}
-                value={option.value as string}
+                key={`${typeof option.value}:${option.value}`}
+                value={option.value as number | string}
               >
 
                 {multiple && (
                   <Checkbox
-                    checked={(value as string[]).includes(option.value as string)}
+                    checked={selectedValues.includes(option.value)}
                   />
                 )}
                 <ListItemText

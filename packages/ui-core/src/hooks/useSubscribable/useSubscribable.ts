@@ -17,9 +17,10 @@ export const useSubscribable = <TSubjectData>(subscribable: SubscribableAbstract
   useEffect(() => {
     const unsubscribe = subscribable.subscribe((x, prevX) => {
       const newData = select ? select(x) : x;
+      const previousData = select ? select(prevX) : prevX;
       setData(newData);
       if (callback) {
-        callback(newData, prevX);
+        callback(newData, previousData);
       }
     });
     return () => {

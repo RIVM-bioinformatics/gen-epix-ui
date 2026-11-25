@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbNote,
@@ -80,6 +81,7 @@ export const NotesAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here (only assigned later in this function), so the check is always true */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -107,9 +109,11 @@ export const NotesAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- unreachable: create values are yup-validated so person_id, note_type_concept_id and note_class_concept_id are non-empty, which always sets fallbackValue; rows always have a non-empty id and return earlier */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the preceding else ignore */
     return t`New note`;
   }, [personOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {
@@ -117,8 +121,8 @@ export const NotesAdminPage = () => {
       encoding_concept_id: string().required(),
       language_concept_id: string().required(),
       note_class_concept_id: string().required(),
-      note_date: string().required(),
-      note_datetime: string().nullable().notRequired(),
+      note_date: SchemaUtil.isoString.required(),
+      note_datetime: SchemaUtil.isoString.nullable().notRequired(),
       note_event_field_concept_id: string().nullable().notRequired(),
       note_event_id: string().nullable().notRequired(),
       note_source_value: string().nullable().notRequired(),

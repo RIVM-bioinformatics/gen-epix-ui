@@ -64,6 +64,7 @@ export const ProcedureOccurrenceIdentifiersAdminPage = () => {
       if (identifierIssuerIdOption?.label) {
         return identifierIssuerIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is still undefined here: it is first assigned in this block, so the check is always true */
       if (!fallbackValue) {
         fallbackValue = identifierIssuerId;
       }
@@ -88,9 +89,11 @@ export const ProcedureOccurrenceIdentifiersAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- create requires a non-empty identifier_issuer_id (yup required), which sets fallbackValue; rows always have a non-empty id and return at the id check */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else ignore above; the fallback always returns */
     return t`New procedure occurrence identifier`;
   }, [identifierIssuerOptionsQuery.options, procedureOccurrenceOptionsQuery.options, t]);
   const schema = useMemo(() => {

@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbMeasurement,
@@ -97,6 +97,7 @@ export const MeasurementsAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always unset here; it is only assigned in this block */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -104,9 +105,11 @@ export const MeasurementsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- id-less items are validated form values with a required person_id, so fallbackValue is set */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: see the fallbackValue guard above; rows always have an id and form values always have a person_id */
     return t`New measurement`;
   }, [personOptionsQuery.options, t]);
   const schema = useMemo(() => {
@@ -114,8 +117,8 @@ export const MeasurementsAdminPage = () => {
       derived_from_specimen_id: string().nullable().notRequired(),
       meas_event_field_concept_id: string().nullable().notRequired(),
       measurement_concept_id: string().required(),
-      measurement_date: string().required(),
-      measurement_datetime: string().nullable().notRequired(),
+      measurement_date: SchemaUtil.isoString.required(),
+      measurement_datetime: SchemaUtil.isoString.nullable().notRequired(),
       measurement_event_id: string().nullable().notRequired(),
       measurement_iso_interval: string().nullable().notRequired(),
       measurement_source_concept_id: string().nullable().notRequired(),
@@ -127,14 +130,14 @@ export const MeasurementsAdminPage = () => {
       provenance_id: string().nullable().notRequired(),
       provided_by_organization_id: string().nullable().notRequired(),
       provider_id: string().nullable().notRequired(),
-      range_high: number().nullable().notRequired(),
-      range_low: number().nullable().notRequired(),
+      range_high: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      range_low: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       source_traceback: string().nullable().notRequired(),
       unit_concept_id: string().nullable().notRequired(),
       unit_source_concept_id: string().nullable().notRequired(),
       unit_source_value: string().nullable().notRequired(),
       value_as_concept_id: string().nullable().notRequired(),
-      value_as_number: number().nullable().notRequired(),
+      value_as_number: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       value_source_value: string().nullable().notRequired(),
       visit_detail_id: string().nullable().notRequired(),
       visit_occurrence_id: string().nullable().notRequired(),
@@ -151,11 +154,11 @@ export const MeasurementsAdminPage = () => {
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Measurement Time`, name: 'measurement_time' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Measurement Type Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'measurement_type_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Operator Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'operator_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Value As Number`, name: 'value_as_number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Value As Number`, name: 'value_as_number', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Value As Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'value_as_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Unit Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'unit_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Range Low`, name: 'range_low' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Range High`, name: 'range_high' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Range Low`, name: 'range_low', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Range High`, name: 'range_high', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Provider ID`, loading: providerOptionsQuery.isLoading, name: 'provider_id', options: providerOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Visit Occurrence ID`, loading: visitOccurrenceOptionsQuery.isLoading, name: 'visit_occurrence_id', options: visitOccurrenceOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Visit Detail ID`, loading: visitDetailOptionsQuery.isLoading, name: 'visit_detail_id', options: visitDetailOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,

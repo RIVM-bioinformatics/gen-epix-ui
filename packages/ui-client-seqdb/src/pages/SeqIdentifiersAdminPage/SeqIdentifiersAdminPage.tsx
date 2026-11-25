@@ -76,9 +76,11 @@ export const SeqIdentifiersAdminPage = () => {
 
   const getName = useCallback((item: FormFields | SeqDbSeqIdentifierWithId) => {
     const issuerName = identifierIssuerOptionsQuery.options.find(option => option.value === item.identifier_issuer_id)?.label ?? item.identifier_issuer_id;
+    /* v8 ignore start -- the 'id' check is false only for form values with an empty external_id, which the required schema rejects before getName runs */
     return item.external_id
       ? `${issuerName}: ${item.external_id}`
       : item.internal_id || ('id' in item && item.id) || issuerName;
+    /* v8 ignore stop */
   }, [identifierIssuerOptionsQuery.options]);
 
   const schema = useMemo(() => {
@@ -89,7 +91,7 @@ export const SeqIdentifiersAdminPage = () => {
     });
   }, []);
 
-  const formFieldDefinitions = useCallback((_values: FormFields, item: SeqDbSeqIdentifierWithId) => {
+  const formFieldDefinitions = useCallback((item: SeqDbSeqIdentifierWithId, _values: FormFields) => {
     const identityIsFixed = Boolean(item?.id);
 
     return [

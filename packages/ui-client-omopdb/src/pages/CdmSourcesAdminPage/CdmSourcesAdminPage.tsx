@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbCdmSource,
@@ -70,6 +71,7 @@ export const CdmSourcesAdminPage = () => {
       if (cdmVersionConceptIdOption?.label) {
         return cdmVersionConceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is only assigned in this block, so it is always undefined here */
       if (!fallbackValue) {
         fallbackValue = cdmVersionConceptId;
       }
@@ -91,23 +93,25 @@ export const CdmSourcesAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- only yup-validated create values lack an id, and they always have a non-empty cdm_version_concept_id, so fallbackValue is set */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: fallbackValue is always set here (see the if above) */
     return t`New cdm source`;
   }, [conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       cdm_etl_reference: string().nullable().notRequired(),
       cdm_holder: string().required(),
-      cdm_release_date: string().required(),
+      cdm_release_date: SchemaUtil.isoString.required(),
       cdm_source_abbreviation: string().required(),
       cdm_source_name: string().required(),
       cdm_version: string().nullable().notRequired(),
       cdm_version_concept_id: string().required(),
       source_description: string().nullable().notRequired(),
       source_documentation_reference: string().nullable().notRequired(),
-      source_release_date: string().required(),
+      source_release_date: SchemaUtil.isoString.required(),
       vocabulary_version: string().required(),
     });
   }, []);

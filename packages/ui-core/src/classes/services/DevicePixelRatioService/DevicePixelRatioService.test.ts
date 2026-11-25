@@ -5,6 +5,7 @@ import {
   it,
   vi,
 } from 'vitest';
+import { container } from 'tsyringe';
 
 import { DevicePixelRatioService } from './DevicePixelRatioService';
 
@@ -61,5 +62,13 @@ describe('DevicePixelRatioService', () => {
     );
 
     expect(ServiceWithoutMatchMedia.getInstance().data).toBe(window.devicePixelRatio);
+  });
+
+  it('registers the service when its container registration was cleared', () => {
+    container.reset();
+
+    const service = DevicePixelRatioService.getInstance();
+
+    expect(DevicePixelRatioService.getInstance()).toBe(service);
   });
 });

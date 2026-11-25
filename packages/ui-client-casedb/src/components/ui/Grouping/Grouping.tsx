@@ -103,6 +103,7 @@ export const Grouping = () => {
         <NestedDropdown
           ButtonProps={{
             color: 'inherit',
+            disabled: stratifyableColumns.length === 0,
             size: 'small',
             sx: {
               '& span': {

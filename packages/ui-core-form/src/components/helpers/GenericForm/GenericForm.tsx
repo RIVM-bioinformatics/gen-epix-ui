@@ -120,6 +120,8 @@ export const GenericForm = <TFormFields extends FieldValues>({
             required={isFormFieldRequired(formFieldDefinition.name)}
           />
         );
+      case FORM_FIELD_DEFINITION_TYPE.HIDDEN:
+        return null;
       case FORM_FIELD_DEFINITION_TYPE.NUMBER:
         return (
           <NumberField
@@ -177,7 +179,7 @@ export const GenericForm = <TFormFields extends FieldValues>({
           />
         );
       default:
-        throw Error(`Unsupported form field definition: ${formFieldDefinition.definition}`);
+        throw new Error('Unsupported form field definition');
     }
   }, [booleanOptions, disableAll, isFormFieldRequired]);
 
@@ -235,7 +237,7 @@ export const GenericForm = <TFormFields extends FieldValues>({
     return (
       <>
         {orderedFormGroupDefinitions.map(group => {
-          const groupFields = groupFieldsMap.get(group.groupKey) ?? [];
+          const groupFields = groupFieldsMap.get(group.groupKey);
           if (!groupFields.length) {
             return null;
           }

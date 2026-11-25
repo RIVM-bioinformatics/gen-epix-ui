@@ -85,6 +85,7 @@ export const RelationshipsAdminPage = () => {
       if (reverseRelationshipIdOption?.label) {
         return reverseRelationshipIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here, so the check is always true */
       if (!fallbackValue) {
         fallbackValue = reverseRelationshipId;
       }
@@ -92,9 +93,11 @@ export const RelationshipsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- reverse_relationship_id is required by the yup schema, so fallbackValue is always set when reached */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the preceding else ignore */
     return t`New relationship`;
   }, [relationshipOptionsQuery.options, t]);
   const schema = useMemo(() => {

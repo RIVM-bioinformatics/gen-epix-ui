@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbCohortDefinition,
@@ -70,6 +71,7 @@ export const CohortDefinitionsAdminPage = () => {
       if (definitionTypeConceptIdOption?.label) {
         return definitionTypeConceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is still undefined at this first assignment, so the check is always true */
       if (!fallbackValue) {
         fallbackValue = definitionTypeConceptId;
       }
@@ -94,9 +96,11 @@ export const CohortDefinitionsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- create values always have non-empty definition_type_concept_id and subject_concept_id (yup required), which set fallbackValue, and rows always have an id, so fallbackValue is always set here */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: an edit row always has an id, and a create submit has non-empty required concept ids, so fallbackValue is set above */
     return t`New cohort definition`;
   }, [conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {
@@ -104,7 +108,7 @@ export const CohortDefinitionsAdminPage = () => {
       cohort_definition_description: string().nullable().notRequired(),
       cohort_definition_name: string().required(),
       cohort_definition_syntax: string().nullable().notRequired(),
-      cohort_initiation_date: string().nullable().notRequired(),
+      cohort_initiation_date: SchemaUtil.isoString.nullable().notRequired(),
       definition_type_concept_id: string().required(),
       subject_concept_id: string().required(),
     });

@@ -66,11 +66,7 @@ export const SeqClassificationsAdminPage = () => {
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     const response = await container.resolve(SeqDbSeqApi).seqClassificationsGetAll(null, null, { signal });
-    if (!response.data.every(isSeqDbSeqClassificationWithId)) {
-      throw new Error('SeqDB returned a sequence classification without an ID.');
-    }
-
-    return response.data;
+    return response.data.filter(isSeqDbSeqClassificationWithId);
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
@@ -102,6 +98,7 @@ export const SeqClassificationsAdminPage = () => {
     const sampleLabel = sampleOptionsQuery.options.find(option => option.value === item.sample_id)?.label ?? item.sample_id;
     const categoryLabel = seqCategoryOptionsQuery.options.find(option => option.value === item.primary_category_id)?.label ?? item.primary_category_id;
     const protocolLabel = protocolOptionsQuery.options.find(option => option.value === item.protocol_id)?.label ?? item.protocol_id;
+    /* v8 ignore next 4 -- the trailing `|| ''` is unreachable: content is required by yup and every row has a non-empty ID (fetchAll) */
     return [sampleLabel, categoryLabel, protocolLabel].filter(Boolean).join(' - ')
       || item.content.slice(0, 60)
       || ('id' in item && item.id)

@@ -43,15 +43,8 @@ export const CaseSummary = ({ caseDbCase }: CaseSummaryProps) => {
   }, [visibleCaseTypeTableColumns, numVisibleAttributesInSummary]);
 
   const onRemoveAttributeClick = useCallback(() => {
-    if (numVisibleAttributesInSummary <= 1) {
-      return;
-    }
-    if (numVisibleAttributesInSummary > visibleCaseTypeTableColumns.length) {
-      setNumVisibleAttributesInSummary(visibleCaseTypeTableColumns.length);
-    }
-    if (numVisibleAttributesInSummary > 1) {
-      setNumVisibleAttributesInSummary(numVisibleAttributesInSummary - 1);
-    }
+    const numShownAttributes = Math.min(numVisibleAttributesInSummary, visibleCaseTypeTableColumns.length);
+    setNumVisibleAttributesInSummary(Math.max(1, numShownAttributes - 1));
   }, [numVisibleAttributesInSummary, setNumVisibleAttributesInSummary, visibleCaseTypeTableColumns.length]);
 
   const onAddAttributeClick = useCallback(() => {

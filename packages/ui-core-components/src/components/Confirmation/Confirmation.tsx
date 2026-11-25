@@ -53,7 +53,7 @@ export const Confirmation = withDialog<ConfirmationProps, unknown>(<TOpenProps,>
       actions.push({
         ...TestIdUtil.createAttributes('Confirmation-cancelButton'),
         color: 'secondary',
-        label: cancelLabel ?? t`Cancel`,
+        label: cancelLabel,
         onClick: onCancelButtonClick,
         variant: 'outlined',
       });

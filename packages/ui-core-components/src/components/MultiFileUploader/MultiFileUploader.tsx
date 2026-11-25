@@ -129,19 +129,19 @@ export const MultiFileUploader = ({
         return oldDataTransfer;
       }
 
-      const fileNamesToAppend = Array.from(fileList).map(f => f.name);
-      const uniqueOldFileNames = new Set(Array.from(oldDataTransfer.files).map(f => f.name));
-      const numDuplicates = fileNamesToAppend.filter(name => uniqueOldFileNames.has(name)).length;
-      const numNewFileNames = uniqueOldFileNames.size + (fileNamesToAppend.length - numDuplicates);
+      const fileNamesToAppend = new Set(Array.from(fileList).map(file => file.name));
+      const numFilesAfterAddition = Array.from(oldDataTransfer.files)
+        .filter(file => !fileNamesToAppend.has(file.name))
+        .length + fileList.length;
 
-      if (numNewFileNames > numFilesAllowed) {
+      if (numFilesAfterAddition > numFilesAllowed) {
         setErrorText(t('Too many files selected. Maximum allowed: {{numFilesAllowed}}', { numFilesAllowed }));
         return oldDataTransfer;
       }
 
       const newDataTransfer = new DataTransfer();
       Array.from(oldDataTransfer.files).forEach(file => {
-        if (!fileNamesToAppend.includes(file.name)) {
+        if (!fileNamesToAppend.has(file.name)) {
           newDataTransfer.items.add(file);
         }
       });

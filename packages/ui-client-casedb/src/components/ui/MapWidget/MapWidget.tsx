@@ -206,6 +206,7 @@ export const MapWidget = () => {
         caseIds.forEach((caseId) => {
           const targets = targetsByCaseId.get(caseId);
           const target = { dataIndex, seriesIndex };
+          /* v8 ignore if -- MapUtil.getMapSeries puts each case in exactly one region and one stratification item, so a caseId is never seen twice */
           if (targets) {
             targets.push(target);
           } else {
@@ -379,9 +380,11 @@ export const MapWidget = () => {
     if (!regionSetShape?.geo_json || regionSetShape?.geo_json === 'null') {
       return t`No geographical shape found for the selected column.`;
     }
+    /* v8 ignore else -- canShowWidget already requires series.length > 0, so this guard is always true when reached */
     if (!series.length) {
       return t`No cases with valid geographical information found for the selected column.`;
     }
+    /* v8 ignore next -- every canShowWidget=false case returns above, so this fallback is unreachable */
     return null;
   }, [canShowWidget, col, regionSetShape?.geo_json, series.length, t]);
 
@@ -404,7 +407,7 @@ export const MapWidget = () => {
           <FilterAltIcon fontSize={'small'} />
         </ListItemIcon>
         <ListItemText>
-          {t('Filter (show only {{regionName}})', { regionName: focussedRegion?.name ?? '-' })}
+          {t('Filter (show only {{regionName}})', { regionName: focussedRegion.name })}
         </ListItemText>
       </MenuItem>
     );

@@ -6,7 +6,6 @@ import min from 'lodash/min';
 import max from 'lodash/max';
 import type { ReactElement } from 'react';
 import type { TFunction } from 'i18next';
-import difference from 'lodash/difference';
 import sumBy from 'lodash/sumBy';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
@@ -54,13 +53,19 @@ export class TableUtil {
       return false;
     }
 
-    const tableColumnsIds = tableColumns?.map(c => c.id);
-    const columnVisualSettingsIds = columnVisualSettings?.map(c => c.id);
+    // Compare the sorted IDs so that duplicates and unknown IDs in the settings are rejected
+    const sortedTableColumnIds = (tableColumns ?? []).map(c => c.id).sort((a, b) => a.localeCompare(b));
+    const sortedColumnVisualSettingsIds = columnVisualSettings.map(c => c.id).sort((a, b) => a.localeCompare(b));
 
-    return tableColumnsIds.length === columnVisualSettingsIds.length && difference(tableColumnsIds, columnVisualSettingsIds).length === 0;
+    const haveSameIds = sortedTableColumnIds.length === sortedColumnVisualSettingsIds.length && sortedTableColumnIds.every((id, index) => id === sortedColumnVisualSettingsIds[index]);
+    if (!haveSameIds) {
+      return false;
+    }
+
+    // Frozen columns cannot be hidden, so settings that hide them are invalid
+    const frozenColumnIds = new Set((tableColumns ?? []).filter(c => c.frozen).map(c => c.id));
+    return columnVisualSettings.every(c => !frozenColumnIds.has(c.id) || c.isVisible);
   }
-
-  // Cell value getters
 
   public static createActionsColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; getActions: (params: TableRowParams<TData, TDataContext>) => ReactElement[]; t: TFunction<'translation', undefined> }): TableColumnActions<TData, TDataContext, TColumnContext> {
     return {
@@ -85,6 +90,8 @@ export class TableUtil {
       return direction === 'asc' ? aValue - bValue : bValue - aValue;
     };
   }
+
+  // Cell value getters
 
   public static createBooleanColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnBoolean<TData, TDataContext, TColumnContext> {
     return {
@@ -128,30 +135,25 @@ export class TableUtil {
     // For each condensed column, move it to the correct position using handleMoveColumn
     // We need to use the actual TableUtil.handleMoveColumn logic for each move
     condensedColumns.forEach(condensedColumn => {
-      let currentIdx = tableColumnVisualSettingsCopy.findIndex(c => c.id === condensedColumn.id);
+      const getCurrentIndex = () => tableColumnVisualSettingsCopy.findIndex(c => c.id === condensedColumn.id);
+      let currentIdx = getCurrentIndex();
       if (currentIdx === -1) {
         return;
       }
-      // Move the column right after the last left-pinned column (or after previous condensed)
-      while (currentIdx > insertIndex) {
-        TableUtil.handleMoveColumn(
+      // A swap can jump over hidden columns, so the index is re-read after every move instead of being counted
+      const direction = currentIdx > insertIndex ? -1 : 1;
+      while (direction === -1 ? currentIdx > insertIndex : currentIdx < insertIndex) {
+        const hasMoved = TableUtil.handleMoveColumn(
           [], // no dimensions
           tableColumnVisualSettingsCopy,
           tableColumns,
           condensedColumn,
-          -1,
+          direction,
         );
-        currentIdx--;
-      }
-      while (currentIdx < insertIndex) {
-        TableUtil.handleMoveColumn(
-          [], // no dimensions
-          tableColumnVisualSettingsCopy,
-          tableColumns,
-          condensedColumn,
-          1,
-        );
-        currentIdx++;
+        if (!hasMoved) {
+          break;
+        }
+        currentIdx = getCurrentIndex();
       }
       insertIndex++;
     });
@@ -438,7 +440,7 @@ export class TableUtil {
     }));
 
     const blob = await writeXlsxFile(excelData, {
-      columns: (data[0] ?? []).map(() => ({ width: 20 })),
+      columns: exportColumns.map(() => ({ width: 20 })),
       stickyRowsCount: 1,
     }).toBlob();
     const base64 = DownloadUtil.arrayBufferToBase64(await blob.arrayBuffer());
@@ -585,6 +587,70 @@ export class TableUtil {
     );
   }
 
+  /**
+   * Makes the settings match the table columns: drops unknown and duplicate IDs, makes frozen columns visible and adds missing columns.
+   * Returns the same array instance when nothing needs to change, and the input unchanged when no columns are known yet.
+   */
+  public static reconcileColumnVisualSettings<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[], columnVisualSettings: TableColumnVisualSettings[]): TableColumnVisualSettings[] {
+    if (!tableColumns?.length || !columnVisualSettings) {
+      return columnVisualSettings;
+    }
+
+    const tableColumnIds = new Set(tableColumns.map(c => c.id));
+    const frozenColumnIds = new Set(tableColumns.filter(c => c.frozen).map(c => c.id));
+    const reconciledSettings: TableColumnVisualSettings[] = [];
+    const seenIds = new Set<string>();
+    let hasChanged = false;
+
+    columnVisualSettings.forEach(setting => {
+      if (!tableColumnIds.has(setting.id) || seenIds.has(setting.id)) {
+        hasChanged = true;
+        return;
+      }
+      seenIds.add(setting.id);
+      if (frozenColumnIds.has(setting.id) && !setting.isVisible) {
+        hasChanged = true;
+        reconciledSettings.push({ ...setting, isVisible: true });
+        return;
+      }
+      reconciledSettings.push(setting);
+    });
+
+    // Missing columns are inserted after the nearest preceding column that is already present, so the table order is kept
+    tableColumns.forEach((tableColumn, columnIndex) => {
+      if (seenIds.has(tableColumn.id)) {
+        return;
+      }
+      hasChanged = true;
+      seenIds.add(tableColumn.id);
+      let insertIndex = 0;
+      for (let precedingIndex = columnIndex - 1; precedingIndex >= 0; precedingIndex--) {
+        const settingIndex = reconciledSettings.findIndex(s => s.id === tableColumns[precedingIndex].id);
+        if (settingIndex !== -1) {
+          insertIndex = settingIndex + 1;
+          break;
+        }
+      }
+      reconciledSettings.splice(insertIndex, 0, TableUtil.createInitialVisualColumnSettings([tableColumn])[0]);
+    });
+
+    return hasChanged ? reconciledSettings : columnVisualSettings;
+  }
+
+  // Keeps the first setting per column ID. Returns the same array when there are no duplicates.
+  public static removeDuplicateColumnVisualSettings(columnVisualSettings: TableColumnVisualSettings[]): TableColumnVisualSettings[] {
+    const seenIds = new Set<string>();
+    const uniqueColumnVisualSettings = columnVisualSettings.filter(setting => {
+      if (seenIds.has(setting.id)) {
+        return false;
+      }
+      seenIds.add(setting.id);
+      return true;
+    });
+
+    return uniqueColumnVisualSettings.length === columnVisualSettings.length ? columnVisualSettings : uniqueColumnVisualSettings;
+  }
+
   public static updateColumnSizesInVisualSettings<TRowData, TDataContext = null>(
     container: HTMLDivElement,
     scrollbarSize: number,
@@ -655,33 +721,34 @@ export class TableUtil {
     return new Map(allColumnVisualSettings.map(c => [c.id, c]));
   }
 
-  private static getExportColumns<TRowData, TDataContext>(visibleColumnIds: string[], columns: TableColumn<TRowData, TDataContext>[]): TableColumn<TRowData, TDataContext>[] {
+  private static getExportColumns<TRowData, TDataContext>(visibleColumnIds: string[], columns: TableColumn<TRowData, TDataContext>[]): Array<{ id: string } & TableColumn<TRowData, TDataContext>> {
     const fixedColumnIds: string[] = Object.values(FIXED_COLUMN_ID);
     return visibleColumnIds
+      .filter(id => !fixedColumnIds.includes(id))
       .map(id => columns.find(column => column.id === id))
-      .filter((column): column is TableColumn<TRowData, TDataContext> => {
-        return !!column && !column.hideInDownload && !fixedColumnIds.includes(column.id ?? '');
+      .filter((column): column is { id: string } & TableColumn<TRowData, TDataContext> => {
+        return !!column && !column.hideInDownload;
       });
   }
 
   private static getExportData<TRowData, TDataContext>(sortedData: TRowData[], visibleColumnIds: string[], columns: TableColumn<TRowData, TDataContext>[], dataContext: TDataContext): Array<Array<boolean | number | string>> {
     const exportColumns = TableUtil.getExportColumns(visibleColumnIds, columns);
-    const headers = exportColumns.map(column => column.headerName ?? column.id ?? '');
+    const headers = exportColumns.map(column => column.headerName ?? column.id);
     const rows = sortedData.map((row, rowIndex) => {
       return exportColumns.map((column) => {
         const params = {
           column,
           dataContext,
-          id: column.id ?? '',
+          id: column.id,
           row,
           rowIndex,
         };
-        let value: unknown = undefined;
+        let value: unknown;
         if (column.displayValueGetter) {
           value = column.displayValueGetter(params);
         } else if (column.valueGetter) {
           value = column.valueGetter(params);
-        } else if (column.id !== undefined) {
+        } else {
           value = row[column.id as keyof TRowData];
         }
         if (!column.displayValueGetter && column.type === 'options') {
@@ -767,21 +834,23 @@ export class TableUtil {
     } else {
       // The swapping element columns are NOT next to each other in the dimension
 
-      // Swap all columns within the element dimension with the swapping element
-      tableColumnVisualSettings.splice(elementDimensionMinIndex, elementDimensionColumnsCount, swappingElementSettingsColumn);
-      if (direction === 1) {
-        tableColumnVisualSettings.splice(
-          swappingElementDimensionMinIndex - (elementDimensionColumnsCount - 1),
-          1,
-          ...elementDimensionSettingColumns,
-        );
-      } else {
-        tableColumnVisualSettings.splice(
-          swappingElementDimensionMinIndex,
-          1,
-          ...elementDimensionSettingColumns,
-        );
-      }
+      // Build the new order in a single pass so that every column keeps exactly one slot:
+      // the first slot of the element dimension block takes the swapping element, and the swapping element's slot takes the whole element dimension block
+      const swappingElementCurrentIndex = tableColumnVisualSettings.findIndex(c => c.id === swappingElementSettingsColumn.id);
+      const elementDimensionBlockEndIndex = elementDimensionMinIndex + elementDimensionColumnsCount;
+      const updatedTableColumnVisualSettings = tableColumnVisualSettings.flatMap((setting, index) => {
+        if (index === elementDimensionMinIndex) {
+          return [swappingElementSettingsColumn];
+        }
+        if (index > elementDimensionMinIndex && index < elementDimensionBlockEndIndex) {
+          return [];
+        }
+        if (index === swappingElementCurrentIndex) {
+          return elementDimensionSettingColumns;
+        }
+        return [setting];
+      });
+      tableColumnVisualSettings.splice(0, tableColumnVisualSettings.length, ...updatedTableColumnVisualSettings);
     }
     return true;
   }

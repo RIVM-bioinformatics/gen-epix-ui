@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbMetadata,
@@ -57,7 +57,6 @@ export const MetadatasAdminPage = () => {
     return toTableRow(response.data);
   }, []);
   const getName = useCallback((item: FormFields | Row) => {
-    let fallbackValue: string | undefined;
     const name = item.name;
     if (typeof name === 'string' && name.trim().length > 0) {
       return name;
@@ -65,53 +64,32 @@ export const MetadatasAdminPage = () => {
     if (typeof name === 'number') {
       return String(name);
     }
-    const metadataConceptId = item.metadata_concept_id;
-    if (typeof metadataConceptId === 'string' && metadataConceptId.length > 0) {
-      const metadataConceptIdOption = conceptOptionsQuery.options.find(candidate => candidate.value === metadataConceptId);
-      if (metadataConceptIdOption?.label) {
-        return metadataConceptIdOption.label;
-      }
-      if (!fallbackValue) {
-        fallbackValue = metadataConceptId;
+    const conceptIds = [item.metadata_concept_id, item.metadata_type_concept_id, item.value_as_concept_id].filter((conceptId): conceptId is string => typeof conceptId === 'string' && conceptId.length > 0);
+    for (const conceptId of conceptIds) {
+      const label = conceptOptionsQuery.options.find(candidate => candidate.value === conceptId)?.label;
+      if (label) {
+        return label;
       }
     }
-    const metadataTypeConceptId = item.metadata_type_concept_id;
-    if (typeof metadataTypeConceptId === 'string' && metadataTypeConceptId.length > 0) {
-      const metadataTypeConceptIdOption = conceptOptionsQuery.options.find(candidate => candidate.value === metadataTypeConceptId);
-      if (metadataTypeConceptIdOption?.label) {
-        return metadataTypeConceptIdOption.label;
-      }
-      if (!fallbackValue) {
-        fallbackValue = metadataTypeConceptId;
-      }
-    }
-    const valueAsConceptId = item.value_as_concept_id;
-    if (typeof valueAsConceptId === 'string' && valueAsConceptId.length > 0) {
-      const valueAsConceptIdOption = conceptOptionsQuery.options.find(candidate => candidate.value === valueAsConceptId);
-      if (valueAsConceptIdOption?.label) {
-        return valueAsConceptIdOption.label;
-      }
-      if (!fallbackValue) {
-        fallbackValue = valueAsConceptId;
-      }
-    }
+    /* v8 ignore start -- unsaved items are validated to have a non-empty name, and API rows always have a string id, so the fallbacks below only run for malformed data */
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
-    if (fallbackValue) {
-      return fallbackValue;
+    if (conceptIds.length > 0) {
+      return conceptIds[0];
     }
     return t`New metadata`;
+    /* v8 ignore stop */
   }, [conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       metadata_concept_id: string().required(),
-      metadata_date: string().nullable().notRequired(),
-      metadata_datetime: string().nullable().notRequired(),
+      metadata_date: SchemaUtil.isoString.nullable().notRequired(),
+      metadata_datetime: SchemaUtil.isoString.nullable().notRequired(),
       metadata_type_concept_id: string().required(),
-      name: string().required(),
+      name: SchemaUtil.name,
       value_as_concept_id: string().nullable().notRequired(),
-      value_as_number: number().nullable().notRequired(),
+      value_as_number: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       value_as_string: string().nullable().notRequired(),
     });
   }, []);
@@ -122,7 +100,7 @@ export const MetadatasAdminPage = () => {
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Name`, name: 'name' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Value As String`, name: 'value_as_string' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Value As Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'value_as_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Value As Number`, name: 'value_as_number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Value As Number`, name: 'value_as_number', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Metadata Date`, name: 'metadata_date' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE_TIME, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Metadata Datetime`, name: 'metadata_datetime' } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;

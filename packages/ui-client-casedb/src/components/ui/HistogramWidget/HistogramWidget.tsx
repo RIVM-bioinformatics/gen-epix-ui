@@ -275,8 +275,7 @@ export const HistogramWidget = () => {
     );
   }, [aCol, bCol, canShowWidget, allowedCols, defaultCols, t, onMenuItemClick]);
 
-  const onChartReady = useCallback((chart: EChartsType) => {
-    chartInstanceRef.current = chart;
+  const applyChartAccessibleName = useCallback((chart: EChartsType) => {
     if (!aCol || !bCol) {
       return;
     }
@@ -284,6 +283,18 @@ export const HistogramWidget = () => {
     dom?.setAttribute('aria-label', t('Histogram showing the number of cases for {{aColLabel}} and {{bColLabel}}', { aColLabel: aCol?.label, bColLabel: bCol?.label }));
     dom?.setAttribute('role', 'img');
   }, [aCol, bCol, t]);
+
+  const onChartReady = useCallback((chart: EChartsType) => {
+    chartInstanceRef.current = chart;
+    applyChartAccessibleName(chart);
+  }, [applyChartAccessibleName]);
+
+  // The chart is not re-created when the axes change, so the accessible name must be refreshed here.
+  useEffect(() => {
+    if (chartInstanceRef.current) {
+      applyChartAccessibleName(chartInstanceRef.current);
+    }
+  }, [applyChartAccessibleName]);
 
 
   useEffect(() => {

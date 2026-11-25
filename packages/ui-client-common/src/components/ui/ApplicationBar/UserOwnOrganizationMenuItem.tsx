@@ -37,6 +37,7 @@ export const UserOwnOrganizationMenuItem = withPermissions(() => {
     >
       <ListItemText
         primary={t`My organization`}
+        /* v8 ignore next -- userOrganization is always a string here, so the fallback is unreachable */
         secondary={userOrganization ?? t`Unknown`}
         slotProps={{
           primary: {

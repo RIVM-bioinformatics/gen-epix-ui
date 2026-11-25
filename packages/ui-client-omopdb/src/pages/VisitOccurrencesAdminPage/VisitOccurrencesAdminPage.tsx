@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbVisitOccurrence,
@@ -94,6 +95,7 @@ export const VisitOccurrencesAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is only assigned in this block, so it is always undefined here and the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -101,9 +103,11 @@ export const VisitOccurrencesAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- rows always have a non-empty id (withId throws otherwise), and yup-validated create values always have a non-empty person_id, so fallbackValue is set */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the preceding else ignore */
     return t`New visit occurrence`;
   }, [personOptionsQuery.options, t]);
   const schema = useMemo(() => {
@@ -120,12 +124,12 @@ export const VisitOccurrencesAdminPage = () => {
       provider_id: string().nullable().notRequired(),
       source_traceback: string().nullable().notRequired(),
       visit_concept_id: string().required(),
-      visit_end_date: string().required(),
-      visit_end_datetime: string().nullable().notRequired(),
+      visit_end_date: SchemaUtil.isoString.required(),
+      visit_end_datetime: SchemaUtil.isoString.nullable().notRequired(),
       visit_source_concept_id: string().nullable().notRequired(),
       visit_source_value: string().nullable().notRequired(),
-      visit_start_date: string().required(),
-      visit_start_datetime: string().nullable().notRequired(),
+      visit_start_date: SchemaUtil.isoString.required(),
+      visit_start_datetime: SchemaUtil.isoString.nullable().notRequired(),
       visit_type_concept_id: string().required(),
     });
   }, []);

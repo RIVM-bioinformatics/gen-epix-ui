@@ -63,6 +63,7 @@ export const RefSeqsAdminPage = () => {
   }, []);
 
   const getName = useCallback((item: FormFields | SeqDbRefSeqWithId) => {
+    /* v8 ignore next -- stored items always have an ID (requireRefSeqId) and created items always have a required name or code */
     return item.name || item.code || ('id' in item && item.id) || '';
   }, []);
 
@@ -73,7 +74,7 @@ export const RefSeqsAdminPage = () => {
       genbank_accession_code: string().nullable().optional(),
       name: SchemaUtil.name,
       seq: string().required(),
-      seq_format: mixed<SeqDbSeqFormat>().oneOf(Object.values(SeqDbSeqFormat)).optional(),
+      seq_format: mixed<SeqDbSeqFormat>().oneOf(Object.values(SeqDbSeqFormat)).nullable().optional(),
       taxon_id: string().required(),
     });
   }, []);

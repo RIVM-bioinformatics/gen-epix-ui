@@ -7,7 +7,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   array,
-  boolean,
   object,
   string,
 } from 'yup';
@@ -26,6 +25,7 @@ import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericFo
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { useCaseAbacContext } from '../../../context/caseAbac';
 import { CaseUtil } from '../../../utils/CaseUtil';
@@ -51,7 +51,7 @@ export const CaseSetSharingForm = ({ caseSet, caseTypeId, formId, onFinish, onIs
 
   const schema = useMemo(() => object<FormFields>().shape({
     dataCollectionIds: array().of(string().uuid4()).required(),
-    shouldApplySharingToCases: boolean().required(),
+    shouldApplySharingToCases: SchemaUtil.boolean.required(),
   }), []);
 
   const caseAbacContext = useCaseAbacContext();

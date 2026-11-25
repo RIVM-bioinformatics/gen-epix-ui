@@ -5,8 +5,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  boolean,
-  number,
   object,
   string,
 } from 'yup';
@@ -53,9 +51,11 @@ export const TreeAlgorithmsAdminPage = () => {
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm) => {
+    /* v8 ignore start -- CrudPage only calls updateOne for items with a truthy id (items without one are created instead), so this guard is unreachable through the page */
     if (!item.id) {
       throw new Error('Cannot update a tree algorithm without an ID.');
     }
+    /* v8 ignore stop */
 
     return (await container.resolve(SeqDbSeqApi).treeAlgorithmsPutOne(item.id, { ...variables, id: item.id })).data;
   }, []);
@@ -75,10 +75,10 @@ export const TreeAlgorithmsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       code: string().oneOf(Object.values(SeqDbTreeAlgorithmValues)).required(),
-      description: string().nullable().optional().max(1000),
-      is_ultrametric: boolean().required(),
+      description: SchemaUtil.description,
+      is_ultrametric: SchemaUtil.boolean.required(),
       name: SchemaUtil.name,
-      rank: number().nullable().optional().integer().min(0),
+      rank: SchemaUtil.rank.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       tree_algorithm_class_id: string().required(),
     });
   }, []);
@@ -120,9 +120,10 @@ export const TreeAlgorithmsAdminPage = () => {
         required: true,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         label: t`Rank`,
         name: 'rank',
+        type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
     ];
   }, [t, treeAlgorithmClassOptionsQuery.isLoading, treeAlgorithmClassOptionsQuery.options, treeAlgorithmCodeOptionsQuery.options]);

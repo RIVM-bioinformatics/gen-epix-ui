@@ -3,7 +3,6 @@
     "(last modified: {{lastModified}})": "(last modified: {{lastModified}})",
     "(size: {{size}})": "(size: {{size}})",
     "{{label}} ({{accept}})": "{{label}} ({{accept}})",
-    "Cancel": "Cancel",
     "Choose File": "Choose File",
     "Clear {{fileName}}": "Clear {{fileName}}",
     "Clear all selected files": "Clear all selected files",

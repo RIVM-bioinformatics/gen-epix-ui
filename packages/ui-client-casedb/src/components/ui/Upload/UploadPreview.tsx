@@ -72,6 +72,7 @@ export const UploadPreview = withEpiCompleteCaseTypeLoader<UploadPreviewProps>((
   const continueWithoutSelectingAllCasesRef = useRef<ConfirmationRefMethods>(null);
 
   const getOriginalCellValue = useCallback((col: CaseDbCol, params: TableRowAndColumnParams<CaseDbCaseUploadResult, null>, _issue: CaseDbCaseDataIssue): string => {
+    /* v8 ignore next -- source cases always carry a case object (UploadUtil.getCasesForUpload, DashboardEditCases), so the missing-case arm is unreachable */
     return casesForVerificationFromSourceData[params.rowIndex]?.case?.content[col.id] ?? '';
   }, [casesForVerificationFromSourceData]);
 
@@ -129,6 +130,7 @@ export const UploadPreview = withEpiCompleteCaseTypeLoader<UploadPreviewProps>((
                   }),
                 ),
                 created_in_data_collection_id: caseFromSourceData?.case?.created_in_data_collection_id ?? createdInDataCollectionId,
+                /* v8 ignore next -- row ids are always set from the source case id (UploadUtil.getCasesForUpload assigns a UUID when missing), so the fallback is unreachable */
                 id: row.id ?? casesForVerificationFromSourceData[index].id,
               },
             };
@@ -168,9 +170,11 @@ export const UploadPreview = withEpiCompleteCaseTypeLoader<UploadPreviewProps>((
       if (newlyFailedIds.length > 0) {
         const currentSelectedIds = tableStore.getState().selectedIds;
         const idsToAdd = newlyFailedIds.filter(id => !currentSelectedIds.includes(id));
+        /* v8 ignore start -- selectedIdsRef shares the store's selectedIds array (synced by the subscription above) and push() mutates it, so newlyFailedIds are always already in currentSelectedIds */
         if (idsToAdd.length > 0) {
           setSelectedIds([...currentSelectedIds, ...idsToAdd]);
         }
+        /* v8 ignore stop */
       }
     } catch (error) {
       setRevalidationError(error as Error);

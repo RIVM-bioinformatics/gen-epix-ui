@@ -182,6 +182,7 @@ export const RefColsAdminPage = () => {
       return colTypeOptionsByDimIdCacheRef.current.get(id);
     }
     const options = CaseDbDataUtil.getColTypeOptionsForRefDimId({
+    /* v8 ignore next -- CrudPage renders only after colsValidationRulesQuery has loaded, so data is always defined here and the fallback is unreachable */
       colsValidationRules: colsValidationRulesQuery.data?.valid_col_types_by_dim_type ?? {},
       colTypeOptions: colTypeOptionsQuery.options,
       refDimId: id,

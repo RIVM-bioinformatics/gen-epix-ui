@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbConceptAncestor,
@@ -63,6 +63,7 @@ export const ConceptAncestorsAdminPage = () => {
       if (ancestorConceptIdOption?.label) {
         return ancestorConceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here (first assignment site), so the false arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = ancestorConceptId;
       }
@@ -80,25 +81,27 @@ export const ConceptAncestorsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- validated create values always set fallbackValue via the required ancestor_concept_id, and rows always have an id */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else ignore above */
     return t`New concept ancestor`;
   }, [conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       ancestor_concept_id: string().required(),
       descendant_concept_id: string().required(),
-      max_levels_of_separation: number().required(),
-      min_levels_of_separation: number().required(),
+      max_levels_of_separation: SchemaUtil.number.required(),
+      min_levels_of_separation: SchemaUtil.number.required(),
     });
   }, []);
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Ancestor Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'ancestor_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Descendant Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'descendant_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Min Levels Of Separation`, name: 'min_levels_of_separation' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Max Levels Of Separation`, name: 'max_levels_of_separation' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Min Levels Of Separation`, name: 'min_levels_of_separation', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Max Levels Of Separation`, name: 'max_levels_of_separation', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [conceptOptionsQuery.isLoading, conceptOptionsQuery.options, t]);
   const tableColumns = useMemo((): TableColumn<Row>[] => {

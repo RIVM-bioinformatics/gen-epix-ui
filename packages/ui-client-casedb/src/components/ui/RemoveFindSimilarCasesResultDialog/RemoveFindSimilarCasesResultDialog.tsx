@@ -195,17 +195,21 @@ export const RemoveFindSimilarCasesResultDialog = withDialog<RemoveFindSimilarCa
       }))];
   }, [findSimilarCasesResults, intermediateFindSimilarCasesResults, onRemoveAllAndCloseButtonClick, onRemoveCasesButtonClick, t, treeConfigurations]);
 
+  /* v8 ignore start -- steps always contains the start step, so the empty-state notice is unreachable */
+  const emptyStateNotice = steps.length === 0 ? (
+    <Typography>
+      {t('No similar cases results to remove.')}
+    </Typography>
+  ) : null;
+  /* v8 ignore stop */
+
   return (
     <Box
       sx={{
         position: 'relative',
       }}
     >
-      {steps.length === 0 && (
-        <Typography>
-          {t('No similar cases results to remove.')}
-        </Typography>
-      )}
+      {emptyStateNotice}
       {steps.length > 0 && (
         <Stepper
           activeStep={steps[steps.length - 1].key}

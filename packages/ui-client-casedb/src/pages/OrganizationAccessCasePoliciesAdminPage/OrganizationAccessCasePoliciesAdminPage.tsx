@@ -5,7 +5,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  boolean,
   object,
   string,
 } from 'yup';
@@ -26,6 +25,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type { UseFormReturn } from 'react-hook-form';
 
 import { useColSetOptionsQuery } from '../../dataHooks/useColSetsQuery';
@@ -69,38 +69,38 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      add_case: boolean().when('is_private', {
+      add_case: SchemaUtil.boolean.when('is_private', {
         is: true,
-        otherwise: () => boolean().required(),
-        then: () => boolean().required().oneOf([true], t`Add case must be enabled for private policies`),
+        otherwise: () => SchemaUtil.boolean.required(),
+        then: () => SchemaUtil.boolean.required().oneOf([true], t`Add case must be enabled for private policies`),
       }),
-      add_case_set: boolean().when('is_private', {
+      add_case_set: SchemaUtil.boolean.when('is_private', {
         is: true,
-        otherwise: () => boolean().required(),
-        then: () => boolean().required().oneOf([true], t`Add case set must be enabled for private policies`),
+        otherwise: () => SchemaUtil.boolean.required(),
+        then: () => SchemaUtil.boolean.required().oneOf([true], t`Add case set must be enabled for private policies`),
       }),
       case_type_set_id: string().uuid4().required().max(100),
       data_collection_id: string().uuid4().required().max(100),
-      is_active: boolean().required(),
-      is_private: boolean().required(),
+      is_active: SchemaUtil.boolean.required(),
+      is_private: SchemaUtil.boolean.required(),
       organization_id: string().uuid4().required().max(100),
-      read_case_set: boolean().required(),
+      read_case_set: SchemaUtil.boolean.required(),
       read_col_set_id: string().when('is_private', {
         is: true,
         otherwise: () => string().nullable().notRequired().max(100),
         then: () => string().uuid4().required(t`Read column set is required for private policies`).max(100),
       }),
-      remove_case: boolean().when('is_private', {
+      remove_case: SchemaUtil.boolean.when('is_private', {
         is: true,
-        otherwise: () => boolean().required(),
-        then: () => boolean().required().oneOf([true], t`Remove case must be enabled for private policies`),
+        otherwise: () => SchemaUtil.boolean.required(),
+        then: () => SchemaUtil.boolean.required().oneOf([true], t`Remove case must be enabled for private policies`),
       }),
-      remove_case_set: boolean().when('is_private', {
+      remove_case_set: SchemaUtil.boolean.when('is_private', {
         is: true,
-        otherwise: () => boolean().required(),
-        then: () => boolean().required().oneOf([true], t`Remove case set must be enabled for private policies`),
+        otherwise: () => SchemaUtil.boolean.required(),
+        then: () => SchemaUtil.boolean.required().oneOf([true], t`Remove case set must be enabled for private policies`),
       }),
-      write_case_set: boolean().required(),
+      write_case_set: SchemaUtil.boolean.required(),
       write_col_set_id: string().when('is_private', {
         is: true,
         otherwise: () => string().nullable().notRequired().max(100),

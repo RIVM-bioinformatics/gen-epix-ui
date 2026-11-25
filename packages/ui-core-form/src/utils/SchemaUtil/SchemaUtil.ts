@@ -1,10 +1,15 @@
 import { isValid } from 'date-fns/isValid';
 import {
+  boolean,
   number,
   string,
 } from 'yup';
 
 export class SchemaUtil {
+  public static get boolean() {
+    return boolean().transform((value: unknown) => (value === '' ? null : value));
+  }
+
   public static get code() {
     return string().extendedAlphaNumeric().required().max(100);
   }

@@ -159,6 +159,7 @@ export const Table = <TRowData, TDataContext = null>({
   const tableColumnVisualSettingsRef = useRef<TableColumnVisualSettings[]>(null);
   const eventListenersCleanerRef = useRef<() => void>(noop);
   const [isInitialized, setIsInitialized] = useState(false);
+  const fixedHeaderRowRef = useRef<HTMLDivElement>(null);
   const borderColor = useMemo(() => lighten(alpha(theme.palette.divider, 1), 0.1), [theme.palette.divider]);
   const headerBorderColor = useMemo(() => darken(alpha(theme.palette.divider, 1), 0.15), [theme.palette.divider]);
   const scrollbarSize = useScrollbarSize();
@@ -199,6 +200,8 @@ export const Table = <TRowData, TDataContext = null>({
   }, [config.enablePageEvents, getRowName, onRowClick]);
 
   const getVisibleTableSettingsColumns = useCallback(() => {
+    // The ref is always set in the init effect before the header and body that call this are rendered (guarded by isInitialized)
+    /* v8 ignore next -- unreachable fallback, see comment above */
     return tableColumnVisualSettingsRef?.current?.filter(c => c.isVisible) ?? [];
   }, []);
 
@@ -261,6 +264,7 @@ export const Table = <TRowData, TDataContext = null>({
     // select all rows between the last clicked row and the currently clicked row
     const lastClickedRowIndex = sortedData.findIndex(r => idSelectorCallback(r) === lastClickedRowIdRef.current);
     const currentClickedRowIndex = sortedData.findIndex(r => idSelectorCallback(r) === rowId);
+    /* v8 ignore next 3 -- the reset effect on sortedData guarantees the last clicked row is in sortedData, and the clicked row comes from sortedData */
     if (lastClickedRowIndex === -1 || currentClickedRowIndex === -1) {
       return;
     }
@@ -327,11 +331,11 @@ export const Table = <TRowData, TDataContext = null>({
   const getScrollerElement = useCallback(() => tableContainer?.querySelector('[data-virtuoso-scroller=true]'), [tableContainer]);
 
   const saveColumnVisualSettingsToStore = useCallback(() => {
-    setCurrentColumnVisualSettingsInStore(tableColumnVisualSettingsRef.current);
+    // Store a snapshot so later in-place reordering of the ref does not mutate the store state
+    setCurrentColumnVisualSettingsInStore(tableColumnVisualSettingsRef.current.map((columnVisualSettings) => ({ ...columnVisualSettings })));
   }, [setCurrentColumnVisualSettingsInStore]);
 
   const saveColumnVisualSettingsToStoreDebounced = useDebouncedCallback(() => {
-    console.log('saveColumnVisualSettingsToStoreDebounced');
     saveColumnVisualSettingsToStore();
   }, 500, { trailing: true });
 
@@ -455,11 +459,18 @@ export const Table = <TRowData, TDataContext = null>({
    * @param tableColumn - The column being dragged.
    */
   const onTableHeaderCellDrag = useCallback((event: TableDragEvent, tableColumn: TableColumn<TRowData, TDataContext>) => {
+    const body = windowService.body;
+    const document = windowService.document;
+    /* v8 ignore next 3 -- a browser window always has a document with a body, so this guard cannot be reached */
+    if (!body || !document) {
+      throw new Error('Cannot handle table column dragging without a document body.');
+    }
+
     const columnBoundaries = calculateColumnBoundaries(tableColumn);
 
     if (event.type === 'start') {
       // Prevent a horizontal scroll on the entire page when dragging the column
-      windowService.body.style.setProperty('overflow', 'hidden');
+      body.style.setProperty('overflow', 'hidden');
 
       // Prevent text selection while dragging
       tableContainer?.style.setProperty('--selection-background', 'none');
@@ -483,13 +494,16 @@ export const Table = <TRowData, TDataContext = null>({
         filter: blur(0.5px);
         box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.5);
       `;
-      windowService.body.appendChild(dragConfigRef.current.clonedElement);
+      body.appendChild(dragConfigRef.current.clonedElement);
+      // Header icons must not react to hover while a column is being dragged. Set imperatively to avoid re-rendering the table.
+      fixedHeaderRowRef.current?.style.setProperty('pointer-events', 'none');
     }
     if (event.type === 'end') {
       // Restore the original behaviors and styles
-      windowService.body.style.removeProperty('overflow');
+      fixedHeaderRowRef.current?.style.removeProperty('pointer-events');
+      body.style.removeProperty('overflow');
       tableContainer?.style.setProperty('--selection-background', 'highlight');
-      windowService.document.getSelection().empty();
+      document.getSelection().empty();
       dragConfigRef.current.clonedElement.remove();
       event.target.style.setProperty('opacity', '1');
     }
@@ -513,6 +527,7 @@ export const Table = <TRowData, TDataContext = null>({
     return (
       <Box
         aria-rowindex={1}
+        ref={fixedHeaderRowRef}
         role={'row'}
         sx={{
           [`&:hover .${tableHeaderCellClassNames.columnDivider}`]: {
@@ -656,6 +671,7 @@ export const Table = <TRowData, TDataContext = null>({
       const previousHighlightedIds = new Set(previousHighlightedRowIds);
       tableContainer.querySelectorAll<HTMLElement>('[data-testid=virtuoso-item-list] [data-id]').forEach(rowNode => {
         const rowId = rowNode.getAttribute('data-id');
+        /* v8 ignore next 3 -- the selector only matches elements that have a data-id attribute */
         if (rowId === null) {
           return;
         }
@@ -692,8 +708,9 @@ export const Table = <TRowData, TDataContext = null>({
         updateTable();
       }),
       addTableEventListener('columnVisibilityChange', (columnIds: string[]) => {
+        const frozenColumnIds = new Set(tableStore.getState().columns.filter(c => c.frozen).map(c => c.id));
         tableColumnVisualSettingsRef.current.forEach(column => {
-          column.isVisible = columnIds.includes(column.id);
+          column.isVisible = frozenColumnIds.has(column.id) || columnIds.includes(column.id);
         });
         updateTable();
       }),
@@ -728,6 +745,7 @@ export const Table = <TRowData, TDataContext = null>({
     }
   }, [getScrollerElement, onVerticalScrollPositionChange, onVisibleItemIndexChange, rowHeightPx]);
 
+  /* v8 ignore next 3 -- Virtuoso never invokes itemSize when fixedItemHeight is set */
   const handleItemSize = useCallback(() => {
     return rowHeightPx;
   }, [rowHeightPx]);

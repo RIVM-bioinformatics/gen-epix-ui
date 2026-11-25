@@ -71,9 +71,9 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
   const inputRef = useRef<HTMLInputElement>(null);
   const hasError = !!errorMessage;
 
-  const onMuiCheckboxChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange'], itemValue: number | string, currentValue: CheckBoxGroupValue) =>
+  const onMuiCheckboxChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange'], itemValue: number | string, currentValue: CheckBoxGroupValue | null | undefined) =>
     (_event: ChangeEvent<unknown>, checked: boolean) => {
-      const newValue = currentValue.filter(x => x !== itemValue);
+      const newValue = (Array.isArray(currentValue) ? currentValue : []).filter(x => x !== itemValue);
       if (checked) {
         newValue.push(itemValue);
       }
@@ -122,6 +122,7 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
             <IconButton
               {...TestIdUtil.createAttributes('DateRangePicker-reset')}
               aria-label={t`Clear checkbox selection`}
+              disabled={loading}
               // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
               onClick={onResetButtonClick}
               sx={{
@@ -162,7 +163,7 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
                       }}
                     />
                   )}
-                  disabled={loading || disabled}
+                  disabled={loading || disabled || option.disabled}
                   label={option.label}
                   onChange={onMuiCheckboxChange(onChange, option.value, value)}
                 />

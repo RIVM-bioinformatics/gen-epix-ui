@@ -51,6 +51,7 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
   loading = false,
   name,
   onChange: onChangeProp,
+  required,
   warningMessage,
 }: SwitchProps<TFieldValues, TName>): ReactElement => {
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
@@ -77,7 +78,7 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
     });
     return (
       <FormControl
-        {...TestIdUtil.createAttributes('Select', { label, name })}
+        {...TestIdUtil.createAttributes('Switch', { label, name })}
         fullWidth
       >
         <FormControlLabel
@@ -93,7 +94,7 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
               }}
             />
           )}
-          disabled={disabled}
+          disabled={disabled || loading}
           label={icon ? (
             <Box
               component={'span'}
@@ -105,6 +106,7 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
           ) : label}
           onBlur={onBlur}
           onChange={onMuiSwitchChange(onChange)}
+          required={required}
         />
         <FormHelperText
           className={classnames({ 'Mui-warning': hasWarning })}
@@ -121,7 +123,7 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
       </FormControl>
 
     );
-  }, [disabled, infoMessage, errorMessage, hasWarning, icon, label, loading, name, onMuiSwitchChange, warningMessage]);
+  }, [disabled, infoMessage, errorMessage, hasWarning, icon, label, loading, name, onMuiSwitchChange, required, warningMessage]);
 
   return (
 

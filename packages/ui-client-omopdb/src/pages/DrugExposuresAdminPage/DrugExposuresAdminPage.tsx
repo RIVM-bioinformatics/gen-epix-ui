@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbDrugExposure,
@@ -95,6 +95,7 @@ export const DrugExposuresAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here (only assigned in this block), so the false arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -102,21 +103,23 @@ export const DrugExposuresAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- fallbackValue is always set here: every caller passes an item with an id or validated form values with a non-empty person_id, so the false arm is unreachable */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else comment above; the fallback always returns */
     return t`New drug exposure`;
   }, [personOptionsQuery.options, t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      days_supply: number().nullable().notRequired(),
+      days_supply: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       dose_unit_source_value: string().nullable().notRequired(),
       drug_concept_id: string().required(),
-      drug_exposure_end_date: string().required(),
-      drug_exposure_end_datetime: string().nullable().notRequired(),
+      drug_exposure_end_date: SchemaUtil.isoString.required(),
+      drug_exposure_end_datetime: SchemaUtil.isoString.nullable().notRequired(),
       drug_exposure_end_iso_interval: string().nullable().notRequired(),
-      drug_exposure_start_date: string().required(),
-      drug_exposure_start_datetime: string().nullable().notRequired(),
+      drug_exposure_start_date: SchemaUtil.isoString.required(),
+      drug_exposure_start_datetime: SchemaUtil.isoString.nullable().notRequired(),
       drug_exposure_start_iso_interval: string().nullable().notRequired(),
       drug_source_concept_id: string().nullable().notRequired(),
       drug_source_value: string().nullable().notRequired(),
@@ -126,14 +129,14 @@ export const DrugExposuresAdminPage = () => {
       provenance_id: string().nullable().notRequired(),
       provided_by_organization_id: string().nullable().notRequired(),
       provider_id: string().nullable().notRequired(),
-      quantity: number().nullable().notRequired(),
-      refills: number().nullable().notRequired(),
+      quantity: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      refills: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       route_concept_id: string().nullable().notRequired(),
       route_source_value: string().nullable().notRequired(),
       sig: string().nullable().notRequired(),
       source_traceback: string().nullable().notRequired(),
       stop_reason: string().nullable().notRequired(),
-      verbatim_end_date: string().nullable().notRequired(),
+      verbatim_end_date: SchemaUtil.isoString.nullable().notRequired(),
       visit_detail_id: string().nullable().notRequired(),
       visit_occurrence_id: string().nullable().notRequired(),
     });
@@ -151,9 +154,9 @@ export const DrugExposuresAdminPage = () => {
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Verbatim End Date`, name: 'verbatim_end_date' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Drug Type Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'drug_type_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Stop Reason`, name: 'stop_reason' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Refills`, name: 'refills' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Quantity`, name: 'quantity' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Days Supply`, name: 'days_supply' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Refills`, name: 'refills', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Quantity`, name: 'quantity', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Days Supply`, name: 'days_supply', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Sig`, name: 'sig' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Route Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'route_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Lot Number`, name: 'lot_number' } as const satisfies FormFieldDefinition<FormFields>,

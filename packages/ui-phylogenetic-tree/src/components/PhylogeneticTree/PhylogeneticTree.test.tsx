@@ -9,6 +9,8 @@ import {
   createTheme,
   ThemeProvider,
 } from '@mui/material/styles';
+import { Component } from 'react';
+import type { ReactNode } from 'react';
 import { render } from 'vitest-browser-react';
 import { container } from 'tsyringe';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
@@ -75,11 +77,13 @@ const TREE_THEME = createTheme({
 let ariaLabelCounter = 0;
 
 type RenderTreeOptions = {
+  dimFn?: ((color: string) => string) | undefined;
   externalScrollSubject?: Subject<PhylogeneticTreeScrollSubjectValue>;
   externalVisibleRangeSubject?: Subject<PhylogeneticTreeVisibleRangeSubjectValue>;
   hasLink?: boolean;
   height?: number;
   highlightedNodeNamesSubject?: Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>;
+  initialViewState?: Partial<PhylogeneticTreeViewState>;
   itemHeight?: number;
   newick?: string;
   nodeNameColors?: { [key: string]: string } | null;
@@ -331,10 +335,11 @@ const createTreeElement = (options: ResolvedRenderTreeOptions) => {
         <PhylogeneticTree
           ancestorDotRadius={ANCESTOR_DOT_RADIUS}
           ariaLabel={options.ariaLabel}
-          dimFn={DIM_FN}
+          dimFn={Object.prototype.hasOwnProperty.call(options, 'dimFn') ? options.dimFn : DIM_FN}
           hasLink={options.hasLink}
           headerHeight={HEADER_HEIGHT}
           highlightedNodeNamesSubject={options.highlightedNodeNamesSubject}
+          initialViewState={options.initialViewState}
           itemHeight={options.itemHeight}
           leafDotRadius={LEAF_DOT_RADIUS}
           linkedScrollDebounceDelayMs={LINKED_SCROLL_DEBOUNCE_DELAY_MS}
@@ -458,6 +463,25 @@ const dispatchCanvasWheelEvent = (
 const dispatchCanvasMouseOut = (canvas: HTMLCanvasElement) => {
   canvas.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, cancelable: true }));
 };
+
+class ErrorBoundary extends Component<{ children: ReactNode; onError: (error: unknown) => void }, { hasError: boolean }> {
+  public constructor(props: { children: ReactNode; onError: (error: unknown) => void }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  public static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  public componentDidCatch(error: unknown) {
+    this.props.onError(error);
+  }
+
+  public render(): ReactNode {
+    return this.state.hasError ? null : this.props.children;
+  }
+}
 
 describe('PhylogeneticTree', () => {
   test('does not render a canvas without a tree and reports an undefined canvas', async () => {
@@ -1055,6 +1079,309 @@ describe('PhylogeneticTree', () => {
     });
 
     DevicePixelRatioService.getInstance().next(originalDevicePixelRatio);
+
+    await renderResult.unmount();
+  });
+
+  test('uses the default dim function when dimFn is omitted and dims non-highlighted branches', async () => {
+    const highlightedNodeNamesSubject = new Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>({
+      highlightedNodeNames: ['LeafA'],
+      persistedHighlightedNodeNames: [],
+    });
+    const { canvas, renderResult } = await renderTree({
+      dimFn: undefined,
+      highlightedNodeNamesSubject,
+      newick: '((LeafA:1,LeafB:1):1,LeafC:2);',
+    });
+
+    expect(canvas).toBeInstanceOf(HTMLCanvasElement);
+
+    await nextFrame(2);
+
+    expect(highlightedNodeNamesSubject.data.highlightedNodeNames).toEqual(['LeafA']);
+
+    await renderResult.unmount();
+  });
+
+  test('applies numeric initial view state values', async () => {
+    const viewStates: PhylogeneticTreeViewState[] = [];
+    const { renderResult } = await renderTree({
+      height: 240,
+      initialViewState: {
+        horizontalScrollPosition: 15,
+        verticalScrollPosition: 25,
+        zoomLevel: 2,
+      },
+      newick: LARGE_TREE_NEWICK,
+      onViewStateChange: (viewState) => {
+        viewStates.push(viewState);
+      },
+    });
+
+    await waitForAssertion(() => {
+      expect(getLast(viewStates)?.zoomLevel).toBe(2);
+    });
+
+    await renderResult.unmount();
+  });
+
+  test('links without an external scroll subject and falls back to zero without a vertical position', async () => {
+    const onLinkStateChange = vi.fn();
+    const ref = createComponentRef();
+    const viewStates: PhylogeneticTreeViewState[] = [];
+    const { renderResult } = await renderTree({
+      height: 240,
+      newick: LARGE_TREE_NEWICK,
+      onLinkStateChange,
+      onViewStateChange: (viewState) => {
+        viewStates.push(viewState);
+      },
+      ref,
+    });
+
+    await waitForAssertion(() => {
+      expect(ref.current).not.toBeNull();
+    });
+
+    ref.current?.link(48);
+
+    await waitForAssertion(() => {
+      expect(getLast(viewStates)).toMatchObject({
+        horizontalScrollPosition: 0,
+        verticalScrollPosition: 48,
+        zoomLevel: 1,
+      });
+    });
+
+    ref.current?.link();
+
+    await waitForAssertion(() => {
+      expect(getLast(viewStates)).toMatchObject({
+        horizontalScrollPosition: 0,
+        verticalScrollPosition: 0,
+        zoomLevel: 1,
+      });
+      expect(getLast(onLinkStateChange.mock.calls)?.[0]).toBe(true);
+    });
+
+    await renderResult.unmount();
+  });
+
+  test('syncs the scroll position to zero through the imperative handle when there is no tree', async () => {
+    const externalScrollSubject = new Subject<PhylogeneticTreeScrollSubjectValue>({
+      origin: document.createElement('div'),
+      position: 48,
+    });
+    const ref = createComponentRef();
+    const { renderResult } = await renderTree({
+      externalScrollSubject,
+      ref,
+      tree: undefined,
+    });
+
+    await waitForAssertion(() => {
+      expect(ref.current).not.toBeNull();
+    });
+
+    ref.current?.syncScrollToVisibleTree();
+
+    expect(externalScrollSubject.data.position).toBe(0);
+
+    await renderResult.unmount();
+  });
+
+  test('keeps the previous scroll axis when unlink receives non-finite positions', async () => {
+    const viewStates: PhylogeneticTreeViewState[] = [];
+    const ref = createComponentRef();
+    const { renderResult } = await renderTree({
+      height: 240,
+      newick: LARGE_TREE_NEWICK,
+      onViewStateChange: (viewState) => {
+        viewStates.push(viewState);
+      },
+      ref,
+    });
+
+    await waitForAssertion(() => {
+      expect(ref.current).not.toBeNull();
+    });
+
+    ref.current?.unlink({ positionX: 20, positionY: 30, zoomLevel: 1 });
+
+    await waitForAssertion(() => {
+      expect(getLast(viewStates)).toMatchObject({
+        horizontalScrollPosition: 20,
+        verticalScrollPosition: 30,
+      });
+    });
+
+    ref.current?.unlink({ positionX: NaN, positionY: 45, zoomLevel: 1 });
+
+    await waitForAssertion(() => {
+      expect(getLast(viewStates)).toMatchObject({
+        horizontalScrollPosition: 20,
+        verticalScrollPosition: 45,
+      });
+    });
+
+    ref.current?.unlink({ positionX: 25, positionY: NaN, zoomLevel: 1 });
+
+    await waitForAssertion(() => {
+      expect(getLast(viewStates)).toMatchObject({
+        horizontalScrollPosition: 25,
+        verticalScrollPosition: 45,
+      });
+    });
+
+    await renderResult.unmount();
+  });
+
+  test('handles a partial highlight subject, re-hovers the same node, clears on empty hover and mouse out', async () => {
+    const highlightedNodeNamesSubject = new Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>({} as PhylogeneticTreeHighlightedNodeNamesSubjectValue);
+    const { canvas, layout, renderResult } = await renderTree({
+      highlightedNodeNamesSubject,
+      newick: '((LeafA:1,LeafB:1):1,LeafC:2);',
+    });
+
+    expect(canvas).toBeInstanceOf(HTMLCanvasElement);
+
+    if (!(canvas instanceof HTMLCanvasElement) || !layout) {
+      throw new Error('Expected a rendered tree canvas and layout.');
+    }
+
+    const leafA = getLayoutNode(layout, 'LeafA');
+
+    dispatchCanvasMouseEvent(canvas, 'mousemove', leafA.dotX, toCanvasY(leafA.y));
+
+    await waitForAssertion(() => {
+      expect(highlightedNodeNamesSubject.data.highlightedNodeNames).toHaveLength(1);
+      expect(canvas.style.cursor).toBe('pointer');
+    });
+
+    dispatchCanvasMouseEvent(canvas, 'mousemove', leafA.dotX, toCanvasY(leafA.y));
+
+    await nextFrame(2);
+
+    expect(highlightedNodeNamesSubject.data.highlightedNodeNames).toHaveLength(1);
+    expect(canvas.style.cursor).toBe('pointer');
+
+    dispatchCanvasMouseEvent(canvas, 'mousemove', 2, toCanvasY(leafA.y));
+
+    await waitForAssertion(() => {
+      expect(highlightedNodeNamesSubject.data.highlightedNodeNames).toEqual([]);
+      expect(canvas.style.cursor).toBe('default');
+    });
+
+    highlightedNodeNamesSubject.next({ highlightedNodeNames: ['LeafC'] } as PhylogeneticTreeHighlightedNodeNamesSubjectValue);
+
+    await waitForAssertion(() => {
+      expect(highlightedNodeNamesSubject.data.highlightedNodeNames).toEqual(['LeafC']);
+    });
+
+    dispatchCanvasMouseOut(canvas);
+
+    await waitForAssertion(() => {
+      expect(highlightedNodeNamesSubject.data.highlightedNodeNames).toEqual([]);
+    });
+
+    highlightedNodeNamesSubject.next({ persistedHighlightedNodeNames: [] } as PhylogeneticTreeHighlightedNodeNamesSubjectValue);
+
+    await nextFrame(2);
+
+    expect(highlightedNodeNamesSubject.data.highlightedNodeNames).toBeUndefined();
+
+    await renderResult.unmount();
+  });
+
+  test('scrolls vertically on a plain wheel when the tree is linked', async () => {
+    const viewStates: PhylogeneticTreeViewState[] = [];
+    const { canvas, renderResult } = await renderTree({
+      hasLink: true,
+      height: 240,
+      newick: LARGE_TREE_NEWICK,
+      onViewStateChange: (viewState) => {
+        viewStates.push(viewState);
+      },
+    });
+
+    expect(canvas).toBeInstanceOf(HTMLCanvasElement);
+
+    if (!(canvas instanceof HTMLCanvasElement)) {
+      throw new Error('Expected a rendered tree canvas.');
+    }
+
+    await waitForAssertion(() => {
+      expect(viewStates.length).toBeGreaterThan(0);
+    });
+
+    dispatchCanvasWheelEvent(canvas, 320, HEADER_HEIGHT + 120, { deltaY: 100 });
+
+    await waitForAssertion(() => {
+      expect(getLast(viewStates)?.verticalScrollPosition).toBeGreaterThan(0);
+      expect(getLast(viewStates)?.zoomLevel).toBe(1);
+    });
+
+    await renderResult.unmount();
+  });
+
+  test('returns to zoom level 1 without an external scroll subject and resets the vertical position to zero', async () => {
+    const viewStates: PhylogeneticTreeViewState[] = [];
+    const { canvas, renderResult } = await renderTree({
+      height: 240,
+      newick: LARGE_TREE_NEWICK,
+      onViewStateChange: (viewState) => {
+        viewStates.push(viewState);
+      },
+    });
+
+    expect(canvas).toBeInstanceOf(HTMLCanvasElement);
+
+    if (!(canvas instanceof HTMLCanvasElement)) {
+      throw new Error('Expected a rendered tree canvas.');
+    }
+
+    await waitForAssertion(() => {
+      expect(viewStates.length).toBeGreaterThan(0);
+    });
+
+    dispatchCanvasWheelEvent(canvas, 320, HEADER_HEIGHT + 120, { deltaY: -100 });
+
+    await waitForAssertion(() => {
+      expect(getLast(viewStates)?.zoomLevel).toBeLessThan(1);
+    });
+
+    dispatchCanvasWheelEvent(canvas, 320, HEADER_HEIGHT + 120, { deltaY: 100 });
+
+    await waitForAssertion(() => {
+      expect(getLast(viewStates)?.zoomLevel).toBeCloseTo(1);
+      expect(getLast(viewStates)?.verticalScrollPosition).toBe(0);
+    });
+
+    await renderResult.unmount();
+  });
+
+  test('reports the internal zoom level guard when the initial zoom level is zero', async () => {
+    const onError = vi.fn();
+    const tree = parseTree(LARGE_TREE_NEWICK);
+    const sortedLeafNames = NewickUtil.getSortedNames(tree);
+    const ariaLabel = `Phylogenetic tree ${ariaLabelCounter++}`;
+    const renderResult = await render(
+      <ErrorBoundary onError={onError}>
+        {createTreeElement({
+          ariaLabel,
+          height: DEFAULT_HEIGHT,
+          initialViewState: { zoomLevel: 0 },
+          itemHeight: DEFAULT_ITEM_HEIGHT,
+          sortedLeafNames,
+          tree,
+          width: DEFAULT_WIDTH,
+        })}
+      </ErrorBoundary>,
+    );
+
+    await waitForAssertion(() => {
+      expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: 'internalZoomLevel cannot be 0' }));
+    });
 
     await renderResult.unmount();
   });

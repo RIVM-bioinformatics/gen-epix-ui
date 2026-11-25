@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbProcedureOccurrence,
@@ -88,6 +88,7 @@ export const ProcedureOccurrencesAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is still undefined here: it is first assigned in this block, so the check is always true */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -105,9 +106,11 @@ export const ProcedureOccurrencesAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- a validated create form always has a non-empty person_id or procedure_concept_id (yup required), which sets fallbackValue; rows always have a non-empty id and return at the id check */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else ignore above; the fallback always returns */
     return t`New procedure occurrence`;
   }, [personOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {
@@ -116,10 +119,10 @@ export const ProcedureOccurrencesAdminPage = () => {
       modifier_source_value: string().nullable().notRequired(),
       person_id: string().required(),
       procedure_concept_id: string().required(),
-      procedure_date: string().required(),
-      procedure_datetime: string().nullable().notRequired(),
-      procedure_end_date: string().nullable().notRequired(),
-      procedure_end_datetime: string().nullable().notRequired(),
+      procedure_date: SchemaUtil.isoString.required(),
+      procedure_datetime: SchemaUtil.isoString.nullable().notRequired(),
+      procedure_end_date: SchemaUtil.isoString.nullable().notRequired(),
+      procedure_end_datetime: SchemaUtil.isoString.nullable().notRequired(),
       procedure_iso_interval: string().nullable().notRequired(),
       procedure_source_concept_id: string().nullable().notRequired(),
       procedure_source_value: string().nullable().notRequired(),
@@ -127,7 +130,7 @@ export const ProcedureOccurrencesAdminPage = () => {
       provenance_id: string().nullable().notRequired(),
       provided_by_organization_id: string().nullable().notRequired(),
       provider_id: string().nullable().notRequired(),
-      quantity: number().nullable().notRequired(),
+      quantity: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       source_traceback: string().nullable().notRequired(),
       visit_detail_id: string().nullable().notRequired(),
       visit_occurrence_id: string().nullable().notRequired(),
@@ -145,7 +148,7 @@ export const ProcedureOccurrencesAdminPage = () => {
       { dateFormat: DATE_FORMAT.DATE_TIME, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Procedure End Datetime`, name: 'procedure_end_datetime' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Procedure Type Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'procedure_type_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Modifier Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'modifier_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Quantity`, name: 'quantity' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Quantity`, name: 'quantity', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Provider ID`, loading: providerOptionsQuery.isLoading, name: 'provider_id', options: providerOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Visit Occurrence ID`, loading: visitOccurrenceOptionsQuery.isLoading, name: 'visit_occurrence_id', options: visitOccurrenceOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Visit Detail ID`, loading: visitDetailOptionsQuery.isLoading, name: 'visit_detail_id', options: visitDetailOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,

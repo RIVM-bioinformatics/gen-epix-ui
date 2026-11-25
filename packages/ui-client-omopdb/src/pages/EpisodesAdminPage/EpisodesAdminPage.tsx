@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbEpisode,
@@ -75,6 +75,7 @@ export const EpisodesAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is still undefined at this first assignment, so the check is always true */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -102,23 +103,25 @@ export const EpisodesAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- create values always have non-empty episode_concept_id and person_id (yup required), which set fallbackValue, and rows always have an id, so this return is never reached */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else skip above */
     return t`New episode`;
   }, [personOptionsQuery.options, conceptOptionsQuery.options, episodeOptionsQuery.options, t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       episode_concept_id: string().required(),
-      episode_end_date: string().nullable().notRequired(),
-      episode_end_datetime: string().nullable().notRequired(),
-      episode_number: number().nullable().notRequired(),
+      episode_end_date: SchemaUtil.isoString.nullable().notRequired(),
+      episode_end_datetime: SchemaUtil.isoString.nullable().notRequired(),
+      episode_number: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       episode_object_concept_id: string().required(),
       episode_parent_id: string().nullable().notRequired(),
       episode_source_concept_id: string().nullable().notRequired(),
       episode_source_value: string().nullable().notRequired(),
-      episode_start_date: string().required(),
-      episode_start_datetime: string().nullable().notRequired(),
+      episode_start_date: SchemaUtil.isoString.required(),
+      episode_start_datetime: SchemaUtil.isoString.nullable().notRequired(),
       episode_type_concept_id: string().required(),
       person_id: string().required(),
       provenance_id: string().nullable().notRequired(),
@@ -136,7 +139,7 @@ export const EpisodesAdminPage = () => {
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Episode End Date`, name: 'episode_end_date' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE_TIME, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Episode End Datetime`, name: 'episode_end_datetime' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Episode Parent ID`, loading: episodeOptionsQuery.isLoading, name: 'episode_parent_id', options: episodeOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Episode Number`, name: 'episode_number' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Episode Number`, name: 'episode_number', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Episode Object Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'episode_object_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Episode Type Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'episode_type_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Episode Source Value`, name: 'episode_source_value' } as const satisfies FormFieldDefinition<FormFields>,

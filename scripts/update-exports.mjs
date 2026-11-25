@@ -68,6 +68,10 @@ if (hasExportEntries) {
       ]),
     ),
   };
+  // Browser-test helpers are shared by workspace tests, not published libraries.
+  if (existsSync(join(srcDir, 'test/lib/index.ts'))) {
+    pkg.exports['./test/lib'] = { types: './src/test/lib/index.ts', import: './src/test/lib/index.ts' };
+  }
 }
 
 if (hasExportEntries) {

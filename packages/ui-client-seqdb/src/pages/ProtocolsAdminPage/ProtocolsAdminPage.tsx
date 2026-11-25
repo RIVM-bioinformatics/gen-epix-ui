@@ -5,9 +5,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  boolean,
   mixed,
-  number,
   object,
   string,
 } from 'yup';
@@ -29,6 +27,7 @@ import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data.mo
 import type { TableColumn } from '@gen-epix/ui-client-common/models/table.models';
 import { CrudPage } from '@gen-epix/ui-client-common/pages/CrudPage';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
@@ -49,9 +48,11 @@ type FormFields = {
 
 const parsePropsJson = (propsJson: string): NonNullable<SeqDbProtocol['props']> => {
   const parsedProps: unknown = JSON.parse(propsJson);
+  /* v8 ignore start -- the propsJson schema test rejects the same inputs before createOne/updateOne run, so this throw is unreachable through the form */
   if (typeof parsedProps !== 'object' || parsedProps === null || Array.isArray(parsedProps)) {
     throw new Error('Protocol properties must be a JSON object.');
   }
+  /* v8 ignore stop */
 
   return parsedProps;
 };
@@ -72,7 +73,7 @@ export const ProtocolsAdminPage = () => {
     seqDistanceTypeOptionsQuery,
     seqProfileTypeOptionsQuery,
   ]);
-  const defaultNewItem = useMemo<Partial<FormFields>>(() => ({ propsJson: '{}' }), []);
+  const defaultNewItem = useMemo<Partial<FormFields>>(() => ({ is_integer_distance: false, propsJson: '{}' }), []);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await container.resolve(SeqDbSeqApi).protocolsGetAll(null, null, { signal })).data;
@@ -87,9 +88,11 @@ export const ProtocolsAdminPage = () => {
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: SeqDbProtocol) => {
+    /* v8 ignore start -- CrudPage only calls updateOne for items with a truthy id (items without one are created instead), so this guard is unreachable through the page */
     if (!item.id) {
       throw new Error('Cannot update a protocol without an ID.');
     }
+    /* v8 ignore stop */
 
     const { propsJson, ...protocol } = variables;
     return (await container.resolve(SeqDbSeqApi).protocolsPutOne(item.id, {
@@ -111,25 +114,26 @@ export const ProtocolsAdminPage = () => {
     return item.name || item.code || ('id' in item && item.id) || '';
   }, []);
 
-  const getFormValuesFromItem = useCallback((item: SeqDbProtocol): Partial<FormFields> => {
+  const getFormValuesFromItem = useCallback((item?: SeqDbProtocol): Partial<FormFields> => {
     return {
       ...item,
-      propsJson: JSON.stringify(item.props ?? {}, null, 2),
+      propsJson: JSON.stringify(item?.props ?? {}, null, 2),
     };
   }, []);
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       code: SchemaUtil.code,
-      description: string().nullable().optional().max(1000),
+      description: SchemaUtil.description.nullable().notRequired(),
       git_commit_hash: string().nullable().optional(),
       git_commit_tag: string().nullable().optional(),
       git_repository_uri: string().nullable().optional(),
-      is_integer_distance: boolean().nullable().optional(),
+      is_integer_distance: SchemaUtil.boolean.nullable().optional(),
       locus_set_id: string().nullable().optional(),
-      max_stored_distance: number().nullable().optional(),
-      name: string().nullable().optional().max(100),
+      max_stored_distance: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
+      name: SchemaUtil.name.nullable().notRequired(),
       propsJson: string().required().test('valid-json-object', t`Enter a valid JSON object.`, (value) => {
+        /* v8 ignore next 3 -- propsJson is always a string: set from defaultNewItem or getFormValuesFromItem, so the form never passes undefined */
         if (value === undefined) {
           return false;
         }
@@ -146,8 +150,8 @@ export const ProtocolsAdminPage = () => {
       seq_category_set_id: string().nullable().optional(),
       seq_distance_type: mixed<SeqDbSeqDistanceType>().oneOf(Object.values(SeqDbSeqDistanceTypeValues)).nullable().optional(),
       seq_profile_type: mixed<SeqDbSeqProfileType>().oneOf(Object.values(SeqDbSeqProfileTypeValues)).nullable().optional(),
-      valid_end_datetime: string().datetime().nullable().optional(),
-      valid_start_datetime: string().datetime().nullable().optional(),
+      valid_end_datetime: SchemaUtil.isoString.nullable().notRequired(),
+      valid_start_datetime: SchemaUtil.isoString.nullable().notRequired(),
     });
   }, [t]);
 
@@ -165,11 +169,9 @@ export const ProtocolsAdminPage = () => {
         name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
         label: t`Description`,
-        multiline: true,
         name: 'description',
-        rows: 4,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
@@ -217,9 +219,10 @@ export const ProtocolsAdminPage = () => {
         name: 'is_integer_distance',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         label: t`Maximum stored distance`,
         name: 'max_stored_distance',
+        type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -237,12 +240,14 @@ export const ProtocolsAdminPage = () => {
         name: 'git_commit_tag',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        dateFormat: DATE_FORMAT.DATE_TIME,
+        definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         label: t`Valid start datetime`,
         name: 'valid_start_datetime',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        dateFormat: DATE_FORMAT.DATE_TIME,
+        definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         label: t`Valid end datetime`,
         name: 'valid_end_datetime',
       } as const satisfies FormFieldDefinition<FormFields>,

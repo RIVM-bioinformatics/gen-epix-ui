@@ -4,10 +4,7 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  boolean,
-  object,
-} from 'yup';
+import { object } from 'yup';
 import type {
   CaseDbApiPermission,
   CaseDbRegionSet,
@@ -60,7 +57,7 @@ export const RegionSetsAdminPage = () => {
     return object<FormFields>().shape({
       code: SchemaUtil.code,
       name: SchemaUtil.name,
-      region_code_as_label: boolean().required(),
+      region_code_as_label: SchemaUtil.boolean.required(),
       resolution: SchemaUtil.number.integer().positive().max(10000).required(),
     });
   }, []);

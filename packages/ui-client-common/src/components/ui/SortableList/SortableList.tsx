@@ -101,6 +101,7 @@ export const SortableList = <T extends SortableListBaseItem>({
 
   const onCheckBoxChange = useCallback((event: ReactChangeEvent<HTMLInputElement>) => {
     const itemId = event.target.getAttribute('data-id');
+    /* v8 ignore next 3 -- the checkbox input always receives data-id from slotProps */
     if (itemId === null) {
       return;
     }
@@ -206,6 +207,7 @@ export const SortableList = <T extends SortableListBaseItem>({
           },
           onDragStart: ({ active: draggedItem }) => {
             const item = getItemForId(draggedItem.id);
+            /* v8 ignore next 3 -- drags only start from handles rendered for the current items */
             if (!item) {
               return;
             }

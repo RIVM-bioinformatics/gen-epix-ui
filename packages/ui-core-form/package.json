@@ -101,6 +101,10 @@
     "./utils/SchemaUtil": {
       "types": "./src/utils/SchemaUtil/index.ts",
       "import": "./src/utils/SchemaUtil/index.ts"
+    },
+    "./test/lib": {
+      "types": "./src/test/lib/index.ts",
+      "import": "./src/test/lib/index.ts"
     }
   },
   "files": [
@@ -117,7 +121,7 @@
     "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",
     "test-run": "vitest run --passWithNoTests --coverage",
     "update-exports": "node scripts/update-exports.js",
-    "validate": "pnpm run lint && pnpm run check-types && pnpm run test-run"
+    "validate": "pnpm run test-missing-translations && pnpm run check-types && pnpm run lint && pnpm run test-run"
   },
   "browserslist": [
     "last 2 Chrome versions"
@@ -178,8 +182,12 @@
     "@testing-library/react": "^16.3.3",
     "@types/lodash": "4.17.27",
     "@types/react": "19.3.0",
+    "@vitejs/plugin-react": "6.3.0",
+    "@vitest/browser-playwright": "5.1.0",
+    "@vitest/coverage-v8": "5.1.0",
     "eslint": "10.15.0",
     "i18next": "27.1.3",
+    "playwright": "1.65.1",
     "react": "19.3.1",
     "react-hook-form": "7.92.0",
     "react-i18next": "18.0.2",
@@ -188,6 +196,7 @@
     "vite-plugin-dts": "5.1.2",
     "vite-plugin-static-copy": "4.1.1",
     "vitest": "5.1.0",
+    "vitest-browser-react": "2.3.0",
     "yup": "1.7.1"
   },
   "peerDependencies": {

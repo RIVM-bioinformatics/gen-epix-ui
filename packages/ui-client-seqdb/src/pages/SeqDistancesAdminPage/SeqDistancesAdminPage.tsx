@@ -87,10 +87,12 @@ export const SeqDistancesAdminPage = () => {
     const sampleLabel = sampleOptionsQuery.options.find(option => option.value === item.sample_id)?.label ?? item.sample_id;
     const profileLabel = seqProfileOptionsQuery.options.find(option => option.value === item.seq_profile_id)?.label ?? item.seq_profile_id;
     const protocolLabel = protocolOptionsQuery.options.find(option => option.value === item.protocol_id)?.label ?? item.protocol_id;
+    /* v8 ignore start -- the final '' is unreachable: stored items always have a non-empty id (guarded by isSeqDbSeqDistanceWithId) and form values always have non-empty content (required by the schema) */
     return [profileLabel, sampleLabel, protocolLabel].filter(Boolean).join(' - ')
       || item.content.slice(0, 60)
       || ('id' in item && item.id)
       || '';
+    /* v8 ignore stop */
   }, [protocolOptionsQuery.options, sampleOptionsQuery.options, seqProfileOptionsQuery.options]);
 
   const schema = useMemo(() => {

@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbFactRelationship,
@@ -63,6 +63,7 @@ export const FactRelationshipsAdminPage = () => {
       if (relationshipConceptIdOption?.label) {
         return relationshipConceptIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined at this first assignment, so the false arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = relationshipConceptId;
       }
@@ -84,26 +85,28 @@ export const FactRelationshipsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- yup required() rejects '' so a create value reaching here has a non-empty relationship_concept_id, which sets fallbackValue; rows always have an id above */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else comment above */
     return t`New fact relationship`;
   }, [conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       domain_concept_id_1: string().required(),
       domain_concept_id_2: string().required(),
-      fact_id_1: number().required(),
-      fact_id_2: number().required(),
+      fact_id_1: SchemaUtil.number.required(),
+      fact_id_2: SchemaUtil.number.required(),
       relationship_concept_id: string().required(),
     });
   }, []);
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Domain Concept ID 1`, name: 'domain_concept_id_1' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Fact ID 1`, name: 'fact_id_1' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Fact ID 1`, name: 'fact_id_1', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Domain Concept ID 2`, name: 'domain_concept_id_2' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Fact ID 2`, name: 'fact_id_2' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Fact ID 2`, name: 'fact_id_2', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Relationship Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'relationship_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [conceptOptionsQuery.isLoading, conceptOptionsQuery.options, t]);

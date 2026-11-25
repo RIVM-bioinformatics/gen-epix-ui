@@ -38,6 +38,11 @@ describe('FormUtil', () => {
       expect(FormUtil.areFormValuesValid([], {})).toBe(true);
     });
 
+    it('treats null as defined for default-branch field types', () => {
+      const defs = [fd<{ file: unknown }>(FORM_FIELD_DEFINITION_TYPE.FILE, 'file')];
+      expect(FormUtil.areFormValuesValid(defs, { file: null })).toBe(true);
+    });
+
     it('returns true for BOOLEAN field with a boolean value', () => {
       const defs = [fd<{ active: boolean }>(FORM_FIELD_DEFINITION_TYPE.BOOLEAN, 'active')];
       expect(FormUtil.areFormValuesValid(defs, { active: true })).toBe(true);
@@ -141,6 +146,31 @@ describe('FormUtil', () => {
   });
 
   describe('createFormValues', () => {
+    it('uses field defaults when the source item is null', () => {
+      type NullableForm = {
+        choice: null | string;
+        choices: null | string[];
+        count: null | number;
+        date: Date | null;
+        name: null | string;
+      };
+      const defs: FormFieldDefinition<NullableForm>[] = [
+        fd<NullableForm>(FORM_FIELD_DEFINITION_TYPE.SELECT, 'choice'),
+        fd<NullableForm>(FORM_FIELD_DEFINITION_TYPE.SELECT, 'choices', { multiple: true }),
+        fd<NullableForm>(FORM_FIELD_DEFINITION_TYPE.NUMBER, 'count'),
+        fd<NullableForm>(FORM_FIELD_DEFINITION_TYPE.DATE, 'date'),
+        fd<NullableForm>(FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, 'name'),
+      ];
+
+      expect(FormUtil.createFormValues(defs, null)).toEqual({
+        choice: null,
+        choices: [],
+        count: null,
+        date: null,
+        name: '',
+      });
+    });
+
     it('returns item value for AUTOCOMPLETE (non-multiple) when present', () => {
       const defs = [fd<{ tag: string }>(FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, 'tag', { multiple: false })];
       expect(FormUtil.createFormValues(defs, { tag: 'value' }).tag).toBe('value');
@@ -283,6 +313,18 @@ describe('FormUtil', () => {
       expect(FormUtil.createStringValuesFromFormValues(defs, { name: 'John' }).name).toBe('John');
     });
 
+    it('converts empty strings to null and preserves whitespace', () => {
+      const defs = [
+        fd<{ empty: string; whitespace: string }>(FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, 'empty'),
+        fd<{ empty: string; whitespace: string }>(FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, 'whitespace'),
+      ];
+
+      expect(FormUtil.createStringValuesFromFormValues(defs, { empty: '', whitespace: '  ' })).toEqual({
+        empty: null,
+        whitespace: '  ',
+      });
+    });
+
     it('passes through value for BOOLEAN', () => {
       const defs = [fd<{ active: boolean }>(FORM_FIELD_DEFINITION_TYPE.BOOLEAN, 'active')];
       const result = FormUtil.createStringValuesFromFormValues(
@@ -406,7 +448,13 @@ describe('FormUtil', () => {
       expect(result.date).toBe(date.toISOString());
     });
 
-    it('creates a string schema for DATE that transforms an invalid date to null', () => {
+    it('creates a string schema for DATE that transforms an invalid Date to null', () => {
+      const defs = [fd<{ date: string }>(FORM_FIELD_DEFINITION_TYPE.DATE, 'date')];
+      const schema = FormUtil.createYupSchemaFromFormFieldDefinitions(defs);
+      expect(schema.cast({ date: new Date('invalid') }).date).toBeNull();
+    });
+
+    it('transforms a null DATE value to null', () => {
       const defs = [fd<{ date: string }>(FORM_FIELD_DEFINITION_TYPE.DATE, 'date')];
       const schema = FormUtil.createYupSchemaFromFormFieldDefinitions(defs);
       expect(schema.cast({ date: null }).date).toBeNull();

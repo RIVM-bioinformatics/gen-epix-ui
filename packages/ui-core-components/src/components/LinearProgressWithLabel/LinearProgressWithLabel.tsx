@@ -14,12 +14,12 @@ export const LinearProgressWithLabel = ({ value, ...props }: LinearProgressWithL
     <Box sx={{ alignItems: 'center', display: 'flex' }}>
       <Box sx={{ mr: 1, width: '100%' }}>
         <LinearProgress
-          value={value > 1 ? value : undefined}
-          variant={value > 1 ? 'determinate' : 'indeterminate'}
+          value={value > 0 ? value : undefined}
+          variant={value > 0 ? 'determinate' : 'indeterminate'}
           {...props}
         />
       </Box>
-      {value > 1 && (
+      {value > 0 && (
         <Box sx={{ minWidth: 35 }}>
           <Typography
             sx={{ color: 'text.secondary' }}

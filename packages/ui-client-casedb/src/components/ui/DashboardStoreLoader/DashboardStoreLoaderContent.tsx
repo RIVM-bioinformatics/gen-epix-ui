@@ -36,7 +36,7 @@ export const DashboardStoreLoaderContent = ({ caseSet, children, completeCaseTyp
       idSelectorCallback: (row) => row.id,
       showMissingValuesFilter: true,
       storageNamePostFix: `epiDashboardStoreLoader-${StringUtil.createSlug(completeCaseType.name)}-${StringUtil.createHash(completeCaseType.id)}`,
-      storageVersion: 1,
+      storageVersion: 2,
     });
     return store;
   }, [caseSet, completeCaseType, config]);

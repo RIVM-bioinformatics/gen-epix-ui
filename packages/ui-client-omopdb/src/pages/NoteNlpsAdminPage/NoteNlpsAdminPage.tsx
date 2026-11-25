@@ -8,6 +8,7 @@ import {
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbNoteNlp,
@@ -65,6 +66,7 @@ export const NoteNlpsAdminPage = () => {
       if (noteIdOption?.label) {
         return noteIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here (only assigned in this block after this check), so the check is always true */
       if (!fallbackValue) {
         fallbackValue = noteId;
       }
@@ -102,16 +104,18 @@ export const NoteNlpsAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- unreachable: create values are yup-validated so note_id is a non-empty string, which always sets fallbackValue; rows always have a non-empty id and return earlier */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the preceding else ignore */
     return t`New note nlp`;
   }, [noteOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       lexical_variant: string().required(),
-      nlp_date: string().required(),
-      nlp_datetime: string().nullable().notRequired(),
+      nlp_date: SchemaUtil.isoString.required(),
+      nlp_datetime: SchemaUtil.isoString.nullable().notRequired(),
       nlp_system: string().nullable().notRequired(),
       note_id: string().required(),
       note_nlp_concept_id: string().nullable().notRequired(),

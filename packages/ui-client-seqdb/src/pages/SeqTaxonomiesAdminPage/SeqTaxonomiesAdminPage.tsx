@@ -107,10 +107,12 @@ export const SeqTaxonomiesAdminPage = () => {
   const getName = useCallback((item: FormFields | SeqDbSeqTaxonomyWithId) => {
     const taxonLabel = taxonOptionsQuery.options.find(option => option.value === item.primary_taxon_id)?.label ?? item.primary_taxon_id;
     const sampleLabel = sampleOptionsQuery.options.find(option => option.value === item.sample_id)?.label ?? item.sample_id;
+    /* v8 ignore start -- the final '' is unreachable: getName only receives stored items with a non-empty id (guarded by isSeqDbSeqTaxonomyWithId) */
     return [taxonLabel, sampleLabel].filter(Boolean).join(' - ')
       || item.content.slice(0, 60)
       || ('id' in item && item.id)
       || '';
+    /* v8 ignore stop */
   }, [sampleOptionsQuery.options, taxonOptionsQuery.options]);
 
   const schema = useMemo(() => {

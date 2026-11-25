@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbConditionEra,
@@ -66,6 +66,7 @@ export const ConditionErasAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is still undefined here: it is only assigned in this block, so the false arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -97,17 +98,19 @@ export const ConditionErasAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- reaching here without fallbackValue needs no non-empty person_id or condition_concept_id, no provenance or source traceback, and no row id; every caller passes an item with an id or validated form values with a required person_id and condition_concept_id, so the false arm is unreachable */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else comment above; the fallback always returns */
     return t`New condition era`;
   }, [personOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       condition_concept_id: string().required(),
-      condition_era_end_date: string().required(),
-      condition_era_start_date: string().required(),
-      condition_occurrence_count: number().nullable().notRequired(),
+      condition_era_end_date: SchemaUtil.isoString.required(),
+      condition_era_start_date: SchemaUtil.isoString.required(),
+      condition_occurrence_count: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
       person_id: string().required(),
       provenance_id: string().nullable().notRequired(),
       source_traceback: string().nullable().notRequired(),
@@ -121,7 +124,7 @@ export const ConditionErasAdminPage = () => {
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Condition Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'condition_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Condition Era Start Date`, name: 'condition_era_start_date' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Condition Era End Date`, name: 'condition_era_end_date' } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Condition Occurrence Count`, name: 'condition_occurrence_count' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Condition Occurrence Count`, name: 'condition_occurrence_count', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [conceptOptionsQuery.isLoading, personOptionsQuery.isLoading, conceptOptionsQuery.options, personOptionsQuery.options, t]);
   const tableColumns = useMemo((): TableColumn<Row>[] => {

@@ -42,13 +42,19 @@ export const ProtocolSetMembersAdminPage = () => {
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await container.resolve(SeqDbSeqApi).protocolSetMembersPostOne(variables)).data;
+    const response = await container.resolve(SeqDbSeqApi).protocolSetMembersPostOne(variables);
+    if (!response.data.id) {
+      throw new Error('SeqDB returned a protocol set member without an ID.');
+    }
+    return response.data;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: SeqDbProtocolSetMember) => {
+    /* v8 ignore start -- CrudPage only calls updateOne for items with a truthy id (items without one are created instead), so this guard is unreachable through the page */
     if (!item.id) {
       throw new Error('Cannot update a protocol set member without an ID.');
     }
+    /* v8 ignore stop */
 
     return (await container.resolve(SeqDbSeqApi).protocolSetMembersPutOne(item.id, { ...variables, id: item.id })).data;
   }, []);

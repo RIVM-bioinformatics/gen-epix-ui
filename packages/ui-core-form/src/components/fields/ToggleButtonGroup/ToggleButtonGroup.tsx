@@ -1,5 +1,5 @@
 import type {
-  ChangeEvent,
+  MouseEvent,
   ReactElement,
 } from 'react';
 import {
@@ -32,7 +32,7 @@ export type ToggleButtonProps<TFieldValues extends FieldValues, TName extends Pa
   readonly disabled?: boolean;
   readonly infoMessage?: string;
   readonly name: TName;
-  readonly onChange?: (value: string) => void;
+  readonly onChange?: ((value: boolean | null | number | string) => void) | ((value: string) => void);
   readonly options: ToggleButtonOption[];
   readonly required?: boolean;
   readonly row?: boolean;
@@ -46,21 +46,22 @@ export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extend
   onChange: onChangeProp,
   options,
   required,
+  row = true,
   warningMessage,
 }: ToggleButtonProps<TFieldValues, TName>): ReactElement => {
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLButtonElement>(null);
   const hasError = !!errorMessage;
 
   const onMuiToggleButtonChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
-    (_event: ChangeEvent<unknown>, value: string) => {
+    (_event: MouseEvent<HTMLElement>, value: boolean | null | number | string) => {
       if (required && value === null) {
         return;
       }
       if (onChangeProp) {
-        onChangeProp(value);
+        (onChangeProp as (value: boolean | null | number | string) => void)(value);
       }
       onChange(value);
     }
@@ -78,14 +79,16 @@ export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extend
         exclusive
         onBlur={onBlur}
         onChange={onMuiToggleButtonChange(onChange)}
+        orientation={row ? 'horizontal' : 'vertical'}
         value={value}
       >
-        { options.map((option) => {
+        { options.map((option, index) => {
           return (
             <ToggleButton
-              key={option.value.toString()}
+              key={`${typeof option.value}:${option.value}`}
               {...TestIdUtil.createAttributes('ToggleButton-option', { code: option.value.toString(), description: option.label })}
               disabled={disabled}
+              ref={index === 0 ? inputRef : undefined}
               value={option.value}
             >
               {option.label}
@@ -94,7 +97,7 @@ export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extend
         })}
       </MuiToggleButtonGroup>
     );
-  }, [onMuiToggleButtonChange, options, disabled]);
+  }, [onMuiToggleButtonChange, options, disabled, row]);
 
   return (
     <FormControl

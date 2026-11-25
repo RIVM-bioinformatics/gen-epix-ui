@@ -21,12 +21,12 @@ export const nestedMenuItemsFromObject = ({
   menuItemsData: items,
 }: NestedMenuItemsFromObjectProps) => {
   return items.map((item) => {
-    const { active, autoCloseDisabled, callback, checked, disabled, divider, items: menuItemsData, label, leftIcon, rightIcon, sx, tooltip } = item;
+    const { active, autoCloseDisabled, callback, checked, disabled, divider, items: menuItemsData, label, leftIcon, rightIcon, sx, tooltip, uid } = item;
     if (!disabled && menuItemsData && menuItemsData.length > 0) {
       return (
         <Tooltip
           arrow
-          key={label}
+          key={uid ?? label}
           placement={'right'}
           title={undefined}
         >
@@ -34,7 +34,7 @@ export const nestedMenuItemsFromObject = ({
             callback={callback}
             checked={checked}
             disabled={disabled}
-            key={label}
+            key={uid ?? label}
             label={label}
             leftIcon={leftIcon}
             parentMenuOpen={isOpen}
@@ -62,7 +62,7 @@ export const nestedMenuItemsFromObject = ({
         checked={checked}
         disabled={disabled}
         divider={divider}
-        key={label}
+        key={uid ?? label}
         label={label}
         leftIcon={leftIcon}
         // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
@@ -91,7 +91,7 @@ export const nestedMenuItemsFromObject = ({
     return (
       <Tooltip
         arrow
-        key={label}
+        key={uid ?? label}
         placement={'right'}
         title={tooltip ?? label}
       >

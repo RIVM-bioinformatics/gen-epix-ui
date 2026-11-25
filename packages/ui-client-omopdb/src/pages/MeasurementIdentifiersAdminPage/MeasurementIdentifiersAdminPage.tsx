@@ -64,6 +64,7 @@ export const MeasurementIdentifiersAdminPage = () => {
       if (identifierIssuerIdOption?.label) {
         return identifierIssuerIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here (only assigned in this block), so the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = identifierIssuerId;
       }
@@ -88,9 +89,11 @@ export const MeasurementIdentifiersAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- identifier_issuer_id and internal_id are both required() non-empty strings, so a create value always sets fallbackValue; rows always have an id above */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the else comment above */
     return t`New measurement identifier`;
   }, [identifierIssuerOptionsQuery.options, measurementOptionsQuery.options, t]);
   const schema = useMemo(() => {

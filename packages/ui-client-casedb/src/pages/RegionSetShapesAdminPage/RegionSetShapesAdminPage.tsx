@@ -75,7 +75,7 @@ export const RegionSetShapesAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       geo_json: string().freeFormText(),
-      scale: number().required().positive().transform((_val: unknown, orig: number | string) => orig === '' ? undefined : orig),
+      scale: number().required().positive().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
     });
   }, []);
 
@@ -89,7 +89,7 @@ export const RegionSetShapesAdminPage = () => {
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        label: t`Scale`,
+        label: t`GEO JSON`,
         multiline: true,
         name: 'geo_json',
         rows: 20,

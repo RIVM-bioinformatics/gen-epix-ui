@@ -34,7 +34,8 @@ const createPeerDependencyExternalPatterns = () => {
 
 const peerDependencyExternalPatterns = createPeerDependencyExternalPatterns();
 
-const isHeadlessTestRun = process.argv.includes('run') || !!process.env.CI;
+const isCi = !!process.env.CI;
+const isHeadlessTestRun = process.argv.includes('run') || isCi;
 
 const discoverEntries = (): { entries: Record<string, string>; flatKeys: Set<string> } => {
   const entries: Record<string, string> = {};
@@ -117,6 +118,9 @@ export default defineConfig({
     }),
   ],
   test: {
+    fileParallelism: !isCi,
+    maxConcurrency: isCi ? 1 : 5,
+    maxWorkers: isCi ? 1 : 2,
     coverage: {
       exclude: [
         'node_modules/',
@@ -129,6 +133,9 @@ export default defineConfig({
         '**/*.spec.{js,ts,jsx,tsx}',
         '**/test/**',
         '**/tests/**',
+      ],
+      include: [
+        'src/**/*.{ts,tsx}',
       ],
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

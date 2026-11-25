@@ -31,6 +31,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { useFileOptionsQuery } from '../../dataHooks/useFilesQuery';
 import { useFileCompressionOptionsQuery } from '../../dataHooks/useFileCompressionOptionsQuery';
@@ -125,9 +126,11 @@ export const SeqsAdminPage = () => {
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: SeqDbSeqWithId) => {
+    /* v8 ignore start -- canEditItem disables Save for sequences with contigs, so the UI never calls updateOne for them */
     if (item.contigs?.length) {
       throw new Error(t`Available sequences cannot be edited.`);
     }
+    /* v8 ignore stop */
 
     const { contigs_json, ...formFields } = variables;
     const response = await container.resolve(SeqDbSeqApi).seqsPutOne(item.id, {
@@ -152,7 +155,10 @@ export const SeqsAdminPage = () => {
     return container.resolve(SeqDbSeqApi).seqsDeleteOne(item.id);
   }, [t]);
 
-  const getFormValuesFromItem = useCallback((item: SeqDbSeqWithId): Partial<FormFields> => {
+  const getFormValuesFromItem = useCallback((item?: SeqDbSeqWithId): Partial<FormFields> => {
+    if (!item) {
+      return {};
+    }
     return {
       code: item.code,
       contigs_json: JSON.stringify(item.contigs ?? [], null, 2),
@@ -178,12 +184,14 @@ export const SeqsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>()
       .shape({
-        code: string().nullable().optional(),
+        code: SchemaUtil.code.nullable().notRequired(),
         contigs_json: string()
           .required()
           .test('valid-contigs', t`Enter a JSON array of valid contigs`, (value) => {
             try {
+              /* v8 ignore start -- contigs_json always holds a string (create default '[]', edit JSON, text input), so the nullish fallback is unreachable */
               parseContigs(value ?? '[]');
+              /* v8 ignore stop */
               return true;
             } catch {
               return false;

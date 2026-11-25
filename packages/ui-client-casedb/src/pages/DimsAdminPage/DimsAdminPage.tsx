@@ -5,11 +5,11 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  boolean,
   object,
   string,
 } from 'yup';
 import { useParams } from 'react-router-dom';
+import type { UseFormReturn } from 'react-hook-form';
 import type {
   CaseDbApiPermission,
   CaseDbDim,
@@ -17,6 +17,7 @@ import type {
 import {
   CaseDbCaseApi,
   CaseDbCommandName,
+  CaseDbDimType,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 import type { CrudPageSubPage } from '@gen-epix/ui-client-common/pages/CrudPage';
@@ -36,18 +37,22 @@ import {
   useCaseTypeOptionsQuery,
 } from '../../dataHooks/useCaseTypesQuery';
 import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
-import { useRefDimOptionsQuery } from '../../dataHooks/useRefDimsQuery';
+import {
+  useRefDimMapQuery,
+  useRefDimOptionsQuery,
+} from '../../dataHooks/useRefDimsQuery';
 
 type FormFields = OmitWithMetaData<CaseDbDim, 'case_type' | 'ref_dim'>;
 
 export const DimsAdminPage = () => {
   const { caseTypeId } = useParams();
   const { t } = useTranslation();
+  const refDimMapQuery = useRefDimMapQuery();
   const refDimOptionsQuery = useRefDimOptionsQuery();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();
 
-  const loadables = useArray([caseTypeOptionsQuery, refDimOptionsQuery]);
+  const loadables = useArray([caseTypeOptionsQuery, refDimOptionsQuery, refDimMapQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await container.resolve(CaseDbCaseApi).dimsGetAll(null, null, { signal }))?.data;
@@ -81,13 +86,25 @@ export const DimsAdminPage = () => {
       case_type_id: string().uuid4().required().max(100),
       code: SchemaUtil.code,
       description: SchemaUtil.description,
-      is_case_date_dim: boolean().required(),
+      is_case_date_dim: SchemaUtil.boolean
+        .when('ref_dim_id', {
+          is: (ref_dim_id: string) => refDimMapQuery.map.get(ref_dim_id)?.dim_type === CaseDbDimType.TIME,
+          otherwise: (booleanSchema) => booleanSchema.nullable().notRequired(),
+          then: (booleanSchema) => booleanSchema.required(),
+        }),
       label: SchemaUtil.label,
       occurrence: SchemaUtil.number.required().min(0).integer().positive(),
       rank: SchemaUtil.rank,
       ref_dim_id: string().uuid4().required().max(100),
     });
-  }, []);
+  }, [refDimMapQuery.map]);
+
+  const onFormChange = useCallback((_item: CaseDbDim, values: FormFields, formMethods: UseFormReturn<FormFields>) => {
+    const isRefDimTime = refDimMapQuery.map.get(values.ref_dim_id)?.dim_type === CaseDbDimType.TIME;
+    if (values.ref_dim_id && !isRefDimTime && typeof values.is_case_date_dim === 'boolean') {
+      formMethods.setValue('is_case_date_dim', null);
+    }
+  }, [refDimMapQuery.map]);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
@@ -131,6 +148,11 @@ export const DimsAdminPage = () => {
         label: t`Rank`,
         name: 'rank',
         type: 'number',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
+        label: t`Case date dimension`,
+        name: 'is_case_date_dim',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const satisfies FormFieldDefinition<FormFields>[];
   }, [caseTypeOptionsQuery.options, refDimOptionsQuery.options, t]);
@@ -201,6 +223,7 @@ export const DimsAdminPage = () => {
       getName={getName}
       itemName={t`Dimension`}
       loadables={loadables}
+      onFormChange={onFormChange}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.DIMS}
       schema={schema}
       subPages={subPages}

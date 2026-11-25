@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbDoseEra,
@@ -66,6 +66,7 @@ export const DoseErasAdminPage = () => {
       if (personIdOption?.label) {
         return personIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined at the first check, so the else arm is unreachable */
       if (!fallbackValue) {
         fallbackValue = personId;
       }
@@ -100,16 +101,18 @@ export const DoseErasAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- fallbackValue is always set here in create, since yup requires non-empty person, drug and unit ids, and rows always have an id */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable: see the fallbackValue ignore above */
     return t`New dose era`;
   }, [personOptionsQuery.options, conceptOptionsQuery.options, t]);
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      dose_era_end_date: string().required(),
-      dose_era_start_date: string().required(),
-      dose_value: number().required(),
+      dose_era_end_date: SchemaUtil.isoString.required(),
+      dose_era_start_date: SchemaUtil.isoString.required(),
+      dose_value: SchemaUtil.number.required(),
       drug_concept_id: string().required(),
       person_id: string().required(),
       provenance_id: string().nullable().notRequired(),
@@ -124,7 +127,7 @@ export const DoseErasAdminPage = () => {
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Person ID`, loading: personOptionsQuery.isLoading, name: 'person_id', options: personOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Drug Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'drug_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Unit Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'unit_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Dose Value`, name: 'dose_value' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Dose Value`, name: 'dose_value', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Dose Era Start Date`, name: 'dose_era_start_date' } as const satisfies FormFieldDefinition<FormFields>,
       { dateFormat: DATE_FORMAT.DATE, definition: FORM_FIELD_DEFINITION_TYPE.DATE, label: t`Dose Era End Date`, name: 'dose_era_end_date' } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;

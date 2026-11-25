@@ -5,7 +5,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  boolean,
   object,
   string,
 } from 'yup';
@@ -26,6 +25,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { useColSetOptionsQuery } from '../../dataHooks/useColSetsQuery';
 import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
@@ -68,17 +68,17 @@ export const UserAccessCasePoliciesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      add_case: boolean().required(),
-      add_case_set: boolean().required(),
+      add_case: SchemaUtil.boolean.required(),
+      add_case_set: SchemaUtil.boolean.required(),
       case_type_set_id: string().uuid4().required().max(100),
       data_collection_id: string().uuid4().required().max(100),
-      is_active: boolean().required(),
-      read_case_set: boolean().required(),
+      is_active: SchemaUtil.boolean.required(),
+      read_case_set: SchemaUtil.boolean.required(),
       read_col_set_id: string().uuid4().required().max(100),
-      remove_case: boolean().required(),
-      remove_case_set: boolean().required(),
+      remove_case: SchemaUtil.boolean.required(),
+      remove_case_set: SchemaUtil.boolean.required(),
       user_id: string().uuid4().required().max(100),
-      write_case_set: boolean().required(),
+      write_case_set: SchemaUtil.boolean.required(),
       write_col_set_id: string().uuid4().nullable().notRequired().max(100),
     });
   }, []);

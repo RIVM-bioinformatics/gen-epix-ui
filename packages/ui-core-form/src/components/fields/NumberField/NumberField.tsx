@@ -65,28 +65,27 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
   warningMessage,
 }: NumberFieldProps<TFieldValues, TName>): ReactElement => {
   const { t } = useTranslation();
-  const { formState: { errors }, register, subscribe } = useFormContext<TFieldValues>();
+  const { formState: { errors }, getValues, register, subscribe } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
   const hasError = !!errorMessage;
   const hasWarning = !!warningMessage && !hasError;
   const inputRef = useRef<HTMLInputElement>(null);
-  const [internalValue, setInternalValue] = useState<number>(null);
-  const [externalValue, setExternalValue] = useState<number>(null);
+  const initialValue = getValues(name) ?? null;
+  const [internalValue, setInternalValue] = useState<number>(initialValue);
+  const [externalValue, setExternalValue] = useState<number>(initialValue);
   const formControlRef = useRef<HTMLDivElement>(null);
-  const [hasInputValue, setHasInputValue] = useState(false);
+  const [hasInputValue, setHasInputValue] = useState(initialValue !== null);
 
   const updateInputValue = useCallback((value: number) => {
-    if (inputRef.current) {
-      const inputValue = (value ?? '').toString().replace('.', ',');
-      inputRef.current.value = inputValue;
-      setHasInputValue(!!inputValue);
-    }
+    const inputValue = (value ?? '').toString().replace('.', ',');
+    inputRef.current.value = inputValue;
+    setHasInputValue(!!inputValue);
   }, []);
 
   useEffect(() => {
     const unsubscribe = subscribe({
       callback: ({ name: changedName, values }) => {
-        if (changedName !== name) {
+        if (changedName && changedName !== name) {
           return;
         }
         setInternalValue(values[name]);
@@ -96,7 +95,6 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
       formState: {
         values: true,
       },
-      name,
     });
     return () => {
       unsubscribe();
@@ -174,7 +172,7 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
   }, [emitValue, name, registration]);
 
   const onMuiRangeSliderChange = useCallback((_event: unknown, sliderValue: number | number[]) => {
-    const value = Array.isArray(sliderValue) ? sliderValue[0] : sliderValue;
+    const [value] = [sliderValue].flat();
     updateInputValue(value);
     setInternalValue(value);
   }, [updateInputValue]);
@@ -190,7 +188,7 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
 
   const textField = useMemo(() => (
     <MuiTextField
-      defaultValue={internalValue ?? ''}
+      defaultValue={(internalValue ?? '').toString().replace('.', ',')}
       disabled={disabled || loading}
       error={hasError}
       inputRef={inputRef}
@@ -203,7 +201,7 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
         },
         input: {
           className: classnames({ 'Mui-warning': hasWarning }),
-          endAdornment: disabled ? undefined : (
+          endAdornment: disabled || loading ? undefined : (
             <InputAdornment position={'end'}>
               <IconButton
                 {...TestIdUtil.createAttributes('TextField-reset')}
@@ -261,6 +259,7 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
           {textField}
           <Slider
             color={'primary'}
+            disabled={disabled || loading}
             marks
             max={max}
             min={min}

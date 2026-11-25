@@ -79,21 +79,32 @@ describe('ValidationUtil', () => {
       expect(ValidationUtil.validate('DECIMAL_0', '1,5')).toBe(false);
       expect(ValidationUtil.validate('DECIMAL_0', 'abc')).toBe(false);
       expect(ValidationUtil.validate('DECIMAL_0', '1e5')).toBe(false);
+      expect(ValidationUtil.validate('DECIMAL_0', '+')).toBe(false);
+      expect(ValidationUtil.validate('DECIMAL_0', '-')).toBe(false);
     });
   });
 
-  describe('validate DECIMAL_1', () => {
-    it('should return true for values with exactly one decimal place', () => {
-      expect(ValidationUtil.validate('DECIMAL_1', '1.2')).toBe(true);
-      expect(ValidationUtil.validate('DECIMAL_1', '123.4')).toBe(true);
-      expect(ValidationUtil.validate('DECIMAL_1', '-1.5')).toBe(true);
-      expect(ValidationUtil.validate('DECIMAL_1', '+0.9')).toBe(true);
+  describe.each([
+    { key: 'DECIMAL_1' as const, maximumFractionDigits: 1 },
+    { key: 'DECIMAL_2' as const, maximumFractionDigits: 2 },
+    { key: 'DECIMAL_3' as const, maximumFractionDigits: 3 },
+    { key: 'DECIMAL_4' as const, maximumFractionDigits: 4 },
+    { key: 'DECIMAL_5' as const, maximumFractionDigits: 5 },
+    { key: 'DECIMAL_6' as const, maximumFractionDigits: 6 },
+  ])('validate $key', ({ key, maximumFractionDigits }) => {
+    const validDecimal = `123.${'4'.repeat(maximumFractionDigits)}`;
+    const excessiveDecimal = `123.${'4'.repeat(maximumFractionDigits + 1)}`;
+
+    it('allows integers and signed decimals through the maximum precision', () => {
+      expect(ValidationUtil.validate(key, '123')).toBe(true);
+      expect(ValidationUtil.validate(key, `-${validDecimal}`)).toBe(true);
+      expect(ValidationUtil.validate(key, `+.${'4'.repeat(maximumFractionDigits)}`)).toBe(true);
     });
 
-    it('should return false for values without a decimal place or with multiple decimal digits', () => {
-      expect(ValidationUtil.validate('DECIMAL_1', '123')).toBe(false);
-      expect(ValidationUtil.validate('DECIMAL_1', '1.23')).toBe(false);
-      expect(ValidationUtil.validate('DECIMAL_1', '1.')).toBe(false);
+    it('rejects excess precision and malformed decimal notation', () => {
+      expect(ValidationUtil.validate(key, excessiveDecimal)).toBe(false);
+      expect(ValidationUtil.validate(key, '1.2.3')).toBe(false);
+      expect(ValidationUtil.validate(key, '1.')).toBe(false);
     });
   });
 

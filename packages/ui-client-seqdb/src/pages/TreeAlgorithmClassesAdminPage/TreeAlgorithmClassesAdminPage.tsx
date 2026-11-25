@@ -4,11 +4,7 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  boolean,
-  number,
-  object,
-} from 'yup';
+import { object } from 'yup';
 import type {
   SeqDbApiPermission,
   SeqDbTreeAlgorithmClass,
@@ -42,9 +38,11 @@ export const TreeAlgorithmClassesAdminPage = () => {
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: SeqDbTreeAlgorithmClass) => {
+    /* v8 ignore start -- CrudPage only calls updateOne for items with a truthy id (items without one are created instead), so this guard is unreachable through the page */
     if (!item.id) {
       throw new Error('Cannot update a tree algorithm class without an ID.');
     }
+    /* v8 ignore stop */
 
     return (await container.resolve(SeqDbSeqApi).treeAlgorithmClassesPutOne(item.id, { ...variables, id: item.id })).data;
   }, []);
@@ -64,10 +62,10 @@ export const TreeAlgorithmClassesAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       code: SchemaUtil.code,
-      is_dist_based: boolean().required(),
-      is_seq_based: boolean().required(),
+      is_dist_based: SchemaUtil.boolean.required(),
+      is_seq_based: SchemaUtil.boolean.required(),
       name: SchemaUtil.name,
-      rank: number().nullable().optional().integer().min(0),
+      rank: SchemaUtil.rank.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
     });
   }, []);
 
@@ -98,9 +96,10 @@ export const TreeAlgorithmClassesAdminPage = () => {
         required: true,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         label: t`Rank`,
         name: 'rank',
+        type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
     ];
   }, [t]);

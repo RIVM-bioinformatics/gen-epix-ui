@@ -5,10 +5,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type {
   OmopDbApiPermission,
   OmopDbProvider,
@@ -104,7 +104,7 @@ export const ProvidersAdminPage = () => {
       specialty_concept_id: string().nullable().notRequired(),
       specialty_source_concept_id: string().nullable().notRequired(),
       specialty_source_value: string().nullable().notRequired(),
-      year_of_birth: number().nullable().notRequired(),
+      year_of_birth: SchemaUtil.number.notRequired().transform((value: number, orig: number | string) => orig === '' ? undefined : value),
     });
   }, []);
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
@@ -114,7 +114,7 @@ export const ProvidersAdminPage = () => {
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Dea`, name: 'dea' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Specialty Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'specialty_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Care Site ID`, loading: careSiteOptionsQuery.isLoading, name: 'care_site_id', options: careSiteOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
-      { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER, label: t`Year Of Birth`, name: 'year_of_birth' } as const satisfies FormFieldDefinition<FormFields>,
+      { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Year Of Birth`, name: 'year_of_birth', type: 'number' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE, label: t`Gender Concept ID`, loading: conceptOptionsQuery.isLoading, name: 'gender_concept_id', options: conceptOptionsQuery.options } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Provider Source Value`, name: 'provider_source_value' } as const satisfies FormFieldDefinition<FormFields>,
       { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD, label: t`Specialty Source Value`, name: 'specialty_source_value' } as const satisfies FormFieldDefinition<FormFields>,

@@ -25,6 +25,7 @@ export const TableReadableIndexCell = <TRowData, TDataContext>({
 }: TableReadableIndexCellProps<TRowData, TDataContext>) => {
   const config = useConfig();
   const onClick = useCallback((event: ReactMouseEvent) => {
+    /* v8 ignore next -- onClick is only attached to the button rendered when onReadableIndexClick is set */
     if (onReadableIndexClick) {
       if (!getRowName) {
         throw new Error('getRowName is required when onReadableIndexClick is provided');

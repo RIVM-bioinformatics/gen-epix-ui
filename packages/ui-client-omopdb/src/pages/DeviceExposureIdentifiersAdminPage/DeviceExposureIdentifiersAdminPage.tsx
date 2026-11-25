@@ -64,6 +64,7 @@ export const DeviceExposureIdentifiersAdminPage = () => {
       if (identifierIssuerIdOption?.label) {
         return identifierIssuerIdOption.label;
       }
+      /* v8 ignore else -- fallbackValue is always undefined here, so the check is always true */
       if (!fallbackValue) {
         fallbackValue = identifierIssuerId;
       }
@@ -88,9 +89,11 @@ export const DeviceExposureIdentifiersAdminPage = () => {
     if ('id' in item && typeof item.id === 'string' && item.id.length > 0) {
       return item.id;
     }
+    /* v8 ignore else -- create requires a non-empty identifier_issuer_id, which sets fallbackValue; rows return at the id check */
     if (fallbackValue) {
       return fallbackValue;
     }
+    /* v8 ignore next -- unreachable, see the preceding else ignore */
     return t`New device exposure identifier`;
   }, [identifierIssuerOptionsQuery.options, deviceExposureOptionsQuery.options, t]);
   const schema = useMemo(() => {

@@ -117,4 +117,39 @@ describe('hasOpenDialogPopper', () => {
     expect(clickGuard.shouldIgnoreBackdropClick({})).toBe(true);
     expect(clickGuard.shouldIgnoreBackdropClick({})).toBe(false);
   });
+
+  it('clears pending popper state when the pointer is cancelled', () => {
+    const dialogContent = document.createElement('div');
+    const trigger = document.createElement('input');
+    trigger.setAttribute('aria-expanded', 'true');
+    trigger.setAttribute('aria-controls', 'dropdown-options');
+    dialogContent.append(trigger);
+
+    const popper = document.createElement('div');
+    popper.className = 'MuiPopper-root';
+    const listbox = document.createElement('ul');
+    listbox.id = 'dropdown-options';
+    popper.append(listbox);
+    document.body.append(popper);
+
+    const clickGuard = createDialogPopperClickGuard();
+    clickGuard.onPointerDownCapture(dialogContent);
+    clickGuard.onPointerCancelCapture();
+
+    trigger.setAttribute('aria-expanded', 'false');
+    popper.remove();
+    const clickEvent = new MouseEvent('click', { detail: 1 });
+    clickGuard.onClickCapture(clickEvent, clickEvent.detail, dialogContent);
+
+    expect(clickGuard.shouldIgnoreBackdropClick(clickEvent)).toBe(false);
+  });
+
+  it.each([
+    { clickEvent: null, inputCase: 'null' },
+    { clickEvent: undefined, inputCase: 'undefined' },
+  ])('does not ignore a $inputCase close event', ({ clickEvent }) => {
+    const clickGuard = createDialogPopperClickGuard();
+
+    expect(clickGuard.shouldIgnoreBackdropClick(clickEvent)).toBe(false);
+  });
 });

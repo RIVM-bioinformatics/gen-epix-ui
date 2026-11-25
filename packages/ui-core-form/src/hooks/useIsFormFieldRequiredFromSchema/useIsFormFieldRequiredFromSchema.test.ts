@@ -40,23 +40,34 @@ describe('useIsFormFieldRequiredFromSchema', () => {
   it('detects required fields, optional fields, nested paths, and other validation failures', () => {
     const { result } = renderHook(() => {
       const formMethods = useForm<FormValues>({ defaultValues });
-      return useIsFormFieldRequiredFromSchema(schema, formMethods.getValues);
+      const isFormFieldRequired = useIsFormFieldRequiredFromSchema(schema, formMethods.getValues);
+
+      return {
+        getValues: formMethods.getValues,
+        isFormFieldRequired,
+      };
     });
 
-    expect(result.current('requiredByTest')).toBe(true);
-    expect(result.current('requiredBySchema')).toBe(true);
-    expect(result.current('optional')).toBe(false);
-    expect(result.current('nested.value')).toBe(true);
-    expect(result.current('customFailure')).toBe(false);
+    expect(result.current.isFormFieldRequired('requiredByTest')).toBe(true);
+    expect(result.current.isFormFieldRequired('requiredBySchema')).toBe(true);
+    expect(result.current.isFormFieldRequired('optional')).toBe(false);
+    expect(result.current.isFormFieldRequired('nested.value')).toBe(true);
+    expect(result.current.isFormFieldRequired('customFailure')).toBe(false);
+    expect(result.current.getValues()).toEqual(defaultValues);
   });
 
-  it('returns false when the schema is missing', () => {
-    const { result } = renderHook(() => {
+  it('returns false when the schema is null or undefined', () => {
+    const { result: nullSchemaResult } = renderHook(() => {
       const formMethods = useForm<FormValues>({ defaultValues });
       return useIsFormFieldRequiredFromSchema(null, formMethods.getValues);
     });
+    const { result: undefinedSchemaResult } = renderHook(() => {
+      const formMethods = useForm<FormValues>({ defaultValues });
+      return useIsFormFieldRequiredFromSchema(undefined, formMethods.getValues);
+    });
 
-    expect(result.current('requiredBySchema')).toBe(false);
+    expect(nullSchemaResult.current('requiredBySchema')).toBe(false);
+    expect(undefinedSchemaResult.current('requiredBySchema')).toBe(false);
   });
 
   it('returns false when reading form values throws', () => {

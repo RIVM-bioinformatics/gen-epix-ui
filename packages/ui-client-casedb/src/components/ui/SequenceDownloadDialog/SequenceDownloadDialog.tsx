@@ -80,7 +80,7 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
     return options;
   }, [completeCaseType]);
 
-  const [geneticSequenceColId, setGeneticSequenceColId] = useState(openProps?.geneticSequenceColId ?? geneticSequenceColOptions?.length === 1 ? geneticSequenceColOptions[0].value : '');
+  const [geneticSequenceColId, setGeneticSequenceColId] = useState(openProps?.geneticSequenceColId ?? (geneticSequenceColOptions.length === 1 ? geneticSequenceColOptions[0].value : ''));
 
   const formMethods = useForm<FormFields>({
     values: {

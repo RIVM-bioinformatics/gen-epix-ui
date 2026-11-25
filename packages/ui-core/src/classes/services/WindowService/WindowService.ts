@@ -5,12 +5,13 @@ import {
 
 @singleton()
 export class WindowService {
-  public get body(): HTMLBodyElement {
-    return this.document ? this.document.body as HTMLBodyElement : null;
+  public get body(): HTMLBodyElement | null {
+    const document = this.document;
+    return document ? document.body as HTMLBodyElement : null;
   }
 
-  public get document(): Document {
-    return this.window ? this.window.document : null;
+  public get document(): Document | null {
+    return this.window.document ?? null;
   }
 
   public get window(): typeof globalThis & Window {

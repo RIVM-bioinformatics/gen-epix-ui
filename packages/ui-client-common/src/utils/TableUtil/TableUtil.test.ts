@@ -149,6 +149,70 @@ describe('TableUtil column builders', () => {
       createVisualSettings('missing'),
     ])).toBe(false);
     expect(TableUtil.areColumnVisualSettingsValid(columns, [createVisualSettings('name')])).toBe(false);
+    expect(TableUtil.areColumnVisualSettingsValid(columns, [
+      createVisualSettings('name'),
+      createVisualSettings('name'),
+    ])).toBe(false);
+  });
+
+  it('rejects column visual settings that hide a frozen column', () => {
+    const columns = [
+      { ...createTextColumn('name'), frozen: TABLE_COLUMN_FROZEN.LEFT },
+      createTextColumn('id'),
+    ];
+
+    expect(TableUtil.areColumnVisualSettingsValid(columns, [
+      createVisualSettings('name', { isVisible: false }),
+      createVisualSettings('id'),
+    ])).toBe(false);
+    expect(TableUtil.areColumnVisualSettingsValid(columns, [
+      createVisualSettings('name'),
+      createVisualSettings('id', { isVisible: false }),
+    ])).toBe(true);
+  });
+
+  it('reconciles column visual settings with the table columns', () => {
+    const columns = [
+      { ...createTextColumn('name'), frozen: TABLE_COLUMN_FROZEN.LEFT },
+      createTextColumn('id'),
+      createTextColumn('date'),
+    ];
+
+    const reconciled = TableUtil.reconcileColumnVisualSettings(columns, [
+      createVisualSettings('date'),
+      createVisualSettings('missing'),
+      createVisualSettings('name', { isVisible: false }),
+      createVisualSettings('date'),
+    ]);
+
+    expect(reconciled.map(s => s.id)).toEqual(['date', 'name', 'id']);
+    expect(reconciled.find(s => s.id === 'name')?.isVisible).toBe(true);
+    expect(TableUtil.areColumnVisualSettingsValid(columns, reconciled)).toBe(true);
+  });
+
+  it('inserts missing columns after their preceding column', () => {
+    const columns = [createTextColumn('name'), createTextColumn('id'), createTextColumn('score')];
+
+    const reconciled = TableUtil.reconcileColumnVisualSettings(columns, [
+      createVisualSettings('name'),
+      createVisualSettings('score'),
+    ]);
+
+    expect(reconciled.map(s => s.id)).toEqual(['name', 'id', 'score']);
+    expect(TableUtil.areColumnVisualSettingsValid(columns, reconciled)).toBe(true);
+  });
+
+  it('returns the same instance when column visual settings are already valid', () => {
+    const columns = [createTextColumn('name'), createTextColumn('id')];
+    const settings = [createVisualSettings('id'), createVisualSettings('name')];
+
+    expect(TableUtil.reconcileColumnVisualSettings(columns, settings)).toBe(settings);
+  });
+
+  it('keeps the settings unchanged when no columns are known yet', () => {
+    const settings = [createVisualSettings('name')];
+
+    expect(TableUtil.reconcileColumnVisualSettings([], settings)).toBe(settings);
   });
 
   it('creates the supported column definitions with defaults and overrides', () => {
@@ -378,6 +442,29 @@ describe('TableUtil column builders', () => {
     const condensedSettings = TableUtil.createCondensedVisualColumnSettingsFromColumnSettings(columns, settings);
 
     expect(condensedSettings.map(setting => setting.id)).toEqual(['score', 'id', 'name']);
+  });
+
+  it('moves a condensed column past hidden columns without losing or duplicating columns', () => {
+    const leftColumn: TableColumnText<TestRow> = {
+      ...createTextColumn('id'),
+      frozen: TABLE_COLUMN_FROZEN.LEFT,
+    };
+    const coloredColumn: TableColumnText<TestRow> = {
+      ...createTextColumn('name'),
+      cellColorGetter: () => 'red',
+    };
+    const columns: TableColumn<TestRow>[] = [leftColumn, createTextColumn('score'), createTextColumn('tags'), coloredColumn];
+    const settings = [
+      createVisualSettings('id'),
+      createVisualSettings('score'),
+      createVisualSettings('tags', { isVisible: false }),
+      createVisualSettings('name'),
+    ];
+
+    const condensedSettings = TableUtil.createCondensedVisualColumnSettingsFromColumnSettings(columns, settings);
+
+    expect(condensedSettings.map(setting => setting.id)).toEqual(['id', 'name', 'tags', 'score']);
+    expect(condensedSettings.find(setting => setting.id === 'tags')).toMatchObject({ isVisible: false });
   });
 });
 
@@ -738,6 +825,20 @@ describe('TableUtil downloads', () => {
     expect(decodeCsvDataUrl(dataUrl)).toBe('Options,Computed options,Display options\n"Alpha, Gamma",Beta,b\n');
   });
 
+  it('exports an empty label for option values missing from the option list', () => {
+    const optionsColumn = TableUtil.createOptionsColumn<TestRow>({
+      id: 'options',
+      name: 'Options',
+      options: OPTION_VALUES,
+    });
+    const createDownloadUrl = vi.spyOn(DownloadUtil, 'createDownloadUrl').mockImplementation(() => undefined);
+
+    TableUtil.downloadAsCSV([createRow({ options: 'missing' })], ['options'], [optionsColumn], 'missing.csv');
+
+    const [dataUrl] = createDownloadUrl.mock.calls[0] ?? [];
+    expect(decodeCsvDataUrl(dataUrl)).toBe('Options\n\n');
+  });
+
   it('writes typed values to an Excel workbook and downloads it', async () => {
     writeXlsxFileMock.mockReturnValue({
       toBlob: async () => Promise.resolve(new Blob(['workbook'])),
@@ -773,6 +874,92 @@ describe('TableUtil downloads', () => {
     expect(createDownloadUrl).toHaveBeenCalledWith(
       'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,excel-base64',
       'rows.xlsx',
+    );
+  });
+
+  it('keeps empty and invalid date strings as text in Excel workbooks', async () => {
+    writeXlsxFileMock.mockReturnValue({
+      toBlob: async () => Promise.resolve(new Blob(['workbook'])),
+    });
+    vi.spyOn(DownloadUtil, 'arrayBufferToBase64').mockReturnValue('excel-base64');
+    vi.spyOn(DownloadUtil, 'createDownloadUrl').mockImplementation(() => undefined);
+    const dateColumn = TableUtil.createDateColumn<TestRow>({
+      dateFormat: DATE_FORMAT.DATE,
+      id: 'date',
+      name: 'Date',
+    });
+    const dataRow = createRow({ date: '' });
+    const invalidDataRow = createRow({ date: 'not a date' });
+
+    await TableUtil.downloadAsExcel([dataRow, invalidDataRow], ['date'], [dateColumn], 'dates.xlsx');
+
+    expect(writeXlsxFileMock).toHaveBeenCalledWith(
+      [
+        [{ type: String, value: 'Date' }],
+        [{ type: String, value: '' }],
+        [{ type: String, value: 'not a date' }],
+      ],
+      {
+        columns: [{ width: 20 }],
+        stickyRowsCount: 1,
+      },
+    );
+  });
+
+  it('uses column ids as CSV headers when a column has no header name', () => {
+    const createDownloadUrl = vi.spyOn(DownloadUtil, 'createDownloadUrl').mockImplementation(() => undefined);
+    const unnamedColumn = {
+      ...TableUtil.createTextColumn<TestRow>({ id: 'name', name: 'Unused' }),
+      headerName: undefined,
+    } as TableColumn<TestRow>;
+
+    TableUtil.downloadAsCSV([createRow({ name: 'Alpha' })], ['name'], [unnamedColumn], 'unnamed.csv');
+
+    const [dataUrl] = createDownloadUrl.mock.calls[0] ?? [];
+    expect(decodeCsvDataUrl(dataUrl)).toBe('name\nAlpha\n');
+  });
+  it('exports null, undefined, dates, objects and unserializable values as CSV text', () => {
+    const createValueColumn = (id: 'allTags' | 'id' | 'name' | 'tags', value: unknown) => ({
+      ...TableUtil.createTextColumn<TestRow>({ id, name: id }),
+      valueGetter: () => value,
+    }) as unknown as TableColumn<TestRow>;
+    const createDownloadUrl = vi.spyOn(DownloadUtil, 'createDownloadUrl').mockImplementation(() => undefined);
+
+    TableUtil.downloadAsCSV(
+      [createRow()],
+      ['name', 'tags', 'id', 'allTags'],
+      [
+        createValueColumn('name', null),
+        createValueColumn('tags', undefined),
+        createValueColumn('id', new Date('2020-06-01T10:00:00.000Z')),
+        createValueColumn('allTags', () => 'not serializable'),
+      ],
+      'values.csv',
+    );
+
+    const [dataUrl] = createDownloadUrl.mock.calls[0] ?? [];
+    expect(decodeCsvDataUrl(dataUrl)).toBe('name,tags,id,allTags\n,,2020-06-01T10:00:00.000Z,\n');
+  });
+
+  it('keeps boolean values typed as booleans in Excel exports', async () => {
+    writeXlsxFileMock.mockReturnValue({
+      toBlob: async () => Promise.resolve(new Blob(['workbook'])),
+    });
+    vi.spyOn(DownloadUtil, 'arrayBufferToBase64').mockReturnValue('excel-base64');
+    vi.spyOn(DownloadUtil, 'createDownloadUrl').mockImplementation(() => undefined);
+    const activeColumn = {
+      ...TableUtil.createTextColumn<TestRow>({ id: 'active', name: 'Active' }),
+      valueGetter: () => true,
+    } as unknown as TableColumn<TestRow>;
+
+    await TableUtil.downloadAsExcel([createRow()], ['active'], [activeColumn], 'flags.xlsx');
+
+    expect(writeXlsxFileMock).toHaveBeenCalledWith(
+      [
+        [{ type: String, value: 'Active' }],
+        [{ type: Boolean, value: true }],
+      ],
+      expect.anything(),
     );
   });
 });
@@ -983,6 +1170,25 @@ describe('TableUtil visible columns and movement', () => {
     ];
     expect(TableUtil.handleMoveColumn(dimensions, forwardSettings, columns, columns[0], 1)).toBe(true);
     expect(forwardSettings.map(setting => setting.id)).toEqual(['b1', 'a1', 'a2', 'extra', 'b2']);
+  });
+
+  it('keeps every column exactly once when a dimension block swaps with a non-contiguous dimension member', () => {
+    const columns = ['a1', 'a2', 'b0', 'b1', 'c', 'b2'].map(id => createTextColumn(id as keyof TestRow));
+    const dimensions = [
+      createDimension('a', ['a1', 'a2']),
+      createDimension('b', ['b0', 'b1', 'b2']),
+    ];
+    const settings = [
+      createVisualSettings('a1'),
+      createVisualSettings('a2', { isVisible: false }),
+      createVisualSettings('b0', { isVisible: false }),
+      createVisualSettings('b1'),
+      createVisualSettings('c'),
+      createVisualSettings('b2', { isVisible: false }),
+    ];
+
+    expect(TableUtil.handleMoveColumn(dimensions, settings, columns, columns[0], 1)).toBe(true);
+    expect(settings.map(setting => setting.id)).toEqual(['b1', 'b0', 'a1', 'a2', 'c', 'b2']);
   });
 });
 

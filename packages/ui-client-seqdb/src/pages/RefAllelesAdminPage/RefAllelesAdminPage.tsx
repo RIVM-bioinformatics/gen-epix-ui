@@ -6,7 +6,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   mixed,
-  number,
   object,
   string,
 } from 'yup';
@@ -27,6 +26,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { useLocusOptionsQuery } from '../../dataHooks/useLociQuery';
 import { useSeqFormatOptionsQuery } from '../../dataHooks/useSeqFormatsQuery';
@@ -67,15 +67,16 @@ export const RefAllelesAdminPage = () => {
     const locusName = locusLabel || item.locus_id;
     const indexName = Number.isFinite(item.index) ? String(item.index) : '';
     const descriptiveName = [locusName, indexName].filter(Boolean).join(' - ');
+    /* v8 ignore next -- the final '' is unreachable: stored items always have a non-empty id (requireRefAlleleId) and create submits require a non-empty seq (schema) */
     return descriptiveName || item.seq || ('id' in item && item.id) || '';
   }, [locusOptionsQuery.options]);
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      index: number().integer().required(),
+      index: SchemaUtil.number.integer().required(),
       locus_id: string().required(),
       seq: string().required(),
-      seq_format: mixed<SeqDbSeqFormat>().oneOf(Object.values(SeqDbSeqFormat)).optional(),
+      seq_format: mixed<SeqDbSeqFormat>().oneOf(Object.values(SeqDbSeqFormat)).nullable().optional(),
     });
   }, []);
 
@@ -90,10 +91,11 @@ export const RefAllelesAdminPage = () => {
         required: true,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         label: t`Index`,
         name: 'index',
         required: true,
+        type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,

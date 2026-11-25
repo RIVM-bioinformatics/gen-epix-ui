@@ -228,7 +228,7 @@ export const createDemoThemeOptions = (paletteMode: PaletteMode): ThemeOptions =
       MuiDivider: {
         styleOverrides: {
           root: {
-            backgroundColor: '#c9defc',
+            backgroundColor: '#eeeeee',
           },
         },
       },

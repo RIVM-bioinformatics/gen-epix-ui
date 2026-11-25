@@ -9,6 +9,6 @@
     "src/**/*.spec.*",
     "src/**/__tests__/**",
     "src/**/tests/**",
-    "src/test/setup/**"
+    "src/test/**"
   ]
 }
