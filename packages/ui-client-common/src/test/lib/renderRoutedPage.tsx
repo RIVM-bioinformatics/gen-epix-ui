@@ -50,6 +50,16 @@ export const renderRoutedPage = async (
         },
         path,
       },
+      // Navigation targets of the page are not rendered, but must not log a 404 "No route matches URL".
+      {
+        element: <div />,
+        handle: {
+          requiredPermissions: [],
+          requiresUserProfile: false,
+          title: ROUTE_TITLE,
+        },
+        path: '*',
+      },
     ],
   });
   container.registerInstance(RouterService, routerService);

@@ -25,6 +25,8 @@ const renderRouterErrorPage = async (loader: () => never) => {
         </div>
       ),
       errorElement: <RouterErrorPage />,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      HydrateFallback: () => <div />,
       loader,
       path: '/',
     },

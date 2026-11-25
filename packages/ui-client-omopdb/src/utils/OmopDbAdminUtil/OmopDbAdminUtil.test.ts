@@ -14,6 +14,15 @@ describe('OmopDbAdminUtil', () => {
     });
   });
 
+  it('falls back to the temporary id of an optimistic row without the SDK identity field', () => {
+    const optimisticRow: { id: string; person_id: number; visit_detail_id?: number } = { id: 'temporary-id', person_id: 1 };
+
+    expect(OmopDbAdminUtil.withId(optimisticRow, 'visit_detail_id', 'Visit detail')).toEqual({
+      id: 'temporary-id',
+      person_id: 1,
+    });
+  });
+
   it('throws when the SDK identity field is missing', () => {
     expect(() => OmopDbAdminUtil.withId({ concept_id: null }, 'concept_id', 'Concept')).toThrow('Concept is missing a valid concept_id.');
   });

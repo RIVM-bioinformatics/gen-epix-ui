@@ -13,6 +13,7 @@ import type {
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { mockApiRequest } from '@gen-epix/ui-client-common/test/lib';
 import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
+import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { container } from 'tsyringe';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -50,6 +51,7 @@ import {
   createDashboardCompleteCaseType,
   mockDashboardApi,
 } from '../../../test/fixtures/dashboard';
+import { COMPLETE_CASE_TYPE_TEXT_COL_ID } from '../../../test/fixtures/completeCaseType';
 import { renderComponent } from '../../../test/lib';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import type { CaseInfoDialogOpenProps } from '../CaseInfoDialog';
@@ -154,6 +156,14 @@ let activeDashboardStore: ReturnType<typeof createDashboardStore> | undefined;
 let storageCounter = 0;
 let requestBodies: Record<string, unknown>[];
 
+const seedTextColumn = (dashboardStore: ReturnType<typeof createDashboardStore>) => {
+  const columns = [
+    TableUtil.createTextColumn<CaseDbCase, CaseDbCompleteCaseType>({ id: COMPLETE_CASE_TYPE_TEXT_COL_ID as keyof CaseDbCase, name: 'Text' }),
+  ];
+  dashboardStore.getState().setColumns(columns);
+  dashboardStore.getState().setColumnVisualSettingsUncondensed(TableUtil.createInitialVisualColumnSettings(columns));
+};
+
 type TreeResponder = (body: Record<string, unknown>) => Promise<Response> | Response;
 
 const defaultTreeResponder: TreeResponder = (body) => {
@@ -224,6 +234,7 @@ const renderTreeWidget = async ({
     storageVersion: 1,
   });
   activeDashboardStore = dashboardStore;
+  seedTextColumn(dashboardStore);
 
   requestBodies = [];
   mockDashboardApi(completeCaseType);
@@ -505,7 +516,7 @@ describe('TreeWidget', () => {
     await expect.element(screen.getByRole('figure', { name: TREE_FIGURE_NAME })).toBeInTheDocument();
     await expect.element(screen.getByRole('button', { name: 'Unlink Tree and Line List' })).toBeInTheDocument();
 
-    await dashboardStore.getState().setSorting('id', 'asc');
+    await dashboardStore.getState().setSorting(COMPLETE_CASE_TYPE_TEXT_COL_ID, 'asc');
 
     await expect.element(screen.getByRole('button', { name: 'Link Tree and Line List' })).toBeInTheDocument();
   });
@@ -513,7 +524,7 @@ describe('TreeWidget', () => {
   it('links the tree back to the line list and clears the sorting from the primary menu', async () => {
     const { dashboardStore, screen } = await renderTreeWidget();
     await expect.element(screen.getByRole('figure', { name: TREE_FIGURE_NAME })).toBeInTheDocument();
-    await dashboardStore.getState().setSorting('id', 'asc');
+    await dashboardStore.getState().setSorting(COMPLETE_CASE_TYPE_TEXT_COL_ID, 'asc');
     await expect.element(screen.getByRole('button', { name: 'Link Tree and Line List' })).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('button', { name: 'Link Tree and Line List' }).element());

@@ -45,6 +45,10 @@ vi.mock('write-excel-file/browser', () => ({
   default: writeXlsxFileMock,
 }));
 
+interface NumericDateRow {
+  valid_start_date: number;
+}
+
 interface NumericOptionRow {
   seq_format: number;
 }
@@ -572,6 +576,20 @@ describe('TableUtil filters and cell values', () => {
     filter.filterValue = [2];
     expect(filter.matchRowValue(rows[0].seq_format)).toBe(true);
     expect(filter.matchRowValue(rows[1].seq_format)).toBe(false);
+  });
+
+  it('builds date filters from numeric date values', () => {
+    const column = TableUtil.createDateColumn<NumericDateRow>({ id: 'valid_start_date', name: 'Valid start date' });
+    const rows: NumericDateRow[] = [
+      { valid_start_date: 20210505 },
+      { valid_start_date: 20220101 },
+    ];
+
+    const filter = TableUtil.createFiltersFromColumns([column], rows, null)[0] as DateFilter;
+
+    expect(filter).toBeInstanceOf(DateFilter);
+    expect(filter.minDate).toEqual(new Date(2021, 4, 5));
+    expect(filter.maxDate).toEqual(new Date(2022, 0, 1));
   });
 
   it('gets table cell values from row fields or value getters', () => {

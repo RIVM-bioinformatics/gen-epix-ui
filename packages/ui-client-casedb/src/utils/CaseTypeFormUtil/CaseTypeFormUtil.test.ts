@@ -287,7 +287,12 @@ describe('CaseTypeFormUtil.createYupSchema', () => {
 
   it('validates all supported value types and normalizes optional decimal and date values', async () => {
     const { columns, completeCaseType } = createFixture();
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     const schema = CaseTypeFormUtil.createYupSchema({ completeCaseType });
+    expect(warn).toHaveBeenCalledWith('Unknown column type: CONTEXT_FREE_GRAMMAR_JSON');
+    expect(warn).toHaveBeenCalledWith('Unknown column type: CONTEXT_FREE_GRAMMAR_XML');
+    expect(warn).toHaveBeenCalledWith('Unknown column type: GENETIC_PROFILE');
+    expect(warn).toHaveBeenCalledWith('Unknown column type: OTHER');
     const emptyValues = Object.fromEntries(columns.map(({ col }) => [col.id, '']));
     emptyValues['col-REGULAR_LANGUAGE'] = 'ABC';
     emptyValues['col-REGULAR_LANGUAGE-invalid'] = '';

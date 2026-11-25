@@ -6,8 +6,13 @@ import {
   it,
   vi,
 } from 'vitest';
+import type {
+  CaseDbCase,
+  CaseDbCompleteCaseType,
+} from '@gen-epix/api-casedb';
 import { container } from 'tsyringe';
 import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
+import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 
 import { EventBusService } from '../../../classes/services/EventBusService';
 import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
@@ -16,7 +21,10 @@ import type { TreeWidgetData } from '../../../models/dashboard.models';
 import { DashboardStoreContext } from '../../../stores/dashboardStore/dashboardStoreContext';
 import { createDashboardStore } from '../../../stores/dashboardStore/dashboardStore';
 import { clearDashboardStorage } from '../../../test/fixtures/dashboard';
-import { createLineListCompleteCaseType } from '../../../test/fixtures/lineListCompleteCaseType';
+import {
+  createLineListCompleteCaseType,
+  SEX_COL_ID,
+} from '../../../test/fixtures/lineListCompleteCaseType';
 import { renderComponent } from '../../../test/lib';
 
 import { LineListWidgetSecondaryMenu } from './LineListWidgetSecondaryMenu';
@@ -34,6 +42,14 @@ const setTreeZoomLevel = (zoomLevel: number) => {
   activeDashboardStore?.getState().updateWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE, { zoomLevel });
 };
 
+const seedSexColumn = (dashboardStore: ReturnType<typeof createDashboardStore>) => {
+  const columns = [
+    TableUtil.createTextColumn<CaseDbCase, CaseDbCompleteCaseType>({ id: SEX_COL_ID as keyof CaseDbCase, name: 'Sex' }),
+  ];
+  dashboardStore.getState().setColumns(columns);
+  dashboardStore.getState().setColumnVisualSettingsUncondensed(TableUtil.createInitialVisualColumnSettings(columns));
+};
+
 const renderSecondaryMenu = async (zoomLevel: number) => {
   const config = DependencyContainerUtil.resolveConfig<CaseDbConfig>();
   const dashboardStore = createDashboardStore({
@@ -45,6 +61,7 @@ const renderSecondaryMenu = async (zoomLevel: number) => {
     storageVersion: 1,
   });
   activeDashboardStore = dashboardStore;
+  seedSexColumn(dashboardStore);
   setTreeZoomLevel(zoomLevel);
 
   const screen = await renderComponent(
@@ -93,7 +110,7 @@ describe('LineListWidgetSecondaryMenu', () => {
     const linkListener = addEventListenerSpy('onLinkLineListAndTree');
     const unlinkListener = addEventListenerSpy('onUnlinkLineListAndTree');
     const { dashboardStore, screen } = await renderSecondaryMenu(UNLINKED_ZOOM_LEVEL);
-    await dashboardStore.getState().setSorting('name', 'asc');
+    await dashboardStore.getState().setSorting(SEX_COL_ID, 'asc');
 
     await screen.getByRole('button', { exact: true, name: LINK_LABEL }).click();
 
@@ -109,13 +126,13 @@ describe('LineListWidgetSecondaryMenu', () => {
     const linkListener = addEventListenerSpy('onLinkLineListAndTree');
     const unlinkListener = addEventListenerSpy('onUnlinkLineListAndTree');
     const { dashboardStore, screen } = await renderSecondaryMenu(LINKED_ZOOM_LEVEL);
-    await dashboardStore.getState().setSorting('name', 'asc');
+    await dashboardStore.getState().setSorting(SEX_COL_ID, 'asc');
 
     await screen.getByRole('button', { exact: true, name: UNLINK_LABEL }).click();
 
     expect(unlinkListener).toHaveBeenCalledWith({ userInitiated: true });
     expect(linkListener).not.toHaveBeenCalled();
-    expect(dashboardStore.getState().sortByField).toBe('name');
+    expect(dashboardStore.getState().sortByField).toBe(SEX_COL_ID);
     expect(dashboardStore.getState().sortDirection).toBe('asc');
   });
 

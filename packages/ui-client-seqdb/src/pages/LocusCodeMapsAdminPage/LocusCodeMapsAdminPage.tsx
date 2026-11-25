@@ -168,7 +168,8 @@ export const LocusCodeMapsAdminPage = () => {
   const convertToTableData = useCallback((items: SeqDbLocusCodeMapWithId[]): TableData[] => {
     return items.map(item => ({
       ...item,
-      code_map_display: Object.entries(item.code_map)
+      // An optimistic row from a pending create holds the form values, which have no code_map yet
+      code_map_display: Object.entries(item.code_map ?? {})
         .map(([code, locusId]) => `${code}: ${locusLabelsById.get(locusId) ?? locusId}`)
         .join('; '),
     }));

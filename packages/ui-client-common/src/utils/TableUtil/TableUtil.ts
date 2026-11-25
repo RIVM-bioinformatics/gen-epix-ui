@@ -252,12 +252,12 @@ export class TableUtil {
           options,
         }));
       } else if (column.type === 'date') {
-        const values = baseRows.map(row => (row as { [key: string]: string })[column.id]).filter(x => !!x).map(x => parseISO(x));
+        const values = baseRows.map(row => (row as { [key: string]: number | string })[column.id]).filter(x => !!x).map(x => TableUtil.parseDateValue(x));
         const minDate = new Date(Math.min.apply(null, values as unknown as number[]));
         const maxDate = new Date(Math.max.apply(null, values as unknown as number[]));
         return filters.push(new DateFilter({
           dateFormat: column.dateFormat ?? DATE_FORMAT.DATE,
-          dateParser: parseISO,
+          dateParser: TableUtil.parseDateValue,
           filterMode: FILTER_MODE.FRONTEND,
           filterPriority: DEFAULT_FILTER_GROUP,
           id: column.id,
@@ -585,6 +585,11 @@ export class TableUtil {
       swappingElementIndex,
       direction,
     );
+  }
+
+  /* Row values can be numeric (e.g. 20210505) even though they are typed as ISO strings; parseISO requires a string. */
+  public static parseDateValue(value: number | string): Date {
+    return parseISO(String(value));
   }
 
   /**

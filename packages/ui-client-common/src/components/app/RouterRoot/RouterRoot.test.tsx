@@ -4,6 +4,7 @@ import {
   describe,
   expect,
   it,
+  vi,
 } from 'vitest';
 import { container } from 'tsyringe';
 import {
@@ -141,6 +142,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  vi.restoreAllMocks();
   unsubscribeAuthenticationGuard();
   oidcStore.getState().setConfiguration(undefined);
   AuthenticationService.clearStaleState();
@@ -172,6 +174,7 @@ describe('RouterRoot', () => {
 
   it('lists the providers and disables the unavailable ones when only some are available', async () => {
     mockIdentityProviders([PROVIDER_A, PROVIDER_B], { 'idp-a': true, 'idp-b': false });
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
     const screen = await renderRouterRoot('/');
 
@@ -179,16 +182,20 @@ describe('RouterRoot', () => {
     await expect.element(screen.getByRole('button', { name: PROVIDER_A.label })).toBeEnabled();
     await expect.element(screen.getByRole('button', { name: PROVIDER_B.label })).toBeDisabled();
     expect(container.resolve(AuthenticationService).data).toBeUndefined();
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Identity provider idp-b is not available', expect.anything());
   });
 
   it('shows an error when none of the identity providers are available', async () => {
     mockIdentityProviders([PROVIDER_A, PROVIDER_B], { 'idp-a': false, 'idp-b': false });
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
     const screen = await renderRouterRoot('/');
 
     await expect.element(screen.getByText('No identity providers are currently available. Please try again later.')).toBeInTheDocument();
     await expect.element(screen.getByRole('button', { name: PROVIDER_A.label })).toBeDisabled();
     await expect.element(screen.getByRole('button', { name: PROVIDER_B.label })).toBeDisabled();
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Identity provider idp-a is not available', expect.anything());
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Identity provider idp-b is not available', expect.anything());
   });
 
   it('shows the error page when the identity providers response is not a list', async () => {
@@ -240,12 +247,14 @@ describe('RouterRoot', () => {
 
   it('clears the selected identity provider when it became unavailable', async () => {
     mockIdentityProviders([PROVIDER_A, PROVIDER_B], { 'idp-a': true, 'idp-b': false });
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     container.resolve(AuthenticationService).next(PROVIDER_B);
 
     const screen = await renderRouterRoot('/');
 
     await expect.element(screen.getByTestId('ChooseIdentityProviderPage')).toBeInTheDocument();
     expect(container.resolve(AuthenticationService).data).toBeUndefined();
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Identity provider idp-b is not available', expect.anything());
   });
 
   it('creates the user manager for the selected identity provider when it matches the available one', async () => {

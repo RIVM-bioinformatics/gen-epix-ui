@@ -157,6 +157,7 @@ describe('UserInvitationsAdminPage', () => {
     expect(requestBodies[0]).not.toHaveProperty('key');
     expect(requestBodies[0]?.organization_id).toBe(ORGANIZATION_ID);
     expect(requestBodies[0]?.roles).toEqual(['USER']);
+    await expect.element(screen.getByText('Invitation details', { exact: true })).toBeVisible();
   });
 
   it('opens the share dialog from the "Send invitation" row action', async () => {

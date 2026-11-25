@@ -7,6 +7,8 @@ import {
   it,
 } from 'vitest';
 import { userEvent } from 'vitest/browser';
+import { AuthContext } from 'react-oidc-context';
+import type { AuthContextProps } from 'react-oidc-context';
 
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import { renderComponent } from '../../../test/lib';
@@ -22,31 +24,37 @@ const USER: CommonDbUser = {
   roles: [],
 };
 
+const AUTH: AuthContextProps = {
+  isAuthenticated: true,
+  signoutRedirect: async () => Promise.resolve(),
+  user: undefined,
+} as unknown as AuthContextProps;
+
+const renderApplicationBarActionsUserItem = async () => renderComponent(
+  <AuthContext value={AUTH}>
+    <ApplicationBarActionsUserItem />
+  </AuthContext>,
+);
+
 describe('ApplicationBarActionsUserItem', () => {
   beforeEach(() => {
     container.resolve(AuthorizationService).user = USER;
   });
 
   it('renders the account button', async () => {
-    const screen = await renderComponent(
-      <ApplicationBarActionsUserItem />,
-    );
+    const screen = await renderApplicationBarActionsUserItem();
 
     await expect.element(screen.getByTitle('Account')).toBeVisible();
   });
 
   it('does not render the user menu before the button is clicked', async () => {
-    const screen = await renderComponent(
-      <ApplicationBarActionsUserItem />,
-    );
+    const screen = await renderApplicationBarActionsUserItem();
 
     expect(screen.getByTestId('UserMenu').query()).toBeNull();
   });
 
   it('opens the user menu with the current user when the account button is clicked', async () => {
-    const screen = await renderComponent(
-      <ApplicationBarActionsUserItem />,
-    );
+    const screen = await renderApplicationBarActionsUserItem();
 
     await screen.getByTitle('Account').click();
 
@@ -55,9 +63,7 @@ describe('ApplicationBarActionsUserItem', () => {
   });
 
   it('closes the user menu when Escape is pressed', async () => {
-    const screen = await renderComponent(
-      <ApplicationBarActionsUserItem />,
-    );
+    const screen = await renderApplicationBarActionsUserItem();
 
     await screen.getByTitle('Account').click();
     await expect.element(screen.getByTestId('UserMenu')).toBeVisible();
@@ -68,9 +74,7 @@ describe('ApplicationBarActionsUserItem', () => {
   });
 
   it('reopens the user menu after it was closed', async () => {
-    const screen = await renderComponent(
-      <ApplicationBarActionsUserItem />,
-    );
+    const screen = await renderApplicationBarActionsUserItem();
 
     await screen.getByTitle('Account').click();
     await expect.element(screen.getByTestId('UserMenu')).toBeVisible();

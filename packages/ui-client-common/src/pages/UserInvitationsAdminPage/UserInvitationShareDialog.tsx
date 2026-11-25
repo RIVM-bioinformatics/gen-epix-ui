@@ -44,7 +44,7 @@ export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogPro
   const config = useConfig();
 
   useEffect(() => {
-    onTitleChange(t('Invitation details for {{email}}', { email: openProps.item.key }));
+    onTitleChange(openProps.item.key ? t('Invitation details for {{email}}', { email: openProps.item.key }) : t('Invitation details'));
   }, [onTitleChange, openProps.item.key, t]);
 
   const expiryDate = useMemo(() => {
@@ -86,7 +86,9 @@ export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogPro
     <Box>
       <Box>
         <Typography>
-          {t('The invitation for {{email}} will expire on {{expiryDate}}.', { email: openProps.item.key, expiryDate })}
+          {openProps.item.key
+            ? t('The invitation for {{email}} will expire on {{expiryDate}}.', { email: openProps.item.key, expiryDate })
+            : t('The invitation will expire on {{expiryDate}}.', { expiryDate })}
         </Typography>
       </Box>
       <Box

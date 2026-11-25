@@ -213,24 +213,26 @@ export const UserEffectiveRightsTesterAdminPage = () => {
           loadables={loadables}
         >
           <Container maxWidth={'md'}>
-            <Box
-              sx={{
-                marginY: 2,
-              }}
-            >
-              <Typography
-                component={'h2'}
-                variant={'h4'}
+            {userQuery.data && !organizationMapQuery.isLoading && (
+              <Box
+                sx={{
+                  marginY: 2,
+                }}
               >
-                {t('Testing effective rights for user: {{userEmail}}', { userEmail: userQuery.data?.email })}
-              </Typography>
-              <Typography>
-                {t('Organization: {{organizationName}}', { organizationName: organizationMapQuery.map.get(userQuery.data?.organization_id)?.name })}
-              </Typography>
-              <Typography>
-                {t('Roles: {{roles}}', { roles: userQuery.data?.roles.join(', ') })}
-              </Typography>
-            </Box>
+                <Typography
+                  component={'h2'}
+                  variant={'h4'}
+                >
+                  {t('Testing effective rights for user: {{userEmail}}', { userEmail: userQuery.data.email })}
+                </Typography>
+                <Typography>
+                  {t('Organization: {{organizationName}}', { organizationName: organizationMapQuery.map.get(userQuery.data.organization_id)?.name })}
+                </Typography>
+                <Typography>
+                  {t('Roles: {{roles}}', { roles: userQuery.data.roles.join(', ') })}
+                </Typography>
+              </Box>
+            )}
             <GenericForm<FormFields>
               formFieldDefinitions={formFieldDefinitions}
               formId={formId}

@@ -19,6 +19,8 @@ import {
   createDashboardCase,
   createDashboardCompleteCaseType,
   DASHBOARD_CASE_ID,
+  DASHBOARD_GEO_COL_ID,
+  DASHBOARD_GEO_DIM_ID,
   mockDashboardApi,
 } from '../../../test/fixtures/dashboard';
 import {
@@ -102,7 +104,7 @@ describe('DashboardStoreLoaderContent', () => {
   it('sets the column dimensions of the complete case type on the store', async () => {
     const screen = await renderDashboardStoreLoaderContent();
 
-    await expect.element(screen.getByTestId(COLUMN_DIMENSIONS_TEST_ID)).toHaveTextContent(`dim-other|other|${COMPLETE_CASE_TYPE_TEXT_COL_ID}`);
+    await expect.element(screen.getByTestId(COLUMN_DIMENSIONS_TEST_ID)).toHaveTextContent(`dim-other|other|${COMPLETE_CASE_TYPE_TEXT_COL_ID};${DASHBOARD_GEO_DIM_ID}|geo|${DASHBOARD_GEO_COL_ID}`);
   });
 
   it('identifies rows of the store by their id', async () => {

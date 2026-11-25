@@ -186,6 +186,70 @@ remaining gaps.
   resulting behavior can be checked directly.
 - Keep `.test.ts` files free of JSX. For `.test.tsx`, use the browser workflow below.
 
+### Keep stderr and console output clean
+
+Every warning, error, or uncaught exception logged during a test is a defect
+until it is fixed or deliberately asserted. A passing test with noisy output is
+not complete. The common causes in this repo are:
+
+- **Eager `t()` with unloaded data.** `t(...)` runs while JSX is built, so an
+  interpolation value that comes from a query is still `undefined` on the first
+  render and i18next logs "Missing interpolation". Render the interpolated text
+  only once the data is available, and let the test wait for it with
+  `expect.element(...)`.
+- **Unseeded table columns.** Sorting or calling `setSorting` on a column id that
+  is not in the table store logs "Column not found or missing comparatorFactory".
+  Seed the column with a real `TableUtil` helper such as
+  `TableUtil.createTextColumn` before sorting, or sort on a seeded id.
+- **Unregistered routes.** Navigating to a path the harness does not register
+  logs a 404 `ErrorResponse`. Register every route the test navigates to. The
+  shared `renderRoutedPage` helper in `ui-client-common` adds a catch-all `*`
+  stub after the route under test, so unexpected navigation stays silent.
+  Assert the stub path when navigation is the behavior under test.
+- **Missing providers.** Components that read auth need an `AuthContext` value,
+  and route stubs that use a data router need `HydrateFallback`. Add them to the
+  harness or the fixture instead of ignoring the warning.
+- **Incomplete fixtures.** A component that throws on missing data, such as a map
+  widget without geo dimensions, needs a fixture that satisfies it in the happy
+  path. Add reusable builders to the owning package's `src/test/fixtures/` (for
+  example `dashboard.ts`) rather than inlining partial objects.
+- **Mocked writes without the primary key.** A mocked POST or PUT response, and
+  the optimistic row that `useCreateMutation` inserts, must carry the primary key
+  field the page reads (for example `visit_detail_id`). Otherwise the options
+  hook throws "missing a valid ... id" during render and React Router shows an
+  error page. Mock the write with the same key shape the real API returns.
+- **Date fixtures that do not match the API type.** Date columns can arrive as
+  numbers (for example `20210505`) as well as ISO strings. Use the SDK's real
+  type in the fixture, and make sure the date parsing path accepts it.
+- **Typed inputs that break generic key constraints.** A helper such as `withId`
+  that infers keys from its argument rejects a field the literal does not
+  declare. Type the fixture with the optional key so the test compiles without a
+  cast.
+- **Default reporter hides stderr.** Vitest's default reporter in this repo does
+  not print console output. Always check with `--reporter=verbose` before
+  declaring a test clean.
+- **Out-of-range option values.** Set MUI Select, Autocomplete, or similar values
+  only from the options the component actually renders. Otherwise MUI warns that
+  the value is out of range.
+- **Uncaught errors from event handlers.** An error thrown inside a React event
+  handler reaches the window `error` event, and the browser runner prints it as
+  `Uncaught Error`. Fix the code or assert the behavior that throws. A
+  `console.error` spy does not capture these.
+
+When a test intentionally triggers a logged warning or error, assert it with a
+spy so the output is explicit and restored afterwards:
+
+```ts
+const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+// act, then assert the behavior under test
+expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('fallback'));
+```
+
+Add `afterEach(() => { vi.restoreAllMocks(); });` so spies do not leak between
+tests. If an intentional error still prints as `Uncaught` in the runner, do not
+hide it with harness changes. Keep the test as it is and list the output as
+expected in the final summary, with the test and the reason.
+
 ### Browser components (`.test.tsx`)
 
 1. **Use the owning package's renderer.** In `ui-client-common`, `ui-client-casedb`,
@@ -270,19 +334,22 @@ pnpm --filter <package> run check-types
 pnpm --filter <package> exec vitest run --project <unit-or-browser> --coverage --coverage.include=<source-path> <test-path>
 ```
 
-Vitest's default summary hides console output, so React warnings such as
-duplicate keys are invisible there. After the coverage run, rerun the focused
-command with `--reporter=verbose` and check both streams. Vitest prints console
-output to stderr and stdout, so search both:
+Vitest's default summary hides console output, stderr, and uncaught errors, so
+React warnings such as duplicate keys are invisible there. After the coverage
+run, rerun the focused command with `--reporter=verbose` and check both streams.
+Vitest prints console output under `stderr |` and `stdout |` headers, and the
+browser runner prints uncaught errors as `Uncaught`:
 
 ```bash
 pnpm --filter <package> exec vitest run --project <unit-or-browser> --reporter=verbose <test-path> > /tmp/unit-test-verbose.log 2>&1
-grep -nE "same key|two children" /tmp/unit-test-verbose.log
+grep -nE "stderr \||stdout \||Uncaught|same key|two children|not configured to support act" /tmp/unit-test-verbose.log
 ```
 
-The grep must find nothing. Any match means a sibling fixture or component key
-needs fixing; the test is not complete until it is clean. Delete the temporary
-log afterwards.
+The grep must find nothing. Each match is a defect to fix, using the causes in
+"Keep stderr and console output clean" above. Duplicate keys need a fixture or
+component key fix, and the test is not complete until the grep is clean. The
+only exception is an intentional output that is asserted with a spy or listed as
+expected in the final summary. Delete the temporary log afterwards.
 
 Use the configured V8 coverage provider and **verify the intended file actually
 ran** (do not use `--passWithNoTests` for this check). The focused test
@@ -336,8 +403,9 @@ until the root validation passes.
   and lines.
 - Lint, type checking, and the focused test command pass for every processed
   target.
-- The verbose focused run has no "same key" or "two children" warnings in
-  stderr or stdout.
+- The verbose focused run has no `stderr |` or `stdout |` output, no `Uncaught`
+  errors, and no "same key" or "two children" warnings. The only exceptions are
+  output asserted with a spy and intentional output listed in the final summary.
 - Root `pnpm run validate` passes after all requested tests and any
   backward-compatible monorepo fixes are complete.
 - No unrelated files, generated reports, package metadata, or configuration
