@@ -20,7 +20,7 @@ import {
 import type { PopoverOrigin } from '@mui/material';
 import { Box } from '@mui/material';
 
-import { IconMenuItem } from './IconMenuItem';
+import { NestedMenuIconMenuItem } from './NestedMenuIconMenuItem';
 
 type Origins = {
   anchor: PopoverOrigin;
@@ -50,7 +50,6 @@ const leftOrigins: Origins = {
 };
 
 export type NestedMenuItemProps = {
-  readonly active?: boolean;
   readonly button?: true;
   readonly callback?: () => void;
   readonly checked?: 'false' | 'mixed' | 'true';
@@ -219,7 +218,7 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
       tabIndex={tabIndex}
     >
 
-      <IconMenuItem
+      <NestedMenuIconMenuItem
         checked={checked}
         className={className}
         label={label}

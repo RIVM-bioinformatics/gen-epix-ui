@@ -2,7 +2,7 @@ import { Tooltip } from '@mui/material';
 
 import type { MenuItemData } from '../../models/nested-menu.models';
 
-import { IconMenuItem } from './IconMenuItem';
+import { NestedMenuIconMenuItem } from './NestedMenuIconMenuItem';
 import { NestedMenuItem } from './NestedMenuItem';
 
 export interface NestedMenuItemsFromObjectProps {
@@ -58,7 +58,7 @@ export const nestedMenuItemsFromObject = ({
     }
 
     const iconMenuItem = (
-      <IconMenuItem
+      <NestedMenuIconMenuItem
         checked={checked}
         disabled={disabled}
         divider={divider}

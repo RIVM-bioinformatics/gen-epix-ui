@@ -8,7 +8,7 @@ import MenuList from '@mui/material/MenuList';
 
 import { renderComponent } from '../../test/lib';
 
-import { IconMenuItem } from './IconMenuItem';
+import { NestedMenuIconMenuItem } from './NestedMenuIconMenuItem';
 
 const getRequiredElement = <T extends Element>(container: ParentNode, selector: string): T => {
   const element = container.querySelector<T>(selector);
@@ -23,7 +23,7 @@ it('renders its label and icons and forwards the ref, class, title, and click ha
   const ref = createRef<HTMLLIElement>();
   const screen = await renderComponent(
     <MenuList>
-      <IconMenuItem
+      <NestedMenuIconMenuItem
         className={'custom-menu-item'}
         label={'Home'}
         leftIcon={(
@@ -73,7 +73,7 @@ it.each([
 ])('renders checked state $checked as a menu item checkbox', async ({ checked, expected }) => {
   const screen = await renderComponent(
     <MenuList>
-      <IconMenuItem
+      <NestedMenuIconMenuItem
         checked={checked}
         label={'Choice'}
       />
@@ -89,7 +89,7 @@ it('forwards direct menu item props over MenuItemProps', async () => {
   const menuItemPropsOnClick = vi.fn();
   const screen = await renderComponent(
     <MenuList>
-      <IconMenuItem
+      <NestedMenuIconMenuItem
         className={'direct-class'}
         disabled
         divider

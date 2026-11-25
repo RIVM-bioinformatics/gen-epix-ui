@@ -27,7 +27,7 @@ const FlexBox = styled(Box)({
   display: 'flex',
 });
 
-type IconMenuItemProps = {
+export type NestedMenuIconMenuItemProps = {
   readonly checked?: 'false' | 'mixed' | 'true';
   readonly className?: string;
   readonly disabled?: boolean;
@@ -42,7 +42,7 @@ type IconMenuItemProps = {
   readonly sx?: SxProps;
 };
 
-export const IconMenuItem = ({ checked, className, label, leftIcon, MenuItemProps, ref, rightIcon, ...props }: IconMenuItemProps) => {
+export const NestedMenuIconMenuItem = ({ checked, className, label, leftIcon, MenuItemProps, ref, rightIcon, ...props }: NestedMenuIconMenuItemProps) => {
   return (
     <StyledMenuItem
       {...MenuItemProps}

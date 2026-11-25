@@ -5,7 +5,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Menu from '@mui/material/Menu';
 import type {
   MouseEvent,
-  ReactNode,
   Ref,
 } from 'react';
 import {
@@ -25,16 +24,14 @@ import type { MenuItemData } from '../../models/nested-menu.models';
 
 import { nestedMenuItemsFromObject } from './nestedMenuItemsFromObject';
 
-interface NestedDropdownProps {
+export interface NestedDropdownProps {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly ButtonProps?: Partial<ButtonProps>;
-  readonly children?: ReactNode;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly ContainerProps?: Partial<BoxProps>;
   readonly menuItemsData?: MenuItemData;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly MenuProps?: Partial<MenuProps>;
-  readonly onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   readonly ref?: Ref<HTMLDivElement>;
   readonly showTopLevelTooltip?: boolean;
 }
@@ -45,14 +42,11 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const { ButtonProps = {}, ContainerProps, menuItemsData: data, MenuProps, onClick, showTopLevelTooltip, ...rest } = props;
+  const { ButtonProps = {}, ContainerProps, menuItemsData: data, MenuProps, showTopLevelTooltip, ...rest } = props;
 
   const onButtonClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
-    if (onClick) {
-      onClick(event);
-    }
-  }, [onClick]);
+  }, []);
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);

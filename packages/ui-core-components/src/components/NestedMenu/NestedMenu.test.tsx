@@ -8,7 +8,7 @@ import {
 import type { MenuItemData } from '../../models/nested-menu.models';
 import { renderComponent } from '../../test/lib';
 
-import { NestedDropdown } from './NestedDropdown';
+import { NestedDropdown } from './NestedMenu';
 
 const getRequiredElement = <T extends Element>(container: ParentNode, selector: string): T => {
   const element = container.querySelector<T>(selector);
@@ -18,8 +18,7 @@ const getRequiredElement = <T extends Element>(container: ParentNode, selector: 
   return element;
 };
 
-it('opens its menu, invokes callbacks, closes after selection, and forwards the container ref', async () => {
-  const onClick = vi.fn();
+it('opens its menu, invokes item callbacks, closes after selection, and forwards the container ref', async () => {
   const onItemClick = vi.fn();
   const ref = createRef<HTMLDivElement>();
   const menuItemsData: MenuItemData = {
@@ -30,7 +29,6 @@ it('opens its menu, invokes callbacks, closes after selection, and forwards the 
     <NestedDropdown
       ContainerProps={{ className: 'nested-dropdown-container' }}
       menuItemsData={menuItemsData}
-      onClick={onClick}
       ref={ref}
     />,
   );
@@ -44,7 +42,6 @@ it('opens its menu, invokes callbacks, closes after selection, and forwards the 
   await button.click();
   await expect.poll(() => buttonElement.getAttribute('aria-expanded')).toBe('true');
   await expect.element(screen.getByRole('menuitem', { name: 'Refresh' })).toBeVisible();
-  expect(onClick).toHaveBeenCalledOnce();
 
   await screen.getByRole('menuitem', { name: 'Refresh' }).click();
   await expect.poll(() => buttonElement.getAttribute('aria-expanded')).toBe('false');

@@ -1,4 +1,4 @@
-export * from './IconMenuItem';
-export * from './NestedDropdown';
+export * from './NestedMenu';
+export * from './NestedMenuIconMenuItem';
 export * from './NestedMenuItem';
 export * from './nestedMenuItemsFromObject';
