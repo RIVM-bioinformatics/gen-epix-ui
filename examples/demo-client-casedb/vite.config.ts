@@ -134,9 +134,9 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     fileParallelism: !isCi,
+    globals: true,
     maxConcurrency: isCi ? 1 : 5,
     maxWorkers: isCi ? 1 : 2,
-    globals: true,
     server: {
       deps: {
         inline: ['@mui/material', 'react-transition-group'],

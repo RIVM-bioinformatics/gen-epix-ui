@@ -136,9 +136,6 @@ export default defineConfig({
     }),
   ],
   test: {
-    fileParallelism: !isCi,
-    maxConcurrency: isCi ? 1 : 5,
-    maxWorkers: isCi ? 1 : 2,
     coverage: {
       exclude: [
         'node_modules/',
@@ -159,6 +156,9 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
       reportsDirectory: './coverage',
     },
+    fileParallelism: !isCi,
+    maxConcurrency: isCi ? 1 : 5,
+    maxWorkers: isCi ? 1 : 2,
     projects: [
       {
         test: {
