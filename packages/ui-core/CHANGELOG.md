@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.13.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.12.0...ui-core-v3.13.0) (2026-11-26)
+
+
+### Features
+
+* create component tests and fix some production issues ([6d4689e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/6d4689ed4fa14ec5a3994599f42aa7ce84e3829d))
+* rename nest menu components and export interfaces ([2c1b49b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2c1b49be3bb96f3e26e68cc81f39b03a596a0a41))
+* update all dependencies to latest ([82387c2](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/82387c293d6859ad5c8b045ce660599a78d14271))
+
 ## [3.12.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.11.0...ui-core-v3.12.0) (2026-11-17)
 
 

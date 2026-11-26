@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.11.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.10.0...ui-client-casedb-v4.11.0) (2026-11-26)
+
+
+### Features
+
+* add alleles admin page ([8801c70](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/8801c70eae15fa8f17b44109bf0be657d15ae69c))
+* center the widget unavailable notification inside the widget ([1861953](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1861953e9f16d87d3839946139bf3fa50171048d))
+* create component tests and fix some production issues ([6d4689e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/6d4689ed4fa14ec5a3994599f42aa7ce84e3829d))
+* update all dependencies to latest ([82387c2](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/82387c293d6859ad5c8b045ce660599a78d14271))
+
+
+### Bug Fixes
+
+* don't persist sortfield and sortdirection in the linelist ([878c4d8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/878c4d8ac59cf169b30b44371fb5b6514f0fe7a8))
+
 ## [4.10.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.9.0...ui-client-casedb-v4.10.0) (2026-11-17)
 
 

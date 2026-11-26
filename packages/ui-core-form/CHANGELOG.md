@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-form-v4.7.0...ui-core-form-v4.8.0) (2026-11-26)
+
+
+### Features
+
+* create component tests and fix some production issues ([6d4689e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/6d4689ed4fa14ec5a3994599f42aa7ce84e3829d))
+* update all dependencies to latest ([82387c2](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/82387c293d6859ad5c8b045ce660599a78d14271))
+
 ## [4.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-form-v4.6.0...ui-core-form-v4.7.0) (2026-11-17)
 
 

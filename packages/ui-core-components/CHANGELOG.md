@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-components-v4.8.0...ui-core-components-v4.9.0) (2026-11-26)
+
+
+### Features
+
+* create component tests and fix some production issues ([6d4689e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/6d4689ed4fa14ec5a3994599f42aa7ce84e3829d))
+* rename nest menu components and export interfaces ([2c1b49b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2c1b49be3bb96f3e26e68cc81f39b03a596a0a41))
+* update all dependencies to latest ([82387c2](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/82387c293d6859ad5c8b045ce660599a78d14271))
+
+
+### Bug Fixes
+
+* dialog should not close when user is trying to close form element dropdown ([f138529](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f13852916ed6e8fb2aae7fbe7f8b5f7c7e22a26a))
+* fix auto deploy dev branch (only acutal dev branch should deploy) ([acb0277](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/acb0277f7cf1430f80926b6e48eda5dd11ad167d))
+
 ## [4.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-components-v4.7.0...ui-core-components-v4.8.0) (2026-11-17)
 
 
