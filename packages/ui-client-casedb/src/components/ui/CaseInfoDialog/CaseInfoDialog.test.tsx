@@ -35,7 +35,10 @@ import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/
 import { mockApiRequest } from '@gen-epix/ui-client-common/test/lib';
 import { TableStoreContextProvider } from '@gen-epix/ui-client-common/stores/tableStore';
 
-import { renderComponent } from '../../../test/lib';
+import {
+  mockUploadCasesJobRequest,
+  renderComponent,
+} from '../../../test/lib';
 import {
   createDashboardStore,
   DashboardStoreContext,
@@ -175,7 +178,7 @@ const registerHandlers = () => {
     }
     return new Response(null, { status: 204 });
   });
-  mockApiRequest('POST', '/v1/upload/cases', () => {
+  mockUploadCasesJobRequest(() => {
     uploadRequestCount += 1;
     return Response.json({ cases: [], status: CaseDbEtlStatus.SUCCESS });
   });

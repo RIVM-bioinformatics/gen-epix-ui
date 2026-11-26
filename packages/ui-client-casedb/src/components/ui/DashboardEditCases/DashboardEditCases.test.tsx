@@ -37,7 +37,10 @@ import {
   createDashboardCompleteCaseType,
   mockDashboardApi,
 } from '../../../test/fixtures/dashboard';
-import { renderComponent } from '../../../test/lib';
+import {
+  mockUploadCasesJobRequest,
+  renderComponent,
+} from '../../../test/lib';
 
 import { DashboardEditCases } from './DashboardEditCases';
 
@@ -167,7 +170,7 @@ describe('DashboardEditCases', () => {
       caseIdsByQueryRequestCount += 1;
       return Response.json({ case_ids: [], is_max_results_exceeded: false });
     });
-    mockApiRequest('POST', '/v1/upload/cases', handleUploadCasesRequest);
+    mockUploadCasesJobRequest(handleUploadCasesRequest);
     mockCaseRights([
       createCaseRights({ case_id: CASE_A_ID, is_full_access: true }),
       createCaseRights({ case_id: CASE_B_ID, is_full_access: true }),

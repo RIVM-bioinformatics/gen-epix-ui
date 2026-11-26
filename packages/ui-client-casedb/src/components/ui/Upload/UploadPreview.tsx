@@ -23,7 +23,6 @@ import type {
   CaseDbUploadCasesCommand,
 } from '@gen-epix/api-casedb';
 import {
-  CaseDbCaseApi,
   CaseDbDataIssueType,
   CaseDbEtlStatus,
   CaseDbUploadAction,
@@ -45,6 +44,7 @@ import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { UploadStoreContext } from '../../../stores/uploadStore';
 import { withEpiCompleteCaseTypeLoader } from '../CompletCaseTypeLoader/withEpiCompleteCaseTypeLoader';
 import { CaseUtil } from '../../../utils/CaseUtil';
+import { UploadUtil } from '../../../utils/UploadUtil';
 
 import { UploadCaseResultTable } from './UploadCaseResultTable';
 import { UploadPreviewNavigation } from './UploadPreviewNavigation';
@@ -80,7 +80,7 @@ export const UploadPreview = withEpiCompleteCaseTypeLoader<UploadPreviewProps>((
     enabled: casesForVerificationFromSourceData.length > 0,
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const response = (await container.resolve(CaseDbCaseApi).uploadCases(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
+      const response = await UploadUtil.uploadCasesViaJob(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
         case_batch: {
           cases: casesForVerificationFromSourceData,
         },
@@ -88,7 +88,7 @@ export const UploadPreview = withEpiCompleteCaseTypeLoader<UploadPreviewProps>((
         default_created_in_data_collection_id: createdInDataCollectionId ?? undefined,
         on_exists: CaseDbUploadAction.UPDATE,
         verify_only: true,
-      }), { signal })).data;
+      }), signal);
       return response;
     },
     queryKey: validateCasesQueryKey,
@@ -112,7 +112,7 @@ export const UploadPreview = withEpiCompleteCaseTypeLoader<UploadPreviewProps>((
   const revalidateCases = useCallback(async (casesToValidate: Array<{ content: CaseDbCase['content']; row: CaseDbCaseUploadResult }>) => {
     setIsRevalidatingCases(true);
     try {
-      const batchValidationResult = (await container.resolve(CaseDbCaseApi).uploadCases(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
+      const batchValidationResult = await UploadUtil.uploadCasesViaJob(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
         case_batch: {
           cases: casesToValidate.map(({ content, row }, index) => {
             const caseFromSourceData = casesForVerificationFromSourceData.find(c => c.id === row.id);
@@ -140,7 +140,7 @@ export const UploadPreview = withEpiCompleteCaseTypeLoader<UploadPreviewProps>((
         default_created_in_data_collection_id: createdInDataCollectionId ?? undefined,
         on_exists: CaseDbUploadAction.UPDATE,
         verify_only: true,
-      }))).data;
+      }));
 
       const resultById = new Map(
         casesToValidate.map(({ row }, index) => [row.id, batchValidationResult.cases[index]]),

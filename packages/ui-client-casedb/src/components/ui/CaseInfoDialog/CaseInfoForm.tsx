@@ -18,7 +18,6 @@ import type {
   CaseDbCaseRights,
 } from '@gen-epix/api-casedb';
 import {
-  CaseDbCaseApi,
   CaseDbEtlStatus,
   CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
@@ -28,6 +27,7 @@ import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
+import { UploadUtil } from '../../../utils/UploadUtil';
 import { CaseContentForm } from '../CaseContentForm';
 
 export type CaseInfoFormProps = {
@@ -68,7 +68,7 @@ export const CaseInfoForm = ({ caseDbCase, caseRights, formId, onFinish, onIsSav
       });
       try {
         await container.resolve(QueryClientService).cancelQueries(queryKeys);
-        const uploadResult = (await container.resolve(CaseDbCaseApi).uploadCases({
+        const uploadResult = await UploadUtil.uploadCasesViaJob({
           case_batch: {
             cases: [
               {
@@ -83,7 +83,7 @@ export const CaseInfoForm = ({ caseDbCase, caseRights, formId, onFinish, onIsSav
           },
           case_type_id: completeCaseType.id,
           on_exists: CaseDbUploadAction.UPDATE,
-        })).data;
+        });
         if (uploadResult.status !== CaseDbEtlStatus.SKIPPED && uploadResult.status !== CaseDbEtlStatus.SUCCESS && uploadResult.status !== CaseDbEtlStatus.UPDATED) {
           throw new Error('Case upload failed');
         }

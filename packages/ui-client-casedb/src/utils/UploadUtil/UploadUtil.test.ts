@@ -14,6 +14,8 @@ import type {
   CaseDbCol,
   CaseDbCompleteCaseType,
   CaseDbRefCol,
+  CaseDbUploadCasesCommand,
+  CaseDbUploadJobResponseCaseBatchUploadResult,
 } from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
@@ -23,7 +25,12 @@ import {
   CaseDbReadsFileFormat,
   CaseDbSeqFileFormat,
   CaseDbUploadAction,
+  CaseDbUploadJobStatus,
 } from '@gen-epix/api-casedb';
+import {
+  AxiosError,
+  CanceledError,
+} from 'axios';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
@@ -151,12 +158,21 @@ const createExcelFile = async (): Promise<File> => {
   return new File([blob], 'cases.xlsx');
 };
 
+const makeSucceededUploadJob = (result: CaseDbCaseBatchUploadResult): CaseDbUploadJobResponseCaseBatchUploadResult => ({
+  id: 'job-1',
+  result,
+  status: CaseDbUploadJobStatus.SUCCEEDED,
+  submitted_at: '2026-11-26T12:00:00Z',
+});
+
 const registerCaseApi = (overrides: Record<string, unknown> = {}) => {
   const api = {
     createFileForReadSet: vi.fn().mockResolvedValue(undefined),
     createFileForSeq: vi.fn().mockResolvedValue(undefined),
-    uploadCases: vi.fn().mockResolvedValue({
-      data: { cases: [], status: CaseDbEtlStatus.SUCCESS },
+    retrieveUploadCasesJob: vi.fn(),
+    uploadCases: vi.fn(),
+    uploadCasesJobs: vi.fn().mockResolvedValue({
+      data: makeSucceededUploadJob({ cases: [], status: CaseDbEtlStatus.SUCCESS }),
     }),
     ...overrides,
   };
@@ -705,7 +721,7 @@ describe('UploadUtil.createCases', () => {
     );
     const response = makeBatchUploadResult([{ id: 'uploaded-case-1' }]);
     const api = registerCaseApi({
-      uploadCases: vi.fn().mockResolvedValue({ data: response }),
+      uploadCasesJobs: vi.fn().mockResolvedValue({ data: makeSucceededUploadJob(response) }),
     });
     const abortController = new AbortController();
 
@@ -742,7 +758,7 @@ describe('UploadUtil.createCases', () => {
     });
 
     expect(result).toBe(response);
-    const uploadRequest: unknown = api.uploadCases.mock.calls[0]?.[0] as unknown;
+    const uploadRequest: unknown = api.uploadCasesJobs.mock.calls[0]?.[0] as unknown;
     expect(uploadRequest).toMatchObject({
       case_batch: {
         cases: [
@@ -799,7 +815,7 @@ describe('UploadUtil.createCases', () => {
       signal: new AbortController().signal,
     });
 
-    const request = api.uploadCases.mock.calls[0]?.[0] as {
+    const request = api.uploadCasesJobs.mock.calls[0]?.[0] as {
       case_batch: { cases: Array<{ read_sets: unknown[]; seqs: unknown[] }> };
     };
     expect(request.case_batch.cases[0]).toMatchObject({ read_sets: [], seqs: [] });
@@ -834,7 +850,7 @@ describe('UploadUtil.createCases', () => {
       signal: new AbortController().signal,
     });
 
-    const request: unknown = api.uploadCases.mock.calls[0]?.[0] as unknown;
+    const request: unknown = api.uploadCasesJobs.mock.calls[0]?.[0] as unknown;
     expect(request).toMatchObject({
       case_batch: {
         cases: [
@@ -881,7 +897,7 @@ describe('UploadUtil.createCases', () => {
       signal: new AbortController().signal,
     });
 
-    const request: unknown = api.uploadCases.mock.calls[0]?.[0] as unknown;
+    const request: unknown = api.uploadCasesJobs.mock.calls[0]?.[0] as unknown;
     expect(request).toMatchObject({
       case_batch: {
         cases: [{
@@ -1369,5 +1385,101 @@ describe('UploadUtil column and file name predicates', () => {
     expect(UploadUtil.matchColumnLabel('unknown', col)).toBe(false);
     expect(UploadUtil.matchColumnLabel('', col)).toBe(false);
     expect(UploadUtil.matchColumnLabel(null, col)).toBe(false);
+  });
+});
+
+
+describe('UploadUtil.uploadCasesViaJob', () => {
+  const command = { case_batch: { cases: [] }, case_type_id: 'case-type-1' } as CaseDbUploadCasesCommand;
+  const result = makeBatchUploadResult([{ id: 'case-1' }]);
+  const makeJob = (status: CaseDbUploadJobStatus, fields: Partial<CaseDbUploadJobResponseCaseBatchUploadResult> = {}): { data: CaseDbUploadJobResponseCaseBatchUploadResult } => ({
+    data: { id: 'job-1', status, submitted_at: '2026-11-26T12:00:00Z', ...fields },
+  });
+  const makeAxiosError = (status?: number): AxiosError => {
+    const error = new AxiosError('request failed');
+    if (status) {
+      error.response = { config: {}, data: null, headers: {}, status, statusText: '' } as AxiosError['response'];
+    }
+    return error;
+  };
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('polls the job until it succeeds and returns its result', async () => {
+    const api = registerCaseApi({
+      retrieveUploadCasesJob: vi.fn()
+        .mockResolvedValueOnce(makeJob(CaseDbUploadJobStatus.RUNNING))
+        .mockResolvedValueOnce(makeJob(CaseDbUploadJobStatus.SUCCEEDED, { result })),
+      uploadCasesJobs: vi.fn().mockResolvedValue(makeJob(CaseDbUploadJobStatus.QUEUED)),
+    });
+
+    const promise = UploadUtil.uploadCasesViaJob(command);
+    await vi.runAllTimersAsync();
+
+    await expect(promise).resolves.toBe(result);
+    expect(api.uploadCasesJobs).toHaveBeenCalledWith(command, { signal: undefined });
+    expect(api.retrieveUploadCasesJob).toHaveBeenCalledTimes(2);
+    expect(api.retrieveUploadCasesJob).toHaveBeenCalledWith('job-1', { signal: undefined });
+  });
+
+  it('throws with the status and detail of a failed job', async () => {
+    registerCaseApi({
+      uploadCasesJobs: vi.fn().mockResolvedValue(makeJob(CaseDbUploadJobStatus.FAILED, { error_detail: 'Bad case', error_status_code: 422 })),
+    });
+
+    await expect(UploadUtil.uploadCasesViaJob(command)).rejects.toThrow('Case upload failed (422): Bad case');
+  });
+
+  it.each([404, 405])('falls back to the synchronous endpoint when the job endpoint answers %i', async (status) => {
+    const api = registerCaseApi({
+      uploadCases: vi.fn().mockResolvedValue({ data: result }),
+      uploadCasesJobs: vi.fn().mockRejectedValue(makeAxiosError(status)),
+    });
+
+    await expect(UploadUtil.uploadCasesViaJob(command)).resolves.toBe(result);
+    expect(api.uploadCases).toHaveBeenCalledWith(command, { signal: undefined });
+  });
+
+  it('rethrows other submission errors', async () => {
+    const error = makeAxiosError(403);
+    registerCaseApi({ uploadCasesJobs: vi.fn().mockRejectedValue(error) });
+
+    await expect(UploadUtil.uploadCasesViaJob(command)).rejects.toBe(error);
+  });
+
+  it('keeps polling through transient errors', async () => {
+    registerCaseApi({
+      retrieveUploadCasesJob: vi.fn()
+        .mockRejectedValueOnce(makeAxiosError())
+        .mockRejectedValueOnce(makeAxiosError(503))
+        .mockResolvedValueOnce(makeJob(CaseDbUploadJobStatus.SUCCEEDED, { result })),
+      uploadCasesJobs: vi.fn().mockResolvedValue(makeJob(CaseDbUploadJobStatus.QUEUED)),
+    });
+
+    const promise = UploadUtil.uploadCasesViaJob(command);
+    await vi.runAllTimersAsync();
+
+    await expect(promise).resolves.toBe(result);
+  });
+
+  it('stops polling when the request is aborted', async () => {
+    const api = registerCaseApi({
+      retrieveUploadCasesJob: vi.fn().mockResolvedValue(makeJob(CaseDbUploadJobStatus.RUNNING)),
+      uploadCasesJobs: vi.fn().mockResolvedValue(makeJob(CaseDbUploadJobStatus.QUEUED)),
+    });
+    const abortController = new AbortController();
+
+    const promise = UploadUtil.uploadCasesViaJob(command, abortController.signal).catch((error: unknown) => error);
+    await vi.advanceTimersByTimeAsync(0);
+    abortController.abort();
+
+    expect(await promise).toBeInstanceOf(CanceledError);
+    expect(api.retrieveUploadCasesJob).not.toHaveBeenCalled();
   });
 });
