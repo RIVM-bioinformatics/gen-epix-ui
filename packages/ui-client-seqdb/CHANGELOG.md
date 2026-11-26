@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-seqdb-v4.7.0...ui-client-seqdb-v4.8.0) (2026-11-26)
+
+
+### Features
+
+* add all OMOPDB and SEQDB crud admin pages ([#214](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/214)) ([96e2a90](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/96e2a90106babb27004a3e7dfa6a9336041559c2))
+* add alleles admin page ([8801c70](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/8801c70eae15fa8f17b44109bf0be657d15ae69c))
+* create component tests and fix some production issues ([6d4689e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/6d4689ed4fa14ec5a3994599f42aa7ce84e3829d))
+* update all dependencies to latest ([82387c2](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/82387c293d6859ad5c8b045ce660599a78d14271))
+
 ## [4.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-seqdb-v4.6.0...ui-client-seqdb-v4.7.0) (2026-11-17)
 
 

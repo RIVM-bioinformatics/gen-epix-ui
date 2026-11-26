@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-seqdb-v4.7.0...api-seqdb-v4.8.0) (2026-11-26)
+
+
+### Features
+
+* update all dependencies to latest ([82387c2](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/82387c293d6859ad5c8b045ce660599a78d14271))
+
 ## [4.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-seqdb-v4.6.0...api-seqdb-v4.7.0) (2026-11-17)
 
 
