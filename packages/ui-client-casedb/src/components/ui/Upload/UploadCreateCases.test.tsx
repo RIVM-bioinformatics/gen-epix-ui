@@ -12,10 +12,7 @@ import type {
 } from '@gen-epix/api-commondb';
 import type { CaseDbCaseUploadResult } from '@gen-epix/api-casedb';
 import { AuthorizationService } from '@gen-epix/ui-client-common/classes/services/AuthorizationService';
-import {
-  mockApiRequest,
-  renderRoutedPage,
-} from '@gen-epix/ui-client-common/test/lib';
+import { renderRoutedPage } from '@gen-epix/ui-client-common/test/lib';
 
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import {
@@ -26,7 +23,10 @@ import {
 import type { UploadStore } from '../../../stores/uploadStore/uploadStore';
 import { UPLOAD_STEP } from '../../../models/upload.models';
 import { createCompleteCaseType } from '../../../test/fixtures/completeCaseType';
-import { renderComponent } from '../../../test/lib';
+import {
+  mockUploadCasesJobRequest,
+  renderComponent,
+} from '../../../test/lib';
 
 import { UploadCreateCases } from './UploadCreateCases';
 
@@ -58,7 +58,7 @@ const createDataTransfer = (fileNames: string[]) => {
 
 const mockUploadApi = (responder: () => Promise<Response> | Response = () => Response.json({ cases: [{ id: 'case-1', status: 'CREATED' }], status: 'CREATED' })) => {
   container.resolve(AuthorizationService).user = USER;
-  mockApiRequest('POST', '/v1/upload/cases', responder);
+  mockUploadCasesJobRequest(responder);
 };
 
 const renderUploadCreateCases = async (overrides: Partial<UploadStore> = {}) => {

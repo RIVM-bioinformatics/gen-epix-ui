@@ -29,7 +29,10 @@ import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/
 import { mockApiRequest } from '@gen-epix/ui-client-common/test/lib';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
-import { renderComponent } from '../../../test/lib';
+import {
+  mockUploadCasesJobRequest,
+  renderComponent,
+} from '../../../test/lib';
 import {
   createDashboardStore,
   DashboardStoreContext,
@@ -145,7 +148,7 @@ const createRights = (): CaseDbCaseRights => {
 const getNotificationMessages = () => container.resolve(NotificationService).data.map(notification => notification.message);
 
 const registerHandlers = () => {
-  mockApiRequest('POST', '/v1/upload/cases', async (request) => {
+  mockUploadCasesJobRequest(async (request) => {
     uploadBodies.push(await request.json() as UploadRequestBody);
     if (uploadGate) {
       await uploadGate;

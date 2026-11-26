@@ -18,6 +18,10 @@ import { t } from 'i18next';
 import difference from 'lodash/difference';
 import uniq from 'lodash/uniq';
 import { format } from 'date-fns';
+import {
+  CanceledError,
+  isAxiosError,
+} from 'axios';
 import type {
   CaseDbCaseBatchUploadResult,
   CaseDbCaseForUpload,
@@ -27,6 +31,8 @@ import type {
   CaseDbCompleteCaseType,
   CaseDbReadSetForUpload,
   CaseDbSeqForUpload,
+  CaseDbUploadCasesCommand,
+  CaseDbUploadJobResponseCaseBatchUploadResult,
 } from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
@@ -36,6 +42,7 @@ import {
   CaseDbReadsFileFormat,
   CaseDbSeqFileFormat,
   CaseDbUploadAction,
+  CaseDbUploadJobStatus,
 } from '@gen-epix/api-casedb';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { ValidationUtil } from '@gen-epix/ui-core/utils/ValidationUtil';
@@ -65,6 +72,10 @@ export class UploadUtil {
   public static readonly caseDateColumnAliases = ['_timed_at', 'timed at', 'timed_at', 'timedat', 'case.timed_at', 'timed_at_date'];
   public static readonly caseIdColumnAliases = ['_case_id', 'case id', 'case_id', 'caseid', 'case.id'];
   public static readonly colAliases = ['_case_type', 'case type', 'case_type', 'casetype', 'case.type'];
+  public static readonly uploadJobPollInitialMs = 500;
+  public static readonly uploadJobPollMaxMs = 5000;
+  public static readonly uploadJobRetryStatusCodes = [502, 503, 504];
+  public static readonly uploadJobTimeoutMs = 60 * 60 * 1000;
 
   public static areMappedColumnsEqual(a: UploadMappedColumn[], b: UploadMappedColumn[]): boolean {
     if (a.length !== b.length) {
@@ -106,7 +117,7 @@ export class UploadUtil {
 
     const { col: mappedSampleIdCol, sampleIdentifierIssuerId } = mappedColumns.find(mc => mc.col?.id === sampleIdColId) ?? {};
 
-    return (await container.resolve(CaseDbCaseApi).uploadCases({
+    return await UploadUtil.uploadCasesViaJob({
       case_batch: {
         cases: validatedCases.map((vc) => {
           const caseId = vc.id;
@@ -167,7 +178,7 @@ export class UploadUtil {
       case_type_id: completeCaseType.id,
       default_created_in_data_collection_id: createdInDataCollectionId ?? undefined,
       on_exists: CaseDbUploadAction.UPDATE,
-    }, { signal })).data;
+    }, signal);
   }
 
   public static async createCasesAndUploadFiles(kwArgs: {
@@ -743,6 +754,28 @@ export class UploadUtil {
     onProgress(overallProgress, message);
   }
 
+  /**
+   * Uploads cases as a background job and waits for its result.
+   *
+   * The upload is submitted to the job endpoint, which answers at once, and the job is
+   * polled with increasing intervals until it has finished, so that a large upload does
+   * not have to complete within one request. Falls back to the synchronous endpoint if
+   * the API has no job endpoint yet.
+   */
+  public static async uploadCasesViaJob(command: CaseDbUploadCasesCommand, signal?: AbortSignal): Promise<CaseDbCaseBatchUploadResult> {
+    const caseApi = container.resolve(CaseDbCaseApi);
+    let job: CaseDbUploadJobResponseCaseBatchUploadResult;
+    try {
+      job = (await caseApi.uploadCasesJobs(command, { signal })).data;
+    } catch (error) {
+      if (UploadUtil.isMissingUploadJobEndpointError(error)) {
+        return (await caseApi.uploadCases(command, { signal })).data;
+      }
+      throw error;
+    }
+    return await UploadUtil.waitForUploadCasesJob(job, signal);
+  }
+
   public static async uploadFilesForCases(kwArgs: {
     assemblyProtocolId: string;
     caseBatchUploadResult: CaseDbCaseBatchUploadResult;
@@ -869,9 +902,31 @@ export class UploadUtil {
     return CaseDbFileCompression.NONE;
   }
 
+  private static getFinishedUploadJobResult(job: CaseDbUploadJobResponseCaseBatchUploadResult): CaseDbCaseBatchUploadResult {
+    if (job.status === CaseDbUploadJobStatus.FAILED || !job.result) {
+      throw new Error(`Case upload failed (${job.error_status_code ?? 500}): ${job.error_detail ?? 'unknown error'}`);
+    }
+    return job.result;
+  }
+
   private static idToRegex(id: string): RegExp {
     // Create regex that matches the id somewhere in a string
     return new RegExp(id.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'));
+  }
+
+  private static isMissingUploadJobEndpointError(error: unknown): boolean {
+    return isAxiosError(error) && (error.response?.status === 404 || error.response?.status === 405);
+  }
+
+  private static isTransientUploadJobPollError(error: unknown): boolean {
+    if (!isAxiosError(error) || error instanceof CanceledError) {
+      return false;
+    }
+    return !error.response || UploadUtil.uploadJobRetryStatusCodes.includes(error.response.status);
+  }
+
+  private static isUploadJobActive(job: CaseDbUploadJobResponseCaseBatchUploadResult): boolean {
+    return job.status === CaseDbUploadJobStatus.QUEUED || job.status === CaseDbUploadJobStatus.RUNNING;
   }
 
   private static mapExcelCellToString(cell: CellValue | null): string {
@@ -886,5 +941,51 @@ export class UploadUtil {
 
   private static mapExcelSheetData(sheetData: SheetData): string[][] {
     return sheetData.map(row => row.map(cell => UploadUtil.mapExcelCellToString(cell)));
+  }
+
+  private static async pollUploadCasesJob(job: CaseDbUploadJobResponseCaseBatchUploadResult, signal?: AbortSignal): Promise<CaseDbUploadJobResponseCaseBatchUploadResult> {
+    try {
+      return (await container.resolve(CaseDbCaseApi).retrieveUploadCasesJob(job.id, { signal })).data;
+    } catch (error) {
+      if (UploadUtil.isTransientUploadJobPollError(error)) {
+        // E.g. a restarting replica; the job itself lives on
+        return job;
+      }
+      throw error;
+    }
+  }
+
+  private static async waitForMs(delayMs: number, signal?: AbortSignal): Promise<void> {
+    await new Promise<void>((resolve, reject) => {
+      if (signal?.aborted) {
+        reject(new CanceledError());
+        return;
+      }
+      const timer: { id?: ReturnType<typeof setTimeout> } = {};
+      const onAbort = () => {
+        clearTimeout(timer.id);
+        reject(new CanceledError());
+      };
+      timer.id = setTimeout(() => {
+        signal?.removeEventListener('abort', onAbort);
+        resolve();
+      }, delayMs);
+      signal?.addEventListener('abort', onAbort, { once: true });
+    });
+  }
+
+  private static async waitForUploadCasesJob(submittedJob: CaseDbUploadJobResponseCaseBatchUploadResult, signal?: AbortSignal): Promise<CaseDbCaseBatchUploadResult> {
+    const deadline = Date.now() + UploadUtil.uploadJobTimeoutMs;
+    let delayMs = UploadUtil.uploadJobPollInitialMs;
+    let job = submittedJob;
+    while (UploadUtil.isUploadJobActive(job)) {
+      if (Date.now() + delayMs > deadline) {
+        throw new Error(`Case upload job ${job.id} did not finish in time`);
+      }
+      await UploadUtil.waitForMs(delayMs, signal);
+      delayMs = Math.min(delayMs * 1.5, UploadUtil.uploadJobPollMaxMs);
+      job = await UploadUtil.pollUploadCasesJob(job, signal);
+    }
+    return UploadUtil.getFinishedUploadJobResult(job);
   }
 }

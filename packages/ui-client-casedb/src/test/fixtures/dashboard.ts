@@ -17,6 +17,8 @@ import { createElement } from 'react';
 import { mockApiRequest } from '@gen-epix/ui-client-common/test/lib';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
+import { mockUploadCasesJobRequest } from '../lib';
+
 import {
   COMPLETE_CASE_TYPE_DATA_COLLECTION_ID,
   COMPLETE_CASE_TYPE_ID,
@@ -100,7 +102,7 @@ export const mockDashboardApi = (completeCaseType: CaseDbCompleteCaseType = crea
   mockApiRequest('POST', '/v1/retrieve/case_ids_by_query', () => Response.json({ case_ids: [], is_max_results_exceeded: false }));
   mockApiRequest('POST', '/v1/retrieve/cases_by_ids', () => Response.json([]));
   mockApiRequest('POST', '/v1/retrieve/case_rights', () => Response.json([]));
-  mockApiRequest('POST', '/v1/upload/cases', () => Response.json({ cases: [], status: CaseDbEtlStatus.SUCCESS }));
+  mockUploadCasesJobRequest(() => Response.json({ cases: [], status: CaseDbEtlStatus.SUCCESS }));
   mockApiRequest('POST', '/v1/region_set_shapes/query', () => Response.json([]));
   mockApiRequest('POST', '/v1/region_sets/query', () => Response.json(DASHBOARD_REGION_SETS));
   mockApiRequest('POST', '/v1/regions/query', () => Response.json(DASHBOARD_REGIONS));

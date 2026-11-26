@@ -13,7 +13,6 @@ import {
 } from '@gen-epix/api-casedb';
 import type { CommonDbUser } from '@gen-epix/api-commondb';
 import { AuthorizationService } from '@gen-epix/ui-client-common/classes/services/AuthorizationService';
-import { mockApiRequest } from '@gen-epix/ui-client-common/test/lib';
 
 import {
   createUploadStore,
@@ -29,7 +28,10 @@ import {
   createCompleteCaseType,
   mockCompleteCaseTypeLoaderApi,
 } from '../../../test/fixtures/completeCaseType';
-import { renderComponent } from '../../../test/lib';
+import {
+  mockUploadCasesJobRequest,
+  renderComponent,
+} from '../../../test/lib';
 
 import { UploadPreview } from './UploadPreview';
 
@@ -159,7 +161,7 @@ const createValidationResult = (caseForUpload: CaseDbCaseForUpload) => {
 const mockUploadPreviewApi = (requests: Array<UploadCasesRequestBody>, options: MockOptions) => {
   container.resolve(AuthorizationService).user = USER;
   mockCompleteCaseTypeLoaderApi(createWritableCompleteCaseType(options.maxCases ?? 10));
-  mockApiRequest('POST', '/v1/upload/cases', async (request) => {
+  mockUploadCasesJobRequest(async (request) => {
     const body = (await request.json()) as UploadCasesRequestBody;
     requests.push(body);
     if (requests.length === 1) {
