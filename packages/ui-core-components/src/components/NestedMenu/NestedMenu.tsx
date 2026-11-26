@@ -45,7 +45,8 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
   const { ButtonProps = {}, ContainerProps, menuItemsData: data, MenuProps, showTopLevelTooltip, ...rest } = props;
 
   const onButtonClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+    const clickedButton = event.currentTarget;
+    setAnchorEl((currentAnchorEl) => currentAnchorEl === clickedButton ? null : clickedButton);
   }, []);
   const handleClose = useCallback(() => {
     setAnchorEl(null);

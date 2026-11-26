@@ -48,6 +48,22 @@ it('opens its menu, invokes item callbacks, closes after selection, and forwards
   expect(onItemClick).toHaveBeenCalledOnce();
 });
 
+it('closes its menu when its button is clicked again', async () => {
+  const screen = await renderComponent(
+    <NestedDropdown menuItemsData={{ label: 'Actions' }} />,
+  );
+  const button = screen.getByRole('button', { name: 'Actions' });
+  const buttonElement = getRequiredElement<HTMLButtonElement>(screen.baseElement, 'button');
+
+  await button.click();
+  await expect.poll(() => buttonElement.getAttribute('aria-expanded')).toBe('true');
+  await expect.element(screen.getByRole('menu')).toBeVisible();
+
+  buttonElement.click();
+  await expect.poll(() => buttonElement.getAttribute('aria-expanded'), { timeout: 500 }).toBe('false');
+  await expect.element(screen.getByRole('menu')).not.toBeInTheDocument();
+});
+
 it('uses the default label when menu data is omitted and closes on Escape', async () => {
   const screen = await renderComponent(
     <NestedDropdown />,
